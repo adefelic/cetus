@@ -1,18 +1,17 @@
-SECTION "Map Data", ROMX
-;Map:
-;	db $04, $04
-;	dw $0045, $0044, $0040, $0054
-;	dw $0000, $0000, $0011, $0000
-;	dw $0051, $0000, $0001, $0000
-;	dw $0005, $0044, $0004, $0014
-;MapEnd:
+INCLUDE "src/constants/constants.inc"
 
-MapTilemap: ; 32 x 32
+SECTION "Map Data", ROMX
+
+; todo: back up maps in something other than tilemap format? restricted to 32x32
+MapTilemap:: ; 32 x 32
+	; todo add starting orientation
+	; todo add starting coords
+	; todo add map width, height maybe?
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0, ROOM_TILE_TBL,  ROOM_TILE_TB,   ROOM_TILE_T,  ROOM_TILE_TRB,  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0, ROOM_TILE_NONE, ROOM_TILE_NONE, ROOM_TILE_RL, ROOM_TILE_NONE, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0, ROOM_TILE_TRL,  ROOM_TILE_NONE, ROOM_TILE_L,  ROOM_TILE_TR,   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0, ROOM_TILE_BL,   ROOM_TILE_TB,   ROOM_TILE_B,  ROOM_TILE_RB,   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0, INDEX_ROOM_TILE_TBL,  INDEX_ROOM_TILE_TB,   INDEX_ROOM_TILE_T,  INDEX_ROOM_TILE_TRB,  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0, INDEX_ROOM_TILE_NONE, INDEX_ROOM_TILE_NONE, INDEX_ROOM_TILE_RL, INDEX_ROOM_TILE_NONE, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0, INDEX_ROOM_TILE_TRL,  INDEX_ROOM_TILE_NONE, INDEX_ROOM_TILE_L,  INDEX_ROOM_TILE_TR,   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0, INDEX_ROOM_TILE_BL,   INDEX_ROOM_TILE_TB,   INDEX_ROOM_TILE_B,  INDEX_ROOM_TILE_RB,   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -87,8 +86,20 @@ FPTilemap: ; 32 x 32
 	;db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 FPTilemapEnd:
 
+TilemapAttributeEntry:
+	db `00000000 ; palette 0
+TilemapAttributeEntryEnd:
+
+ColorPalette0:
+    ;   xbbbbbgggggrrrrr msb -> lsb
+	dw %0000110001111000
+	dw %0000001111100000
+	dw %0111110000000000
+	dw %0100001000010000
+ColorPalette0End:
+
 Tiles:
-MapRoomNone:
+MapRoomTileNone:
 	dw `00000000
 	dw `00000000
 	dw `00000000
@@ -97,9 +108,9 @@ MapRoomNone:
 	dw `00000000
 	dw `00000000
 	dw `00000000
-MapRoomNoneEnd:
+MapRoomTileNoneEnd:
 
-MapRoomL:
+MapRoomTileL:
 	dw `10000000
 	dw `10000000
 	dw `10000000
@@ -108,9 +119,9 @@ MapRoomL:
 	dw `10000000
 	dw `10000000
 	dw `10000000
-MapRoomLEnd:
+MapRoomTileLEnd:
 
-MapRoomB:
+MapRoomTileB:
 	dw `00000000
 	dw `00000000
 	dw `00000000
@@ -119,9 +130,9 @@ MapRoomB:
 	dw `00000000
 	dw `00000000
 	dw `11111111
-MapRoomBEnd:
+MapRoomTileBEnd:
 
-MapRoomBL:
+MapRoomTileBL:
 	dw `10000000
 	dw `10000000
 	dw `10000000
@@ -130,9 +141,9 @@ MapRoomBL:
 	dw `10000000
 	dw `10000000
 	dw `11111111
-MapRoomBLEnd:
+MapRoomTileBLEnd:
 
-MapRoomRL:
+MapRoomTileRL:
 	dw `10000001
 	dw `10000001
 	dw `10000001
@@ -141,9 +152,9 @@ MapRoomRL:
 	dw `10000001
 	dw `10000001
 	dw `10000001
-MapRoomRLEnd:
+MapRoomTileRLEnd:
 
-MapRoomRB:
+MapRoomTileRB:
 	dw `00000001
 	dw `00000001
 	dw `00000001
@@ -152,9 +163,9 @@ MapRoomRB:
 	dw `00000001
 	dw `00000001
 	dw `11111111
-MapRoomRBEnd:
+MapRoomTileRBEnd:
 
-MapRoomT:
+MapRoomTileT:
 	dw `11111111
 	dw `00000000
 	dw `00000000
@@ -163,9 +174,9 @@ MapRoomT:
 	dw `00000000
 	dw `00000000
 	dw `00000000
-MapRoomTEnd:
+MapRoomTileTEnd:
 
-MapRoomTB:
+MapRoomTileTB:
 	dw `11111111
 	dw `00000000
 	dw `00000000
@@ -174,9 +185,9 @@ MapRoomTB:
 	dw `00000000
 	dw `00000000
 	dw `11111111
-MapRoomTBEnd:
+MapRoomTileTBEnd:
 
-MapRoomTBL:
+MapRoomTileTBL:
 	dw `11111111
 	dw `10000000
 	dw `10000000
@@ -185,9 +196,9 @@ MapRoomTBL:
 	dw `10000000
 	dw `10000000
 	dw `11111111
-MapRoomTBLEnd:
+MapRoomTileTBLEnd:
 
-MapRoomTR:
+MapRoomTileTR:
 	dw `11111111
 	dw `00000001
 	dw `00000001
@@ -196,9 +207,9 @@ MapRoomTR:
 	dw `00000001
 	dw `00000001
 	dw `00000001
-MapRoomTREnd:
+MapRoomTileTREnd:
 
-MapRoomTRL:
+MapRoomTileTRL:
 	dw `11111111
 	dw `10000001
 	dw `10000001
@@ -207,9 +218,9 @@ MapRoomTRL:
 	dw `10000001
 	dw `10000001
 	dw `10000001
-MapRoomTRLEnd:
+MapRoomTileTRLEnd:
 
-MapRoomTRB:
+MapRoomTileTRB:
 	dw `11111111
 	dw `00000001
 	dw `00000001
@@ -218,9 +229,9 @@ MapRoomTRB:
 	dw `00000001
 	dw `00000001
 	dw `11111111
-MapRoomTRBEnd:
+MapRoomTileTRBEnd:
 
-FPTile0:
+FPTileDark:
 	dw `00000000
 	dw `00000000
 	dw `00000000
@@ -229,9 +240,9 @@ FPTile0:
 	dw `00000000
 	dw `00000000
 	dw `00000000
-FPTile0End:
+FPTileDarkEnd:
 
-FPTile1:
+FPTileGround:
 	dw `11111111
 	dw `11111111
 	dw `11111111
@@ -240,9 +251,10 @@ FPTile1:
 	dw `11111111
 	dw `11111111
 	dw `11111111
-FPTile1End:
+FPTileGroundEnd:
 
-FPTile2:
+; for viewing 45 deg angle
+FPTile45:
 	dw `22222222
 	dw `22222222
 	dw `22222222
@@ -251,9 +263,21 @@ FPTile2:
 	dw `22222222
 	dw `22222222
 	dw `22222222
-FPTile2End:
+FPTile45End:
 
-FPTileDiagTL:
+; for viewing orthogonal to camera
+FPTile90:
+	dw `33333333
+	dw `33333333
+	dw `33333333
+	dw `33333333
+	dw `33333333
+	dw `33333333
+	dw `33333333
+	dw `33333333
+FPTile90End:
+
+FPTileDiagRight:
 	dw `21111111
 	dw `22111111
 	dw `22211111
@@ -262,9 +286,9 @@ FPTileDiagTL:
 	dw `22222211
 	dw `22222221
 	dw `22222222
-FPTileDiagTLEnd:
+FPTileDiagRightEnd:
 
-FPTileDiagTR:
+FPTileDiagLeft:
 	dw `22222221
 	dw `22222211
 	dw `22222111
@@ -273,6 +297,23 @@ FPTileDiagTR:
 	dw `22111111
 	dw `21111111
 	dw `11111111
-FPTileDiagTREnd:
-
+FPTileDiagLeftEnd:
 TilesEnd:
+
+; these require the same ordering as the map room tiles
+; 00 00 00 00 = wall definition, in t r b l order.
+; 00 = open, 01 = wall, 10 = ?, 11 = door
+RoomWallAttributes::
+	db %00000000 ; 0,  ROOM_NONE
+	db %00000001 ; 1,  ROOM_L
+	db %00000100 ; 2,  ROOM_B
+	db %00000101 ; 3,  ROOM_BL
+	db %00010001 ; 4,  ROOM_RL
+	db %00010100 ; 5,  ROOM_RB
+	db %01000000 ; 6,  ROOM_T
+	db %01000100 ; 7,  ROOM_TB
+	db %01000001 ; 8,  ROOM_TBL
+	db %01010000 ; 9,  ROOM_TR
+	db %01010001 ; 10, ROOM_TRL
+	db %01010100 ; 11, ROOM_TRB
+RoomWallAttributesEnd:

@@ -16,7 +16,7 @@ FIX  := rgbfix
 
 # tool flags
 ASM_FLAGS := -L
-FIX_FLAGS := -v -p 0xFF
+FIX_FLAGS := -v -p 0xFF -C
 
 # from https://stackoverflow.com/a/18258352/1221106
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))

@@ -1,42 +1,15 @@
 INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/assets/map_data.inc"
-;DEF ROOM_NONE EQU $0000
-;DEF ROOM_L    EQU $0001
-;DEF ROOM_B    EQU $0004
-;DEF ROOM_BL   EQU $0005
-;DEF ROOM_RL   EQU $0011
-;DEF ROOM_RB   EQU $0014
-;DEF ROOM_T    EQU $0040
-;DEF ROOM_TB   EQU $0044
-;DEF ROOM_TBL  EQU $0045
-;DEF ROOM_TR   EQU $0050
-;DEF ROOM_TRL  EQU $0051
-;DEF ROOM_TRB  EQU $0054
 
 DEF GAME_UNPAUSED EQU $00
 DEF GAME_PAUSED EQU $01
 
-DEF SCREEN_CLEAN EQU $00
-DEF SCREEN_DIRTY EQU $01
-
-DEF ROOM_TILE_NONE EQU $00
-DEF ROOM_TILE_L    EQU $01
-DEF ROOM_TILE_B    EQU $02
-DEF ROOM_TILE_BL   EQU $03
-DEF ROOM_TILE_RL   EQU $04
-DEF ROOM_TILE_RB   EQU $05
-DEF ROOM_TILE_T    EQU $06
-DEF ROOM_TILE_TB   EQU $07
-DEF ROOM_TILE_TBL  EQU $08
-DEF ROOM_TILE_TR   EQU $09
-DEF ROOM_TILE_TRL  EQU $0A
-DEF ROOM_TILE_TRB  EQU $0B
-
 Section "Game State", WRAM0
-wPlayerX: db
-wPlayerY: db
+wPlayerX:: db
+wPlayerY:: db
+wPlayerOrientation:: db
 wGameState: db ; this could be a single bit
-wScreenDirty: db
+wScreenDirty: db ; this could be a single bit
 
 SECTION "Input Variables", WRAM0
 wCurKeys: db
@@ -66,6 +39,9 @@ EntryPoint:
 	ld bc, MapTilemapEnd - MapTilemap ; # of bytes (tile indices) remaining
 	call Memcopy
 
+	; Init a color palette
+	call InitColorPalette0
+
 	ld a, 0        ; value to write to bytes
 	ld b, 160      ; # of bytes to write
 	ld hl, _OAMRAM ; dest
@@ -74,44 +50,55 @@ ClearOam:
 	dec b
 	jp nz, ClearOam
 
-	; init game state
-	ld a, 0
+InitGameState:
+	ld a, 1
 	ld [wPlayerX], a
 	ld [wPlayerY], a
+
 	ld a, GAME_PAUSED ; start the game paused
 	ld [wGameState], a
-	ld a, SCREEN_DIRTY
-	ld a, [wScreenDirty]
+
+	ld a, DIRTY
+	ld [wScreenDirty], a
+	call DirtyFPScreen
+
+	ld a, ORIENTATION_EAST
+	ld [wPlayerOrientation], a
+
 	call EnableLcd
 
 Main:
 	call WaitVBlank
-	call UpdateScreen
-	call UpdateKeys
+	call UpdateScreen ; draws screen, cleans wScreenDirty
+	call UpdateKeys ; gets new player input
+	call CheckKeysAndUpdateGameState ; processes input, sets wScreenDirty
+	jp Main
+
+CheckKeysAndUpdateGameState:
 CheckStart:
-	ld a, [wCurKeys]
+	ld a, [wNewKeys]
 	and a, PADF_START
-	jp z, Main
+	ret z
 HandleStart:
 	ld a, [wGameState]
 	cp GAME_PAUSED
-	jp z, UnpauseGame
+	jp z, UnpauseGame ; if paused, unpause
 PauseGame:
 	ld a, GAME_PAUSED
 	ld [wGameState], a
-	ld a, SCREEN_DIRTY
-	ld [wScreenDirty], a
-	jp Main
+	jp DirtyScreen
 UnpauseGame:
 	ld a, GAME_UNPAUSED
 	ld [wGameState], a
-	ld a, SCREEN_DIRTY
+DirtyScreen:
+	ld a, DIRTY
 	ld [wScreenDirty], a
-	jp Main
+	call DirtyFPScreen
+	ret
 
 UpdateScreen:
 	ld a, [wScreenDirty]
-	cp SCREEN_DIRTY
+	cp DIRTY
 	ret nz
 	ld a, [wGameState]
 	cp a, GAME_PAUSED
@@ -120,11 +107,10 @@ DrawPauseScreen:
 	call LoadPauseScreenTilemap
 	jp CleanScreen
 DrawFPScreen:
-	; here
-	call UpdateFPTilemap
-	call LoadFPTilemap
+	call LoadFPTilemapByMapTile
+	;call LoadFPTilemap
 CleanScreen:
-	ld a, SCREEN_CLEAN
+	ld a, CLEAN
 	ld [wScreenDirty], a
 	ret
 
@@ -147,6 +133,19 @@ LoadFPTilemap:
 	ld a, GAME_UNPAUSED
 	ld [wGameState], a
 	call EnableLcd
+	ret
+
+InitBGTileMapAttributes:
+	ld a, 1
+	ld [rVBK], a ; select VRAM bank 1
+
+InitColorPalette0:
+	ld a, BCPSF_AUTOINC ; load bg color palette specification auto increment on write + addr of zero
+	ld [rBCPS], a
+
+	ld de, ColorPalette0 ; source in ROM
+	ld bc, ColorPalette0End - ColorPalette0 ; # of bytes (tile indices) remaining
+	call WriteColorsToPalette
 	ret
 
 UpdateKeys:
@@ -190,7 +189,7 @@ UpdateKeys:
 ; @param de: source
 ; @param hl: destination
 ; @param bc: length
-Memcopy:
+Memcopy::
 	ld a, [de]
 	ld [hli], a
 	inc de
@@ -200,18 +199,30 @@ Memcopy:
 	jp nz, Memcopy
 	ret
 
+; @param de: source (must be multiple of 2 bytes, color defs are 2 bytes)
+; @param bc: length in bytes
+WriteColorsToPalette:
+	ld a, [de]
+	ld [rBCPD], a
+	inc de
+	dec bc
+	ld a, b
+	or c
+	jp nz, WriteColorsToPalette
+	ret
+
 WaitVBlank:
 	ld a, [rLY]
 	cp 144
 	jp c, WaitVBlank
 	ret
 
-DisableLcd:
+DisableLcd::
 	ld a, 0
 	ld [rLCDC], a
 	ret
 
-EnableLcd:
+EnableLcd::
 	ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
 	ld [rLCDC], a
 	ret
