@@ -169,3 +169,220 @@ GetRoomWallAttributes:
 	adc a, 0 ; in case of overflow
 	ld h, a
 	ret
+
+; @return d: bg map x coord
+; @return e: bg map y coord
+GetRoomCoordsCenterNearWRTPlayer::
+	ld a, [wPlayerX]
+	ld d, a
+	ld a, [wPlayerY]
+	ld e, a
+	ret
+
+; @return d: bg map x coord
+; @return e: bg map y coord
+GetRoomCoordsLeftNearWRTPlayer::
+	call GetRoomWallAttributes ; put related RoomWallAttributes addr in hl
+	ld a, [wPlayerOrientation]
+	cp a, ORIENTATION_NORTH
+	jp z, .facingNorth
+	cp a, ORIENTATION_EAST
+	jp z, .facingEast
+	cp a, ORIENTATION_SOUTH
+	jp z, .facingSouth
+.facingWest
+	ld a, [wPlayerX]
+	ld d, a
+	ld a, [wPlayerY]
+	add a, 1
+	ld e, a
+	ret
+.facingNorth
+	ld a, [wPlayerX]
+	sub a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	ld e, a
+	ret
+.facingEast
+	ld a, [wPlayerX]
+	ld d, a
+	ld a, [wPlayerY]
+	sub a, 1
+	ld e, a
+	ret
+.facingSouth
+	ld a, [wPlayerX]
+	add a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	ld e, a
+	ret
+
+; @return d: bg map x coord
+; @return e: bg map y coord
+GetRoomCoordsRightNearWRTPlayer::
+	call GetRoomWallAttributes ; put related RoomWallAttributes addr in hl
+	ld a, [wPlayerOrientation]
+	cp a, ORIENTATION_NORTH
+	jp z, .facingNorth
+	cp a, ORIENTATION_EAST
+	jp z, .facingEast
+	cp a, ORIENTATION_SOUTH
+	jp z, .facingSouth
+.facingWest
+	ld a, [wPlayerX]
+	ld d, a
+	ld a, [wPlayerY]
+	sub a, 1
+	ld e, a
+	ret
+.facingNorth
+	ld a, [wPlayerX]
+	add a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	ld e, a
+	ret
+.facingEast
+	ld a, [wPlayerX]
+	ld d, a
+	ld a, [wPlayerY]
+	add a, 1
+	ld e, a
+	ret
+.facingSouth
+	ld a, [wPlayerX]
+	sub a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	ld e, a
+	ret
+
+; @return d: bg map x coord
+; @return e: bg map y coord
+GetRoomCoordsCenterFarWRTPlayer::
+	call GetRoomWallAttributes ; put related RoomWallAttributes addr in hl
+	ld a, [wPlayerOrientation]
+	cp a, ORIENTATION_NORTH
+	jp z, .facingNorth
+	cp a, ORIENTATION_EAST
+	jp z, .facingEast
+	cp a, ORIENTATION_SOUTH
+	jp z, .facingSouth
+.facingWest
+	ld a, [wPlayerX]
+	sub a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	ld e, a
+	ret
+.facingNorth
+	ld a, [wPlayerX]
+	ld d, a
+	ld a, [wPlayerY]
+	sub a, 1
+	ld e, a
+	ret
+.facingEast
+	ld a, [wPlayerX]
+	add a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	ld e, a
+	ret
+.facingSouth
+	ld a, [wPlayerX]
+	ld d, a
+	ld a, [wPlayerY]
+	add a, 1
+	ld e, a
+	ret
+
+; @return d: bg map x coord
+; @return e: bg map y coord
+GetRoomCoordsLeftFarWRTPlayer::
+	call GetRoomWallAttributes ; put related RoomWallAttributes addr in hl
+	ld a, [wPlayerOrientation]
+	cp a, ORIENTATION_NORTH
+	jp z, .facingNorth
+	cp a, ORIENTATION_EAST
+	jp z, .facingEast
+	cp a, ORIENTATION_SOUTH
+	jp z, .facingSouth
+.facingWest
+	ld a, [wPlayerX]
+	sub a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	add a, 1
+	ld e, a
+	ret
+.facingNorth
+	ld a, [wPlayerX]
+	sub a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	sub a, 1
+	ld e, a
+	ret
+.facingEast
+	ld a, [wPlayerX]
+	add a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	sub a, 1
+	ld e, a
+	ret
+.facingSouth
+	ld a, [wPlayerX]
+	add a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	add a, 1
+	ld e, a
+	ret
+
+; @return d: bg map x coord
+; @return e: bg map y coord
+GetRoomCoordsRightFarWRTPlayer::
+	call GetRoomWallAttributes ; put related RoomWallAttributes addr in hl
+	ld a, [wPlayerOrientation]
+	cp a, ORIENTATION_NORTH
+	jp z, .facingNorth
+	cp a, ORIENTATION_EAST
+	jp z, .facingEast
+	cp a, ORIENTATION_SOUTH
+	jp z, .facingSouth
+.facingWest
+	ld a, [wPlayerX]
+	sub a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	sub a, 1
+	ld e, a
+	ret
+.facingNorth
+	ld a, [wPlayerX]
+	add a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	sub a, 1
+	ld e, a
+	ret
+.facingEast
+	ld a, [wPlayerX]
+	add a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	add a, 1
+	ld e, a
+	ret
+.facingSouth
+	ld a, [wPlayerX]
+	sub a, 1
+	ld d, a
+	ld a, [wPlayerY]
+	add a, 1
+	ld e, a
+	ret

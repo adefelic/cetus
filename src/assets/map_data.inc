@@ -278,14 +278,14 @@ FPTile90:
 FPTile90End:
 
 FPTileDiagRight:
-	dw `21111111
-	dw `22111111
-	dw `22211111
-	dw `22221111
-	dw `22222111
-	dw `22222211
-	dw `22222221
-	dw `22222222
+	dw `12222222
+	dw `11222222
+	dw `11122222
+	dw `11112222
+	dw `11111222
+	dw `11111122
+	dw `11111112
+	dw `11111111
 FPTileDiagRightEnd:
 
 FPTileDiagLeft:
@@ -300,6 +300,29 @@ FPTileDiagLeft:
 FPTileDiagLeftEnd:
 TilesEnd:
 
+;FPTileDiagTopRight:
+;	dw `11111112
+;	dw `11111122
+;	dw `11111222
+;	dw `11112222
+;	dw `11122222
+;	dw `11222222
+;	dw `12222222
+;	dw `22222222
+;FPTileDiagTopRightEnd:
+
+;FPTileDiagTopLeft:
+;	dw `21111111
+;	dw `22111111
+;	dw `22211111
+;	dw `22221111
+;	dw `22222111
+;	dw `22222211
+;	dw `22222221
+;	dw `22222222
+;FPTileDiagTopLeftEnd:
+;TilesEnd:
+
 ; these require the same ordering as the map room tiles
 ; 00 00 00 00 = wall definition, in t r b l order.
 ; 00 = open, 01 = wall, 10 = ?, 11 = door
@@ -312,7 +335,7 @@ RoomWallAttributes::
 	db %00010100 ; 5,  ROOM_RB
 	db %01000000 ; 6,  ROOM_T
 	db %01000100 ; 7,  ROOM_TB
-	db %01000001 ; 8,  ROOM_TBL
+	db %01000101 ; 8,  ROOM_TBL
 	db %01010000 ; 9,  ROOM_TR
 	db %01010001 ; 10, ROOM_TRL
 	db %01010100 ; 11, ROOM_TRB

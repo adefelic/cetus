@@ -51,9 +51,12 @@ ClearOam:
 	jp nz, ClearOam
 
 InitGameState:
-	ld a, 1
+	ld a, 3
 	ld [wPlayerX], a
+	ld a, 1
 	ld [wPlayerY], a
+	ld a, ORIENTATION_EAST
+	ld [wPlayerOrientation], a
 
 	ld a, GAME_PAUSED ; start the game paused
 	ld [wGameState], a
@@ -61,9 +64,6 @@ InitGameState:
 	ld a, DIRTY
 	ld [wScreenDirty], a
 	call DirtyFPScreen
-
-	ld a, ORIENTATION_EAST
-	ld [wPlayerOrientation], a
 
 	call EnableLcd
 
@@ -108,7 +108,6 @@ DrawPauseScreen:
 	jp CleanScreen
 DrawFPScreen:
 	call LoadFPTilemapByMapTile
-	;call LoadFPTilemap
 CleanScreen:
 	ld a, CLEAN
 	ld [wScreenDirty], a
@@ -121,16 +120,6 @@ LoadPauseScreenTilemap:
 	ld bc, MapTilemapEnd - MapTilemap ; # of bytes (tile indices) remaining
 	call Memcopy
 	ld a, GAME_PAUSED
-	ld [wGameState], a
-	call EnableLcd
-	ret
-LoadFPTilemap:
-	call DisableLcd
-	ld de, FPTilemap ; source in ROM
-	ld hl, _SCRN0    ; dest in VRAM
-	ld bc, FPTilemapEnd - FPTilemap ; # of bytes (tile indices) remaining
-	call Memcopy
-	ld a, GAME_UNPAUSED
 	ld [wGameState], a
 	call EnableLcd
 	ret
