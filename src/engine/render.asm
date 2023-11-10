@@ -1,5 +1,6 @@
 INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/constants/constants.inc"
+INCLUDE "src/constants/map_constants.inc"
 INCLUDE "src/constants/fp_render_constants.inc"
 
 Section "Segment Render State", WRAM0

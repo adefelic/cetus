@@ -1,15 +1,14 @@
 INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/assets/map_data.inc"
-
-DEF GAME_UNPAUSED EQU $00
-DEF GAME_PAUSED EQU $01
+INCLUDE "src/constants/constants.inc"
+INCLUDE "src/constants/fp_render_constants.inc"
 
 Section "Game State", WRAM0
 wPlayerX:: db
 wPlayerY:: db
 wPlayerOrientation:: db
-wGameState: db ; this could be a single bit
-wScreenDirty: db ; this could be a single bit
+wGameState:: db ; this could be a single bit
+wScreenDirty:: db ; this could be a single bit
 
 SECTION "Input Variables", WRAM0
 wCurKeys: db
@@ -69,35 +68,14 @@ InitGameState:
 
 Main:
 	call WaitVBlank
-	call UpdateScreen ; draws screen, cleans wScreenDirty
+	call UpdateScreen ; draws screen, cleans dirty flags
 	call UpdateKeys ; gets new player input
-	call CheckKeysAndUpdateGameState ; processes input, sets wScreenDirty
+	call CheckKeysAndUpdateGameState ; processes input, sets dirty flags
 	jp Main
 
-CheckKeysAndUpdateGameState:
-CheckStart:
-	ld a, [wNewKeys]
-	and a, PADF_START
-	ret z
-HandleStart:
-	ld a, [wGameState]
-	cp GAME_PAUSED
-	jp z, UnpauseGame ; if paused, unpause
-PauseGame:
-	ld a, GAME_PAUSED
-	ld [wGameState], a
-	jp DirtyScreen
-UnpauseGame:
-	ld a, GAME_UNPAUSED
-	ld [wGameState], a
-DirtyScreen:
-	ld a, DIRTY
-	ld [wScreenDirty], a
-	call DirtyFPScreen
-	ret
-
+; -- draw screen
 UpdateScreen:
-	ld a, [wScreenDirty]
+	ld a, [wScreenDirty] ; determines drawing
 	cp DIRTY
 	ret nz
 	ld a, [wGameState]
@@ -111,6 +89,34 @@ DrawFPScreen:
 CleanScreen:
 	ld a, CLEAN
 	ld [wScreenDirty], a
+	ret
+
+; -- update state
+; this will handle one button input then quit
+CheckKeysAndUpdateGameState:
+CheckPressedStart:
+	ld a, [wNewKeys]
+	and a, PADF_START
+	jp nz, HandleStart
+CheckPressedSelect:
+CheckPressedA:
+CheckPressedB:
+CheckPressedUp:
+	ld a, [wNewKeys]
+	and a, PADF_UP
+	jp nz, HandleUp
+CheckPressedDown:
+	ld a, [wNewKeys]
+	and a, PADF_DOWN
+	jp nz, HandleDown
+CheckPressedLeft:
+	ld a, [wNewKeys]
+	and a, PADF_LEFT
+	jp nz, HandleLeft
+CheckPressedRight:
+	ld a, [wNewKeys]
+	and a, PADF_RIGHT
+	jp nz, HandleRight
 	ret
 
 LoadPauseScreenTilemap:

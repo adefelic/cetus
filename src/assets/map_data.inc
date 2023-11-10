@@ -1,4 +1,4 @@
-INCLUDE "src/constants/constants.inc"
+INCLUDE "src/constants/map_constants.inc"
 
 SECTION "Map Data", ROMX
 
@@ -92,10 +92,10 @@ TilemapAttributeEntryEnd:
 
 ColorPalette0:
     ;   xbbbbbgggggrrrrr msb -> lsb
-	dw %0000110001111000
-	dw %0000001111100000
-	dw %0111110000000000
-	dw %0100001000010000
+	dw %0000110001100011 ; 0
+	dw %0000001100000000 ; 1
+	dw %0011110000100001 ; 2
+	dw %0110001000010000 ; 3
 ColorPalette0End:
 
 Tiles:

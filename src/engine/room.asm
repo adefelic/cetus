@@ -1,4 +1,5 @@
 INCLUDE "src/constants/constants.inc"
+INCLUDE "src/constants/map_constants.inc"
 
 SECTION "Room Parsing", ROMX
 
@@ -182,7 +183,6 @@ GetRoomCoordsCenterNearWRTPlayer::
 ; @return d: bg map x coord
 ; @return e: bg map y coord
 GetRoomCoordsLeftNearWRTPlayer::
-	call GetRoomWallAttributes ; put related RoomWallAttributes addr in hl
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -222,7 +222,6 @@ GetRoomCoordsLeftNearWRTPlayer::
 ; @return d: bg map x coord
 ; @return e: bg map y coord
 GetRoomCoordsRightNearWRTPlayer::
-	call GetRoomWallAttributes ; put related RoomWallAttributes addr in hl
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -262,7 +261,6 @@ GetRoomCoordsRightNearWRTPlayer::
 ; @return d: bg map x coord
 ; @return e: bg map y coord
 GetRoomCoordsCenterFarWRTPlayer::
-	call GetRoomWallAttributes ; put related RoomWallAttributes addr in hl
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -302,7 +300,6 @@ GetRoomCoordsCenterFarWRTPlayer::
 ; @return d: bg map x coord
 ; @return e: bg map y coord
 GetRoomCoordsLeftFarWRTPlayer::
-	call GetRoomWallAttributes ; put related RoomWallAttributes addr in hl
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -346,7 +343,6 @@ GetRoomCoordsLeftFarWRTPlayer::
 ; @return d: bg map x coord
 ; @return e: bg map y coord
 GetRoomCoordsRightFarWRTPlayer::
-	call GetRoomWallAttributes ; put related RoomWallAttributes addr in hl
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
