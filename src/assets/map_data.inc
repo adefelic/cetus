@@ -91,11 +91,12 @@ TilemapAttributeEntry:
 TilemapAttributeEntryEnd:
 
 ColorPalette0:
-    ;   xbbbbbgggggrrrrr msb -> lsb
+	; it could be cool to make this a macro
+	; xbbbbbgggggrrrrr msb -> lsb
 	dw %0000110001100011 ; 0
-	dw %0000001100000000 ; 1
+	dw %0000110110000000 ; 1
 	dw %0011110000100001 ; 2
-	dw %0110001000010000 ; 3
+	dw %0011000100001000 ; 3
 ColorPalette0End:
 
 Tiles:

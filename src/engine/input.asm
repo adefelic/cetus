@@ -27,8 +27,56 @@ HandleUp::
 	cp GAME_PAUSED
 	ret z ; ignore input if paused
 AttemptMoveUp:
-	; todo, bounds checking
-	jp DirtyScreenAndFpSegments
+	ld a, [wPlayerX]
+	ld d, a
+	ld a, [wPlayerY]
+	ld e, a
+	call GetBGTileMapAddrFromMapCoords ; puts player bg map entry addr in hl
+	call GetRoomWallAttributesAddrFromBGMapAddr ; put related RoomWallAttributes addr in hl
+
+	ld a, [wPlayerOrientation]
+	cp a, ORIENTATION_NORTH
+	jp z, .facingNorth
+	cp a, ORIENTATION_EAST
+	jp z, .facingEast
+	cp a, ORIENTATION_SOUTH
+	jp z, .facingSouth
+.facingWest
+	ld a, [hl]
+	and a, MASK_LEFT_WALL
+	ret nz
+	ld a, [wPlayerX]
+	sub a, 1
+	ld [wPlayerX], a
+	call DirtyScreenAndFpSegments
+	ret
+.facingNorth
+	ld a, [hl]
+	and a, MASK_TOP_WALL
+	ret nz
+	ld a, [wPlayerY]
+	sub a, 1
+	ld [wPlayerY], a
+	call DirtyScreenAndFpSegments
+	ret
+.facingEast
+	ld a, [hl]
+	and a, MASK_RIGHT_WALL
+	ret nz
+	ld a, [wPlayerX]
+	add a, 1
+	ld [wPlayerX], a
+	call DirtyScreenAndFpSegments
+	ret
+.facingSouth
+	ld a, [hl]
+	and a, MASK_BOTTOM_WALL
+	ret nz
+	ld a, [wPlayerY]
+	add a, 1
+	ld [wPlayerY], a
+	call DirtyScreenAndFpSegments
+	ret
 
 HandleDown::
 	ld a, [wGameState]

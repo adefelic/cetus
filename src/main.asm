@@ -119,6 +119,7 @@ CheckPressedRight:
 	jp nz, HandleRight
 	ret
 
+; pause screen contains automap
 LoadPauseScreenTilemap:
 	call DisableLcd
 	ld de, MapTilemap ; source in ROM

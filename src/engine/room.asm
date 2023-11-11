@@ -6,7 +6,7 @@ SECTION "Room Parsing", ROMX
 ; @param hl: addr of map tile
 ; @ret a
 RoomHasTopWallWRTPlayer::
-	call GetRoomWallAttributes ; put related RoomWallAttributes addr in hl
+	call GetRoomWallAttributesAddrFromBGMapAddr ; put related RoomWallAttributes addr in hl
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -45,7 +45,7 @@ RoomHasTopWallWRTPlayer::
 ; @param hl: addr of map tile
 ; @ret a
 RoomHasRightWallWRTPlayer::
-	call GetRoomWallAttributes
+	call GetRoomWallAttributesAddrFromBGMapAddr
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -83,7 +83,7 @@ RoomHasRightWallWRTPlayer::
 ; @param hl: addr of map tile
 ; @ret a
 RoomHasBottomWallWRTPlayer::
-	call GetRoomWallAttributes
+	call GetRoomWallAttributesAddrFromBGMapAddr
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -121,7 +121,7 @@ RoomHasBottomWallWRTPlayer::
 ; @param hl: addr of map tile
 ; @ret a
 RoomHasLeftWallWRTPlayer::
-	call GetRoomWallAttributes ; put related RoomWallAttributes addr in hl
+	call GetRoomWallAttributesAddrFromBGMapAddr ; put related RoomWallAttributes addr in hl
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -157,10 +157,10 @@ RoomHasLeftWallWRTPlayer::
 	ld a, FALSE
 	ret
 
-; @param hl, address of tilemap entry representing current tile
+; @param hl, address of bg tile map entry representing current tile
 ; @return hl, address of entry tile's RoomWallAttributes
-GetRoomWallAttributes:
-	ld a, [hl] ; get tile index from tilemap. each is one byte in size so no need to multiply by entry size
+GetRoomWallAttributesAddrFromBGMapAddr::
+	ld a, [hl] ; get tile data index from tilemap. each is one byte in size so no need to multiply by entry size
 	ld hl, RoomWallAttributes
 	; add to lsb
 	add a, l; get addr of correct tile attrs
