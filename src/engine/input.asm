@@ -46,7 +46,7 @@ AttemptMoveUp:
 	and a, MASK_LEFT_WALL
 	ret nz
 	ld a, [wPlayerX]
-	sub a, 1
+	dec a
 	ld [wPlayerX], a
 	call DirtyScreenAndFpSegments
 	ret
@@ -55,7 +55,7 @@ AttemptMoveUp:
 	and a, MASK_TOP_WALL
 	ret nz
 	ld a, [wPlayerY]
-	sub a, 1
+	dec a
 	ld [wPlayerY], a
 	call DirtyScreenAndFpSegments
 	ret
@@ -64,7 +64,7 @@ AttemptMoveUp:
 	and a, MASK_RIGHT_WALL
 	ret nz
 	ld a, [wPlayerX]
-	add a, 1
+	inc a
 	ld [wPlayerX], a
 	call DirtyScreenAndFpSegments
 	ret
@@ -73,7 +73,7 @@ AttemptMoveUp:
 	and a, MASK_BOTTOM_WALL
 	ret nz
 	ld a, [wPlayerY]
-	add a, 1
+	inc a
 	ld [wPlayerY], a
 	call DirtyScreenAndFpSegments
 	ret

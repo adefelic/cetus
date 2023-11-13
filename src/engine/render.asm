@@ -13,13 +13,46 @@ SECTION "FP Renderer Entry Point", ROMX
 ; ceilings will not be rendered
 
 ; for attempt #1 this will write directly to vram
+; future thoughts: could compare the 6-room submap that's being rendered for differences to the current submap and use that to set segment clean flags
+; walls that matter:
+;   - center near left
+;       if same, set APK+diag to clean
+;   - center near top
+;       if same, set BCDL+diagMN+diag to clean
+;   - center near right
+;       if same, set EOR+diag to clean
+;   - left near top
+;       if same, set APK+diag to clean
+;   - right near top
+;   - center far left
+;   - center far top
+;   - center far right
+;   - left far top
+;   - right far top
+; [T][TRL][T]
+; [T][TRL][T]
+;Section "Render Details", WRAM0
+;wCurrentCenterNearWallAttrs:: db
+;wCurrentLeftNearWallAttrs:: db
+;wCurrentRightNearWallAttrs:: db
+;wCurrentCenterFarWallAttrs:: db
+;wCurrentLeftFarWallAttrs:: db
+;wCurrentRightFarWallAttrs:: db
+;wPreviousCenterNearWallAttrs:: db
+;wPreviousLeftNearWallAttrs:: db
+;wPreviousRightNearWallAttrs:: db
+;wPreviousCenterFarWallAttrs:: db
+;wPreviousLeftFarWallAttrs:: db
+;wPreviousRightFarWallAttrs:: db
+
 LoadFPTilemapByMapTile::
+	; todo? move wCurrentVisibleRoomAttrs to wPreviousVisibleRoomAttrs
 	; todo bounds check and skip rooms that are oob
 	call DisableLcd
 ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only draw topmost z segments
 .checkLeftWall:
 	call GetRoomCoordsCenterNearWRTPlayer ; todo, put coords in ram?
-	call GetBGTileMapAddrFromMapCoords ; puts player tilemap entry addr in hl. should probably put this in ram?
+	call GetBGTileMapAddrFromMapCoords ; puts player tilemap entry addr in hl. should probably put this somewhere?
 	call RoomHasLeftWallWRTPlayer
 	cp a, TRUE
 	jp nz, .checkTopWall
@@ -138,6 +171,7 @@ ProcessTileCenterFar:
 	ld d, INDEX_FP_TILE_GROUND
 	call CheckSegmentM
 ProcessTileLeftFar:
+.checkTopWall
 	call GetRoomCoordsLeftFarWRTPlayer
 	call GetBGTileMapAddrFromMapCoords
 	call RoomHasTopWallWRTPlayer
@@ -157,6 +191,7 @@ ProcessTileLeftFar:
 	call CheckSegmentL
 	call CheckSegmentLDiag
 ProcessTileRightFar:
+.checkTopWall
 	call GetRoomCoordsRightFarWRTPlayer
 	call GetBGTileMapAddrFromMapCoords
 	call RoomHasTopWallWRTPlayer

@@ -194,12 +194,12 @@ GetRoomCoordsLeftNearWRTPlayer::
 	ld a, [wPlayerX]
 	ld d, a
 	ld a, [wPlayerY]
-	add a, 1
+	inc a
 	ld e, a
 	ret
 .facingNorth
 	ld a, [wPlayerX]
-	sub a, 1
+	dec a
 	ld d, a
 	ld a, [wPlayerY]
 	ld e, a
@@ -208,12 +208,12 @@ GetRoomCoordsLeftNearWRTPlayer::
 	ld a, [wPlayerX]
 	ld d, a
 	ld a, [wPlayerY]
-	sub a, 1
+	dec a
 	ld e, a
 	ret
 .facingSouth
 	ld a, [wPlayerX]
-	add a, 1
+	inc a
 	ld d, a
 	ld a, [wPlayerY]
 	ld e, a
@@ -233,12 +233,12 @@ GetRoomCoordsRightNearWRTPlayer::
 	ld a, [wPlayerX]
 	ld d, a
 	ld a, [wPlayerY]
-	sub a, 1
+	dec a
 	ld e, a
 	ret
 .facingNorth
 	ld a, [wPlayerX]
-	add a, 1
+	inc a
 	ld d, a
 	ld a, [wPlayerY]
 	ld e, a
@@ -247,12 +247,12 @@ GetRoomCoordsRightNearWRTPlayer::
 	ld a, [wPlayerX]
 	ld d, a
 	ld a, [wPlayerY]
-	add a, 1
+	inc a
 	ld e, a
 	ret
 .facingSouth
 	ld a, [wPlayerX]
-	sub a, 1
+	dec a
 	ld d, a
 	ld a, [wPlayerY]
 	ld e, a
@@ -270,7 +270,7 @@ GetRoomCoordsCenterFarWRTPlayer::
 	jp z, .facingSouth
 .facingWest
 	ld a, [wPlayerX]
-	sub a, 1
+	dec a
 	ld d, a
 	ld a, [wPlayerY]
 	ld e, a
@@ -279,12 +279,12 @@ GetRoomCoordsCenterFarWRTPlayer::
 	ld a, [wPlayerX]
 	ld d, a
 	ld a, [wPlayerY]
-	sub a, 1
+	dec a
 	ld e, a
 	ret
 .facingEast
 	ld a, [wPlayerX]
-	add a, 1
+	inc a
 	ld d, a
 	ld a, [wPlayerY]
 	ld e, a
@@ -293,7 +293,7 @@ GetRoomCoordsCenterFarWRTPlayer::
 	ld a, [wPlayerX]
 	ld d, a
 	ld a, [wPlayerY]
-	add a, 1
+	inc a
 	ld e, a
 	ret
 
@@ -309,34 +309,34 @@ GetRoomCoordsLeftFarWRTPlayer::
 	jp z, .facingSouth
 .facingWest
 	ld a, [wPlayerX]
-	sub a, 1
+	dec a
 	ld d, a
 	ld a, [wPlayerY]
-	add a, 1
+	inc a
 	ld e, a
 	ret
 .facingNorth
 	ld a, [wPlayerX]
-	sub a, 1
+	dec a
 	ld d, a
 	ld a, [wPlayerY]
-	sub a, 1
+	dec a
 	ld e, a
 	ret
 .facingEast
 	ld a, [wPlayerX]
-	add a, 1
+	inc a
 	ld d, a
 	ld a, [wPlayerY]
-	sub a, 1
+	dec a
 	ld e, a
 	ret
 .facingSouth
 	ld a, [wPlayerX]
-	add a, 1
+	inc a
 	ld d, a
 	ld a, [wPlayerY]
-	add a, 1
+	inc a
 	ld e, a
 	ret
 
@@ -352,33 +352,33 @@ GetRoomCoordsRightFarWRTPlayer::
 	jp z, .facingSouth
 .facingWest
 	ld a, [wPlayerX]
-	sub a, 1
+	dec a
 	ld d, a
 	ld a, [wPlayerY]
-	sub a, 1
+	dec a
 	ld e, a
 	ret
 .facingNorth
 	ld a, [wPlayerX]
-	add a, 1
+	inc a
 	ld d, a
 	ld a, [wPlayerY]
-	sub a, 1
+	dec a
 	ld e, a
 	ret
 .facingEast
 	ld a, [wPlayerX]
-	add a, 1
+	inc a
 	ld d, a
 	ld a, [wPlayerY]
-	add a, 1
+	inc a
 	ld e, a
 	ret
 .facingSouth
 	ld a, [wPlayerX]
-	sub a, 1
+	dec a
 	ld d, a
 	ld a, [wPlayerY]
-	add a, 1
+	inc a
 	ld e, a
 	ret

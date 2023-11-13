@@ -64,6 +64,20 @@ InitGameState:
 	ld [wScreenDirty], a
 	call DirtyFPScreen
 
+; todo set sane defaults
+;wCurrentCenterNearWallAttrs
+;wCurrentLeftNearWallAttrs
+;wCurrentRightNearWallAttrs
+;wCurrentCenterFarWallAttrs
+;wCurrentLeftFarWallAttrs
+;wCurrentRightFarWallAttrs
+;wPreviousCenterNearWallAttrs
+;wPreviousLeftNearWallAttrs
+;wPreviousRightNearWallAttrs
+;wPreviousCenterFarWallAttrs
+;wPreviousLeftFarWallAttrs
+;wPreviousRightFarWallAttrs
+
 	call EnableLcd
 
 Main:
@@ -121,10 +135,10 @@ CheckPressedRight:
 
 ; pause screen contains automap
 LoadPauseScreenTilemap:
-	call DisableLcd
 	ld de, MapTilemap ; source in ROM
 	ld hl, _SCRN0     ; dest in VRAM
 	ld bc, MapTilemapEnd - MapTilemap ; # of bytes (tile indices) remaining
+	call DisableLcd
 	call Memcopy
 	ld a, GAME_PAUSED
 	ld [wGameState], a
