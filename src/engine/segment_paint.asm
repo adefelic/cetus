@@ -1,5 +1,5 @@
 INCLUDE "src/utils/hardware.inc"
-INCLUDE "src/constants/fp_render_constants.inc"
+INCLUDE "src/constants/gfx_constants.inc"
 
 Section "Segment Render State", WRAM0
 ; these could be a single bits
@@ -26,7 +26,14 @@ wQDirty: db
 wRDirty: db
 wRDiagDirty: db
 
+SECTION "Shadow BG Map", WRAM0
+wShadowTilemap::
+ds TILEMAP_SIZE
+wShadowTilemapEnd::
+
 SECTION "Segment Paint Routines", ROMX
+
+; todo combine/dedup routines that paint similar shapes
 
 CheckSegmentA::
 	ld a, [wADirty]
@@ -149,43 +156,43 @@ CheckSegmentRDiag::
 
 ; @param d: the tile index to paint with
 PaintSegmentA::
-	ld hl, _SCRN0 + BG_ROW_0 ; dest in VRAM
+	ld hl, wShadowTilemap + BG_ROW_0 ; dest in VRAM
 	ld bc, 3      ; # of bytes (tile indices) remaining.
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_1
+	ld hl, wShadowTilemap + BG_ROW_1
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_2
+	ld hl, wShadowTilemap + BG_ROW_2
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_3
+	ld hl, wShadowTilemap + BG_ROW_3
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_4
+	ld hl, wShadowTilemap + BG_ROW_4
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_5
+	ld hl, wShadowTilemap + BG_ROW_5
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_6
+	ld hl, wShadowTilemap + BG_ROW_6
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_7
+	ld hl, wShadowTilemap + BG_ROW_7
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_8
+	ld hl, wShadowTilemap + BG_ROW_8
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_9
+	ld hl, wShadowTilemap + BG_ROW_9
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_10
+	ld hl, wShadowTilemap + BG_ROW_10
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_11
+	ld hl, wShadowTilemap + BG_ROW_11
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_12
+	ld hl, wShadowTilemap + BG_ROW_12
 	ld bc, 3
 	call Paint
 	ld a, CLEAN
@@ -193,43 +200,43 @@ PaintSegmentA::
 	ret
 
 PaintSegmentB::
-	ld hl, _SCRN0 + BG_ROW_0 + BG_COL_3; dest in VRAM
+	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_3; dest in VRAM
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_1 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_1 + BG_COL_3
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_2 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_2 + BG_COL_3
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_3 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_3 + BG_COL_3
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_4 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_4 + BG_COL_3
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_5 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_5 + BG_COL_3
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_6 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_6 + BG_COL_3
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_7 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_7 + BG_COL_3
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_8 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_8 + BG_COL_3
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_9 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_9 + BG_COL_3
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_10 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_10 + BG_COL_3
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_11 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_11 + BG_COL_3
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_12 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_12 + BG_COL_3
 	ld bc, 3
 	call Paint
 	ld a, CLEAN
@@ -237,43 +244,43 @@ PaintSegmentB::
 	ret
 
 PaintSegmentC::
-	ld hl, _SCRN0 + BG_ROW_0 + BG_COL_6; dest in VRAM
+	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_6; dest in VRAM
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_1 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_1 + BG_COL_6
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_2 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_2 + BG_COL_6
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_3 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_3 + BG_COL_6
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_4 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_4 + BG_COL_6
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_5 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_5 + BG_COL_6
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_6 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_6 + BG_COL_6
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_7 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_7 + BG_COL_6
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_8 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_8 + BG_COL_6
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_9 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_9 + BG_COL_6
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_10 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_10 + BG_COL_6
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_11 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_11 + BG_COL_6
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_12 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_12 + BG_COL_6
 	ld bc, 8
 	call Paint
 	ld a, CLEAN
@@ -281,43 +288,43 @@ PaintSegmentC::
 	ret
 
 PaintSegmentD::
-	ld hl, _SCRN0 + BG_ROW_0 + BG_COL_14; dest in VRAM
+	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_14; dest in VRAM
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_1 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_1 + BG_COL_14
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_2 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_2 + BG_COL_14
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_3 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_3 + BG_COL_14
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_4 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_4 + BG_COL_14
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_5 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_5 + BG_COL_14
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_6 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_6 + BG_COL_14
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_7 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_7 + BG_COL_14
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_8 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_8 + BG_COL_14
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_9 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_9 + BG_COL_14
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_10 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_10 + BG_COL_14
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_11 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_11 + BG_COL_14
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_12 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_12 + BG_COL_14
 	ld bc, 3
 	call Paint
 	ld a, CLEAN
@@ -325,43 +332,43 @@ PaintSegmentD::
 	ret
 
 PaintSegmentE::
-	ld hl, _SCRN0 + BG_ROW_0 + BG_COL_17; dest in VRAM
+	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_17; dest in VRAM
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_1 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_1 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_2 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_2 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_3 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_3 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_4 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_4 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_5 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_5 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_6 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_6 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_7 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_7 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_8 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_8 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_9 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_9 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_10 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_10 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_11 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_11 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_12 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_12 + BG_COL_17
 	ld bc, 3
 	call Paint
 	ld a, CLEAN
@@ -369,13 +376,13 @@ PaintSegmentE::
 	ret
 
 PaintSegmentK::
-	ld hl, _SCRN0 + BG_ROW_13
+	ld hl, wShadowTilemap + BG_ROW_13
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_14
+	ld hl, wShadowTilemap + BG_ROW_14
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_15
+	ld hl, wShadowTilemap + BG_ROW_15
 	ld bc, 3
 	call Paint
 	ld a, CLEAN
@@ -383,10 +390,10 @@ PaintSegmentK::
 	ret
 
 PaintSegmentL::
-	ld hl, _SCRN0 + BG_ROW_13 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_13 + BG_COL_3
 	ld bc, 2
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_14 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_14 + BG_COL_3
 	ld bc, 1
 	call Paint
 	ld a, CLEAN
@@ -394,13 +401,13 @@ PaintSegmentL::
 	ret
 
 PaintSegmentLDiag::
-	ld hl, _SCRN0 + BG_ROW_13 + BG_COL_5
+	ld hl, wShadowTilemap + BG_ROW_13 + BG_COL_5
 	ld bc, 1
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_14 + BG_COL_4
+	ld hl, wShadowTilemap + BG_ROW_14 + BG_COL_4
 	ld bc, 1
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_15 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_15 + BG_COL_3
 	ld bc, 1
 	call Paint
 	ld a, CLEAN
@@ -408,13 +415,13 @@ PaintSegmentLDiag::
 	ret
 
 PaintSegmentM::
-	ld hl, _SCRN0 + BG_ROW_13 + BG_COL_6
+	ld hl, wShadowTilemap + BG_ROW_13 + BG_COL_6
 	ld bc, 8
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_14 + BG_COL_5
+	ld hl, wShadowTilemap + BG_ROW_14 + BG_COL_5
 	ld bc, 10
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_15 + BG_COL_4
+	ld hl, wShadowTilemap + BG_ROW_15 + BG_COL_4
 	ld bc, 12
 	call Paint
 	ld a, CLEAN
@@ -422,10 +429,10 @@ PaintSegmentM::
 	ret
 
 PaintSegmentN::
-	ld hl, _SCRN0 + BG_ROW_13 + BG_COL_15
+	ld hl, wShadowTilemap + BG_ROW_13 + BG_COL_15
 	ld bc, 2
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_14 + BG_COL_16
+	ld hl, wShadowTilemap + BG_ROW_14 + BG_COL_16
 	ld bc, 1
 	call Paint
 	ld a, CLEAN
@@ -433,13 +440,13 @@ PaintSegmentN::
 	ret
 
 PaintSegmentNDiag::
-	ld hl, _SCRN0 + BG_ROW_13 + BG_COL_14
+	ld hl, wShadowTilemap + BG_ROW_13 + BG_COL_14
 	ld bc, 1
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_14 + BG_COL_15
+	ld hl, wShadowTilemap + BG_ROW_14 + BG_COL_15
 	ld bc, 1
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_15 + BG_COL_16
+	ld hl, wShadowTilemap + BG_ROW_15 + BG_COL_16
 	ld bc, 1
 	call Paint
 	ld a, CLEAN
@@ -447,13 +454,13 @@ PaintSegmentNDiag::
 	ret
 
 PaintSegmentO::
-	ld hl, _SCRN0 + BG_ROW_13 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_13 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_14 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_14 + BG_COL_17
 	ld bc, 3
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_15 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_15 + BG_COL_17
 	ld bc, 3
 	call Paint
 	ld a, CLEAN
@@ -461,10 +468,10 @@ PaintSegmentO::
 	ret
 
 PaintSegmentP::
-	ld hl, _SCRN0 + BG_ROW_16
+	ld hl, wShadowTilemap + BG_ROW_16
 	ld bc, 2
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_17
+	ld hl, wShadowTilemap + BG_ROW_17
 	ld bc, 1
 	call Paint
 	ld a, CLEAN
@@ -472,10 +479,10 @@ PaintSegmentP::
 	ret
 
 PaintSegmentPDiag::
-	ld hl, _SCRN0 + BG_ROW_16 + BG_COL_2
+	ld hl, wShadowTilemap + BG_ROW_16 + BG_COL_2
 	ld bc, 1
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_17 + BG_COL_1
+	ld hl, wShadowTilemap + BG_ROW_17 + BG_COL_1
 	ld bc, 1
 	call Paint
 	ld a, CLEAN
@@ -483,10 +490,10 @@ PaintSegmentPDiag::
 	ret
 
 PaintSegmentQ::
-	ld hl, _SCRN0 + BG_ROW_16 + BG_COL_3
+	ld hl, wShadowTilemap + BG_ROW_16 + BG_COL_3
 	ld bc, 14
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_17 + BG_COL_2
+	ld hl, wShadowTilemap + BG_ROW_17 + BG_COL_2
 	ld bc, 16
 	call Paint
 	ld a, CLEAN
@@ -494,10 +501,10 @@ PaintSegmentQ::
 	ret
 
 PaintSegmentR::
-	ld hl, _SCRN0 + BG_ROW_16 + BG_COL_18
+	ld hl, wShadowTilemap + BG_ROW_16 + BG_COL_18
 	ld bc, 2
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_17 + BG_COL_19
+	ld hl, wShadowTilemap + BG_ROW_17 + BG_COL_19
 	ld bc, 1
 	call Paint
 	ld a, CLEAN
@@ -505,10 +512,10 @@ PaintSegmentR::
 	ret
 
 PaintSegmentRDiag::
-	ld hl, _SCRN0 + BG_ROW_16 + BG_COL_17
+	ld hl, wShadowTilemap + BG_ROW_16 + BG_COL_17
 	ld bc, 1
 	call Paint
-	ld hl, _SCRN0 + BG_ROW_17 + BG_COL_18
+	ld hl, wShadowTilemap + BG_ROW_17 + BG_COL_18
 	ld bc, 1
 	call Paint
 	ld a, CLEAN

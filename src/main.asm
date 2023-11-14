@@ -1,7 +1,7 @@
 INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/assets/map_data.inc"
 INCLUDE "src/constants/constants.inc"
-INCLUDE "src/constants/fp_render_constants.inc"
+INCLUDE "src/constants/gfx_constants.inc"
 
 Section "Game State", WRAM0
 wPlayerX:: db
@@ -41,6 +41,8 @@ EntryPoint:
 	; Init a color palette
 	call InitColorPalette0
 
+	call CopyDMARoutine
+
 	ld a, 0        ; value to write to bytes
 	ld b, 160      ; # of bytes to write
 	ld hl, _OAMRAM ; dest
@@ -57,7 +59,7 @@ InitGameState:
 	ld a, ORIENTATION_EAST
 	ld [wPlayerOrientation], a
 
-	ld a, GAME_PAUSED ; start the game paused
+	ld a, GAME_UNPAUSED
 	ld [wGameState], a
 
 	ld a, DIRTY
@@ -81,10 +83,25 @@ InitGameState:
 	call EnableLcd
 
 Main:
-	call WaitVBlank
-	call UpdateScreen ; draws screen, cleans dirty flags
+	;call WaitVBlank
 	call UpdateKeys ; gets new player input
 	call CheckKeysAndUpdateGameState ; processes input, sets dirty flags
+	call UpdateScreen ; draws screen to shadow tilemap, cleans dirty flags
+
+	; draw screen
+	call WaitVBlank
+	ld hl, wShadowTilemap
+	ld a, h
+	ldh [rHDMA1], a
+	ld a, l
+	ldh [rHDMA2], a
+	ld hl, _SCRN0
+	ld a, h
+	ldh [rHDMA3], a
+	ld a, l
+	ldh [rHDMA4], a
+	ld a, HDMA5F_MODE_GP + (TILEMAP_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1)
+	call hTilemapDMA
 	jp Main
 
 ; -- draw screen
@@ -99,7 +116,7 @@ DrawPauseScreen:
 	call LoadPauseScreenTilemap
 	jp CleanScreen
 DrawFPScreen:
-	call LoadFPTilemapByMapTile
+	call LoadShadowFPTilemapByMapTile
 CleanScreen:
 	ld a, CLEAN
 	ld [wScreenDirty], a
@@ -136,13 +153,13 @@ CheckPressedRight:
 ; pause screen contains automap
 LoadPauseScreenTilemap:
 	ld de, MapTilemap ; source in ROM
-	ld hl, _SCRN0     ; dest in VRAM
+	ld hl, wShadowTilemap     ; dest in VRAM
 	ld bc, MapTilemapEnd - MapTilemap ; # of bytes (tile indices) remaining
-	call DisableLcd
+	;call DisableLcd
 	call Memcopy
 	ld a, GAME_PAUSED
 	ld [wGameState], a
-	call EnableLcd
+	;call EnableLcd
 	ret
 
 InitBGTileMapAttributes:
@@ -236,3 +253,22 @@ EnableLcd::
 	ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
 	ld [rLCDC], a
 	ret
+
+SECTION "Tilemap DMA Routine ROM", ROM0
+CopyDMARoutine:
+  ld de, DMARoutine
+  ld bc, DMARoutineEnd - DMARoutine ; Number of bytes to copy
+  ld hl, hTilemapDMA
+  call Memcopy
+
+DMARoutine:
+	ld [rHDMA5], a
+	ret
+DMARoutineEnd:
+
+
+SECTION "Tilemap DMA Routine HRAM", HRAM
+
+hTilemapDMA::
+	ds DMARoutineEnd - DMARoutine ; Reserve space to copy the routine to
+

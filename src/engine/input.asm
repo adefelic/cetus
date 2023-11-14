@@ -1,5 +1,5 @@
 INCLUDE "src/constants/constants.inc"
-INCLUDE "src/constants/fp_render_constants.inc"
+INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/map_constants.inc"
 
 SECTION "Input Handling", ROMX

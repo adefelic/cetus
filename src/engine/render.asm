@@ -1,5 +1,7 @@
 INCLUDE "src/constants/constants.inc"
+INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/constants/map_constants.inc"
+INCLUDE "src/ram/hram.inc"
 
 SECTION "FP Renderer Entry Point", ROMX
 
@@ -45,10 +47,10 @@ SECTION "FP Renderer Entry Point", ROMX
 ;wPreviousLeftFarWallAttrs:: db
 ;wPreviousRightFarWallAttrs:: db
 
-LoadFPTilemapByMapTile::
+LoadShadowFPTilemapByMapTile::
 	; todo? move wCurrentVisibleRoomAttrs to wPreviousVisibleRoomAttrs
 	; todo bounds check and skip rooms that are oob
-	call DisableLcd
+	;call DisableLcd
 ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only draw topmost z segments
 .checkLeftWall:
 	call GetRoomCoordsCenterNearWRTPlayer ; todo, put coords in ram?
@@ -211,7 +213,6 @@ ProcessTileRightFar:
 	call CheckSegmentN
 	call CheckSegmentNDiag
 .finish
-	call EnableLcd
 	ret
 
 ; MapTilemap + wPlayerX + wPlayerY*32
