@@ -2,29 +2,30 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/map_constants.inc"
 
+; todo this doesn't actually handle input and should be broken up into respective things being done
 SECTION "Input Handling", ROMX
 
 HandleStart::
-	ld a, [wGameState]
-	cp GAME_PAUSED
-	jp z, UnpauseGame ; if paused, unpause
+	ld a, [wActiveScreen]
+	cp PAUSE_SCREEN
+	jp z, UnpauseGame
 PauseGame:
-	ld a, GAME_PAUSED
-	ld [wGameState], a
-	jp DirtyScreen
+	ld a, PAUSE_SCREEN
+	ld [wActiveScreen], a
+	jp DirtyTilemap
 UnpauseGame:
-	ld a, GAME_UNPAUSED
-	ld [wGameState], a
-DirtyScreenAndFpSegments:
-	call DirtyFPScreen
-DirtyScreen:
+	ld a, FP_SCREEN
+	ld [wActiveScreen], a
+DirtyFpSegmentsAndTilemap:
+	call DirtyFpSegments
+DirtyTilemap:
 	ld a, DIRTY
-	ld [wScreenDirty], a
+	ld [wShadowTilemapDirty], a
 	ret
 
 HandleUp::
-	ld a, [wGameState]
-	cp GAME_PAUSED
+	ld a, [wActiveScreen]
+	cp PAUSE_SCREEN
 	ret z ; ignore input if paused
 AttemptMoveUp:
 	ld a, [wPlayerX]
@@ -34,6 +35,7 @@ AttemptMoveUp:
 	call GetBGTileMapAddrFromMapCoords ; puts player bg map entry addr in hl
 	call GetRoomWallAttributesAddrFromBGMapAddr ; put related RoomWallAttributes addr in hl
 
+AdvanceIfNoCollisions:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -48,8 +50,7 @@ AttemptMoveUp:
 	ld a, [wPlayerX]
 	dec a
 	ld [wPlayerX], a
-	call DirtyScreenAndFpSegments
-	ret
+	jp DirtyFpSegmentsAndTilemap
 .facingNorth
 	ld a, [hl]
 	and a, MASK_TOP_WALL
@@ -57,8 +58,7 @@ AttemptMoveUp:
 	ld a, [wPlayerY]
 	dec a
 	ld [wPlayerY], a
-	call DirtyScreenAndFpSegments
-	ret
+	jp DirtyFpSegmentsAndTilemap
 .facingEast
 	ld a, [hl]
 	and a, MASK_RIGHT_WALL
@@ -66,8 +66,7 @@ AttemptMoveUp:
 	ld a, [wPlayerX]
 	inc a
 	ld [wPlayerX], a
-	call DirtyScreenAndFpSegments
-	ret
+	jp DirtyFpSegmentsAndTilemap
 .facingSouth
 	ld a, [hl]
 	and a, MASK_BOTTOM_WALL
@@ -75,12 +74,11 @@ AttemptMoveUp:
 	ld a, [wPlayerY]
 	inc a
 	ld [wPlayerY], a
-	call DirtyScreenAndFpSegments
-	ret
+	jp DirtyFpSegmentsAndTilemap
 
 HandleDown::
-	ld a, [wGameState]
-	cp GAME_PAUSED
+	ld a, [wActiveScreen]
+	cp PAUSE_SCREEN
 	ret z ; ignore input if paused
 AttemptTurnAround:
 	ld a, [wPlayerOrientation]
@@ -100,8 +98,8 @@ AttemptTurnAround:
 	jp SetOrientationNorth
 
 HandleLeft::
-	ld a, [wGameState]
-	cp GAME_PAUSED
+	ld a, [wActiveScreen]
+	cp PAUSE_SCREEN
 	ret z ; ignore input if paused
 AttemptTurnLeft:
 	ld a, [wPlayerOrientation]
@@ -121,8 +119,8 @@ AttemptTurnLeft:
 	jp SetOrientationEast
 
 HandleRight::
-	ld a, [wGameState]
-	cp GAME_PAUSED
+	ld a, [wActiveScreen]
+	cp PAUSE_SCREEN
 	ret z ; ignore input if paused
 AttemptTurnRight:
 	ld a, [wPlayerOrientation]
@@ -144,16 +142,19 @@ AttemptTurnRight:
 SetOrientationNorth:
 	ld a, ORIENTATION_NORTH
 	ld [wPlayerOrientation], a
-	jp DirtyScreenAndFpSegments
+	jp DirtyFpSegmentsAndTilemap
+
 SetOrientationSouth:
 	ld a, ORIENTATION_SOUTH
 	ld [wPlayerOrientation], a
-	jp DirtyScreenAndFpSegments
+	jp DirtyFpSegmentsAndTilemap
+
 SetOrientationEast:
 	ld a, ORIENTATION_EAST
 	ld [wPlayerOrientation], a
-	jp DirtyScreenAndFpSegments
+	jp DirtyFpSegmentsAndTilemap
+
 SetOrientationWest:
 	ld a, ORIENTATION_WEST
 	ld [wPlayerOrientation], a
-	jp DirtyScreenAndFpSegments
+	jp DirtyFpSegmentsAndTilemap

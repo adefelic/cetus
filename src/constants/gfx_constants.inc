@@ -5,14 +5,15 @@
 DEF SCREEN_WIDTH EQU 20  ; tiles
 DEF SCREEN_HEIGHT EQU 18 ; tiles
 
-DEF TILEMAP_WIDTH EQU 32  ; bytes / tile ids
-DEF TILEMAP_HEIGHT EQU 32 ; bytes / tile ids
+DEF TILEMAP_WIDTH EQU 32  ; bytes / tile ids / tiles
+DEF TILEMAP_HEIGHT EQU 32 ; bytes / tile ids / tiles
 
 DEF TILEMAP_SIZE EQU TILEMAP_WIDTH * TILEMAP_HEIGHT ; bytes
 
 DEF CLEAN EQU $00
 DEF DIRTY EQU $01
 
+; tilemap offsets
 DEF BG_ROW_0  EQU $0
 DEF BG_ROW_1  EQU $20
 DEF BG_ROW_2  EQU $40

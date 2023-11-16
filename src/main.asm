@@ -7,12 +7,18 @@ Section "Game State", WRAM0
 wPlayerX:: db
 wPlayerY:: db
 wPlayerOrientation:: db
-wGameState:: db ; this could be a single bit
-wScreenDirty:: db ; this could be a single bit
+wActiveScreen:: db ; this could be a single bit
+wShadowTilemapDirty:: db ; this could be a single bit
+wActiveMap:: dw
+wActiveMapEnd:: dw
 
+; pokemon crystal stores these in hram
 SECTION "Input Variables", WRAM0
-wCurKeys: db
-wNewKeys: db
+wPreviousFrameKeys: db
+wCurrentFrameKeys: db
+wJoypadDown: db     ; keys that are currently held
+wJoypadNewlyPressed: db  ; newly input keys
+wJoypadNewlyReleased: db ; newly released keys
 
 SECTION "Header", ROM0[$100]
 
@@ -21,9 +27,9 @@ SECTION "Header", ROM0[$100]
 	ds $150 - @, 0 ; make room for the header
 
 EntryPoint:
+	call CopyDMARoutine
 	; don't turn off the lcd outside of VBlank
 	call WaitVBlank
-	; turn the LCD off. the screen must be off to safely access VRAM and OAM
 	call DisableLcd
 
 	; Copy BG tile data into VRAM
@@ -32,18 +38,10 @@ EntryPoint:
 	ld bc, TilesEnd - Tiles ; # of bytes (pixel data) remaining
 	call Memcopy
 
-	; Copy BG tilemap into VRAM
-	ld de, MapTilemap                 ; source in ROM
-	ld hl, _SCRN0                     ; dest in VRAM
-	ld bc, MapTilemapEnd - MapTilemap ; # of bytes (tile indices) remaining
-	call Memcopy
-
 	; Init a color palette
 	call InitColorPalette0
 
-	call CopyDMARoutine
-
-	ld a, 0        ; value to write to bytes
+	xor a          ; value to write to bytes
 	ld b, 160      ; # of bytes to write
 	ld hl, _OAMRAM ; dest
 ClearOam:
@@ -52,44 +50,51 @@ ClearOam:
 	jp nz, ClearOam
 
 InitGameState:
+	ld hl, Map1
+	ld a, h
+	ld [wActiveMap], a
+	ld a, l
+	ld [wActiveMap+1], a
+
+	ld hl, Map1End
+	ld a, h
+	ld [wActiveMapEnd], a
+	ld a, l
+	ld [wActiveMapEnd+1], a
+
+	xor a
+	ld [wJoypadDown], a
+	ld [wJoypadNewlyReleased], a
+	ld [wJoypadNewlyReleased], a
+
 	ld a, 3
 	ld [wPlayerX], a
 	ld a, 1
 	ld [wPlayerY], a
 	ld a, ORIENTATION_EAST
 	ld [wPlayerOrientation], a
-
-	ld a, GAME_UNPAUSED
-	ld [wGameState], a
-
+	ld a, FP_SCREEN
+	ld [wActiveScreen], a
 	ld a, DIRTY
-	ld [wScreenDirty], a
-	call DirtyFPScreen
+	ld [wShadowTilemapDirty], a
 
-; todo set sane defaults
-;wCurrentCenterNearWallAttrs
-;wCurrentLeftNearWallAttrs
-;wCurrentRightNearWallAttrs
-;wCurrentCenterFarWallAttrs
-;wCurrentLeftFarWallAttrs
-;wCurrentRightFarWallAttrs
-;wPreviousCenterNearWallAttrs
-;wPreviousLeftNearWallAttrs
-;wPreviousRightNearWallAttrs
-;wPreviousCenterFarWallAttrs
-;wPreviousLeftFarWallAttrs
-;wPreviousRightFarWallAttrs
 
+	call DirtyFpSegments
+	call UpdateTilemap
 	call EnableLcd
 
 Main:
-	;call WaitVBlank
+	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
+	call DrawScreen ; if dirty, waits until vblank, draws screen, cleans
 	call UpdateKeys ; gets new player input
 	call CheckKeysAndUpdateGameState ; processes input, sets dirty flags
-	call UpdateScreen ; draws screen to shadow tilemap, cleans dirty flags
+	call UpdateTilemap ; processes game state and dirty flags, draws screen to shadow tilemap
+	jp Main
 
-	; draw screen
-	call WaitVBlank
+DrawScreen:
+	ld a, [wShadowTilemapDirty]
+	cp CLEAN
+	ret z
 	ld hl, wShadowTilemap
 	ld a, h
 	ldh [rHDMA1], a
@@ -100,66 +105,66 @@ Main:
 	ldh [rHDMA3], a
 	ld a, l
 	ldh [rHDMA4], a
-	ld a, HDMA5F_MODE_GP + (TILEMAP_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1)
+	ld a, HDMA5F_MODE_GP + (TILEMAP_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1) (63 bytes, $10 * 4)
 	call hTilemapDMA
-	jp Main
-
-; -- draw screen
-UpdateScreen:
-	ld a, [wScreenDirty] ; determines drawing
-	cp DIRTY
-	ret nz
-	ld a, [wGameState]
-	cp a, GAME_PAUSED
-	jp nz, DrawFPScreen
-DrawPauseScreen:
-	call LoadPauseScreenTilemap
-	jp CleanScreen
-DrawFPScreen:
-	call LoadShadowFPTilemapByMapTile
-CleanScreen:
 	ld a, CLEAN
-	ld [wScreenDirty], a
+	ld [wShadowTilemapDirty], a
 	ret
 
-; -- update state
-; this will handle one button input then quit
+UpdateTilemap:
+	ld a, [wShadowTilemapDirty]
+	cp CLEAN
+	ret z
+	ld a, [wActiveScreen]
+	cp a, PAUSE_SCREEN
+	jp nz, LoadFPScreen
+LoadPauseScreen:
+	call LoadPauseScreenShadowTilemap
+	ret
+LoadFPScreen:
+	call LoadFPShadowTilemap
+	ret
+
+; this handles one button of input then quits
 CheckKeysAndUpdateGameState:
 CheckPressedStart:
-	ld a, [wNewKeys]
+	ld a, [wJoypadNewlyPressed]
 	and a, PADF_START
 	jp nz, HandleStart
 CheckPressedSelect:
 CheckPressedA:
 CheckPressedB:
 CheckPressedUp:
-	ld a, [wNewKeys]
+	ld a, [wJoypadNewlyPressed]
 	and a, PADF_UP
 	jp nz, HandleUp
 CheckPressedDown:
-	ld a, [wNewKeys]
+	ld a, [wJoypadNewlyPressed]
 	and a, PADF_DOWN
 	jp nz, HandleDown
 CheckPressedLeft:
-	ld a, [wNewKeys]
+	ld a, [wJoypadNewlyPressed]
 	and a, PADF_LEFT
 	jp nz, HandleLeft
 CheckPressedRight:
-	ld a, [wNewKeys]
+	ld a, [wJoypadNewlyPressed]
 	and a, PADF_RIGHT
 	jp nz, HandleRight
 	ret
 
-; pause screen contains automap
-LoadPauseScreenTilemap:
-	ld de, MapTilemap ; source in ROM
-	ld hl, wShadowTilemap     ; dest in VRAM
-	ld bc, MapTilemapEnd - MapTilemap ; # of bytes (tile indices) remaining
-	;call DisableLcd
+; pause screen contains current map
+LoadPauseScreenShadowTilemap:
+	ld a, [wActiveMap]
+	ld d, a
+	ld a, [wActiveMap+1]
+	ld e, a
+	ld hl, wShadowTilemap     ; dest in RAM
+	;ld bc, wActiveMapEnd - wActiveMap ; # of bytes (tile indices) remaining
+	ld bc, TILEMAP_SIZE ; # of bytes (tile indices) remaining
+
 	call Memcopy
-	ld a, GAME_PAUSED
-	ld [wGameState], a
-	;call EnableLcd
+	ld a, PAUSE_SCREEN
+	ld [wActiveScreen], a
 	ret
 
 InitBGTileMapAttributes:
@@ -178,36 +183,43 @@ InitColorPalette0:
 UpdateKeys:
 	; poll controller buttons
 	ld a, P1F_GET_BTN
-	call .onenibble
+	call .getBottomNibble
 	ld b, a ; b3-0 are button input, b7-4 are 1s
 
 	; poll controller dpad
 	ld a, P1F_GET_DPAD
-	call .onenibble
-	swap a ; a7-4 are dpad input, a3-0 are 1s
+	call .getBottomNibble
+	swap a ; move dpad input into the top nibble
 
-	; input is active low so we xor with 1s to check for input
-	xor a, b ; a7-4 are dpad input, a3-0 are button input
-	ld b, a
+	; a (dpad) and b (buttons are padded with 1s). xor with eachother for a byte of current keys pressed
+	xor a, b
+	ld b, a ; b = this frame's keys down
 
 	; release the controller
 	ld a, P1F_GET_NONE
 	ldh [rP1], a
 
-	; combine with previous wCurKeys to make wNewKeys
-	ld a, [wCurKeys]
-	xor a, b ; a = keys that changed state
-	and a, b ; a = keys that changes state to pressed
-	ld [wNewKeys], a
+	ld a, [wJoypadDown]
+	ld c, a ; c = last frame's keys down
+	xor b
+	ld d, a ; d = keys that changed state since last time
+	and b ; a = keys that changed state to pressed since last time
+	ld [wJoypadNewlyPressed], a
+
+	ld a, d
+	and c
+	ld [wJoypadNewlyReleased], a
+
 	ld a, b
-	ld [wCurKeys], a
+	ld [wJoypadDown], a ; update keys down
 	ret
-.onenibble ; load nibble into a
-	ldh [rP1], a ; switch the key matrix. why hram?
-	call .knownret ; burn 10 cycles
-	ldh a, [rP1] ; ignore value while waiting for key matrix to settle
+.getBottomNibble ; load nibble into a
+	ldh [rP1], a ; switch the key matrix.
+	;call .knownret ; burn 10 cycles
+	; Wait for input to stabilize. pokemon crystal attempts 6 times
+rept 6
 	ldh a, [rP1]
-	ldh a, [rP1] ; this read counts
+endr
 	or a, $F0 ; mask out top nibble
 .knownret
 	ret
@@ -244,12 +256,12 @@ WaitVBlank:
 	jp c, WaitVBlank
 	ret
 
-DisableLcd::
-	ld a, 0
+DisableLcd:
+	xor a
 	ld [rLCDC], a
 	ret
 
-EnableLcd::
+EnableLcd:
 	ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
 	ld [rLCDC], a
 	ret

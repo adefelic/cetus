@@ -535,7 +535,8 @@ Paint:
 	jp nz, Paint
 	ret
 
-DirtyFPScreen::
+; todo there is probably a more efficient way to do this
+DirtyFpSegments::
 	ld a, DIRTY
 	ld [wADirty], a
 	ld [wBDirty], a

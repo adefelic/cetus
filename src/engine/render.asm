@@ -47,10 +47,9 @@ SECTION "FP Renderer Entry Point", ROMX
 ;wPreviousLeftFarWallAttrs:: db
 ;wPreviousRightFarWallAttrs:: db
 
-LoadShadowFPTilemapByMapTile::
+LoadFPShadowTilemap::
 	; todo? move wCurrentVisibleRoomAttrs to wPreviousVisibleRoomAttrs
 	; todo bounds check and skip rooms that are oob
-	;call DisableLcd
 ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only draw topmost z segments
 .checkLeftWall:
 	call GetRoomCoordsCenterNearWRTPlayer ; todo, put coords in ram?
@@ -215,10 +214,10 @@ ProcessTileRightFar:
 .finish
 	ret
 
-; MapTilemap + wPlayerX + wPlayerY*32
+; Map1 + wPlayerX + wPlayerY*32
 ; @param d: player X coord
 ; @param e: player Y coord
-; @return hl: tile address of player occupied tile of MapTilemap (this need to change)
+; @return hl: tile address of player occupied tile of Map1 (this need to change)
 GetBGTileMapAddrFromMapCoords::
 	ld l, e
 	ld h, 0
@@ -231,6 +230,10 @@ GetBGTileMapAddrFromMapCoords::
 	ld a, d
 	add a, l
 	ld l, a
-	ld bc, MapTilemap
+	ld a, [wActiveMap]
+	ld b, a
+	ld a, [wActiveMap+1]
+	ld c, a
+	;ld bc, wActiveMap
 	add hl, bc
 	ret
