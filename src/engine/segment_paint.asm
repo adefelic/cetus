@@ -522,8 +522,7 @@ PaintSegmentRDiag::
 	ld [wRDiagDirty], a
 	ret
 
-; copy bytes from one area to another
-; @param de: source
+; @param d: source tile id
 ; @param hl: destination
 ; @param bc: length
 Paint:

@@ -5,14 +5,18 @@
 
 PROJECT_NAME := cetus
 SRC_DIR   := src
+TILES_DIR := $(SRC_DIR)/assets/tiles
+
 BUILD_DIR := build
-OBJ_DIR   := $(BUILD_DIR)/obj
+BUILD_GFX_DIR := $(BUILD_DIR)/gfx
+BUILD_OBJ_DIR := $(BUILD_DIR)/obj
 BIN := $(BUILD_DIR)/$(PROJECT_NAME).gb
 
 # tools
 ASM  := rgbasm
 LINK := rgblink
 FIX  := rgbfix
+GFX  := rgbgfx
 
 # tool flags
 ASM_FLAGS := -L
@@ -20,21 +24,32 @@ FIX_FLAGS := -v -p 0xFF -C
 
 # from https://stackoverflow.com/a/18258352/1221106
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
+
 SRC_FILES := $(call rwildcard, $(SRC_DIR), *.asm)
 # add obj prefix, remove src, change extension
-OBJ_FILES := $(addprefix $(OBJ_DIR)/, $(SRC_FILES:$(SRC_DIR)/%.asm=%.o))
-OBJ_DIRS  := $(sort $(addprefix $(OBJ_DIR)/, $(dir $(SRC_FILES:$(SRC_DIR)/%.asm=%.o))))
+OBJ_FILES := $(addprefix $(BUILD_OBJ_DIR)/, $(SRC_FILES:$(SRC_DIR)/%.asm=%.o))
+BUILD_OBJ_DIRS := $(sort $(addprefix $(BUILD_OBJ_DIR)/, $(dir $(SRC_FILES:$(SRC_DIR)/%.asm=%.o))))
 
-all: $(BIN)
+TILE_FILES := $(call rwildcard, $(TILES_DIR), *.png)
+2BPP_FILES := $(addprefix $(BUILD_GFX_DIR)/, $(TILE_FILES:$(TILES_DIR)/%.png=%.2bpp))
+BUILD_2BPP_DIRS := $(sort $(addprefix $(BUILD_GFX_DIR)/, $(dir $(TILE_FILES:$(TILES_DIR)/%.png=%.2bpp))))
+
+all: $(2BPP_FILES) $(BIN) 
 
 $(BIN): $(OBJ_FILES) 
 	$(LINK) -m $(BUILD_DIR)/$(PROJECT_NAME).map -n $(BUILD_DIR)/$(PROJECT_NAME).sym -o $@ $^
 	$(FIX) $(FIX_FLAGS) $@
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.asm | $(OBJ_DIRS)
+$(BUILD_OBJ_DIR)/%.o: $(SRC_DIR)/%.asm | $(BUILD_OBJ_DIRS)
 	$(ASM) $(ASM_FLAGS) -o $@ $<
 
-$(OBJ_DIRS): 
+$(BUILD_OBJ_DIRS):
+	mkdir -p $@
+
+$(BUILD_GFX_DIR)/%.2bpp: $(TILES_DIR)/%.png | $(BUILD_2BPP_DIRS)
+	$(GFX) -o $@ $<
+
+$(BUILD_2BPP_DIRS):
 	mkdir -p $@
 
 clean:

@@ -53,9 +53,9 @@ EntryPoint:
 	call DisableLcd
 
 	; Copy BG tile data into VRAM
-	ld de, Tiles            ; source in ROM
+	ld de, TilesFromBin            ; source in ROM
 	ld hl, _VRAM9000        ; dest in VRAM
-	ld bc, TilesEnd - Tiles ; # of bytes (pixel data) remaining
+	ld bc, TilesFromBinEnd - TilesFromBin ; # of bytes (pixel data) remaining
 	call Memcopy
 
 	; Init a color palette

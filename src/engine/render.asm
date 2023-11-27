@@ -50,6 +50,8 @@ SECTION "FP Renderer Entry Point", ROMX
 LoadFPShadowTilemap::
 	; todo? move wCurrentVisibleRoomAttrs to wPreviousVisibleRoomAttrs
 	; todo bounds check and skip rooms that are oob
+	; currently this does no bounds checking for rooms with negative coords.
+	;   the whole map starts at 1,1 rather than 0,0 to make it unnecessary
 ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only draw topmost z segments
 .checkLeftWall:
 	call GetRoomCoordsCenterNearWRTPlayer ; todo, put coords in ram?
@@ -57,6 +59,7 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	call RoomHasLeftWallWRTPlayer
 	cp a, TRUE
 	jp nz, .checkTopWall
+	; todo: set to palette z0
 	ld d, INDEX_FP_TILE_WALL_SIDE
 	call CheckSegmentA
 	call CheckSegmentK
@@ -69,6 +72,7 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	call RoomHasTopWallWRTPlayer
 	cp a, TRUE
 	jp nz, .checkRightWall
+	; todo: set to palette z1
 	ld d, INDEX_FP_TILE_WALL_FRONT
 	call CheckSegmentB
 	call CheckSegmentC
@@ -84,6 +88,7 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	call RoomHasRightWallWRTPlayer
 	cp a, TRUE
 	jp nz, .paintGround
+	; todo: set to palette z0
 	ld d, INDEX_FP_TILE_WALL_SIDE
 	call CheckSegmentE
 	call CheckSegmentO
@@ -91,6 +96,7 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	ld d, INDEX_FP_TILE_DIAG_R
 	call CheckSegmentRDiag
 .paintGround
+	; todo: set to palette z0
 	ld d, INDEX_FP_TILE_GROUND ; todo on all ground paints, flip (shuffle could be cool) ground every step
 	call CheckSegmentQ
 ProcessTileLeftNear:
@@ -101,10 +107,12 @@ ProcessTileLeftNear:
 	call RoomHasTopWallWRTPlayer
 	cp a, TRUE
 	jp nz, .paintGround
+	; todo: set to palette z1
 	ld d, INDEX_FP_TILE_WALL_FRONT
 	call CheckSegmentA
 	call CheckSegmentK
 .paintGround
+	; todo: set to palette z0
 	ld d, INDEX_FP_TILE_GROUND
 	call CheckSegmentP
 	call CheckSegmentPDiag
@@ -116,10 +124,12 @@ ProcessTileRightNear:
 	call RoomHasTopWallWRTPlayer
 	cp a, TRUE
 	jp nz, .paintGround
+	; todo: set to palette z1
 	ld d, INDEX_FP_TILE_WALL_FRONT
 	call CheckSegmentE
 	call CheckSegmentO
 .paintGround
+	; todo: set to palette z0
 	ld d, INDEX_FP_TILE_GROUND
 	call CheckSegmentR
 	call CheckSegmentRDiag
@@ -129,7 +139,8 @@ ProcessTileCenterFar:
 	call GetBGTileMapAddrFromMapCoords
 	call RoomHasLeftWallWRTPlayer
 	cp a, TRUE
-	jp nz, .paintLeftGround
+	jp nz, .paintLeftGround ; paint ground if no left wall
+	; todo: set to palette z1
 	ld d, INDEX_FP_TILE_WALL_SIDE
 	call CheckSegmentB
 	call CheckSegmentL
@@ -137,6 +148,7 @@ ProcessTileCenterFar:
 	call CheckSegmentLDiag
 	jp .checkTopWall
 .paintLeftGround
+	; todo: set to palette z1
 	ld d, INDEX_FP_TILE_GROUND
 	call CheckSegmentL
 	call CheckSegmentLDiag
@@ -147,9 +159,11 @@ ProcessTileCenterFar:
 	cp a, TRUE
 	jp nz, .fillDistance
 	ld d, INDEX_FP_TILE_WALL_FRONT
+	; todo: set to palette z2
 	call CheckSegmentC
 	jp .checkRightWall
 .fillDistance
+	; todo: set to distance palette
 	ld d, INDEX_FP_TILE_DARK
 	call CheckSegmentC
 .checkRightWall
@@ -157,7 +171,8 @@ ProcessTileCenterFar:
 	call GetBGTileMapAddrFromMapCoords
 	call RoomHasRightWallWRTPlayer
 	cp a, TRUE
-	jp nz, .paintRightGround
+	jp nz, .paintRightGround ; paint ground if no right wall
+	; todo: set to palette z1
 	ld d, INDEX_FP_TILE_WALL_SIDE
 	call CheckSegmentD
 	call CheckSegmentN
@@ -165,10 +180,12 @@ ProcessTileCenterFar:
 	call CheckSegmentNDiag
 	jp .paintCenterGround
 .paintRightGround
+	; todo: set to palette z1
 	ld d, INDEX_FP_TILE_GROUND
 	call CheckSegmentN
 	call CheckSegmentNDiag
 .paintCenterGround
+	; todo: set to palette z1
 	ld d, INDEX_FP_TILE_GROUND
 	call CheckSegmentM
 ProcessTileLeftFar:
@@ -178,15 +195,18 @@ ProcessTileLeftFar:
 	call RoomHasTopWallWRTPlayer
 	cp a, TRUE
 	jp nz, .fillDistance
+	; todo: set to palette z2
 	ld d, INDEX_FP_TILE_WALL_FRONT
 	call CheckSegmentA
 	call CheckSegmentB
 	jp .paintGround
 .fillDistance
+	; todo: set to distance palette
 	ld d, INDEX_FP_TILE_DARK
 	call CheckSegmentA
 	call CheckSegmentB
 .paintGround
+	; todo: set to palette z1
 	ld d, INDEX_FP_TILE_GROUND
 	call CheckSegmentK
 	call CheckSegmentL
@@ -198,15 +218,18 @@ ProcessTileRightFar:
 	call RoomHasTopWallWRTPlayer
 	cp a, TRUE
 	jp nz, .fillDistance
+	; todo: set to palette z2
 	ld d, INDEX_FP_TILE_WALL_FRONT
 	call CheckSegmentD
 	call CheckSegmentE
 	jp .paintGround
 .fillDistance
+	; todo: set to distance palette
 	ld d, INDEX_FP_TILE_DARK
 	call CheckSegmentD
 	call CheckSegmentE
 .paintGround
+	; todo: set to palette z1
 	ld d, INDEX_FP_TILE_GROUND
 	call CheckSegmentO
 	call CheckSegmentN

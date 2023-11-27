@@ -34,7 +34,6 @@ AttemptMoveUp:
 	ld e, a
 	call GetBGTileMapAddrFromMapCoords ; puts player bg map entry addr in hl
 	call GetRoomWallAttributesAddrFromBGMapAddr ; put related RoomWallAttributes addr in hl
-
 AdvanceIfNoCollisions:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
