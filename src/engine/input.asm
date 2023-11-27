@@ -46,34 +46,40 @@ AdvanceIfNoCollisions:
 .facingWest
 	ld a, [hl]
 	and a, MASK_LEFT_WALL
-	ret nz
+	jp nz, .doNotAdvance
 	ld a, [wPlayerX]
 	dec a
 	ld [wPlayerX], a
-	jp DirtyFpSegmentsAndTilemap
+	jp .finishAdvance
 .facingNorth
 	ld a, [hl]
 	and a, MASK_TOP_WALL
-	ret nz
+	jp nz, .doNotAdvance
 	ld a, [wPlayerY]
 	dec a
 	ld [wPlayerY], a
-	jp DirtyFpSegmentsAndTilemap
+	jp .finishAdvance
 .facingEast
 	ld a, [hl]
 	and a, MASK_RIGHT_WALL
-	ret nz
+	jp nz, .doNotAdvance
 	ld a, [wPlayerX]
 	inc a
 	ld [wPlayerX], a
-	jp DirtyFpSegmentsAndTilemap
+	jp .finishAdvance
 .facingSouth
 	ld a, [hl]
 	and a, MASK_BOTTOM_WALL
-	ret nz
+	jp nz, .doNotAdvance
 	ld a, [wPlayerY]
 	inc a
 	ld [wPlayerY], a
+	jp .finishAdvance
+.doNotAdvance
+	; play bonk sound
+	ret
+.finishAdvance
+	call PlayFootstep
 	jp DirtyFpSegmentsAndTilemap
 
 HandleDown::

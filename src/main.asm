@@ -16,13 +16,33 @@ wActiveMapEnd:: dw
 SECTION "Input Variables", WRAM0
 wPreviousFrameKeys: db
 wCurrentFrameKeys: db
-wJoypadDown: db     ; keys that are currently held
+wJoypadDown: db          ; keys that are currently held
 wJoypadNewlyPressed: db  ; newly input keys
 wJoypadNewlyReleased: db ; newly released keys
 
+; hardware interrupts
+
+SECTION "vblank", ROM0[$0040]
+	;jp VBlank
+
+SECTION "lcd", ROM0[$0048]
+	;jp LCD
+
+SECTION "timer", ROM0[$0050]
+	jp TimerInterruptHandler
+
+SECTION "serial", ROM0[$0058]
+	;jp Serial
+
+SECTION "joypad", ROM0[$0060]
+	;jp Joypad
+
 SECTION "Header", ROM0[$100]
 
+	nop
 	jp EntryPoint
+
+	; rgbfix is going to overwrite this region
 
 	ds $150 - @, 0 ; make room for the header
 
@@ -78,17 +98,21 @@ InitGameState:
 	ld a, DIRTY
 	ld [wShadowTilemapDirty], a
 
-
 	call DirtyFpSegments
 	call UpdateTilemap
+
+	call InitAudio
+	call InitTimer
 	call EnableLcd
 
 Main:
+	; todo can move this all into the vblank handler
 	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
 	call DrawScreen ; if dirty, waits until vblank, draws screen, cleans
 	call UpdateKeys ; gets new player input
 	call CheckKeysAndUpdateGameState ; processes input, sets dirty flags
 	call UpdateTilemap ; processes game state and dirty flags, draws screen to shadow tilemap
+	; is musicplaying? if so updateSound
 	jp Main
 
 DrawScreen:
@@ -266,21 +290,35 @@ EnableLcd:
 	ld [rLCDC], a
 	ret
 
+; todo is this necessary
 SECTION "Tilemap DMA Routine ROM", ROM0
 CopyDMARoutine:
-  ld de, DMARoutine
-  ld bc, DMARoutineEnd - DMARoutine ; Number of bytes to copy
-  ld hl, hTilemapDMA
-  call Memcopy
+	ld de, DMARoutine
+	ld bc, DMARoutineEnd - DMARoutine ; Number of bytes to copy
+	ld hl, hTilemapDMA
+	call Memcopy
 
 DMARoutine:
 	ld [rHDMA5], a
 	ret
 DMARoutineEnd:
 
+TimerInterruptHandler:
+	push af
+	push bc
+	push de
+	push hl
+
+	;call PlayTick
+
+	pop hl
+	pop de
+	pop bc
+	pop af
+	reti
+
 
 SECTION "Tilemap DMA Routine HRAM", HRAM
 
 hTilemapDMA::
 	ds DMARoutineEnd - DMARoutine ; Reserve space to copy the routine to
-
