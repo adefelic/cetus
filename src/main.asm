@@ -1,7 +1,7 @@
 INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/assets/map_data.inc"
+INCLUDE "src/assets/palette.inc"
 INCLUDE "src/constants/constants.inc"
-INCLUDE "src/constants/gfx_constants.inc"
 
 Section "Game State", WRAM0
 wPlayerX:: db
@@ -29,7 +29,7 @@ SECTION "lcd", ROM0[$0048]
 	;jp LCD
 
 SECTION "timer", ROM0[$0050]
-	jp TimerInterruptHandler
+	;jp TimerInterruptHandler
 
 SECTION "serial", ROM0[$0058]
 	;jp Serial
@@ -47,27 +47,43 @@ SECTION "Header", ROM0[$100]
 	ds $150 - @, 0 ; make room for the header
 
 EntryPoint:
-	call CopyDMARoutine
 	; don't turn off the lcd outside of VBlank
 	call WaitVBlank
 	call DisableLcd
 
 	; Copy BG tile data into VRAM
-	ld de, TilesFromBin            ; source in ROM
-	ld hl, _VRAM9000        ; dest in VRAM
-	ld bc, TilesFromBinEnd - TilesFromBin ; # of bytes (pixel data) remaining
+	ld de, OWTiles                   ; source in ROM
+	ld hl, _VRAM9000                      ; dest in VRAM
+	ld bc, OWTilesEnd - OWTiles ; # of bytes (pixel data) remaining
 	call Memcopy
 
-	; Init a color palette
-	call InitColorPalette0
+	; Init color palettes
+	call InitOWColorPalettes
 
+ClearOam:
 	xor a          ; value to write to bytes
 	ld b, 160      ; # of bytes to write
 	ld hl, _OAMRAM ; dest
-ClearOam:
+.loop:
 	ld [hli], a
 	dec b
-	jp nz, ClearOam
+	jp nz, .loop
+
+ClearShadowTilemap:
+	ld bc, TILEMAP_SIZE
+	ld hl, wShadowTilemap
+.loop:
+	ld [hli], a
+	dec bc
+	jp nz, .loop
+
+ClearShadowTilemapAttrs:
+	ld bc, TILEMAP_SIZE
+	ld hl, wShadowTilemapAttrs
+.loop:
+	ld [hli], a
+	dec bc
+	jp nz, .loop
 
 InitGameState:
 	ld hl, Map1
@@ -115,10 +131,16 @@ Main:
 	; is musicplaying? if so updateSound
 	jp Main
 
+; dma copy wShadowTilemap and wShadowTilemapAttrs to VRAM
 DrawScreen:
 	ld a, [wShadowTilemapDirty]
 	cp CLEAN
 	ret z
+.drawShadowTilemap
+	; select vram bank 0
+	xor a
+	ld [rVBK], a
+
 	ld hl, wShadowTilemap
 	ld a, h
 	ldh [rHDMA1], a
@@ -130,7 +152,37 @@ DrawScreen:
 	ld a, l
 	ldh [rHDMA4], a
 	ld a, HDMA5F_MODE_GP + (TILEMAP_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1) (63 bytes, $10 * 4)
-	call hTilemapDMA
+	ld [rHDMA5], a ; begin dma transfer
+	; in single speed mode this takes (4 + 32 × blocks) clocks. so, TILEMAP_SIZE * 2 + 4
+	ld bc, TILEMAP_SIZE * 2 + 4
+.waitforDmaToFinish: ; necessary?
+    dec bc
+    jr nz, .waitforDmaToFinish
+.drawShadowTilemapAttrs
+	; select vram bank 1
+	ld a, 1
+	ld [rVBK], a
+
+	ld hl, wShadowTilemapAttrs
+	ld a, h
+	ldh [rHDMA1], a
+	ld a, l
+	ldh [rHDMA2], a
+	ld hl, _SCRN0
+	ld a, h
+	ldh [rHDMA3], a
+	ld a, l
+	ldh [rHDMA4], a
+	ld a, HDMA5F_MODE_GP + (TILEMAP_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1) (63 bytes, $10 * 4)
+	ld [rHDMA5], a ; begin dma transfer
+	ld bc, TILEMAP_SIZE * 2 + 4
+.waitforDmaToFinishAgain: ; necessary?
+    dec bc
+    jr nz, .waitforDmaToFinishAgain
+.clean
+	; select vram bank 0
+	xor a
+	ld [rVBK], a
 	ld a, CLEAN
 	ld [wShadowTilemapDirty], a
 	ret
@@ -195,12 +247,12 @@ InitBGTileMapAttributes:
 	ld a, 1
 	ld [rVBK], a ; select VRAM bank 1
 
-InitColorPalette0:
+InitOWColorPalettes:
 	ld a, BCPSF_AUTOINC ; load bg color palette specification auto increment on write + addr of zero
 	ld [rBCPS], a
 
-	ld de, ColorPalette0 ; source in ROM
-	ld bc, ColorPalette0End - ColorPalette0 ; # of bytes (tile indices) remaining
+	ld de, OWPaletteSet ; source in ROM
+	ld bc, PALETTE_SIZE * 3 ; ; there are 3 contiguous palettes
 	call WriteColorsToPalette
 	ret
 
@@ -289,36 +341,3 @@ EnableLcd:
 	ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
 	ld [rLCDC], a
 	ret
-
-; todo is this necessary
-SECTION "Tilemap DMA Routine ROM", ROM0
-CopyDMARoutine:
-	ld de, DMARoutine
-	ld bc, DMARoutineEnd - DMARoutine ; Number of bytes to copy
-	ld hl, hTilemapDMA
-	call Memcopy
-
-DMARoutine:
-	ld [rHDMA5], a
-	ret
-DMARoutineEnd:
-
-TimerInterruptHandler:
-	push af
-	push bc
-	push de
-	push hl
-
-	;call PlayTick
-
-	pop hl
-	pop de
-	pop bc
-	pop af
-	reti
-
-
-SECTION "Tilemap DMA Routine HRAM", HRAM
-
-hTilemapDMA::
-	ds DMARoutineEnd - DMARoutine ; Reserve space to copy the routine to

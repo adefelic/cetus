@@ -2,14 +2,41 @@
 ;DEF LEN_2BPP_TILE EQU 2 * TILE_WIDTH ; bytes
 ;DEF tiles EQUS "* LEN_2BPP_TILE"
 
+; palette macros
+MACRO assert_valid_rgb
+	rept _NARG
+		assert 0 <= (\1) && (\1) <= 31, "RGB channel must be 0-31"
+		shift
+	endr
+ENDM
+
+MACRO RGB
+	rept _NARG / 3
+		assert_valid_rgb \1, \2, \3
+		dw palred (\1) + palgreen (\2) + palblue (\3)
+		shift 3
+	endr
+ENDM
+
+DEF palred   EQUS "(1 << 0) *"
+DEF palgreen EQUS "(1 << 5) *"
+DEF palblue  EQUS "(1 << 10) *"
+
+; palette defs
+DEF NUM_PAL_COLORS EQU 4
+DEF PAL_COLOR_SIZE EQU 2 ; bytes
+DEF PALETTE_SIZE EQU NUM_PAL_COLORS * PAL_COLOR_SIZE ; bytes
+
+; screen defs
 DEF SCREEN_WIDTH EQU 20  ; tiles
 DEF SCREEN_HEIGHT EQU 18 ; tiles
 
+; tilemap defs
 DEF TILEMAP_WIDTH EQU 32  ; bytes / tile ids / tiles
 DEF TILEMAP_HEIGHT EQU 32 ; bytes / tile ids / tiles
-
 DEF TILEMAP_SIZE EQU TILEMAP_WIDTH * TILEMAP_HEIGHT ; bytes
 
+; misc
 DEF CLEAN EQU $00
 DEF DIRTY EQU $01
 
@@ -53,3 +80,8 @@ DEF BG_COL_16 EQU $10
 DEF BG_COL_17 EQU $11
 DEF BG_COL_18 EQU $12
 DEF BG_COL_19 EQU $13
+
+; palette indices
+DEF INDEX_OW_PALETTE_Z0 EQU $00
+DEF INDEX_OW_PALETTE_Z1 EQU $01
+DEF INDEX_OW_PALETTE_Z2 EQU $02

@@ -75,7 +75,7 @@ AdvanceIfNoCollisions:
 	ld [wPlayerY], a
 	jp .finishAdvance
 .doNotAdvance
-	; play bonk sound
+	; todo play bonk sound
 	ret
 .finishAdvance
 	call PlayFootstep

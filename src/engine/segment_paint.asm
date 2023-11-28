@@ -1,5 +1,6 @@
 INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/constants/gfx_constants.inc"
+INCLUDE "src/ram/wram.inc"
 
 Section "Segment Render State", WRAM0
 ; these could be a single bits
@@ -25,11 +26,6 @@ wPDiagDirty: db
 wQDirty: db
 wRDirty: db
 wRDiagDirty: db
-
-SECTION "Shadow BG Map", WRAM0
-wShadowTilemap::
-ds TILEMAP_SIZE
-wShadowTilemapEnd::
 
 SECTION "Segment Paint Routines", ROMX
 
@@ -154,370 +150,764 @@ CheckSegmentRDiag::
 	call PaintSegmentRDiag
 	ret
 
+; todo make macro for painting both tilemap + attrs
 ; @param d: the tile index to paint with
 PaintSegmentA::
+.row0
 	ld hl, wShadowTilemap + BG_ROW_0 ; dest in VRAM
 	ld bc, 3      ; # of bytes (tile indices) remaining.
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_0
+	ld bc, 3
+	call PaintTilemapAttrs
+.row1
 	ld hl, wShadowTilemap + BG_ROW_1
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_1
+	ld bc, 3
+	call PaintTilemapAttrs
+.row2
 	ld hl, wShadowTilemap + BG_ROW_2
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_2
+	ld bc, 3
+	call PaintTilemapAttrs
+.row3
 	ld hl, wShadowTilemap + BG_ROW_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row4
 	ld hl, wShadowTilemap + BG_ROW_4
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_4
+	ld bc, 3
+	call PaintTilemapAttrs
+.row5
 	ld hl, wShadowTilemap + BG_ROW_5
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_5
+	ld bc, 3
+	call PaintTilemapAttrs
+.row6
 	ld hl, wShadowTilemap + BG_ROW_6
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_6
+	ld bc, 3
+	call PaintTilemapAttrs
+.row7
 	ld hl, wShadowTilemap + BG_ROW_7
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_7
+	ld bc, 3
+	call PaintTilemapAttrs
+.row8
 	ld hl, wShadowTilemap + BG_ROW_8
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_8
+	ld bc, 3
+	call PaintTilemapAttrs
+.row9
 	ld hl, wShadowTilemap + BG_ROW_9
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_9
+	ld bc, 3
+	call PaintTilemapAttrs
+.row10
 	ld hl, wShadowTilemap + BG_ROW_10
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_10
+	ld bc, 3
+	call PaintTilemapAttrs
+.row11
 	ld hl, wShadowTilemap + BG_ROW_11
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_11
+	ld bc, 3
+	call PaintTilemapAttrs
+.row12
 	ld hl, wShadowTilemap + BG_ROW_12
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_12
+	ld bc, 3
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wADirty], a
 	ret
 
 PaintSegmentB::
-	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_3; dest in VRAM
+.row0
+	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_0 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row1
 	ld hl, wShadowTilemap + BG_ROW_1 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_1 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row2
 	ld hl, wShadowTilemap + BG_ROW_2 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_2 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row3
 	ld hl, wShadowTilemap + BG_ROW_3 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_3 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row4
 	ld hl, wShadowTilemap + BG_ROW_4 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_4 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row5
 	ld hl, wShadowTilemap + BG_ROW_5 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_5 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row6
 	ld hl, wShadowTilemap + BG_ROW_6 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_6 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row7
 	ld hl, wShadowTilemap + BG_ROW_7 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_7 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row8
 	ld hl, wShadowTilemap + BG_ROW_8 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_8 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row9
 	ld hl, wShadowTilemap + BG_ROW_9 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_9 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row10
 	ld hl, wShadowTilemap + BG_ROW_10 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_10 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row11
 	ld hl, wShadowTilemap + BG_ROW_11 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_11 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.row12
 	ld hl, wShadowTilemap + BG_ROW_12 + BG_COL_3
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_12 + BG_COL_3
+	ld bc, 3
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wBDirty], a
 	ret
 
 PaintSegmentC::
-	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_6; dest in VRAM
+.row0
+	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_0 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row1
 	ld hl, wShadowTilemap + BG_ROW_1 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_1 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row2
 	ld hl, wShadowTilemap + BG_ROW_2 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_2 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row3
 	ld hl, wShadowTilemap + BG_ROW_3 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_3 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row4
 	ld hl, wShadowTilemap + BG_ROW_4 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_4 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row5
 	ld hl, wShadowTilemap + BG_ROW_5 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_5 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row6
 	ld hl, wShadowTilemap + BG_ROW_6 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_6 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row7
 	ld hl, wShadowTilemap + BG_ROW_7 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_7 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row8
 	ld hl, wShadowTilemap + BG_ROW_8 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_8 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row9
 	ld hl, wShadowTilemap + BG_ROW_9 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_9 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row10
 	ld hl, wShadowTilemap + BG_ROW_10 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_10 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row11
 	ld hl, wShadowTilemap + BG_ROW_11 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_11 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row12
 	ld hl, wShadowTilemap + BG_ROW_12 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_12 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wCDirty], a
 	ret
 
 PaintSegmentD::
-	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_14; dest in VRAM
+.row0
+	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_0 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row1
 	ld hl, wShadowTilemap + BG_ROW_1 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_1 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row2
 	ld hl, wShadowTilemap + BG_ROW_2 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_2 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row3
 	ld hl, wShadowTilemap + BG_ROW_3 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_3 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row4
 	ld hl, wShadowTilemap + BG_ROW_4 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_4 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row5
 	ld hl, wShadowTilemap + BG_ROW_5 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_5 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row6
 	ld hl, wShadowTilemap + BG_ROW_6 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_6 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row7
 	ld hl, wShadowTilemap + BG_ROW_7 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_7 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row8
 	ld hl, wShadowTilemap + BG_ROW_8 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_8 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row9
 	ld hl, wShadowTilemap + BG_ROW_9 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_9 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row10
 	ld hl, wShadowTilemap + BG_ROW_10 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_10 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row11
 	ld hl, wShadowTilemap + BG_ROW_11 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_11 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row12
 	ld hl, wShadowTilemap + BG_ROW_12 + BG_COL_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_12 + BG_COL_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wDDirty], a
 	ret
 
 PaintSegmentE::
-	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_17; dest in VRAM
+.row0
+	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_0 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row1
 	ld hl, wShadowTilemap + BG_ROW_1 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_1 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row2
 	ld hl, wShadowTilemap + BG_ROW_2 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_2 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row3
 	ld hl, wShadowTilemap + BG_ROW_3 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_3 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row4
 	ld hl, wShadowTilemap + BG_ROW_4 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_4 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row5
 	ld hl, wShadowTilemap + BG_ROW_5 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_5 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row6
 	ld hl, wShadowTilemap + BG_ROW_6 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_6 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row7
 	ld hl, wShadowTilemap + BG_ROW_7 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_7 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row8
 	ld hl, wShadowTilemap + BG_ROW_8 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_8 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row9
 	ld hl, wShadowTilemap + BG_ROW_9 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_9 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row10
 	ld hl, wShadowTilemap + BG_ROW_10 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_10 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row11
 	ld hl, wShadowTilemap + BG_ROW_11 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_11 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row12
 	ld hl, wShadowTilemap + BG_ROW_12 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_12 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wEDirty], a
 	ret
 
 PaintSegmentK::
+.row13
 	ld hl, wShadowTilemap + BG_ROW_13
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_13
+	ld bc, 3
+	call PaintTilemapAttrs
+.row14
 	ld hl, wShadowTilemap + BG_ROW_14
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_14
+	ld bc, 3
+	call PaintTilemapAttrs
+.row15
 	ld hl, wShadowTilemap + BG_ROW_15
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_15
+	ld bc, 3
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wKDirty], a
 	ret
 
 PaintSegmentL::
+.row13
 	ld hl, wShadowTilemap + BG_ROW_13 + BG_COL_3
 	ld bc, 2
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_13 + BG_COL_3
+	ld bc, 2
+	call PaintTilemapAttrs
+.row14
 	ld hl, wShadowTilemap + BG_ROW_14 + BG_COL_3
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_14 + BG_COL_3
+	ld bc, 1
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wLDirty], a
 	ret
 
 PaintSegmentLDiag::
+.row13
 	ld hl, wShadowTilemap + BG_ROW_13 + BG_COL_5
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_13 + BG_COL_5
+	ld bc, 1
+	call PaintTilemapAttrs
+.row14
 	ld hl, wShadowTilemap + BG_ROW_14 + BG_COL_4
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_14 + BG_COL_4
+	ld bc, 1
+	call PaintTilemapAttrs
+.row15
 	ld hl, wShadowTilemap + BG_ROW_15 + BG_COL_3
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_15 + BG_COL_3
+	ld bc, 1
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wLDiagDirty], a
 	ret
 
 PaintSegmentM::
+.row13
 	ld hl, wShadowTilemap + BG_ROW_13 + BG_COL_6
 	ld bc, 8
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_13 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row14
 	ld hl, wShadowTilemap + BG_ROW_14 + BG_COL_5
 	ld bc, 10
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_14 + BG_COL_5
+	ld bc, 10
+	call PaintTilemapAttrs
+.row15
 	ld hl, wShadowTilemap + BG_ROW_15 + BG_COL_4
 	ld bc, 12
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_15 + BG_COL_4
+	ld bc, 12
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wMDirty], a
 	ret
 
 PaintSegmentN::
+.row13
 	ld hl, wShadowTilemap + BG_ROW_13 + BG_COL_15
 	ld bc, 2
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_13 + BG_COL_15
+	ld bc, 2
+	call PaintTilemapAttrs
+.row14
 	ld hl, wShadowTilemap + BG_ROW_14 + BG_COL_16
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_14 + BG_COL_16
+	ld bc, 1
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wNDirty], a
 	ret
 
 PaintSegmentNDiag::
+.row13
 	ld hl, wShadowTilemap + BG_ROW_13 + BG_COL_14
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_13 + BG_COL_14
+	ld bc, 1
+	call PaintTilemapAttrs
+.row14
 	ld hl, wShadowTilemap + BG_ROW_14 + BG_COL_15
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_14 + BG_COL_15
+	ld bc, 1
+	call PaintTilemapAttrs
+.row15
 	ld hl, wShadowTilemap + BG_ROW_15 + BG_COL_16
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_15 + BG_COL_16
+	ld bc, 1
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wNDiagDirty], a
 	ret
 
 PaintSegmentO::
+.row13
 	ld hl, wShadowTilemap + BG_ROW_13 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_13 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row14
 	ld hl, wShadowTilemap + BG_ROW_14 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_14 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.row15
 	ld hl, wShadowTilemap + BG_ROW_15 + BG_COL_17
 	ld bc, 3
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_15 + BG_COL_17
+	ld bc, 3
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wODirty], a
 	ret
 
 PaintSegmentP::
+.row16
 	ld hl, wShadowTilemap + BG_ROW_16
 	ld bc, 2
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_16
+	ld bc, 2
+	call PaintTilemapAttrs
+.row17
 	ld hl, wShadowTilemap + BG_ROW_17
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_17
+	ld bc, 1
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wPDirty], a
 	ret
 
-PaintSegmentPDiag::
+PaintSegmentPDiag:
+.row16
 	ld hl, wShadowTilemap + BG_ROW_16 + BG_COL_2
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_16 + BG_COL_2
+	ld bc, 1
+	call PaintTilemapAttrs
+.row17
 	ld hl, wShadowTilemap + BG_ROW_17 + BG_COL_1
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_17 + BG_COL_1
+	ld bc, 1
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wPDiagDirty], a
 	ret
 
 PaintSegmentQ::
+.row16
 	ld hl, wShadowTilemap + BG_ROW_16 + BG_COL_3
 	ld bc, 14
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_16 + BG_COL_3
+	ld bc, 14
+	call PaintTilemapAttrs
+.row17
 	ld hl, wShadowTilemap + BG_ROW_17 + BG_COL_2
 	ld bc, 16
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_17 + BG_COL_2
+	ld bc, 16
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wQDirty], a
 	ret
 
 PaintSegmentR::
+.column18
 	ld hl, wShadowTilemap + BG_ROW_16 + BG_COL_18
 	ld bc, 2
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_16 + BG_COL_18
+	ld bc, 2
+	call PaintTilemapAttrs
+.column19
 	ld hl, wShadowTilemap + BG_ROW_17 + BG_COL_19
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_17 + BG_COL_19
+	ld bc, 1
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wRDirty], a
 	ret
 
 PaintSegmentRDiag::
+.row16
 	ld hl, wShadowTilemap + BG_ROW_16 + BG_COL_17
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_16 + BG_COL_17
+	ld bc, 1
+	call PaintTilemapAttrs
+.row17
 	ld hl, wShadowTilemap + BG_ROW_17 + BG_COL_18
 	ld bc, 1
-	call Paint
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_17 + BG_COL_18
+	ld bc, 1
+	call PaintTilemapAttrs
+.clean
 	ld a, CLEAN
 	ld [wRDiagDirty], a
 	ret
@@ -525,13 +915,25 @@ PaintSegmentRDiag::
 ; @param d: source tile id
 ; @param hl: destination
 ; @param bc: length
-Paint:
+PaintTilemap:
 	ld a, d
-	ld [hli], a
+	ld [hli], a ; write tile id
 	dec bc
 	ld a, b
 	or c
-	jp nz, Paint
+	jp nz, PaintTilemap
+	ret
+
+; @param e: source palette id
+; @param hl: destination
+; @param bc: length
+PaintTilemapAttrs:
+	ld a, e
+	ld [hli], a ; write palette id
+	dec bc
+	ld a, b
+	or c
+	jp nz, PaintTilemapAttrs
 	ret
 
 ; todo there is probably a more efficient way to do this
