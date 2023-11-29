@@ -48,6 +48,8 @@ SECTION "FP Renderer Entry Point", ROMX
 ;wPreviousLeftFarWallAttrs:: db
 ;wPreviousRightFarWallAttrs:: db
 
+; todo change map stuff to compass directions. trbl is player relative, nesw is absolute
+; trbl are all relative to the player's orientation
 LoadFPShadowTilemap::
 	; todo? move wCurrentVisibleRoomAttrs to wPreviousVisibleRoomAttrs
 	; todo bounds check and skip rooms that are oob
@@ -56,25 +58,30 @@ LoadFPShadowTilemap::
 ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only draw topmost z segments
 .checkLeftWall:
 	call GetRoomCoordsCenterNearWRTPlayer ; todo, put coords in ram?
-	call GetBGTileMapAddrFromMapCoords ; puts player tilemap entry addr in hl. should probably put this somewhere?
-	call RoomHasLeftWallWRTPlayer
-	cp a, TRUE
-	jp nz, .checkTopWall
+	call GetRoomAddrFromCoords ; puts player tilemap entry addr in hl. should probably put this somewhere?
+	call GetRoomWallAttributesAddrFromMapAddr ; put related RoomWallAttributes addr in hl
+	call GetLeftWallWrtPlayer
+	cp a, WALL_TYPE_NONE
+	jp z, .checkTopWall
+.paintLeftWall
+	; okay instead we can say ... load that wall's panel (metatile) index
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, INDEX_FP_TILE_WALL_SIDE
+	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentA
 	call CheckSegmentK
 	call CheckSegmentP
-	ld d, INDEX_FP_TILE_DIAG_L
+	ld d, FP_TILE_DIAG_L
 	call CheckSegmentPDiag
 .checkTopWall
 	call GetRoomCoordsCenterNearWRTPlayer
-	call GetBGTileMapAddrFromMapCoords
-	call RoomHasTopWallWRTPlayer
-	cp a, TRUE
-	jp nz, .checkRightWall
-	ld e, INDEX_OW_PALETTE_Z1
-	ld d, INDEX_FP_TILE_WALL_FRONT
+	call GetRoomAddrFromCoords
+	call GetRoomWallAttributesAddrFromMapAddr
+	call GetTopWallWrtPlayer
+	cp a, WALL_TYPE_NONE
+	jp z, .checkRightWall
+.paintTopWall
+	ld e, INDEX_OW_PALETTE_Z0
+	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentB
 	call CheckSegmentC
 	call CheckSegmentD
@@ -85,156 +92,177 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	call CheckSegmentNDiag
 .checkRightWall
 	call GetRoomCoordsCenterNearWRTPlayer
-	call GetBGTileMapAddrFromMapCoords
-	call RoomHasRightWallWRTPlayer
-	cp a, TRUE
-	jp nz, .paintGround
+	call GetRoomAddrFromCoords
+	call GetRoomWallAttributesAddrFromMapAddr
+	call GetRightWallWrtPlayer
+	cp a, WALL_TYPE_NONE
+	jp z, .paintGround
+.paintRightWall
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, INDEX_FP_TILE_WALL_SIDE
+	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentE
 	call CheckSegmentO
 	call CheckSegmentR
-	ld d, INDEX_FP_TILE_DIAG_R
+	ld d, FP_TILE_DIAG_R
 	call CheckSegmentRDiag
 .paintGround
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, INDEX_FP_TILE_GROUND ; todo on all ground paints, flip (shuffle could be cool) ground every step
+	ld d, FP_TILE_GROUND ; todo on all ground paints, flip (shuffle could be cool) ground every step
 	call CheckSegmentQ
+
 ProcessTileLeftNear:
 	; todo bounds check
 .checkTopWall
 	call GetRoomCoordsLeftNearWRTPlayer
-	call GetBGTileMapAddrFromMapCoords
-	call RoomHasTopWallWRTPlayer
-	cp a, TRUE
-	jp nz, .paintGround
-	ld e, INDEX_OW_PALETTE_Z1
-	ld d, INDEX_FP_TILE_WALL_FRONT
+	call GetRoomAddrFromCoords
+	call GetRoomWallAttributesAddrFromMapAddr
+	call GetTopWallWrtPlayer
+	cp a, WALL_TYPE_NONE
+	jp z, .paintGround
+.paintTopWall
+	ld e, INDEX_OW_PALETTE_Z0
+	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentA
 	call CheckSegmentK
 .paintGround
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, INDEX_FP_TILE_GROUND
+	ld d, FP_TILE_GROUND
 	call CheckSegmentP
 	call CheckSegmentPDiag
+
 ProcessTileRightNear:
 	; todo bounds check
 .checkTopWall
 	call GetRoomCoordsRightNearWRTPlayer
-	call GetBGTileMapAddrFromMapCoords
-	call RoomHasTopWallWRTPlayer
-	cp a, TRUE
-	jp nz, .paintGround
-	ld e, INDEX_OW_PALETTE_Z1
-	ld d, INDEX_FP_TILE_WALL_FRONT
+	call GetRoomAddrFromCoords
+	call GetRoomWallAttributesAddrFromMapAddr
+	call GetTopWallWrtPlayer
+	cp a, WALL_TYPE_NONE
+	jp z, .paintGround
+.paintTopWall
+	ld e, INDEX_OW_PALETTE_Z0
+	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentE
 	call CheckSegmentO
 .paintGround
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, INDEX_FP_TILE_GROUND
+	ld d, FP_TILE_GROUND
 	call CheckSegmentR
 	call CheckSegmentRDiag
+
 ProcessTileCenterFar:
 .checkLeftWall
 	call GetRoomCoordsCenterFarWRTPlayer
-	call GetBGTileMapAddrFromMapCoords
-	call RoomHasLeftWallWRTPlayer
-	cp a, TRUE
-	jp nz, .paintLeftGround ; paint ground if no left wall
+	call GetRoomAddrFromCoords
+	call GetRoomWallAttributesAddrFromMapAddr
+	call GetLeftWallWrtPlayer
+	cp a, WALL_TYPE_NONE
+	jp z, .paintLeftGround ; paint ground if no left wall
+.paintLeftWall
 	ld e, INDEX_OW_PALETTE_Z1
-	ld d, INDEX_FP_TILE_WALL_SIDE
+	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentB
 	call CheckSegmentL
-	ld d, INDEX_FP_TILE_DIAG_L
+	ld d, FP_TILE_DIAG_L
 	call CheckSegmentLDiag
 	jp .checkTopWall
 .paintLeftGround
 	ld e, INDEX_OW_PALETTE_Z1
-	ld d, INDEX_FP_TILE_GROUND
+	ld d, FP_TILE_GROUND
 	call CheckSegmentL
 	call CheckSegmentLDiag
 .checkTopWall
 	call GetRoomCoordsCenterFarWRTPlayer
-	call GetBGTileMapAddrFromMapCoords
-	call RoomHasTopWallWRTPlayer
-	cp a, TRUE
-	jp nz, .fillDistance
-	ld d, INDEX_FP_TILE_WALL_FRONT
+	call GetRoomAddrFromCoords
+	call GetRoomWallAttributesAddrFromMapAddr
+	call GetTopWallWrtPlayer
+	cp a, WALL_TYPE_NONE
+	jp z, .paintDistance
+.paintTopWall
+	ld d, FP_TILE_WALL_SIDE
 	ld e, INDEX_OW_PALETTE_Z2
 	call CheckSegmentC
 	jp .checkRightWall
-.fillDistance
+.paintDistance
 	; todo: set to distance palette
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, INDEX_FP_TILE_DARK
+	ld d, FP_TILE_DARK
 	call CheckSegmentC
 .checkRightWall
 	call GetRoomCoordsCenterFarWRTPlayer
-	call GetBGTileMapAddrFromMapCoords
-	call RoomHasRightWallWRTPlayer
-	cp a, TRUE
-	jp nz, .paintRightGround ; paint ground if no right wall
+	call GetRoomAddrFromCoords
+	call GetRoomWallAttributesAddrFromMapAddr
+	call GetRightWallWrtPlayer
+	cp a, WALL_TYPE_NONE
+	jp z, .paintRightGround ; paint ground if no right wall
+.paintRightWall
 	ld e, INDEX_OW_PALETTE_Z1
-	ld d, INDEX_FP_TILE_WALL_SIDE
+	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentD
 	call CheckSegmentN
-	ld d, INDEX_FP_TILE_DIAG_R
+	ld d, FP_TILE_DIAG_R
 	call CheckSegmentNDiag
 	jp .paintCenterGround
 .paintRightGround
 	ld e, INDEX_OW_PALETTE_Z1
-	ld d, INDEX_FP_TILE_GROUND
+	ld d, FP_TILE_GROUND
 	call CheckSegmentN
 	call CheckSegmentNDiag
 .paintCenterGround
 	ld e, INDEX_OW_PALETTE_Z1
-	ld d, INDEX_FP_TILE_GROUND
+	ld d, FP_TILE_GROUND
 	call CheckSegmentM
+
 ProcessTileLeftFar:
 .checkTopWall
 	call GetRoomCoordsLeftFarWRTPlayer
-	call GetBGTileMapAddrFromMapCoords
-	call RoomHasTopWallWRTPlayer
-	cp a, TRUE
-	jp nz, .fillDistance
+	call GetRoomAddrFromCoords
+	call GetRoomWallAttributesAddrFromMapAddr
+	call GetTopWallWrtPlayer
+	cp a, WALL_TYPE_NONE
+	jp z, .paintDistance
+.paintTopWall
 	ld e, INDEX_OW_PALETTE_Z2
-	ld d, INDEX_FP_TILE_WALL_FRONT
+	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentA
 	call CheckSegmentB
 	jp .paintGround
-.fillDistance
+.paintDistance
 	; todo: set to distance palette
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, INDEX_FP_TILE_DARK
+	ld d, FP_TILE_DARK
 	call CheckSegmentA
 	call CheckSegmentB
 .paintGround
 	ld e, INDEX_OW_PALETTE_Z1
-	ld d, INDEX_FP_TILE_GROUND
+	ld d, FP_TILE_GROUND
 	call CheckSegmentK
 	call CheckSegmentL
 	call CheckSegmentLDiag
+
 ProcessTileRightFar:
 .checkTopWall
 	call GetRoomCoordsRightFarWRTPlayer
-	call GetBGTileMapAddrFromMapCoords
-	call RoomHasTopWallWRTPlayer
-	cp a, TRUE
-	jp nz, .fillDistance
+	call GetRoomAddrFromCoords
+	call GetRoomWallAttributesAddrFromMapAddr
+	call GetTopWallWrtPlayer
+	cp a, WALL_TYPE_NONE
+	jp z, .paintDistance
+.paintTopWall
 	ld e, INDEX_OW_PALETTE_Z2
-	ld d, INDEX_FP_TILE_WALL_FRONT
+	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentD
 	call CheckSegmentE
 	jp .paintGround
-.fillDistance
+.paintDistance
 	; todo: set to distance palette
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, INDEX_FP_TILE_DARK
+	ld d, FP_TILE_DARK
 	call CheckSegmentD
 	call CheckSegmentE
 .paintGround
 	ld e, INDEX_OW_PALETTE_Z1
-	ld d, INDEX_FP_TILE_GROUND
+	ld d, FP_TILE_GROUND
 	call CheckSegmentO
 	call CheckSegmentN
 	call CheckSegmentNDiag
@@ -245,7 +273,7 @@ ProcessTileRightFar:
 ; @param d: player X coord
 ; @param e: player Y coord
 ; @return hl: tile address of player occupied tile of Map1 (this need to change)
-GetBGTileMapAddrFromMapCoords::
+GetRoomAddrFromCoords::
 	ld l, e
 	ld h, 0
 	; shift left 5 times to multiply by 32

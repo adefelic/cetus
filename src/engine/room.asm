@@ -1,165 +1,11 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/map_constants.inc"
 
-SECTION "Room Parsing", ROMX
-
-; @param hl: addr of map tile
-; @ret a
-RoomHasTopWallWRTPlayer::
-	call GetRoomWallAttributesAddrFromBGMapAddr ; put related RoomWallAttributes addr in hl
-	ld a, [wPlayerOrientation]
-	cp a, ORIENTATION_NORTH
-	jp z, .facingNorth
-	cp a, ORIENTATION_EAST
-	jp z, .facingEast
-	cp a, ORIENTATION_SOUTH
-	jp z, .facingSouth
-.facingWest
-	ld a, [hl]
-	and a, MASK_LEFT_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.facingNorth
-	ld a, [hl]
-	and a, MASK_TOP_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.facingEast
-	ld a, [hl]
-	and a, MASK_RIGHT_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.facingSouth
-	ld a, [hl]
-	and a, MASK_BOTTOM_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.returnTrue
-	; this doesn't feel very idiomatic
-	ld a, TRUE
-	ret
-.returnFalse
-	ld a, FALSE
-	ret
-
-; @param hl: addr of map tile
-; @ret a
-RoomHasRightWallWRTPlayer::
-	call GetRoomWallAttributesAddrFromBGMapAddr
-	ld a, [wPlayerOrientation]
-	cp a, ORIENTATION_NORTH
-	jp z, .facingNorth
-	cp a, ORIENTATION_EAST
-	jp z, .facingEast
-	cp a, ORIENTATION_SOUTH
-	jp z, .facingSouth
-.facingWest
-	ld a, [hl]
-	and a, MASK_TOP_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.facingNorth
-	ld a, [hl]
-	and a, MASK_RIGHT_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.facingEast
-	ld a, [hl]
-	and a, MASK_BOTTOM_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.facingSouth
-	ld a, [hl]
-	and a, MASK_LEFT_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.returnTrue
-	ld a, TRUE
-	ret
-.returnFalse
-	ld a, FALSE
-	ret
-
-; @param hl: addr of map tile
-; @ret a
-RoomHasBottomWallWRTPlayer::
-	call GetRoomWallAttributesAddrFromBGMapAddr
-	ld a, [wPlayerOrientation]
-	cp a, ORIENTATION_NORTH
-	jp z, .facingNorth
-	cp a, ORIENTATION_EAST
-	jp z, .facingEast
-	cp a, ORIENTATION_SOUTH
-	jp z, .facingSouth
-.facingWest
-	ld a, [hl]
-	and a, MASK_RIGHT_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.facingNorth
-	ld a, [hl]
-	and a, MASK_BOTTOM_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.facingEast
-	ld a, [hl]
-	and a, MASK_LEFT_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.facingSouth
-	ld a, [hl]
-	and a, MASK_TOP_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.returnTrue
-	ld a, TRUE
-	ret
-.returnFalse
-	ld a, FALSE
-	ret
-
-; @param hl: addr of map tile
-; @ret a
-RoomHasLeftWallWRTPlayer::
-	call GetRoomWallAttributesAddrFromBGMapAddr ; put related RoomWallAttributes addr in hl
-	ld a, [wPlayerOrientation]
-	cp a, ORIENTATION_NORTH
-	jp z, .facingNorth
-	cp a, ORIENTATION_EAST
-	jp z, .facingEast
-	cp a, ORIENTATION_SOUTH
-	jp z, .facingSouth
-.facingWest
-	ld a, [hl]
-	and a, MASK_BOTTOM_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.facingNorth
-	ld a, [hl]
-	and a, MASK_LEFT_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.facingEast
-	ld a, [hl]
-	and a, MASK_TOP_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.facingSouth
-	ld a, [hl]
-	and a, MASK_RIGHT_WALL
-	jp nz, .returnTrue
-	jp .returnFalse
-.returnTrue
-	; this doesn't feel very idiomatic
-	ld a, TRUE
-	ret
-.returnFalse
-	ld a, FALSE
-	ret
+SECTION "Map / Room Parsing", ROMX
 
 ; @param hl, address of bg tile map entry representing current tile
 ; @return hl, address of entry tile's RoomWallAttributes
-GetRoomWallAttributesAddrFromBGMapAddr::
+GetRoomWallAttributesAddrFromMapAddr::
 	ld a, [hl] ; get tile data index from tilemap. each is one byte in size so no need to multiply by entry size
 	ld hl, RoomWallAttributes
 	; add to lsb
@@ -169,6 +15,91 @@ GetRoomWallAttributesAddrFromBGMapAddr::
 	ld a, h
 	adc a, 0 ; in case of overflow
 	ld h, a
+	ret
+
+; @param hl, address of map room representing current tile
+; @return a, wall type
+GetTopWallWrtPlayer::
+	ld a, [wPlayerOrientation]
+	cp a, ORIENTATION_NORTH
+	jp z, GetNorthWallTypeFromRoomAttrAddr
+	cp a, ORIENTATION_EAST
+	jp z, GetEastWallTypeFromRoomAttrAddr
+	cp a, ORIENTATION_SOUTH
+	jp z, GetSouthWallTypeFromRoomAttrAddr
+	jp GetWestWallTypeFromRoomAttrAddr
+
+; @param hl, address of map room representing current tile
+; @return a, wall type
+GetRightWallWrtPlayer::
+	ld a, [wPlayerOrientation]
+	cp a, ORIENTATION_NORTH
+	jp z, GetEastWallTypeFromRoomAttrAddr
+	cp a, ORIENTATION_EAST
+	jp z, GetSouthWallTypeFromRoomAttrAddr
+	cp a, ORIENTATION_SOUTH
+	jp z, GetWestWallTypeFromRoomAttrAddr
+	jp GetNorthWallTypeFromRoomAttrAddr
+
+; @param hl, address of map room representing current tile
+; @return a, wall type
+GetBottomWallWrtPlayer::
+	ld a, [wPlayerOrientation]
+	cp a, ORIENTATION_NORTH
+	jp z, GetSouthWallTypeFromRoomAttrAddr
+	cp a, ORIENTATION_EAST
+	jp z, GetWestWallTypeFromRoomAttrAddr
+	cp a, ORIENTATION_SOUTH
+	jp z, GetNorthWallTypeFromRoomAttrAddr
+	jp GetEastWallTypeFromRoomAttrAddr
+
+; @param hl, address of map room representing current tile
+; @return a, wall type
+GetLeftWallWrtPlayer::
+	ld a, [wPlayerOrientation]
+	cp a, ORIENTATION_NORTH
+	jp z, GetWestWallTypeFromRoomAttrAddr
+	cp a, ORIENTATION_EAST
+	jp z, GetNorthWallTypeFromRoomAttrAddr
+	cp a, ORIENTATION_SOUTH
+	jp z, GetEastWallTypeFromRoomAttrAddr
+	jp GetSouthWallTypeFromRoomAttrAddr
+
+; @param hl, address of room attrs representing current tile
+; @return a, wall type
+GetNorthWallTypeFromRoomAttrAddr::
+	ld a, [hl]
+	and a, ROOM_MASK_NORTH_WALL
+rept 6
+	srl a
+endr
+	ret
+
+; @param hl, address of room attrs representing current tile
+; @return a, wall type
+GetEastWallTypeFromRoomAttrAddr::
+	ld a, [hl]
+	and a, ROOM_MASK_EAST_WALL
+rept 4
+	srl a
+endr
+	ret
+
+; @param hl, address of room attrs representing current tile
+; @return a, wall type
+GetSouthWallTypeFromRoomAttrAddr::
+	ld a, [hl]
+	and a, ROOM_MASK_SOUTH_WALL
+rept 2
+	srl a
+endr
+	ret
+
+; @param hl, address of room attrs representing current tile
+; @return a, wall type
+GetWestWallTypeFromRoomAttrAddr::
+	ld a, [hl]
+	and a, ROOM_MASK_WEST_WALL
 	ret
 
 ; @return d: bg map x coord

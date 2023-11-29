@@ -32,8 +32,8 @@ AttemptMoveUp:
 	ld d, a
 	ld a, [wPlayerY]
 	ld e, a
-	call GetBGTileMapAddrFromMapCoords ; puts player bg map entry addr in hl
-	call GetRoomWallAttributesAddrFromBGMapAddr ; put related RoomWallAttributes addr in hl
+	call GetRoomAddrFromCoords ; puts player bg map entry addr in hl
+	call GetRoomWallAttributesAddrFromMapAddr ; put related RoomWallAttributes addr in hl
 AdvanceIfNoCollisions:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
@@ -43,32 +43,32 @@ AdvanceIfNoCollisions:
 	cp a, ORIENTATION_SOUTH
 	jp z, .facingSouth
 .facingWest
-	ld a, [hl]
-	and a, MASK_LEFT_WALL
+	call GetWestWallTypeFromRoomAttrAddr
+	cp a, WALL_TYPE_NONE
 	jp nz, .doNotAdvance
 	ld a, [wPlayerX]
 	dec a
 	ld [wPlayerX], a
 	jp .finishAdvance
 .facingNorth
-	ld a, [hl]
-	and a, MASK_TOP_WALL
+	call GetNorthWallTypeFromRoomAttrAddr
+	cp a, WALL_TYPE_NONE
 	jp nz, .doNotAdvance
 	ld a, [wPlayerY]
 	dec a
 	ld [wPlayerY], a
 	jp .finishAdvance
 .facingEast
-	ld a, [hl]
-	and a, MASK_RIGHT_WALL
+	call GetEastWallTypeFromRoomAttrAddr
+	cp a, WALL_TYPE_NONE
 	jp nz, .doNotAdvance
 	ld a, [wPlayerX]
 	inc a
 	ld [wPlayerX], a
 	jp .finishAdvance
 .facingSouth
-	ld a, [hl]
-	and a, MASK_BOTTOM_WALL
+	call GetSouthWallTypeFromRoomAttrAddr
+	cp a, WALL_TYPE_NONE
 	jp nz, .doNotAdvance
 	ld a, [wPlayerY]
 	inc a

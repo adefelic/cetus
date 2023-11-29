@@ -57,7 +57,7 @@ EntryPoint:
 	ld bc, OWTilesEnd - OWTiles ; # of bytes (pixel data) remaining
 	call Memcopy
 
-	; Init color palettes
+	; Init color palettes ???
 	call InitOWColorPalettes
 
 ClearOam:
@@ -122,9 +122,9 @@ InitGameState:
 	call EnableLcd
 
 Main:
-	; todo can move this all into the vblank handler
+	; todo could move this all into the vblank handler
 	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
-	call DrawScreen ; if dirty, waits until vblank, draws screen, cleans
+	call DrawScreen ; if dirty, draws screen, cleans. accesses vram
 	call UpdateKeys ; gets new player input
 	call CheckKeysAndUpdateGameState ; processes input, sets dirty flags
 	call UpdateTilemap ; processes game state and dirty flags, draws screen to shadow tilemap
@@ -180,7 +180,7 @@ DrawScreen:
     dec bc
     jr nz, .waitforDmaToFinishAgain
 .clean
-	; select vram bank 0
+	; select vram bank 0. necessary?
 	xor a
 	ld [rVBK], a
 	ld a, CLEAN
@@ -234,25 +234,19 @@ LoadPauseScreenShadowTilemap:
 	ld d, a
 	ld a, [wActiveMap+1]
 	ld e, a
-	ld hl, wShadowTilemap     ; dest in RAM
-	;ld bc, wActiveMapEnd - wActiveMap ; # of bytes (tile indices) remaining
-	ld bc, TILEMAP_SIZE ; # of bytes (tile indices) remaining
-
+	ld hl, wShadowTilemap
+	ld bc, TILEMAP_SIZE
 	call Memcopy
 	ld a, PAUSE_SCREEN
 	ld [wActiveScreen], a
 	ret
 
-InitBGTileMapAttributes:
-	ld a, 1
-	ld [rVBK], a ; select VRAM bank 1
-
 InitOWColorPalettes:
 	ld a, BCPSF_AUTOINC ; load bg color palette specification auto increment on write + addr of zero
 	ld [rBCPS], a
 
-	ld de, OWPaletteSet ; source in ROM
-	ld bc, PALETTE_SIZE * 3 ; ; there are 3 contiguous palettes
+	ld de, OWPaletteSet
+	ld bc, PALETTE_SET_SIZE
 	call WriteColorsToPalette
 	ret
 
@@ -291,8 +285,7 @@ UpdateKeys:
 	ret
 .getBottomNibble ; load nibble into a
 	ldh [rP1], a ; switch the key matrix.
-	;call .knownret ; burn 10 cycles
-	; Wait for input to stabilize. pokemon crystal attempts 6 times
+	; wait for input to stabilize. pokemon crystal attempts 6 times
 rept 6
 	ldh a, [rP1]
 endr
