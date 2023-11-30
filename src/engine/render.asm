@@ -80,7 +80,7 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	cp a, WALL_TYPE_NONE
 	jp z, .checkRightWall
 .paintTopWall
-	ld e, INDEX_OW_PALETTE_Z0
+	ld e, INDEX_OW_PALETTE_Z1
 	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentB
 	call CheckSegmentC
@@ -120,7 +120,7 @@ ProcessTileLeftNear:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGround
 .paintTopWall
-	ld e, INDEX_OW_PALETTE_Z0
+	ld e, INDEX_OW_PALETTE_Z1
 	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentA
 	call CheckSegmentK
@@ -140,7 +140,7 @@ ProcessTileRightNear:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGround
 .paintTopWall
-	ld e, INDEX_OW_PALETTE_Z0
+	ld e, INDEX_OW_PALETTE_Z1
 	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentE
 	call CheckSegmentO
@@ -159,7 +159,7 @@ ProcessTileCenterFar:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintLeftGround ; paint ground if no left wall
 .paintLeftWall
-	ld e, INDEX_OW_PALETTE_Z1
+	ld e, INDEX_OW_PALETTE_Z2
 	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentB
 	call CheckSegmentL
@@ -167,7 +167,7 @@ ProcessTileCenterFar:
 	call CheckSegmentLDiag
 	jp .checkTopWall
 .paintLeftGround
-	ld e, INDEX_OW_PALETTE_Z1
+	ld e, INDEX_OW_PALETTE_Z2
 	ld d, FP_TILE_GROUND
 	call CheckSegmentL
 	call CheckSegmentLDiag
@@ -180,7 +180,7 @@ ProcessTileCenterFar:
 	jp z, .paintDistance
 .paintTopWall
 	ld d, FP_TILE_WALL_SIDE
-	ld e, INDEX_OW_PALETTE_Z2
+	ld e, INDEX_OW_PALETTE_Z3
 	call CheckSegmentC
 	jp .checkRightWall
 .paintDistance
@@ -196,7 +196,7 @@ ProcessTileCenterFar:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintRightGround ; paint ground if no right wall
 .paintRightWall
-	ld e, INDEX_OW_PALETTE_Z1
+	ld e, INDEX_OW_PALETTE_Z2
 	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentD
 	call CheckSegmentN
@@ -204,12 +204,12 @@ ProcessTileCenterFar:
 	call CheckSegmentNDiag
 	jp .paintCenterGround
 .paintRightGround
-	ld e, INDEX_OW_PALETTE_Z1
+	ld e, INDEX_OW_PALETTE_Z2
 	ld d, FP_TILE_GROUND
 	call CheckSegmentN
 	call CheckSegmentNDiag
 .paintCenterGround
-	ld e, INDEX_OW_PALETTE_Z1
+	ld e, INDEX_OW_PALETTE_Z2
 	ld d, FP_TILE_GROUND
 	call CheckSegmentM
 
@@ -222,7 +222,7 @@ ProcessTileLeftFar:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance
 .paintTopWall
-	ld e, INDEX_OW_PALETTE_Z2
+	ld e, INDEX_OW_PALETTE_Z3
 	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentA
 	call CheckSegmentB
@@ -234,7 +234,7 @@ ProcessTileLeftFar:
 	call CheckSegmentA
 	call CheckSegmentB
 .paintGround
-	ld e, INDEX_OW_PALETTE_Z1
+	ld e, INDEX_OW_PALETTE_Z2
 	ld d, FP_TILE_GROUND
 	call CheckSegmentK
 	call CheckSegmentL
@@ -249,7 +249,7 @@ ProcessTileRightFar:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance
 .paintTopWall
-	ld e, INDEX_OW_PALETTE_Z2
+	ld e, INDEX_OW_PALETTE_Z3
 	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentD
 	call CheckSegmentE
@@ -261,7 +261,7 @@ ProcessTileRightFar:
 	call CheckSegmentD
 	call CheckSegmentE
 .paintGround
-	ld e, INDEX_OW_PALETTE_Z1
+	ld e, INDEX_OW_PALETTE_Z2
 	ld d, FP_TILE_GROUND
 	call CheckSegmentO
 	call CheckSegmentN

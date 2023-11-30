@@ -9,7 +9,6 @@ SECTION "Map Data", ROMX
 ; this is essentially a collision map that we're building through indices in vram for the pausemap tiles.
 ; todo it should be its own thing
 ; this can be printed to screen by making it writing it to tilemap vram, but only the top 18 rows, 20 columns
-;
 Map1:: ; 32 x 32
 	; todo add starting orientation
 	; todo add starting coords
@@ -59,10 +58,11 @@ INCBIN "build/gfx/ow-simple.2bpp"
 OWTilesEnd::
 
 ; maps tiles data to wall presence data. supports 3 wall types
-; these require the same ordering as the map room tiles
-; 00 00 00 00 = wall definition, in t r b l order.
-; 00 = open, 01 = wall, 10 = ?, 11 = ?
-; todo rename to room definition
+; these require the same ordering as the map room tiles in ow-simple for the pausemap to work (is that true?)
+; 00 00 00 00 = wall definition, in n e s w order.
+; 00 = open, 01 = wallA, 10 = wallB, 11 = wallC
+; todo rename to room definition? wall sets?
+; todo make a macro to define rooms with wall types
 RoomWallAttributes::
 	db %00000000 ; 0,  ROOM_NONE
 	db %00000001 ; 1,  ROOM_L
