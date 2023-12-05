@@ -78,7 +78,7 @@ AdvanceIfNoCollisions:
 	; todo play bonk sound
 	ret
 .finishAdvance
-	call PlayFootstep
+	call PlayFootstepSfx
 	jp DirtyFpSegmentsAndTilemap
 
 HandleDown::

@@ -118,17 +118,18 @@ InitGameState:
 	call UpdateTilemap
 
 	call InitAudio
-	call InitTimer
+	;call InitTimer
 	call EnableLcd
 
 Main:
 	; todo could move this all into the vblank handler
 	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
 	call DrawScreen ; if dirty, draws screen, cleans. accesses vram
+	; is musicplaying? if so updateSound
+	call UpdateAudio
 	call UpdateKeys ; gets new player input
 	call CheckKeysAndUpdateGameState ; processes input, sets dirty flags
 	call UpdateTilemap ; processes game state and dirty flags, draws screen to shadow tilemap
-	; is musicplaying? if so updateSound
 	jp Main
 
 ; dma copy wShadowTilemap and wShadowTilemapAttrs to VRAM
@@ -179,8 +180,8 @@ DrawScreen:
 .waitforDmaToFinishAgain: ; necessary?
     dec bc
     jr nz, .waitforDmaToFinishAgain
-.clean
-	; select vram bank 0. necessary?
+.clean ; necessary?
+	; select vram bank 0.
 	xor a
 	ld [rVBK], a
 	ld a, CLEAN
@@ -230,6 +231,7 @@ CheckPressedRight:
 
 ; pause screen contains current map
 LoadPauseScreenShadowTilemap:
+	; todo load pause screen palette
 	ld a, [wActiveMap]
 	ld d, a
 	ld a, [wActiveMap+1]
