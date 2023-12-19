@@ -34,23 +34,15 @@ SECTION "FP Renderer Entry Point", ROMX
 ;   - right far top
 ; [T][TRL][T]
 ; [T][TRL][T]
-;Section "Render Details", WRAM0
-;wCurrentCenterNearWallAttrs:: db
-;wCurrentLeftNearWallAttrs:: db
-;wCurrentRightNearWallAttrs:: db
-;wCurrentCenterFarWallAttrs:: db
-;wCurrentLeftFarWallAttrs:: db
-;wCurrentRightFarWallAttrs:: db
-;wPreviousCenterNearWallAttrs:: db
-;wPreviousLeftNearWallAttrs:: db
-;wPreviousRightNearWallAttrs:: db
-;wPreviousCenterFarWallAttrs:: db
-;wPreviousLeftFarWallAttrs:: db
-;wPreviousRightFarWallAttrs:: db
 
 ; todo change map stuff to compass directions. trbl is player relative, nesw is absolute
 ; trbl are all relative to the player's orientation
 LoadFPShadowTilemap::
+	call RenderFirstPersonView
+	; todo call RenderEvent
+	ret
+
+RenderFirstPersonView::
 	; todo? move wCurrentVisibleRoomAttrs to wPreviousVisibleRoomAttrs
 	; todo bounds check and skip rooms that are oob
 	; currently this does no bounds checking for rooms with negative coords.
@@ -58,13 +50,13 @@ LoadFPShadowTilemap::
 ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only draw topmost z segments
 .checkLeftWall:
 	call GetRoomCoordsCenterNearWRTPlayer ; todo, put coords in ram?
-	call GetRoomAddrFromCoords ; puts player tilemap entry addr in hl. should probably put this somewhere?
+	call GetActiveMapRoomAddrFromCoords ; puts player tilemap entry addr in hl. should probably put this somewhere?
 	call GetRoomWallAttributesAddrFromMapAddr ; put related RoomWallAttributes addr in hl
 	call GetLeftWallWrtPlayer
 	cp a, WALL_TYPE_NONE
 	jp z, .checkTopWall
 .paintLeftWall
-	; okay instead we can say ... load that wall's panel (metatile) index
+	; okay instead we can say ... load that wall's panel index
 	ld e, INDEX_OW_PALETTE_Z0
 	ld d, FP_TILE_WALL_SIDE
 	call CheckSegmentA
@@ -74,7 +66,7 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	call CheckSegmentPDiag
 .checkTopWall
 	call GetRoomCoordsCenterNearWRTPlayer
-	call GetRoomAddrFromCoords
+	call GetActiveMapRoomAddrFromCoords
 	call GetRoomWallAttributesAddrFromMapAddr
 	call GetTopWallWrtPlayer
 	cp a, WALL_TYPE_NONE
@@ -92,7 +84,7 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	call CheckSegmentNDiag
 .checkRightWall
 	call GetRoomCoordsCenterNearWRTPlayer
-	call GetRoomAddrFromCoords
+	call GetActiveMapRoomAddrFromCoords
 	call GetRoomWallAttributesAddrFromMapAddr
 	call GetRightWallWrtPlayer
 	cp a, WALL_TYPE_NONE
@@ -114,7 +106,7 @@ ProcessTileLeftNear:
 	; todo bounds check
 .checkTopWall
 	call GetRoomCoordsLeftNearWRTPlayer
-	call GetRoomAddrFromCoords
+	call GetActiveMapRoomAddrFromCoords
 	call GetRoomWallAttributesAddrFromMapAddr
 	call GetTopWallWrtPlayer
 	cp a, WALL_TYPE_NONE
@@ -134,7 +126,7 @@ ProcessTileRightNear:
 	; todo bounds check
 .checkTopWall
 	call GetRoomCoordsRightNearWRTPlayer
-	call GetRoomAddrFromCoords
+	call GetActiveMapRoomAddrFromCoords
 	call GetRoomWallAttributesAddrFromMapAddr
 	call GetTopWallWrtPlayer
 	cp a, WALL_TYPE_NONE
@@ -153,7 +145,7 @@ ProcessTileRightNear:
 ProcessTileCenterFar:
 .checkLeftWall
 	call GetRoomCoordsCenterFarWRTPlayer
-	call GetRoomAddrFromCoords
+	call GetActiveMapRoomAddrFromCoords
 	call GetRoomWallAttributesAddrFromMapAddr
 	call GetLeftWallWrtPlayer
 	cp a, WALL_TYPE_NONE
@@ -173,7 +165,7 @@ ProcessTileCenterFar:
 	call CheckSegmentLDiag
 .checkTopWall
 	call GetRoomCoordsCenterFarWRTPlayer
-	call GetRoomAddrFromCoords
+	call GetActiveMapRoomAddrFromCoords
 	call GetRoomWallAttributesAddrFromMapAddr
 	call GetTopWallWrtPlayer
 	cp a, WALL_TYPE_NONE
@@ -190,7 +182,7 @@ ProcessTileCenterFar:
 	call CheckSegmentC
 .checkRightWall
 	call GetRoomCoordsCenterFarWRTPlayer
-	call GetRoomAddrFromCoords
+	call GetActiveMapRoomAddrFromCoords
 	call GetRoomWallAttributesAddrFromMapAddr
 	call GetRightWallWrtPlayer
 	cp a, WALL_TYPE_NONE
@@ -216,7 +208,7 @@ ProcessTileCenterFar:
 ProcessTileLeftFar:
 .checkTopWall
 	call GetRoomCoordsLeftFarWRTPlayer
-	call GetRoomAddrFromCoords
+	call GetActiveMapRoomAddrFromCoords
 	call GetRoomWallAttributesAddrFromMapAddr
 	call GetTopWallWrtPlayer
 	cp a, WALL_TYPE_NONE
@@ -243,7 +235,7 @@ ProcessTileLeftFar:
 ProcessTileRightFar:
 .checkTopWall
 	call GetRoomCoordsRightFarWRTPlayer
-	call GetRoomAddrFromCoords
+	call GetActiveMapRoomAddrFromCoords
 	call GetRoomWallAttributesAddrFromMapAddr
 	call GetTopWallWrtPlayer
 	cp a, WALL_TYPE_NONE
@@ -267,28 +259,4 @@ ProcessTileRightFar:
 	call CheckSegmentN
 	call CheckSegmentNDiag
 .finish
-	ret
-
-; Map1 + wPlayerX + wPlayerY*32
-; @param d: player X coord
-; @param e: player Y coord
-; @return hl: tile address of player occupied tile of Map1 (this need to change)
-GetRoomAddrFromCoords::
-	ld l, e
-	ld h, 0
-	; shift left 5 times to multiply by 32
-	add hl, hl
-	add hl, hl
-	add hl, hl
-	add hl, hl
-	add hl, hl
-	ld a, d
-	add a, l
-	ld l, a
-	ld a, [wActiveMap]
-	ld b, a
-	ld a, [wActiveMap+1]
-	ld c, a
-	;ld bc, wActiveMap
-	add hl, bc
 	ret

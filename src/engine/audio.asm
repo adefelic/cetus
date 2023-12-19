@@ -117,7 +117,7 @@ PlayChannel4:
 	ld l, a
 	ld a, [wCh4CurrentSound + 1]
 	ld h, a
-	call Dereference ; second dereference ; todo just dereference once and store that value instead
+	call DereferenceHl ; second dereference ; todo just dereference once and store that value instead
 	jp LoadChannel4Sound
 
 ; @param hl: addr of sound
@@ -168,19 +168,4 @@ LoadChannel4Sound:
 	ldh [rNR44], a
 	ld a, TRUE
 	ld [wIsCh4Playing], a
-	ret
-
-; @param: hl, addr to dereference
-; @return hl, new addr
-; uses a,b,c,h,l
-Dereference:
-	ld a, [hli]
-	ld b, a
-	ld a, [hl]
-	ld c, a
-
-	ld a, b
-	ld l, a
-	ld a, c
-	ld h, a
 	ret

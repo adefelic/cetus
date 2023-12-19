@@ -1,4 +1,5 @@
 INCLUDE "src/constants/map_constants.inc"
+INCLUDE "src/macros/event.inc"
 
 SECTION "Map Data", ROMX
 
@@ -6,13 +7,21 @@ SECTION "Map Data", ROMX
 ; 4 bits per wall would give 15 wall types. that sounds reasonable for now? there could be different wall sets per level
 ; i also think it makes sense for now to have table to govern both room graphics and collision
 
+Maps::
+DEF MAP1 EQU $00
+; todo this will require a GetMap addr function
+
+Map1::
+Map1Header::
+; todo add starting orientation
+; todo add starting coords
+; todo add map width, height maybe?
+
+; the "wall map"
 ; this is essentially a collision map that we're building through indices in vram for the pausemap tiles.
 ; todo it should be its own thing
 ; this can be printed to screen by making it writing it to tilemap vram, but only the top 18 rows, 20 columns
-Map1:: ; 32 x 32
-	; todo add starting orientation
-	; todo add starting coords
-	; todo add map width, height maybe?
+Map1Walls:: ; 32 x 32
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,ROOM_TYPE_TILE_TBL,  ROOM_TYPE_TILE_TB,   ROOM_TYPE_TILE_T,  ROOM_TYPE_TILE_TRB,  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,ROOM_TYPE_TILE_NONE, ROOM_TYPE_TILE_NONE, ROOM_TYPE_TILE_RL, ROOM_TYPE_TILE_NONE, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -20,15 +29,9 @@ Map1:: ; 32 x 32
 	db 0,ROOM_TYPE_TILE_L,    ROOM_TYPE_TILE_TB,   ROOM_TYPE_TILE_B,  ROOM_TYPE_TILE_RB,   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,ROOM_TYPE_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,ROOM_TYPE_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,ROOM_TYPE_TILE_BL,ROOM_TYPE_TILE_TR,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,ROOM_TYPE_TILE_RBL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,ROOM_TYPE_TILE_TRL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,ROOM_TYPE_TILE_RBL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -46,16 +49,70 @@ Map1:: ; 32 x 32
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-Map1End::
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Map1WallsEnd::
 
-; unused
-TilemapAttributeEntry:
-	db `00000000 ; palette 0
-TilemapAttributeEntryEnd:
+; the "event map"
+; This table contains possible context events for the player on different squares
+; each entry is an offset into the Map1EventTriggers Table
+Map1EventLocations:
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,EventTriggerGoThroughDoor-Map1EventTriggers,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+
+Map1EventTriggers:
+	nop ; this is a dumb hack to make it so having an offset of 0 means there is no event
+EventTriggerGoThroughDoor:
+	event_trigger WALLS_B, EVENT_TYPE_WARP, EventDefGoThroughDoor ;it's probably better to have a table offset than a ptr?
+
+
+EventDefGoThroughDoor:
+	event_def_type_warp 0, 0, MAP1, 1, 1, ORIENTATION_NORTH
+
+; todo. this will require setting up a character map and getting a font off of the internet
+;EventFramesGoThroughDoor:
+;	event_frame
 
 OWTiles::
 INCBIN "build/gfx/ow-simple.2bpp"
 OWTilesEnd::
+
+; todo
+; there should be an object for wall _presence_ ie collision
+; and there should be an object for wall _style_
 
 ; maps tiles data to wall presence data. supports 3 wall types
 ; these require the same ordering as the map room tiles in ow-simple for the pausemap to work (is that true?)
@@ -68,14 +125,17 @@ RoomWallAttributes::
 	db %00000001 ; 1,  ROOM_L
 	db %00000100 ; 2,  ROOM_B
 	db %00000101 ; 3,  ROOM_BL
-	db %00010001 ; 4,  ROOM_RL
-	db %00010100 ; 5,  ROOM_RB
-	db %00010101 ; 6,  ROOM_RBL
-	db %01000000 ; 7,  ROOM_T
-	db %01000100 ; 8,  ROOM_TB
-	db %01000101 ; 9,  ROOM_TBL
-	db %01010000 ; 10, ROOM_TR
-	db %01010001 ; 11, ROOM_TRL
-	db %01010100 ; 12, ROOM_TRB
+	db %00010000 ; 4,  ROOM_R
+	db %00010001 ; 5,  ROOM_RL
+	db %00010100 ; 6,  ROOM_RB
+	db %00010101 ; 7,  ROOM_RBL
+	db %01000000 ; 8,  ROOM_T
+	db %01000001 ; 9,  ROOM_TL
+	db %01000100 ; 10, ROOM_TB
+	db %01000101 ; 11, ROOM_TBL
+	db %01010000 ; 12, ROOM_TR
+	db %01010001 ; 13, ROOM_TRL
+	db %01010100 ; 14, ROOM_TRB
+	db %01010100 ; 15, ROOM_TRBL
 RoomWallAttributesEnd:
 

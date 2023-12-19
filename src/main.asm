@@ -1,27 +1,33 @@
 INCLUDE "src/utils/hardware.inc"
-INCLUDE "src/assets/map_data.inc"
 INCLUDE "src/assets/palette.inc"
 INCLUDE "src/constants/constants.inc"
+INCLUDE "src/constants/map_constants.inc"
 
 Section "Game State", WRAM0
+wActiveScreen:: db
+wActiveMap:: dw
+
+Section "Player State", WRAM0
 wPlayerX:: db
 wPlayerY:: db
 wPlayerOrientation:: db
-wActiveScreen:: db ; this could be a single bit
-wShadowTilemapDirty:: db ; this could be a single bit
-wActiveMap:: dw
-wActiveMapEnd:: dw
+
+Section "Screen Variables", WRAM0
+wIsShadowTilemapDirty:: db
+wHasPlayerMovedThisFrame:: db ; rotating counts
+; todo rendering experiments
+; wShadowTilemapTopLeftX:: db
+; wShadowTilemapTopLeftY:: db
 
 ; pokemon crystal stores these in hram
 SECTION "Input Variables", WRAM0
 wPreviousFrameKeys: db
 wCurrentFrameKeys: db
-wJoypadDown: db          ; keys that are currently held
-wJoypadNewlyPressed: db  ; newly input keys
-wJoypadNewlyReleased: db ; newly released keys
+wJoypadDown: db
+wJoypadNewlyPressed: db
+wJoypadNewlyReleased: db
 
 ; hardware interrupts
-
 SECTION "vblank", ROM0[$0040]
 	;jp VBlank
 
@@ -52,12 +58,11 @@ EntryPoint:
 	call DisableLcd
 
 	; Copy BG tile data into VRAM
-	ld de, OWTiles                   ; source in ROM
-	ld hl, _VRAM9000                      ; dest in VRAM
+	ld de, OWTiles              ; source in ROM
+	ld hl, _VRAM9000            ; dest in VRAM
 	ld bc, OWTilesEnd - OWTiles ; # of bytes (pixel data) remaining
 	call Memcopy
 
-	; Init color palettes ???
 	call InitOWColorPalettes
 
 ClearOam:
@@ -86,55 +91,63 @@ ClearShadowTilemapAttrs:
 	jp nz, .loop
 
 InitGameState:
-	ld hl, Map1
+	ld hl, Map1Walls
 	ld a, h
 	ld [wActiveMap], a
 	ld a, l
 	ld [wActiveMap+1], a
 
-	ld hl, Map1End
-	ld a, h
-	ld [wActiveMapEnd], a
-	ld a, l
-	ld [wActiveMapEnd+1], a
+	call InitEventState
 
+	; init input
 	xor a
 	ld [wJoypadDown], a
 	ld [wJoypadNewlyReleased], a
 	ld [wJoypadNewlyReleased], a
 
+	ld a, FALSE
+	ld [wHasPlayerMovedThisFrame], a
+
+	; init player state
+	;call InitPlayerLocation
 	ld a, 3
 	ld [wPlayerX], a
 	ld a, 1
 	ld [wPlayerY], a
 	ld a, ORIENTATION_EAST
 	ld [wPlayerOrientation], a
+
+	; init game state
 	ld a, FP_SCREEN
 	ld [wActiveScreen], a
-	ld a, DIRTY
-	ld [wShadowTilemapDirty], a
 
+	; init screen state
+	ld a, DIRTY
+	ld [wIsShadowTilemapDirty], a
 	call DirtyFpSegments
-	call UpdateTilemap
+	call UpdateShadowBGTilemap
 
 	call InitAudio
-	;call InitTimer
 	call EnableLcd
 
 Main:
+	ld a, FALSE
+	ld [wHasPlayerMovedThisFrame], a
+
 	; todo could move this all into the vblank handler
 	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
 	call DrawScreen ; if dirty, draws screen, cleans. accesses vram
-	; is musicplaying? if so updateSound
+
 	call UpdateAudio
 	call UpdateKeys ; gets new player input
 	call CheckKeysAndUpdateGameState ; processes input, sets dirty flags
-	call UpdateTilemap ; processes game state and dirty flags, draws screen to shadow tilemap
+	call UpdateShadowBGTilemap ; processes game state and dirty flags, draws screen to shadow tilemap
+	call UpdateEvents
 	jp Main
 
 ; dma copy wShadowTilemap and wShadowTilemapAttrs to VRAM
 DrawScreen:
-	ld a, [wShadowTilemapDirty]
+	ld a, [wIsShadowTilemapDirty]
 	cp CLEAN
 	ret z
 .drawShadowTilemap
@@ -185,11 +198,11 @@ DrawScreen:
 	xor a
 	ld [rVBK], a
 	ld a, CLEAN
-	ld [wShadowTilemapDirty], a
+	ld [wIsShadowTilemapDirty], a
 	ret
 
-UpdateTilemap:
-	ld a, [wShadowTilemapDirty]
+UpdateShadowBGTilemap:
+	ld a, [wIsShadowTilemapDirty]
 	cp CLEAN
 	ret z
 	ld a, [wActiveScreen]

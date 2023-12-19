@@ -313,3 +313,35 @@ GetRoomCoordsRightFarWRTPlayer::
 	inc a
 	ld e, a
 	ret
+
+; Map1 + wPlayerX + wPlayerY*32
+; @param d: player X coord
+; @param e: player Y coord
+; @return hl: tile address of player occupied tile of Map1 (this need to change)
+GetActiveMapRoomAddrFromCoords::
+	ld a, [wActiveMap]
+	ld b, a
+	ld a, [wActiveMap+1]
+	ld c, a
+	call GetRoomAddrFromCoords
+	ret
+
+; map addr + wPlayerX + wPlayerY*32
+; @param d: player X coord
+; @param e: player Y coord
+; @param bc: map addr
+; @return hl: tile address of player occupied tile of Map1 (this need to change)
+GetRoomAddrFromCoords::
+	ld l, e
+	ld h, 0
+	; shift left 5 times to multiply by 32
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	ld a, d
+	add a, l
+	ld l, a
+	add hl, bc
+	ret

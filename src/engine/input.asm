@@ -1,6 +1,7 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/map_constants.inc"
+INCLUDE "src/macros/event.inc"
 
 ; todo this doesn't actually handle input and should be broken up into respective things being done
 SECTION "Input Handling", ROMX
@@ -18,9 +19,66 @@ UnpauseGame:
 	ld [wActiveScreen], a
 DirtyFpSegmentsAndTilemap:
 	call DirtyFpSegments
+	ld a, TRUE
+	ld [wHasPlayerMovedThisFrame], a
 DirtyTilemap:
 	ld a, DIRTY
-	ld [wShadowTilemapDirty], a
+	ld [wIsShadowTilemapDirty], a
+	ret
+
+; todo today
+HandlePressedA::
+	ld a, [wIsEventActive]
+	cp FALSE
+	ret z
+UpdateActiveEvent:
+	ld a, [wEventType]
+	cp EVENT_TYPE_WARP
+	jp z, UpdateWarpEvent
+	ret
+UpdateWarpEvent:
+	ld a, [wEventFramesSize]
+	ld b, a
+	ld a, [wEventFrameIndex]
+	inc a
+	cp b
+	jp z, CompleteWarpEvent
+.incrementFrameAddress
+	; inc frame address by frame size
+	ld a, [wEventFrameAddr]
+	ld l, a
+	ld a, [wEventFrameAddr + 1]
+	ld h, a
+	ld a, EVENT_FRAME_SIZE
+	call AddOffsetToAddress ; this might be silly and inefficient
+	ld a, l
+	ld [wEventFrameAddr], a
+	ld a, h
+	ld [wEventFrameAddr + 1], a
+.incrementFrameIndex
+	ld a, [wEventFrameIndex]
+	inc a
+	ld [wEventFrameIndex], a
+	ret
+
+CompleteWarpEvent:
+	ld a, [wEventDefinition]
+	ld l, a
+	ld a, [wEventDefinition + 1]
+	ld h, a
+	ld a, ED_MAP_OFFSET
+	call AddOffsetToAddress
+	ld a, [hli]
+	; todo do something with the map id that's currently in a
+	ld a, [hli]
+	ld [wPlayerX], a
+	ld a, [hli]
+	ld [wPlayerY], a
+	ld a, [hl]
+	ld [wPlayerOrientation], a
+	; clear data?
+	ld a, FALSE
+	ld [wIsEventActive], a
 	ret
 
 HandleUp::
@@ -32,7 +90,7 @@ AttemptMoveUp:
 	ld d, a
 	ld a, [wPlayerY]
 	ld e, a
-	call GetRoomAddrFromCoords ; puts player bg map entry addr in hl
+	call GetActiveMapRoomAddrFromCoords ; puts player bg map entry addr in hl
 	call GetRoomWallAttributesAddrFromMapAddr ; put related RoomWallAttributes addr in hl
 AdvanceIfNoCollisions:
 	ld a, [wPlayerOrientation]
