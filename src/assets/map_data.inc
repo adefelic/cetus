@@ -68,8 +68,8 @@ Map1EventLocations:
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,EventTriggerGoThroughDoor-Map1EventTriggers,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,EventTriggerGoIntoBuilding-Map1EventTriggers,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,EventTriggerGoBackToOW-Map1EventTriggers,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -94,13 +94,17 @@ Map1EventLocations:
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 Map1EventTriggers:
-	nop ; this is a dumb hack to make it so having an offset of 0 means there is no event
-EventTriggerGoThroughDoor:
-	event_trigger WALLS_B, EVENT_TYPE_WARP, EventDefGoThroughDoor ;it's probably better to have a table offset than a ptr?
+	nop ; this is a hack to make it so having an offset of 0 means there is no event
 
+EventTriggerGoIntoBuilding:
+	event_trigger WALLS_B, EVENT_TYPE_WARP, EventDefGoIntoBuilding ; it's probably more efficient to have a table offset than a ptr?
+EventDefGoIntoBuilding:
+	event_def_type_warp 1, 0, MAP1, 2, 9, ORIENTATION_SOUTH
 
-EventDefGoThroughDoor:
-	event_def_type_warp 0, 0, MAP1, 1, 1, ORIENTATION_NORTH
+EventTriggerGoBackToOW:
+	event_trigger WALLS_T, EVENT_TYPE_WARP, EventDefGoBackToOW
+EventDefGoBackToOW:
+	event_def_type_warp 1, 0, MAP1, 2, 8, ORIENTATION_NORTH
 
 ; todo. this will require setting up a character map and getting a font off of the internet
 ;EventFramesGoThroughDoor:

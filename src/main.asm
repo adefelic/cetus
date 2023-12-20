@@ -142,7 +142,7 @@ Main:
 	call UpdateKeys ; gets new player input
 	call CheckKeysAndUpdateGameState ; processes input, sets dirty flags
 	call UpdateShadowBGTilemap ; processes game state and dirty flags, draws screen to shadow tilemap
-	call UpdateEvents
+	call CheckForNewEvents
 	jp Main
 
 ; dma copy wShadowTilemap and wShadowTilemapAttrs to VRAM
@@ -223,6 +223,9 @@ CheckPressedStart:
 	jp nz, HandleStart
 CheckPressedSelect:
 CheckPressedA:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_A
+	jp nz, HandleA
 CheckPressedB:
 CheckPressedUp:
 	ld a, [wJoypadNewlyPressed]

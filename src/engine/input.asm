@@ -3,7 +3,6 @@ INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/map_constants.inc"
 INCLUDE "src/macros/event.inc"
 
-; todo this doesn't actually handle input and should be broken up into respective things being done
 SECTION "Input Handling", ROMX
 
 HandleStart::
@@ -27,7 +26,7 @@ DirtyTilemap:
 	ret
 
 ; todo today
-HandlePressedA::
+HandleA::
 	ld a, [wIsEventActive]
 	cp FALSE
 	ret z
@@ -79,7 +78,7 @@ CompleteWarpEvent:
 	; clear data?
 	ld a, FALSE
 	ld [wIsEventActive], a
-	ret
+	jp DirtyFpSegmentsAndTilemap
 
 HandleUp::
 	ld a, [wActiveScreen]

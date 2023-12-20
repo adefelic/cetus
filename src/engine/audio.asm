@@ -61,10 +61,10 @@ BeginPlayCh4Sfx:
 	ld [wCh4CurrentAudCmd + 1], a
 ProcessAudCmd:
 	; process audcmd type
-	ld a, [wCh4CurrentAudCmd]
+	ld hl, wCh4CurrentAudCmd
+	ld a, [hli]
+	ld h, [hl]
 	ld l, a
-	ld a, [wCh4CurrentAudCmd + 1]
-	ld h, a
 	ld a, [hl] ; the type is the 0th byte of the cmd
 	cp NOTE
 	jp z, .processNoteAudCmd

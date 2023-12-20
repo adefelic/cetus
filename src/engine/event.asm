@@ -21,7 +21,7 @@ InitEventState::
 	ret
 
 ; all this will do is populate player event state with new events
-UpdateEvents::
+CheckForNewEvents::
 	ld a, [wHasPlayerMovedThisFrame]
 	cp FALSE
 	ret z
@@ -40,27 +40,23 @@ UpdateEvents::
 	ld hl, Map1EventTriggers ; contains event def table address
 	call AddOffsetToAddress
 	; hl now contains that room's event trigger address
-	call ParseEventTrigger
-	ret
-
-; @param hl, address of current room's event trigger
-ParseEventTrigger::
 .checkIfEventTriggered
 	ld a, [hli] ; get event walls, now pointing at type
 	ld b, a
 	ld a, [wPlayerOrientation]
 	and b
 	jp z, UnsetIsActiveEvent
-SetNewActiveEvent:
+.setNewActiveEvent:
 	ld a, TRUE
 	ld [wIsEventActive], a
 	ld a, [hli] ; get type, now pointing at event def
 	ld [wEventType], a
 	cp EVENT_TYPE_WARP
-
 	jp z, InitWarpEvent
+	; todo check for other event types
 	; fixme we'll maybe get in a bad state if a non-warp event exists
 	ret
+
 InitWarpEvent:
 	; todo it's possible that instead of this i could just remove the pointer
 	; to the event def altogether and inc hl, so long as the def was always contiguous with the trigger
@@ -79,7 +75,6 @@ InitWarpEvent:
 	ld [wEventFrameAddr], a
 	ld a, h
 	ld [wEventFrameAddr + 1], a
-	; should probably dirty screen
 	ret
 
 UnsetIsActiveEvent:

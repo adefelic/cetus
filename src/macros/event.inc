@@ -16,7 +16,7 @@ ENDM
 DEF ED_MAP_OFFSET EQU $03
 MACRO event_def_type_warp
 	assert _NARG == 6, "event_type_warp must have exactly 6 arguments"
-	db \1 ; # of frames
+	db \1 ; # of frames. there must be at least 1
 	dw \2 ; address of event_frames
 	db \3 ; warp dest map
 	db \4 ; warp dest x
