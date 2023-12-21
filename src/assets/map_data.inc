@@ -1,5 +1,6 @@
 INCLUDE "src/constants/map_constants.inc"
 INCLUDE "src/macros/event.inc"
+INCLUDE "src/assets/tile.inc"
 
 SECTION "Map Data", ROMX
 
@@ -23,16 +24,16 @@ Map1Header::
 ; this can be printed to screen by making it writing it to tilemap vram, but only the top 18 rows, 20 columns
 Map1Walls:: ; 32 x 32
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_TBL,  ROOM_TYPE_TILE_TB,   ROOM_TYPE_TILE_T,  ROOM_TYPE_TILE_TRB,  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_NONE, ROOM_TYPE_TILE_NONE, ROOM_TYPE_TILE_RL, ROOM_TYPE_TILE_NONE, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_TRL,  ROOM_TYPE_TILE_NONE, ROOM_TYPE_TILE_L,  ROOM_TYPE_TILE_TR,   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_L,    ROOM_TYPE_TILE_TB,   ROOM_TYPE_TILE_B,  ROOM_TYPE_TILE_RB,   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,ROOM_TYPE_TILE_BL,ROOM_TYPE_TILE_TR,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,ROOM_TYPE_TILE_RBL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,ROOM_TYPE_TILE_TRL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,ROOM_TYPE_TILE_RBL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,PAUSEMAP_TILE_TBL,  PAUSEMAP_TILE_TB,   PAUSEMAP_TILE_T,  PAUSEMAP_TILE_TRB,  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,PAUSEMAP_TILE_NONE, PAUSEMAP_TILE_NONE, PAUSEMAP_TILE_RL, PAUSEMAP_TILE_NONE, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,PAUSEMAP_TILE_TRL,  PAUSEMAP_TILE_NONE, PAUSEMAP_TILE_L,  PAUSEMAP_TILE_TR,   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,PAUSEMAP_TILE_L,    PAUSEMAP_TILE_TB,   PAUSEMAP_TILE_B,  PAUSEMAP_TILE_RB,   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,PAUSEMAP_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,PAUSEMAP_TILE_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,PAUSEMAP_TILE_BL,PAUSEMAP_TILE_TR,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,PAUSEMAP_TILE_RBL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,PAUSEMAP_TILE_TRL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,PAUSEMAP_TILE_RBL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -106,13 +107,16 @@ EventTriggerGoBackToOW:
 EventDefGoBackToOW:
 	event_def_type_warp 1, 0, MAP1, 2, 8, ORIENTATION_NORTH
 
-; todo. this will require setting up a character map and getting a font off of the internet
-;EventFramesGoThroughDoor:
-;	event_frame
+; todo. this will eventually require setting up a character map and getting a font off of the internet
+EventFramesGoThroughDoor:
+	;event_frame
 
 OWTiles::
 INCBIN "build/gfx/ow-simple.2bpp"
 OWTilesEnd::
+ModalTiles::
+INCBIN "build/gfx/modal-simple.2bpp"
+ModalTilesEnd::
 
 ; todo
 ; there should be an object for wall _presence_ ie collision

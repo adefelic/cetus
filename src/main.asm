@@ -60,7 +60,7 @@ EntryPoint:
 	; Copy BG tile data into VRAM
 	ld de, OWTiles              ; source in ROM
 	ld hl, _VRAM9000            ; dest in VRAM
-	ld bc, OWTilesEnd - OWTiles ; # of bytes (pixel data) remaining
+	ld bc, ModalTilesEnd - OWTiles ; # of bytes (pixel data) remaining
 	call Memcopy
 
 	call InitOWColorPalettes
@@ -131,6 +131,7 @@ InitGameState:
 	call EnableLcd
 
 Main:
+	;call ResetFrameState
 	ld a, FALSE
 	ld [wHasPlayerMovedThisFrame], a
 
@@ -141,8 +142,8 @@ Main:
 	call UpdateAudio
 	call UpdateKeys ; gets new player input
 	call CheckKeysAndUpdateGameState ; processes input, sets dirty flags
-	call UpdateShadowBGTilemap ; processes game state and dirty flags, draws screen to shadow tilemap
 	call CheckForNewEvents
+	call UpdateShadowBGTilemap ; processes game state and dirty flags, draws screen to shadow tilemaps
 	jp Main
 
 ; dma copy wShadowTilemap and wShadowTilemapAttrs to VRAM

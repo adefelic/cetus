@@ -2,7 +2,7 @@ INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/ram/wram.inc"
 
-Section "Segment Render State", WRAM0
+SECTION "Segment Render State", WRAM0
 ; these could be a single bits
 wADirty: db
 wBDirty: db
@@ -915,7 +915,7 @@ PaintSegmentRDiag::
 ; @param d: source tile id
 ; @param hl: destination
 ; @param bc: length
-PaintTilemap:
+PaintTilemap::
 	ld a, d
 	ld [hli], a ; write tile id
 	dec bc
@@ -924,10 +924,10 @@ PaintTilemap:
 	jp nz, PaintTilemap
 	ret
 
-; @param e: source palette id
+; @param e: BG Map Attribute byte
 ; @param hl: destination
 ; @param bc: length
-PaintTilemapAttrs:
+PaintTilemapAttrs::
 	ld a, e
 	ld [hli], a ; write palette id
 	dec bc

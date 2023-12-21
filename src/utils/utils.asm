@@ -1,5 +1,9 @@
 SECTION "Utils", ROMX
 
+
+; TODO make these into macros
+
+
 ; @param a, offset
 ; @param hl, address
 AddOffsetToAddress::

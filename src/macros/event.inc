@@ -24,10 +24,12 @@ MACRO event_def_type_warp
 	db \6 ; warp dest orientation
 ENDM
 
-DEF EVENT_FRAME_SIZE EQU $05
+DEF EVENT_FRAME_SIZE EQU $05 ; this isnt true
 MACRO event_frame
-	assert _NARG == 3, "event_frame must have exactly 3 arguments"
-	dw \1 ; addr of sprite
-	dw \2 ; addr of dialog
-	db \3 ; flag: player control lock?
+	assert _NARG == 4, "event_frame must have exactly 4 arguments"
+	db \1 ; flag: player control lock?
+	dw \2 ; addr of sprite
+	db \3 ; size of text string
+	ds \4 ; text to display ; todo idk if the size ds will work
 ENDM
+

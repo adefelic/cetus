@@ -13,31 +13,8 @@ DEF WALL_TYPE_C    EQU $11
 ; event types
 DEF EVENT_TYPE_WARP EQU $00
 
-DEF EVENT_NONE EQU $00 ; this isn't really a type it's an offset value
-
-;;;; ow-simple tile indices / offsets
-; todo these should probably go into their own tile set file
-
-; room type tiles / pausemap gfx tiles
-; deprecated for use as collision map
-; these tiles are both graphical tiles and the source of truth for the room map itself
-; todo decouple these? nah the pausemap is a debug feature not a feature feature
-DEF ROOM_TYPE_TILE_NONE EQU $00
-DEF ROOM_TYPE_TILE_L    EQU $01
-DEF ROOM_TYPE_TILE_B    EQU $02
-DEF ROOM_TYPE_TILE_BL   EQU $03
-DEF ROOM_TYPE_TILE_R    EQU $04
-DEF ROOM_TYPE_TILE_RL   EQU $05
-DEF ROOM_TYPE_TILE_RB   EQU $06
-DEF ROOM_TYPE_TILE_RBL  EQU $07
-DEF ROOM_TYPE_TILE_T    EQU $08
-DEF ROOM_TYPE_TILE_TL   EQU $09
-DEF ROOM_TYPE_TILE_TB   EQU $0A
-DEF ROOM_TYPE_TILE_TBL  EQU $0B
-DEF ROOM_TYPE_TILE_TR   EQU $0C
-DEF ROOM_TYPE_TILE_TRL  EQU $0D
-DEF ROOM_TYPE_TILE_TRB  EQU $0E
-DEF ROOM_TYPE_TILE_TRBL EQU $0F
+; event locations
+DEF EVENT_NONE EQU $00 ; this isn't really a type it's an event location offset value
 
 ; 8-bit masks
 DEF ROOM_MASK_NORTH_WALL EQU %11000000
@@ -68,11 +45,3 @@ DEF COLLISION_MASK_L EQU $1
 DEF COLLISION_MASK_B EQU $2
 DEF COLLISION_MASK_R EQU $4
 DEF COLLISION_MASK_T EQU $8
-
-; first person rendering tiles
-DEF FP_TILE_DARK       EQU $10
-DEF FP_TILE_GROUND     EQU $11
-DEF FP_TILE_WALL_SIDE  EQU $12
-DEF FP_TILE_WALL_FRONT EQU $13
-DEF FP_TILE_DIAG_R     EQU $14
-DEF FP_TILE_DIAG_L     EQU $15

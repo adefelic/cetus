@@ -1,7 +1,7 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/map_constants.inc"
-INCLUDE "src/ram/hram.inc"
+INCLUDE "src/assets/tile.inc"
 INCLUDE "src/utils/hardware.inc"
 
 SECTION "FP Renderer Entry Point", ROMX
@@ -39,7 +39,15 @@ SECTION "FP Renderer Entry Point", ROMX
 ; trbl are all relative to the player's orientation
 LoadFPShadowTilemap::
 	call RenderFirstPersonView
-	; todo call RenderEvent
+	ld a, [wIsEventActive]
+	cp FALSE
+	ret z
+	call RenderEvent
+	ret
+
+RenderEvent:
+	; overlay a text box reading from the active event pointers
+	call PaintModal
 	ret
 
 RenderFirstPersonView::

@@ -25,7 +25,6 @@ DirtyTilemap:
 	ld [wIsShadowTilemapDirty], a
 	ret
 
-; todo today
 HandleA::
 	ld a, [wIsEventActive]
 	cp FALSE
