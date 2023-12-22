@@ -5,7 +5,6 @@ INCLUDE "src/utils/hardware.inc"
 
 SECTION "Modal Paint Routines", ROMX
 
-; OAMF_XFLIP
 ; todo make macro for painting both tilemap + attrs
 ; @param d: the tile index to paint with
 PaintModal::
@@ -46,12 +45,15 @@ PaintModal::
 	ld bc, 1
 	call PaintTilemapAttrs
 .text ; single row
-	; todo make this dynamic text
-	ld d, MODAL_TILE_EMPTY
+	;todo should move this deref?
+	ld hl, wEventFrameAddr
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
 	ld hl, wShadowTilemap + BG_ROW_2 + BG_COL_5
 	ld bc, 10
-	call PaintTilemap
-	ld e, INDEX_OW_PALETTE_MODAL
+	call Memcopy
+	ld e, INDEX_OW_PALETTE_MODAL + OAMF_BANK1
 	ld hl, wShadowTilemapAttrs + BG_ROW_2 + BG_COL_5
 	ld bc, 10
 	call PaintTilemapAttrs

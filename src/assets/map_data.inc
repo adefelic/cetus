@@ -100,16 +100,17 @@ Map1EventTriggers:
 EventTriggerGoIntoBuilding:
 	event_trigger WALLS_B, EVENT_TYPE_WARP, EventDefGoIntoBuilding ; it's probably more efficient to have a table offset than a ptr?
 EventDefGoIntoBuilding:
-	event_def_type_warp 1, 0, MAP1, 2, 9, ORIENTATION_SOUTH
+	event_def_type_warp 1, EventFramesGoIntoBuilding, MAP1, 2, 9, ORIENTATION_SOUTH
+EventFramesGoIntoBuilding:
+	event_frame_simple "  Enter?  "
 
 EventTriggerGoBackToOW:
 	event_trigger WALLS_T, EVENT_TYPE_WARP, EventDefGoBackToOW
 EventDefGoBackToOW:
-	event_def_type_warp 1, 0, MAP1, 2, 8, ORIENTATION_NORTH
+	event_def_type_warp 1, EventFramesGoBackToOW, MAP1, 2, 8, ORIENTATION_NORTH
+EventFramesGoBackToOW:
+	event_frame_simple "  Leave?  "
 
-; todo. this will eventually require setting up a character map and getting a font off of the internet
-EventFramesGoThroughDoor:
-	;event_frame
 
 OWTiles::
 INCBIN "build/gfx/ow-simple.2bpp"
@@ -117,6 +118,10 @@ OWTilesEnd::
 ModalTiles::
 INCBIN "build/gfx/modal-simple.2bpp"
 ModalTilesEnd::
+
+ComputerDarkTiles::
+INCBIN "build/gfx/computer-dark.2bpp"
+ComputerDarkTilesEnd::
 
 ; todo
 ; there should be an object for wall _presence_ ie collision

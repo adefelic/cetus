@@ -71,6 +71,7 @@ InitWarpEvent:
 	xor a
 	ld [wEventFrameIndex], a
 
+	call DereferenceHl
 	ld a, l
 	ld [wEventFrameAddr], a
 	ld a, h
@@ -81,4 +82,3 @@ UnsetIsActiveEvent:
 	ld a, FALSE
 	ld [wIsEventActive], a
 	ret
-

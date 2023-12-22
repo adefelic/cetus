@@ -47,7 +47,7 @@ UpdateWarpEvent:
 	ld l, a
 	ld a, [wEventFrameAddr + 1]
 	ld h, a
-	ld a, EVENT_FRAME_SIZE
+	ld a, EVENT_FRAME_SIMPLE_SIZE
 	call AddOffsetToAddress ; this might be silly and inefficient
 	ld a, l
 	ld [wEventFrameAddr], a

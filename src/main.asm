@@ -57,10 +57,18 @@ EntryPoint:
 	call WaitVBlank
 	call DisableLcd
 
-	; Copy BG tile data into VRAM
-	ld de, OWTiles              ; source in ROM
-	ld hl, _VRAM9000            ; dest in VRAM
-	ld bc, ModalTilesEnd - OWTiles ; # of bytes (pixel data) remaining
+	; Copy BG tile data into VRAM bank 0
+	ld de, OWTiles
+	ld hl, _VRAM9000
+	ld bc, ModalTilesEnd - OWTiles
+	call Memcopy
+
+	; Copy BG tile data into VRAM bank 1
+	ld a, 1
+	ld [rVBK], a
+	ld de, ComputerDarkTiles
+	ld hl, _VRAM9000
+	ld bc, ComputerDarkTilesEnd - ComputerDarkTiles
 	call Memcopy
 
 	call InitOWColorPalettes
