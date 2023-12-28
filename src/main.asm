@@ -3,18 +3,21 @@ INCLUDE "src/assets/palette.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/map_constants.inc"
 
-Section "Game State", WRAM0
+SECTION "Game State", WRAM0
 wActiveScreen:: db
 wActiveMap:: dw
 
-Section "Player State", WRAM0
+SECTION "Player State", WRAM0
 wPlayerX:: db
 wPlayerY:: db
 wPlayerOrientation:: db
 
-Section "Screen Variables", WRAM0
+SECTION "Frame State", WRAM0
+wHasPlayerRotatedThisFrame:: db
+wHasPlayerTranslatedThisFrame:: db
+
+SECTION "Screen Variables", WRAM0
 wIsShadowTilemapDirty:: db
-wHasPlayerMovedThisFrame:: db ; rotating counts
 ; todo rendering experiments
 ; wShadowTilemapTopLeftX:: db
 ; wShadowTilemapTopLeftY:: db
@@ -24,8 +27,11 @@ SECTION "Input Variables", WRAM0
 wPreviousFrameKeys: db
 wCurrentFrameKeys: db
 wJoypadDown: db
-wJoypadNewlyPressed: db
-wJoypadNewlyReleased: db
+wJoypadNewlyPressed:: db
+wJoypadNewlyReleased:: db
+
+SECTION "Utility State", WRAM0
+wRandomAdd:: db
 
 ; hardware interrupts
 SECTION "vblank", ROM0[$0040]
@@ -44,7 +50,6 @@ SECTION "joypad", ROM0[$0060]
 	;jp Joypad
 
 SECTION "Header", ROM0[$100]
-
 	nop
 	jp EntryPoint
 
@@ -114,7 +119,8 @@ InitGameState:
 	ld [wJoypadNewlyReleased], a
 
 	ld a, FALSE
-	ld [wHasPlayerMovedThisFrame], a
+	ld [wHasPlayerRotatedThisFrame], a
+	ld [wHasPlayerTranslatedThisFrame], a
 
 	; init player state
 	;call InitPlayerLocation
@@ -126,8 +132,11 @@ InitGameState:
 	ld [wPlayerOrientation], a
 
 	; init game state
-	ld a, FP_SCREEN
+	ld a, SCREEN_EXPLORE
 	ld [wActiveScreen], a
+
+	xor a
+	ld [wRandomAdd], a
 
 	; init screen state
 	ld a, DIRTY
@@ -141,17 +150,23 @@ InitGameState:
 Main:
 	;call ResetFrameState
 	ld a, FALSE
-	ld [wHasPlayerMovedThisFrame], a
+	ld [wHasPlayerRotatedThisFrame], a
+	ld [wHasPlayerTranslatedThisFrame], a
 
 	; todo could move this all into the vblank handler
 	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
 	call DrawScreen ; if dirty, draws screen, cleans. accesses vram
-
 	call UpdateAudio
-	call UpdateKeys ; gets new player input
-	call CheckKeysAndUpdateGameState ; processes input, sets dirty flags
-	call CheckForNewEvents
+
+	; get new player input
+	call UpdateKeys
+
+	; update game state from player input and get ready to draw next frame
+	call ProcessKeypress ; moves or rotates player. advances events.
+	;call
+	call CheckForNewEvents ; checks location for new event
 	call UpdateShadowBGTilemap ; processes game state and dirty flags, draws screen to shadow tilemaps
+	call AdvanceRandomVariables
 	jp Main
 
 ; dma copy wShadowTilemap and wShadowTilemapAttrs to VRAM
@@ -215,7 +230,7 @@ UpdateShadowBGTilemap:
 	cp CLEAN
 	ret z
 	ld a, [wActiveScreen]
-	cp a, PAUSE_SCREEN
+	cp a, SCREEN_PAUSE
 	jp nz, LoadFPScreen
 LoadPauseScreen:
 	call LoadPauseScreenShadowTilemap
@@ -225,34 +240,14 @@ LoadFPScreen:
 	ret
 
 ; this handles one button of input then quits
-CheckKeysAndUpdateGameState:
-CheckPressedStart:
-	ld a, [wJoypadNewlyPressed]
-	and a, PADF_START
-	jp nz, HandleStart
-CheckPressedSelect:
-CheckPressedA:
-	ld a, [wJoypadNewlyPressed]
-	and a, PADF_A
-	jp nz, HandleA
-CheckPressedB:
-CheckPressedUp:
-	ld a, [wJoypadNewlyPressed]
-	and a, PADF_UP
-	jp nz, HandleUp
-CheckPressedDown:
-	ld a, [wJoypadNewlyPressed]
-	and a, PADF_DOWN
-	jp nz, HandleDown
-CheckPressedLeft:
-	ld a, [wJoypadNewlyPressed]
-	and a, PADF_LEFT
-	jp nz, HandleLeft
-CheckPressedRight:
-	ld a, [wJoypadNewlyPressed]
-	and a, PADF_RIGHT
-	jp nz, HandleRight
-	ret
+; todo: this should start with a big condition that checks the current screen
+ProcessKeypress:
+	ld a, [wActiveScreen]
+	cp SCREEN_EXPLORE
+	jp z, HandleInputExploreScreen
+	cp SCREEN_PAUSE
+	jp z, HandleInputPauseScreen
+	jp HandleInputBattleScreen
 
 ; pause screen contains current map
 LoadPauseScreenShadowTilemap:
@@ -264,7 +259,7 @@ LoadPauseScreenShadowTilemap:
 	ld hl, wShadowTilemap
 	ld bc, TILEMAP_SIZE
 	call Memcopy
-	ld a, PAUSE_SCREEN
+	ld a, SCREEN_PAUSE
 	ld [wActiveScreen], a
 	ret
 
@@ -350,6 +345,14 @@ WaitVBlank:
 	ld a, [rLY]
 	cp 144
 	jp c, WaitVBlank
+	ret
+
+AdvanceRandomVariables:
+	ld a, [rDIV]
+	ld b, a
+	ld a, [wRandomAdd]
+	add b
+	ld [wRandomAdd], a
 	ret
 
 DisableLcd:

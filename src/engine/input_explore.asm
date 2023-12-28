@@ -2,30 +2,52 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/map_constants.inc"
 INCLUDE "src/macros/event.inc"
+INCLUDE "src/utils/hardware.inc"
 
-SECTION "Input Handling", ROMX
+SECTION "Explore Screen Input Handling", ROMX
 
-HandleStart::
-	ld a, [wActiveScreen]
-	cp PAUSE_SCREEN
-	jp z, UnpauseGame
-PauseGame:
-	ld a, PAUSE_SCREEN
-	ld [wActiveScreen], a
-	jp DirtyTilemap
-UnpauseGame:
-	ld a, FP_SCREEN
-	ld [wActiveScreen], a
-DirtyFpSegmentsAndTilemap:
-	call DirtyFpSegments
-	ld a, TRUE
-	ld [wHasPlayerMovedThisFrame], a
-DirtyTilemap:
-	ld a, DIRTY
-	ld [wIsShadowTilemapDirty], a
+HandleInputExploreScreen::
+CheckPressedStart:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_START
+	jp nz, HandleStart
+;CheckPressedSelect:
+;	ld a, [wJoypadNewlyPressed]
+;	and a, PADF_SELECT
+;	jp nz, HandleSelect
+CheckPressedA:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_A
+	jp nz, HandleA
+;CheckPressedB:
+;	ld a, [wJoypadNewlyPressed]
+;	and a, PADF_B
+;	jp nz, HandleB
+CheckPressedUp:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_UP
+	jp nz, HandleUp
+CheckPressedDown:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_DOWN
+	jp nz, HandleDown
+CheckPressedLeft:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_LEFT
+	jp nz, HandleLeft
+CheckPressedRight:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_RIGHT
+	jp nz, HandleRight
 	ret
 
-HandleA::
+HandleStart:
+PauseGame:
+	ld a, SCREEN_PAUSE
+	ld [wActiveScreen], a
+	jp DirtyTilemap
+
+HandleA:
 	ld a, [wIsEventActive]
 	cp FALSE
 	ret z
@@ -41,7 +63,7 @@ UpdateWarpEvent:
 	inc a
 	cp b
 	jp z, CompleteWarpEvent
-.incrementFrameAddress
+.incrementEventFrameAddress
 	; inc frame address by frame size
 	ld a, [wEventFrameAddr]
 	ld l, a
@@ -53,7 +75,7 @@ UpdateWarpEvent:
 	ld [wEventFrameAddr], a
 	ld a, h
 	ld [wEventFrameAddr + 1], a
-.incrementFrameIndex
+.incrementEventFrameIndex
 	ld a, [wEventFrameIndex]
 	inc a
 	ld [wEventFrameIndex], a
@@ -74,14 +96,16 @@ CompleteWarpEvent:
 	ld [wPlayerY], a
 	ld a, [hl]
 	ld [wPlayerOrientation], a
-	; clear data?
+	; clear data todo?
 	ld a, FALSE
 	ld [wIsEventActive], a
+	ld a, TRUE
+	ld [wHasPlayerTranslatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
-HandleUp::
+HandleUp:
 	ld a, [wActiveScreen]
-	cp PAUSE_SCREEN
+	cp SCREEN_PAUSE
 	ret z ; ignore input if paused
 AttemptMoveUp:
 	ld a, [wPlayerX]
@@ -135,11 +159,13 @@ AdvanceIfNoCollisions:
 	ret
 .finishAdvance
 	call PlayFootstepSfx
+	ld a, TRUE
+	ld [wHasPlayerTranslatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
-HandleDown::
+HandleDown:
 	ld a, [wActiveScreen]
-	cp PAUSE_SCREEN
+	cp SCREEN_PAUSE
 	ret z ; ignore input if paused
 AttemptTurnAround:
 	ld a, [wPlayerOrientation]
@@ -158,9 +184,9 @@ AttemptTurnAround:
 .facingSouth
 	jp SetOrientationNorth
 
-HandleLeft::
+HandleLeft:
 	ld a, [wActiveScreen]
-	cp PAUSE_SCREEN
+	cp SCREEN_PAUSE
 	ret z ; ignore input if paused
 AttemptTurnLeft:
 	ld a, [wPlayerOrientation]
@@ -179,9 +205,9 @@ AttemptTurnLeft:
 .facingSouth
 	jp SetOrientationEast
 
-HandleRight::
+HandleRight:
 	ld a, [wActiveScreen]
-	cp PAUSE_SCREEN
+	cp SCREEN_PAUSE
 	ret z ; ignore input if paused
 AttemptTurnRight:
 	ld a, [wPlayerOrientation]
@@ -203,19 +229,34 @@ AttemptTurnRight:
 SetOrientationNorth:
 	ld a, ORIENTATION_NORTH
 	ld [wPlayerOrientation], a
+	ld a, TRUE
+	ld [wHasPlayerRotatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
 SetOrientationSouth:
 	ld a, ORIENTATION_SOUTH
 	ld [wPlayerOrientation], a
+	ld a, TRUE
+	ld [wHasPlayerRotatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
 SetOrientationEast:
 	ld a, ORIENTATION_EAST
 	ld [wPlayerOrientation], a
+	ld a, TRUE
+	ld [wHasPlayerRotatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
 SetOrientationWest:
 	ld a, ORIENTATION_WEST
 	ld [wPlayerOrientation], a
+	ld a, TRUE
+	ld [wHasPlayerRotatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
+
+DirtyFpSegmentsAndTilemap:
+	call DirtyFpSegments
+DirtyTilemap:
+	ld a, DIRTY
+	ld [wIsShadowTilemapDirty], a
+	ret

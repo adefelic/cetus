@@ -22,7 +22,10 @@ InitEventState::
 
 ; all this will do is populate player event state with new events
 CheckForNewEvents::
-	ld a, [wHasPlayerMovedThisFrame]
+	ld a, [wHasPlayerRotatedThisFrame]
+	ld b, a
+	ld a, [wHasPlayerTranslatedThisFrame]
+	and b ; false is 1. we want to check is either of these happened
 	cp FALSE
 	ret z
 .checkLocationTableForEvent
