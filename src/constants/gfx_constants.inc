@@ -32,6 +32,7 @@ DEF PALETTE_SET_SIZE EQU PALETTE_SIZE * NUM_PAL_IN_SET ; bytes
 ; screen defs
 DEF SCREEN_WIDTH EQU 20  ; tiles
 DEF SCREEN_HEIGHT EQU 18 ; tiles
+DEF SCREEN_SIZE EQU SCREEN_WIDTH * SCREEN_HEIGHT ; bytes
 
 ; tilemap defs
 DEF TILEMAP_WIDTH EQU 32  ; bytes / tile ids / tiles
