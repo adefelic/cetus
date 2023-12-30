@@ -104,10 +104,14 @@ CompleteWarpEvent:
 	jp DirtyFpSegmentsAndTilemap
 
 HandleUp:
-	ld a, [wActiveScreen]
-	cp SCREEN_PAUSE
-	ret z ; ignore input if paused
-AttemptMoveUp:
+.seedRandMaybe
+	ld a, [wIsRandSeeded]
+	cp TRUE
+	jp z, .attemptMoveUp
+	ld a, [rDIV]
+	ld c, a
+	call Srand
+.attemptMoveUp:
 	ld a, [wPlayerX]
 	ld d, a
 	ld a, [wPlayerY]
@@ -158,16 +162,15 @@ AdvanceIfNoCollisions:
 	; todo play bonk sound
 	ret
 .finishAdvance
+	call UpdateEncDangerLevel ; todo only do this if you're not on a safe space
+	; todo reset danger if you're on a safe space
 	call PlayFootstepSfx
 	ld a, TRUE
 	ld [wHasPlayerTranslatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
 HandleDown:
-	ld a, [wActiveScreen]
-	cp SCREEN_PAUSE
-	ret z ; ignore input if paused
-AttemptTurnAround:
+.attemptTurnAround:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -185,10 +188,7 @@ AttemptTurnAround:
 	jp SetOrientationNorth
 
 HandleLeft:
-	ld a, [wActiveScreen]
-	cp SCREEN_PAUSE
-	ret z ; ignore input if paused
-AttemptTurnLeft:
+.attemptTurnLeft:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -206,10 +206,7 @@ AttemptTurnLeft:
 	jp SetOrientationEast
 
 HandleRight:
-	ld a, [wActiveScreen]
-	cp SCREEN_PAUSE
-	ret z ; ignore input if paused
-AttemptTurnRight:
+.attemptTurnRight:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -259,4 +256,37 @@ DirtyFpSegmentsAndTilemap:
 DirtyTilemap:
 	ld a, DIRTY
 	ld [wIsShadowTilemapDirty], a
+	ret
+
+InitEncDangerLevel::
+	ld a, ENC_DANGER_LVL_INITIAL
+	ld [wCurrentDangerLevel], a
+	ld a, 1
+	ld [wStepsToNextEncDangerLevel], a
+	ret
+
+UpdateEncDangerLevel:
+	ld a, [wStepsToNextEncDangerLevel]
+	dec a
+	ld [wStepsToNextEncDangerLevel], a
+	cp 0
+	ret nz
+.incEncDangerLevel:
+	ld a, [wCurrentDangerLevel]
+	inc a
+	cp ENC_DANGER_LVL_RESET
+	jp nz, .setEncDangerLevel
+	ld a, ENC_DANGER_LVL_GREY
+.setEncDangerLevel:
+	ld [wCurrentDangerLevel], a
+.setIsEncounterTime:
+	cp ENC_DANGER_LVL_GREY
+	jp nz, .rollNewEncDangerLevel
+	ld a, TRUE
+	ld [wIsEncounterTime], a ; todo 1 needs to be reset somewhere and 2 is a placeholder
+.rollNewEncDangerLevel: ; set wStepsToNextEncDangerLevel to a number between 3 and 6 inclusive
+	call Rand ; between 0 and 255
+	and `00000011 ; between 0 and 3
+	add 3 ; between 3 and 6
+	ld [wStepsToNextEncDangerLevel], a
 	ret

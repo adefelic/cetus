@@ -3,9 +3,15 @@ INCLUDE "src/assets/palette.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/map_constants.inc"
 
+SECTION "App State", WRAM0
+wIsRandSeeded:: db
+
 SECTION "Game State", WRAM0
 wActiveScreen:: db
 wActiveMap:: dw
+wStepsToNextEncDangerLevel:: db
+wCurrentDangerLevel:: db
+wIsEncounterTime:: db ; this is a placeholder for changing the game screen state
 
 SECTION "Player State", WRAM0
 wPlayerX:: db
@@ -121,6 +127,8 @@ InitGameState:
 	ld a, FALSE
 	ld [wHasPlayerRotatedThisFrame], a
 	ld [wHasPlayerTranslatedThisFrame], a
+	ld [wIsRandSeeded], a
+	ld [wIsEncounterTime], a
 
 	; init player state
 	;call InitPlayerLocation
@@ -130,6 +138,7 @@ InitGameState:
 	ld [wPlayerY], a
 	ld a, ORIENTATION_EAST
 	ld [wPlayerOrientation], a
+	call InitEncDangerLevel
 
 	; init game state
 	ld a, SCREEN_EXPLORE
@@ -148,12 +157,11 @@ InitGameState:
 	call EnableLcd
 
 Main:
-	;call ResetFrameState
+	;call ResetFrameState ; ResetPerFrameState?
 	ld a, FALSE
 	ld [wHasPlayerRotatedThisFrame], a
 	ld [wHasPlayerTranslatedThisFrame], a
 
-	; todo could move this all into the vblank handler
 	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
 	call DrawScreen ; if dirty, draws screen, cleans. accesses vram
 	call UpdateAudio
@@ -267,7 +275,6 @@ LoadPauseScreenShadowTilemap:
 	ld hl, wShadowTilemapAttrs
 	ld bc, TILEMAP_SIZE
 	call PaintTilemapAttrs
-
 	ld a, SCREEN_PAUSE
 	ld [wActiveScreen], a
 	ret
