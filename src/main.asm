@@ -56,13 +56,10 @@ SECTION "joypad", ROM0[$0060]
 	;jp Joypad
 
 SECTION "Header", ROM0[$100]
-	nop
 	jp EntryPoint
-
-	; rgbfix is going to overwrite this region
-
-	ds $150 - @, 0 ; make room for the header
-
+	; make room for the header
+	; rgbfix will overwrite this region
+	ds $150 - @, 0
 EntryPoint:
 	; don't turn off the lcd outside of VBlank
 	call WaitVBlank

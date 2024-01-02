@@ -1,17 +1,13 @@
-; screens
+; universal
+DEF TRUE  EQU $00
+DEF FALSE EQU $01
 
+; screens
 DEF SCREEN_EXPLORE EQU $00
 DEF SCREEN_PAUSE EQU $01
 DEF SCREEN_BATTLE EQU $02
 
-; todo maybe steal constant macros from pret
-	;const_def
-	;const SCREEN_EXPLORE    ; 0
-	;const SCREEN_PAUSE ; 1
-
-DEF TRUE  EQU $00
-DEF FALSE EQU $01
-
+; encounter danger levels
 DEF ENC_DANGER_LVL_INITIAL EQU $00
 DEF ENC_DANGER_LVL_GREY    EQU $01
 DEF ENC_DANGER_LVL_YELLOW  EQU $02
