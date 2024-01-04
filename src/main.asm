@@ -1,5 +1,7 @@
 INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/assets/palette.inc"
+INCLUDE "src/assets/tile_data.inc"
+INCLUDE "src/assets/tiles/indices/computer_dark.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/map_constants.inc"
 
@@ -65,12 +67,21 @@ EntryPoint:
 	call WaitVBlank
 	call DisableLcd
 
+.loadOverworldTiles
+	; todo should make inc files for different tile aggregations?
+	; so i dont have to track where in tile memory to put tiles
+
 	; Copy BG tile data into VRAM bank 0
 	ld de, OWTiles
 	ld hl, _VRAM9000
-	ld bc, ModalTilesEnd - OWTiles
+	ld bc, OWTilesEnd - OWTiles
+	call Memcopy
+	ld de, ModalTiles
+	;ld hl, _VRAM9000 + OWTilesEnd - OWTiles
+	ld bc, ModalTilesEnd - ModalTiles
 	call Memcopy
 
+.loadFont
 	; Copy BG tile data into VRAM bank 1
 	ld a, 1
 	ld [rVBK], a
@@ -79,7 +90,33 @@ EntryPoint:
 	ld bc, ComputerDarkTilesEnd - ComputerDarkTiles
 	call Memcopy
 
-	call InitOWColorPalettes
+	; back to VRAM bank 0
+	ld a, 0
+	ld [rVBK], a
+.loadHudSprites
+
+	; copy into sprite tile area, bank 0
+	ld de, CompassTiles
+	ld hl, _VRAM8000
+	ld bc, CompassTilesEnd - CompassTiles
+	call Memcopy
+
+	; for compass ui. reusing font tiles for now
+	ld de, ComputerDarkTiles + "N" * TILE_SIZE
+	ld bc, TILE_SIZE
+	call Memcopy
+	ld de, ComputerDarkTiles + "S" * TILE_SIZE
+	ld bc, TILE_SIZE
+	call Memcopy
+	ld de, ComputerDarkTiles + "E" * TILE_SIZE
+	ld bc, TILE_SIZE
+	call Memcopy
+	ld de, ComputerDarkTiles + "W" * TILE_SIZE
+	ld bc, TILE_SIZE
+	call Memcopy
+
+.loadPalettes
+	call InitColorPalettes
 
 ClearOam:
 	xor a          ; value to write to bytes
@@ -148,7 +185,7 @@ InitGameState:
 	ld a, DIRTY
 	ld [wIsShadowTilemapDirty], a
 	call DirtyFpSegments
-	call UpdateShadowBGTilemap
+	call UpdateScreen
 
 	call InitAudio
 	call EnableLcd
@@ -168,18 +205,17 @@ Main:
 
 	; update game state from player input and get ready to draw next frame
 	call ProcessKeypress ; moves or rotates player. advances events.
-	;call
 	call CheckForNewEvents ; checks location for new event
-	call UpdateShadowBGTilemap ; processes game state and dirty flags, draws screen to shadow tilemaps
+	call UpdateScreen ; processes game state and dirty flags, draws screen to shadow tilemaps
 	call AdvanceRandomVariables
 	jp Main
 
-; dma copy wShadowTilemap and wShadowTilemapAttrs to VRAM
+; dma copy shadow ram to VRAM
 DrawScreen:
 	ld a, [wIsShadowTilemapDirty]
 	cp CLEAN
 	ret z
-.drawShadowTilemap
+.copyShadowTilemapIntoVram
 	; select vram bank 0
 	xor a
 	ld [rVBK], a
@@ -201,7 +237,7 @@ DrawScreen:
 .waitforDmaToFinish: ; necessary?
     dec bc
     jr nz, .waitforDmaToFinish
-.drawShadowTilemapAttrs
+.copyShadowTilemapAttrsIntoVram
 	; select vram bank 1
 	ld a, 1
 	ld [rVBK], a
@@ -222,6 +258,9 @@ DrawScreen:
 .waitforDmaToFinishAgain: ; necessary?
     dec bc
     jr nz, .waitforDmaToFinishAgain
+.copyShadowOamIntoOam
+	ld hl, wShadowOam
+	call RunDma
 .clean ; necessary?
 	; select vram bank 0.
 	xor a
@@ -230,22 +269,21 @@ DrawScreen:
 	ld [wIsShadowTilemapDirty], a
 	ret
 
-UpdateShadowBGTilemap:
+UpdateScreen:
 	ld a, [wIsShadowTilemapDirty]
 	cp CLEAN
 	ret z
 	ld a, [wActiveScreen]
 	cp a, SCREEN_PAUSE
 	jp nz, LoadFPScreen
-LoadPauseScreen:
-	call LoadPauseScreenShadowTilemap
+.loadPauseScreen:
+	call LoadPauseScreen
 	ret
-LoadFPScreen:
-	call LoadFPShadowTilemap
+.loadFPScreen:
+	call LoadFPScreen
 	ret
 
-; this handles one button of input then quits
-; todo: this should start with a big condition that checks the current screen
+; this handles one button of input then returns
 ProcessKeypress:
 	ld a, [wActiveScreen]
 	cp SCREEN_EXPLORE
@@ -256,7 +294,7 @@ ProcessKeypress:
 
 ; this routine should probably live somewhere with other rendering code
 ; pause screen contains current map
-LoadPauseScreenShadowTilemap:
+LoadPauseScreen:
 .loadShadowTilemap
 	ld a, [wActiveMap]
 	ld d, a
@@ -276,13 +314,20 @@ LoadPauseScreenShadowTilemap:
 	ld [wActiveScreen], a
 	ret
 
-InitOWColorPalettes:
+InitColorPalettes:
 	ld a, BCPSF_AUTOINC ; load bg color palette specification auto increment on write + addr of zero
 	ld [rBCPS], a
+	ld de, OwBgPaletteSet
+	ld hl, rBCPD
+	ld b, PALETTE_SET_SIZE
+	call CopyColorsToPalette
 
-	ld de, OWPaletteSet
-	ld bc, PALETTE_SET_SIZE
-	call WriteColorsToPalette
+	ld a, OCPSF_AUTOINC ; load obj color palette specification auto increment on write + addr of zero
+	ld [rOCPS], a
+	ld de, OwObjPaletteSet
+	ld hl, rOCPD
+	ld b, PALETTE_SET_SIZE
+	call CopyColorsToPalette
 	ret
 
 UpdateKeys:
@@ -342,16 +387,15 @@ Memcopy::
 	jp nz, Memcopy
 	ret
 
-; @param de: source (must be multiple of 2 bytes, color defs are 2 bytes)
-; @param bc: length in bytes
-WriteColorsToPalette:
+; @param de: source
+; @param hl: destination
+; @param b: length
+CopyColorsToPalette:
 	ld a, [de]
-	ld [rBCPD], a
+	ld [hl], a
 	inc de
-	dec bc
-	ld a, b
-	or c
-	jp nz, WriteColorsToPalette
+	dec b
+	jp nz, CopyColorsToPalette
 	ret
 
 WaitVBlank:
@@ -377,3 +421,14 @@ EnableLcd:
 	ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
 	ld [rLCDC], a
 	ret
+
+; @param hl, source address, zero-aligned
+RunDma:
+    ld a, HIGH(hl)
+    ldh [$FF46], a  ; start DMA transfer (starts right after instruction)
+    ld a, 40        ; delay for a total of 4×40 = 160 cycles
+.wait
+    dec a           ; 1 cycle
+    jr nz, .wait    ; 3 cycles
+    ret
+

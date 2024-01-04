@@ -1,7 +1,7 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/map_constants.inc"
-INCLUDE "src/assets/tile.inc"
+INCLUDE "src/assets/tiles/indices/overworld_tileset.inc"
 INCLUDE "src/utils/hardware.inc"
 
 SECTION "FP Renderer Entry Point", ROMX
@@ -36,18 +36,20 @@ SECTION "FP Renderer Entry Point", ROMX
 ; [T][TRL][T]
 
 ; todo change map stuff to compass directions. trbl is player relative, nesw is absolute
+; todo rename this to ... draw FP Tilemap?
 ; trbl are all relative to the player's orientation
-LoadFPShadowTilemap::
+LoadFPScreen::
+.updateShadowBgTilemap
+	; render walls
 	call RenderFirstPersonView
+	; maybe render event modal
 	ld a, [wIsEventActive]
 	cp FALSE
-	ret z
-	call RenderEvent
-	ret
-
-RenderEvent:
+	jp z, .updateShadowOam
 	; overlay a text box reading from the active event pointers
-	call PaintModal
+	call PaintEventModal
+.updateShadowOam
+	call PaintCompass
 	ret
 
 RenderFirstPersonView::

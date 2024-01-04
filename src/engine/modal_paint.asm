@@ -1,6 +1,6 @@
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/map_constants.inc"
-INCLUDE "src/assets/tile.inc"
+INCLUDE "src/assets/tiles/indices/overworld_tileset.inc"
 INCLUDE "src/utils/hardware.inc"
 
 DEF MODAL_TOP_LEFT EQU rows 2 + cols 4
@@ -11,7 +11,7 @@ SECTION "Modal Paint Routines", ROMX
 
 ; todo make macro for painting both tilemap + attrs
 ; @param d: the tile index to paint with
-PaintModal::
+PaintEventModal::
 .tl_corner
 	ld d, MODAL_TILE_TOP_LEFT_CORNER
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT

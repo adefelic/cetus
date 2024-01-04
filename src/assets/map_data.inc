@@ -1,6 +1,7 @@
 INCLUDE "src/constants/map_constants.inc"
 INCLUDE "src/macros/event.inc"
-INCLUDE "src/assets/tile.inc"
+INCLUDE "src/assets/tiles/indices/overworld_tileset.inc"
+INCLUDE "src/assets/tiles/indices/computer_dark.inc"
 
 SECTION "Map Data", ROMX
 
@@ -110,18 +111,6 @@ EventDefGoBackToOW:
 	event_def_type_warp 1, EventFramesGoBackToOW, MAP1, 2, 8, ORIENTATION_NORTH
 EventFramesGoBackToOW:
 	event_frame_simple "  Leave?  "
-
-
-OWTiles::
-INCBIN "build/gfx/ow-simple.2bpp"
-OWTilesEnd::
-ModalTiles::
-INCBIN "build/gfx/modal-simple.2bpp"
-ModalTilesEnd::
-
-ComputerDarkTiles::
-INCBIN "build/gfx/computer-dark.2bpp"
-ComputerDarkTilesEnd::
 
 ; todo
 ; there should be an object for wall _presence_ ie collision

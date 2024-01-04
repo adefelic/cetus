@@ -39,6 +39,11 @@ DEF TILEMAP_WIDTH EQU 32  ; bytes / tile ids / tiles
 DEF TILEMAP_HEIGHT EQU 32 ; bytes / tile ids / tiles
 DEF TILEMAP_SIZE EQU TILEMAP_WIDTH * TILEMAP_HEIGHT ; bytes
 
+; tile defs
+DEF TILE_WIDTH EQU 8 ; pixels
+DEF TILE_HEIGHT EQU 8 ; pixels
+DEF TILE_SIZE EQU 16 ; bytes
+
 ; misc
 DEF CLEAN EQU $00
 DEF DIRTY EQU $01
@@ -47,6 +52,7 @@ DEF DIRTY EQU $01
 DEF BG_ROW_SIZE EQU $20
 DEF rows EQUS "BG_ROW_SIZE *"
 
+; todo deprecate, replace with rows
 DEF BG_ROW_0  EQU $0
 DEF BG_ROW_1  EQU $20
 DEF BG_ROW_2  EQU $40
@@ -69,6 +75,7 @@ DEF BG_ROW_17 EQU $220
 DEF BG_COL_SIZE EQU $1
 DEF cols EQUS "BG_COL_SIZE *"
 
+; todo deprecate, replace with cols
 DEF BG_COL_0  EQU $0
 DEF BG_COL_1  EQU $1
 DEF BG_COL_2  EQU $2
