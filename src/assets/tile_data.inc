@@ -3,7 +3,6 @@ ModalTiles::
 INCBIN "build/gfx/modal-simple.2bpp"
 ModalTilesEnd::
 
-; bg bank 0
 OWTiles::
 INCBIN "build/gfx/ow-simple.2bpp"
 OWTilesEnd::
@@ -13,7 +12,11 @@ ComputerDarkTiles::
 INCBIN "build/gfx/computer-dark.2bpp"
 ComputerDarkTilesEnd::
 
-; sprites
+; sprites bank 0
 CompassTiles::
 INCBIN "build/gfx/compass.2bpp"
 CompassTilesEnd::
+
+DangerIndicatorTiles::
+INCBIN "build/gfx/danger-indicator.2bpp"
+DangerIndicatorTilesEnd::

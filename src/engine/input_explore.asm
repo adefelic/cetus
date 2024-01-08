@@ -259,7 +259,7 @@ DirtyTilemap:
 	ret
 
 InitEncDangerLevel::
-	ld a, ENC_DANGER_LVL_INITIAL
+	ld a, DANGER_INITIAL
 	ld [wCurrentDangerLevel], a
 	ld a, 1
 	ld [wStepsToNextEncDangerLevel], a
@@ -274,13 +274,13 @@ UpdateEncDangerLevel:
 .incEncDangerLevel:
 	ld a, [wCurrentDangerLevel]
 	inc a
-	cp ENC_DANGER_LVL_RESET
+	cp DANGER_RESET
 	jp nz, .setEncDangerLevel
-	ld a, ENC_DANGER_LVL_GREY
+	ld a, DANGER_GREY
 .setEncDangerLevel:
 	ld [wCurrentDangerLevel], a
 .setIsEncounterTime:
-	cp ENC_DANGER_LVL_GREY
+	cp DANGER_GREY
 	jp nz, .rollNewEncDangerLevel
 	ld a, TRUE
 	ld [wIsEncounterTime], a ; todo 1 needs to be reset somewhere and 2 is a placeholder

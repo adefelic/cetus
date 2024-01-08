@@ -49,6 +49,7 @@ LoadFPScreen::
 	; overlay a text box reading from the active event pointers
 	call PaintEventModal
 .updateShadowOam
+	call PaintDangerIndicator
 	call PaintCompass
 	ret
 

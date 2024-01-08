@@ -94,33 +94,18 @@ EntryPoint:
 	ld a, 0
 	ld [rVBK], a
 .loadHudSprites
-
 	; copy into sprite tile area, bank 0
 	ld de, CompassTiles
 	ld hl, _VRAM8000
-	ld bc, CompassTilesEnd - CompassTiles
+	ld bc, DangerIndicatorTilesEnd - CompassTiles
 	call Memcopy
-
-	; for compass ui. reusing font tiles for now
-	;ld de, ComputerDarkTiles + "N" * TILE_SIZE
-	;ld bc, TILE_SIZE
-	;call Memcopy
-	;ld de, ComputerDarkTiles + "S" * TILE_SIZE
-	;ld bc, TILE_SIZE
-	;call Memcopy
-	;ld de, ComputerDarkTiles + "E" * TILE_SIZE
-	;ld bc, TILE_SIZE
-	;call Memcopy
-	;ld de, ComputerDarkTiles + "W" * TILE_SIZE
-	;ld bc, TILE_SIZE
-	;call Memcopy
 
 .loadPalettes
 	call InitColorPalettes
 
 ClearOam:
-	xor a          ; value to write to bytes
-	ld b, 160      ; # of bytes to write
+	xor a
+	ld b, sizeof_OAM_ATTRS * OAM_COUNT ; # of bytes to write
 	ld hl, _OAMRAM ; dest
 .loop:
 	ld [hli], a
