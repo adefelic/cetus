@@ -102,18 +102,18 @@ EntryPoint:
 	call Memcopy
 
 	; for compass ui. reusing font tiles for now
-	ld de, ComputerDarkTiles + "N" * TILE_SIZE
-	ld bc, TILE_SIZE
-	call Memcopy
-	ld de, ComputerDarkTiles + "S" * TILE_SIZE
-	ld bc, TILE_SIZE
-	call Memcopy
-	ld de, ComputerDarkTiles + "E" * TILE_SIZE
-	ld bc, TILE_SIZE
-	call Memcopy
-	ld de, ComputerDarkTiles + "W" * TILE_SIZE
-	ld bc, TILE_SIZE
-	call Memcopy
+	;ld de, ComputerDarkTiles + "N" * TILE_SIZE
+	;ld bc, TILE_SIZE
+	;call Memcopy
+	;ld de, ComputerDarkTiles + "S" * TILE_SIZE
+	;ld bc, TILE_SIZE
+	;call Memcopy
+	;ld de, ComputerDarkTiles + "E" * TILE_SIZE
+	;ld bc, TILE_SIZE
+	;call Memcopy
+	;ld de, ComputerDarkTiles + "W" * TILE_SIZE
+	;ld bc, TILE_SIZE
+	;call Memcopy
 
 .loadPalettes
 	call InitColorPalettes
