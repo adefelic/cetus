@@ -7,7 +7,7 @@ DEF MODAL_TOP_LEFT EQU rows 2 + cols 4
 DEF MODAL_WIDTH EQU 12
 DEF MODAL_HEIGHT EQU 3
 
-SECTION "Modal Paint Routines", ROMX
+SECTION "Event Modal Paint Routines", ROMX
 
 ; todo make macro for painting both tilemap + attrs
 ; @param d: the tile index to paint with

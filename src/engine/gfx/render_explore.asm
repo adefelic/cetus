@@ -4,7 +4,7 @@ INCLUDE "src/constants/map_constants.inc"
 INCLUDE "src/assets/tiles/indices/overworld_tileset.inc"
 INCLUDE "src/utils/hardware.inc"
 
-SECTION "FP Renderer Entry Point", ROMX
+SECTION "Explore Screen Renderer", ROMX
 
 ; first person perspective can render up to 6 tiles:
 ;
@@ -38,7 +38,7 @@ SECTION "FP Renderer Entry Point", ROMX
 ; todo change map stuff to compass directions. trbl is player relative, nesw is absolute
 ; todo rename this to ... draw FP Tilemap?
 ; trbl are all relative to the player's orientation
-LoadFPScreen::
+LoadExploreScreen::
 .updateShadowBgTilemap
 	; render walls
 	call RenderFirstPersonView

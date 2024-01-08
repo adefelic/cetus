@@ -260,12 +260,12 @@ UpdateScreen:
 	ret z
 	ld a, [wActiveScreen]
 	cp a, SCREEN_PAUSE
-	jp nz, LoadFPScreen
+	jp nz, .loadExploreScreen
 .loadPauseScreen:
 	call LoadPauseScreen
 	ret
-.loadFPScreen:
-	call LoadFPScreen
+.loadExploreScreen:
+	call LoadExploreScreen
 	ret
 
 ; this handles one button of input then returns
@@ -276,28 +276,6 @@ ProcessKeypress:
 	cp SCREEN_PAUSE
 	jp z, HandleInputPauseScreen
 	jp HandleInputBattleScreen
-
-; this routine should probably live somewhere with other rendering code
-; pause screen contains current map
-LoadPauseScreen:
-.loadShadowTilemap
-	ld a, [wActiveMap]
-	ld d, a
-	ld a, [wActiveMap+1]
-	ld e, a
-	ld hl, wShadowTilemap
-	ld bc, TILEMAP_SIZE
-	call Memcopy
-.loadShadowTilemapAttributes
-	; todo this is broken. the shadow tilemaps should be SCREEN_SIZE rather than TILEMAP_SIZE?
-	; this would only change the time it takes for the memcopy. it would save space though
-	ld e, INDEX_OW_PALETTE_Z0
-	ld hl, wShadowTilemapAttrs
-	ld bc, TILEMAP_SIZE
-	call PaintTilemapAttrs
-	ld a, SCREEN_PAUSE
-	ld [wActiveScreen], a
-	ret
 
 InitColorPalettes:
 	ld a, BCPSF_AUTOINC ; load bg color palette specification auto increment on write + addr of zero
