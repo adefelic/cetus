@@ -20,6 +20,4 @@ LoadPauseScreen::
 	ld hl, wShadowTilemapAttrs
 	ld bc, TILEMAP_SIZE
 	call PaintTilemapAttrs
-	ld a, SCREEN_PAUSE
-	ld [wActiveScreen], a
 	ret

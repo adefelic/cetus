@@ -1,22 +1,22 @@
+INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
-INCLUDE "src/utils/hardware.inc"
 
-SECTION "Pause Screen Input Handling", ROMX
+SECTION "Battle Screen Input Handling", ROMX
 
-HandleInputPauseScreen::
-.checkPressedStart:
-	ld a, [wJoypadNewlyPressed]
-	and a, PADF_START
-	jp nz, HandleStart
+HandleInputEncounterScreen::
+;.checkPressedStart:
+;	ld a, [wJoypadNewlyPressed]
+;	and a, PADF_START
+;	jp nz, HandleStart
 ;.checkPressedSelect:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_SELECT
 ;	jp nz, HandleSelect
-;.checkPressedA:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_A
-;	jp nz, HandleA
+.checkPressedA:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_A
+	jp nz, HandleA
 ;.checkPressedB:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_B
@@ -39,13 +39,14 @@ HandleInputPauseScreen::
 ;	jp nz, HandleRight
 	ret
 
-HandleStart:
-UnpauseGame:
+
+
+HandleA:
 	ld a, SCREEN_EXPLORE
 	ld [wActiveScreen], a
-DirtyFpSegmentsAndTilemap:
-	call DirtyFpSegments
+	jp DirtyTilemap
 DirtyTilemap:
 	ld a, DIRTY
 	ld [wIsShadowTilemapDirty], a
 	ret
+

@@ -10,7 +10,7 @@ SECTION "Map Data", ROMX
 ; i also think it makes sense for now to have table to govern both room graphics and collision
 
 Maps::
-DEF MAP1 EQU $00
+DEF MAP1 EQU $00 ; map id
 ; todo this will require a GetMap addr function
 
 Map1::
@@ -112,8 +112,11 @@ EventDefGoBackToOW:
 EventFramesGoBackToOW:
 	event_frame_simple "  Leave?  "
 
+Map1Encounters:
+
+
 ; todo
-; there should be an object for wall _presence_ ie collision
+; there should be an object for wall _presence_ (collision)
 ; and there should be an object for wall _style_
 
 ; maps tiles data to wall presence data. supports 3 wall types
@@ -140,4 +143,26 @@ RoomWallAttributes::
 	db %01010100 ; 14, ROOM_TRB
 	db %01010100 ; 15, ROOM_TRBL
 RoomWallAttributesEnd:
+
+; tile ids for a hard-coded encounter screen
+Map1Encounter:: ; 20 x 18
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Map1EncounterEnd::
 

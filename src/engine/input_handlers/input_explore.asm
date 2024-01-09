@@ -7,35 +7,35 @@ INCLUDE "src/utils/hardware.inc"
 SECTION "Explore Screen Input Handling", ROMX
 
 HandleInputExploreScreen::
-CheckPressedStart:
+.checkPressedStart:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_START
 	jp nz, HandleStart
-;CheckPressedSelect:
+;.checkPressedSelect:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_SELECT
 ;	jp nz, HandleSelect
-CheckPressedA:
+.checkPressedA:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_A
 	jp nz, HandleA
-;CheckPressedB:
+;.checkPressedB:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_B
 ;	jp nz, HandleB
-CheckPressedUp:
+.checkPressedUp:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_UP
 	jp nz, HandleUp
-CheckPressedDown:
+.checkPressedDown:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_DOWN
 	jp nz, HandleDown
-CheckPressedLeft:
+.checkPressedLeft:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_LEFT
 	jp nz, HandleLeft
-CheckPressedRight:
+.checkPressedRight:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_RIGHT
 	jp nz, HandleRight
@@ -162,7 +162,7 @@ AdvanceIfNoCollisions:
 	; todo play bonk sound
 	ret
 .finishAdvance
-	call UpdateEncDangerLevel ; todo only do this if you're not on a safe space
+	call UpdateDangerLevel ; todo only do this if you're not on a safe space
 	; todo reset danger if you're on a safe space
 	call PlayFootstepSfx
 	ld a, TRUE
@@ -258,35 +258,39 @@ DirtyTilemap:
 	ld [wIsShadowTilemapDirty], a
 	ret
 
-InitEncDangerLevel::
+; should combine reset and initial. when you hit a tile, if danger is reset, roll for grey
+InitDangerLevel::
 	ld a, DANGER_INITIAL
 	ld [wCurrentDangerLevel], a
 	ld a, 1
-	ld [wStepsToNextEncDangerLevel], a
+	ld [wStepsToNextDangerLevel], a
 	ret
 
-UpdateEncDangerLevel:
-	ld a, [wStepsToNextEncDangerLevel]
+UpdateDangerLevel:
+	ld a, [wStepsToNextDangerLevel]
 	dec a
-	ld [wStepsToNextEncDangerLevel], a
+	ld [wStepsToNextDangerLevel], a
 	cp 0
 	ret nz
-.incEncDangerLevel:
+.incDangerLevel:
 	ld a, [wCurrentDangerLevel]
 	inc a
-	cp DANGER_RESET
-	jp nz, .setEncDangerLevel
-	ld a, DANGER_GREY
-.setEncDangerLevel:
 	ld [wCurrentDangerLevel], a
-.setIsEncounterTime:
-	cp DANGER_GREY
-	jp nz, .rollNewEncDangerLevel
-	ld a, TRUE
-	ld [wIsEncounterTime], a ; todo 1 needs to be reset somewhere and 2 is a placeholder
-.rollNewEncDangerLevel: ; set wStepsToNextEncDangerLevel to a number between 3 and 6 inclusive
+	cp DANGER_RESET
+	jp nz, RollNewDangerLevelSteps
+.resetDangerLevelToGrey:
+	ld a, DANGER_GREY
+	ld [wCurrentDangerLevel], a
+.initEncounter
+	; todo really this should begin the encounter on the next frame
+	ld a, SCREEN_ENCOUNTER
+	ld [wActiveScreen], a
+	call RollNewDangerLevelSteps
+	jp GenerateEncounter
+
+RollNewDangerLevelSteps: ; set wStepsToNextDangerLevel to a number between 3 and 6 inclusive
 	call Rand ; between 0 and 255
 	and `00000011 ; between 0 and 3
 	add 3 ; between 3 and 6
-	ld [wStepsToNextEncDangerLevel], a
+	ld [wStepsToNextDangerLevel], a
 	ret

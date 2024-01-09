@@ -11,7 +11,7 @@ wIsRandSeeded:: db
 SECTION "Game State", WRAM0
 wActiveScreen:: db
 wActiveMap:: dw
-wStepsToNextEncDangerLevel:: db
+wStepsToNextDangerLevel:: db
 wCurrentDangerLevel:: db
 wIsEncounterTime:: db ; this is a placeholder for changing the game screen state
 
@@ -26,11 +26,7 @@ wHasPlayerTranslatedThisFrame:: db
 
 SECTION "Screen Variables", WRAM0
 wIsShadowTilemapDirty:: db
-; todo rendering experiments
-; wShadowTilemapTopLeftX:: db
-; wShadowTilemapTopLeftY:: db
 
-; pokemon crystal stores these in hram
 SECTION "Input Variables", WRAM0
 wPreviousFrameKeys: db
 wCurrentFrameKeys: db
@@ -157,7 +153,7 @@ InitGameState:
 	ld [wPlayerY], a
 	ld a, ORIENTATION_EAST
 	ld [wPlayerOrientation], a
-	call InitEncDangerLevel
+	call InitDangerLevel
 
 	; init game state
 	ld a, SCREEN_EXPLORE
@@ -170,7 +166,7 @@ InitGameState:
 	ld a, DIRTY
 	ld [wIsShadowTilemapDirty], a
 	call DirtyFpSegments
-	call UpdateScreen
+	call UpdateShadowScreen
 
 	call InitAudio
 	call EnableLcd
@@ -191,7 +187,7 @@ Main:
 	; update game state from player input and get ready to draw next frame
 	call ProcessKeypress ; moves or rotates player. advances events.
 	call CheckForNewEvents ; checks location for new event
-	call UpdateScreen ; processes game state and dirty flags, draws screen to shadow tilemaps
+	call UpdateShadowScreen ; processes game state and dirty flags, draws screen to shadow tilemaps
 	call AdvanceRandomVariables
 	jp Main
 
@@ -254,18 +250,23 @@ DrawScreen:
 	ld [wIsShadowTilemapDirty], a
 	ret
 
-UpdateScreen:
+UpdateShadowScreen:
 	ld a, [wIsShadowTilemapDirty]
 	cp CLEAN
 	ret z
 	ld a, [wActiveScreen]
-	cp a, SCREEN_PAUSE
-	jp nz, .loadExploreScreen
+	cp a, SCREEN_EXPLORE
+	jp z, .loadExploreScreen
+	cp a, SCREEN_ENCOUNTER
+	jp z, .loadEncounterScreen
 .loadPauseScreen:
 	call LoadPauseScreen
 	ret
 .loadExploreScreen:
 	call LoadExploreScreen
+	ret
+.loadEncounterScreen:
+	call LoadEncounterScreen
 	ret
 
 ; this handles one button of input then returns
@@ -275,7 +276,7 @@ ProcessKeypress:
 	jp z, HandleInputExploreScreen
 	cp SCREEN_PAUSE
 	jp z, HandleInputPauseScreen
-	jp HandleInputBattleScreen
+	jp HandleInputEncounterScreen
 
 InitColorPalettes:
 	ld a, BCPSF_AUTOINC ; load bg color palette specification auto increment on write + addr of zero
