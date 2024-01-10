@@ -39,8 +39,6 @@ HandleInputEncounterScreen::
 ;	jp nz, HandleRight
 	ret
 
-
-
 HandleA:
 	ld a, SCREEN_EXPLORE
 	ld [wActiveScreen], a

@@ -258,7 +258,6 @@ DirtyTilemap:
 	ld [wIsShadowTilemapDirty], a
 	ret
 
-; should combine reset and initial. when you hit a tile, if danger is reset, roll for grey
 InitDangerLevel::
 	ld a, DANGER_INITIAL
 	ld [wCurrentDangerLevel], a
@@ -266,6 +265,7 @@ InitDangerLevel::
 	ld [wStepsToNextDangerLevel], a
 	ret
 
+; todo i could call InitDangerLevel when reset is hit
 UpdateDangerLevel:
 	ld a, [wStepsToNextDangerLevel]
 	dec a

@@ -1,7 +1,7 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/map_constants.inc"
-INCLUDE "src/assets/tiles/indices/overworld_tileset.inc"
+INCLUDE "src/assets/tiles/indices/explore_encounter_tileset.inc"
 INCLUDE "src/utils/hardware.inc"
 
 SECTION "Explore Screen Renderer", ROMX
@@ -69,11 +69,11 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 .paintLeftWall
 	; okay instead we can say ... load that wall's panel index
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, FP_TILE_WALL_SIDE
+	ld d, TILE_ENVIRONMENT_WALL_SIDE
 	call CheckSegmentA
 	call CheckSegmentK
 	call CheckSegmentP
-	ld d, FP_TILE_DIAG_L
+	ld d, TILE_ENVIRONMENT_DIAG_L
 	call CheckSegmentPDiag
 .checkTopWall
 	call GetRoomCoordsCenterNearWRTPlayer
@@ -84,7 +84,7 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	jp z, .checkRightWall
 .paintTopWall
 	ld e, INDEX_OW_PALETTE_Z1
-	ld d, FP_TILE_WALL_SIDE
+	ld d, TILE_ENVIRONMENT_WALL_SIDE
 	call CheckSegmentB
 	call CheckSegmentC
 	call CheckSegmentD
@@ -102,15 +102,15 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	jp z, .paintGround
 .paintRightWall
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, FP_TILE_WALL_SIDE
+	ld d, TILE_ENVIRONMENT_WALL_SIDE
 	call CheckSegmentE
 	call CheckSegmentO
 	call CheckSegmentR
-	ld d, FP_TILE_DIAG_R
+	ld d, TILE_ENVIRONMENT_DIAG_R
 	call CheckSegmentRDiag
 .paintGround
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, FP_TILE_GROUND ; todo on all ground paints, flip (shuffle could be cool) ground every step
+	ld d, TILE_ENVIRONMENT_GROUND ; todo on all ground paints, flip (shuffle could be cool) ground every step
 	call CheckSegmentQ
 
 ProcessTileLeftNear:
@@ -124,12 +124,12 @@ ProcessTileLeftNear:
 	jp z, .paintGround
 .paintTopWall
 	ld e, INDEX_OW_PALETTE_Z1
-	ld d, FP_TILE_WALL_SIDE
+	ld d, TILE_ENVIRONMENT_WALL_SIDE
 	call CheckSegmentA
 	call CheckSegmentK
 .paintGround
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, FP_TILE_GROUND
+	ld d, TILE_ENVIRONMENT_GROUND
 	call CheckSegmentP
 	call CheckSegmentPDiag
 
@@ -144,12 +144,12 @@ ProcessTileRightNear:
 	jp z, .paintGround
 .paintTopWall
 	ld e, INDEX_OW_PALETTE_Z1
-	ld d, FP_TILE_WALL_SIDE
+	ld d, TILE_ENVIRONMENT_WALL_SIDE
 	call CheckSegmentE
 	call CheckSegmentO
 .paintGround
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, FP_TILE_GROUND
+	ld d, TILE_ENVIRONMENT_GROUND
 	call CheckSegmentR
 	call CheckSegmentRDiag
 
@@ -163,15 +163,15 @@ ProcessTileCenterFar:
 	jp z, .paintLeftGround ; paint ground if no left wall
 .paintLeftWall
 	ld e, INDEX_OW_PALETTE_Z2
-	ld d, FP_TILE_WALL_SIDE
+	ld d, TILE_ENVIRONMENT_WALL_SIDE
 	call CheckSegmentB
 	call CheckSegmentL
-	ld d, FP_TILE_DIAG_L
+	ld d, TILE_ENVIRONMENT_DIAG_L
 	call CheckSegmentLDiag
 	jp .checkTopWall
 .paintLeftGround
 	ld e, INDEX_OW_PALETTE_Z2
-	ld d, FP_TILE_GROUND
+	ld d, TILE_ENVIRONMENT_GROUND
 	call CheckSegmentL
 	call CheckSegmentLDiag
 .checkTopWall
@@ -182,14 +182,14 @@ ProcessTileCenterFar:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance
 .paintTopWall
-	ld d, FP_TILE_WALL_SIDE
+	ld d, TILE_ENVIRONMENT_WALL_SIDE
 	ld e, INDEX_OW_PALETTE_Z3
 	call CheckSegmentC
 	jp .checkRightWall
 .paintDistance
 	; todo: set to distance palette
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, FP_TILE_DARK
+	ld d, TILE_ENVIRONMENT_DARK
 	call CheckSegmentC
 .checkRightWall
 	call GetRoomCoordsCenterFarWRTPlayer
@@ -200,20 +200,20 @@ ProcessTileCenterFar:
 	jp z, .paintRightGround ; paint ground if no right wall
 .paintRightWall
 	ld e, INDEX_OW_PALETTE_Z2
-	ld d, FP_TILE_WALL_SIDE
+	ld d, TILE_ENVIRONMENT_WALL_SIDE
 	call CheckSegmentD
 	call CheckSegmentN
-	ld d, FP_TILE_DIAG_R
+	ld d, TILE_ENVIRONMENT_DIAG_R
 	call CheckSegmentNDiag
 	jp .paintCenterGround
 .paintRightGround
 	ld e, INDEX_OW_PALETTE_Z2
-	ld d, FP_TILE_GROUND
+	ld d, TILE_ENVIRONMENT_GROUND
 	call CheckSegmentN
 	call CheckSegmentNDiag
 .paintCenterGround
 	ld e, INDEX_OW_PALETTE_Z2
-	ld d, FP_TILE_GROUND
+	ld d, TILE_ENVIRONMENT_GROUND
 	call CheckSegmentM
 
 ProcessTileLeftFar:
@@ -226,19 +226,19 @@ ProcessTileLeftFar:
 	jp z, .paintDistance
 .paintTopWall
 	ld e, INDEX_OW_PALETTE_Z3
-	ld d, FP_TILE_WALL_SIDE
+	ld d, TILE_ENVIRONMENT_WALL_SIDE
 	call CheckSegmentA
 	call CheckSegmentB
 	jp .paintGround
 .paintDistance
 	; todo: set to distance palette
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, FP_TILE_DARK
+	ld d, TILE_ENVIRONMENT_DARK
 	call CheckSegmentA
 	call CheckSegmentB
 .paintGround
 	ld e, INDEX_OW_PALETTE_Z2
-	ld d, FP_TILE_GROUND
+	ld d, TILE_ENVIRONMENT_GROUND
 	call CheckSegmentK
 	call CheckSegmentL
 	call CheckSegmentLDiag
@@ -253,19 +253,19 @@ ProcessTileRightFar:
 	jp z, .paintDistance
 .paintTopWall
 	ld e, INDEX_OW_PALETTE_Z3
-	ld d, FP_TILE_WALL_SIDE
+	ld d, TILE_ENVIRONMENT_WALL_SIDE
 	call CheckSegmentD
 	call CheckSegmentE
 	jp .paintGround
 .paintDistance
 	; todo: set to distance palette
 	ld e, INDEX_OW_PALETTE_Z0
-	ld d, FP_TILE_DARK
+	ld d, TILE_ENVIRONMENT_DARK
 	call CheckSegmentD
 	call CheckSegmentE
 .paintGround
 	ld e, INDEX_OW_PALETTE_Z2
-	ld d, FP_TILE_GROUND
+	ld d, TILE_ENVIRONMENT_GROUND
 	call CheckSegmentO
 	call CheckSegmentN
 	call CheckSegmentNDiag

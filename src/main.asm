@@ -63,7 +63,7 @@ EntryPoint:
 	call WaitVBlank
 	call DisableLcd
 
-.loadOverworldTiles
+.loadExploreAndEncounterTiles
 	; todo should make inc files for different tile aggregations?
 	; so i dont have to track where in tile memory to put tiles
 
@@ -72,9 +72,15 @@ EntryPoint:
 	ld hl, _VRAM9000
 	ld bc, OWTilesEnd - OWTiles
 	call Memcopy
+
 	ld de, ModalTiles
 	;ld hl, _VRAM9000 + OWTilesEnd - OWTiles
 	ld bc, ModalTilesEnd - ModalTiles
+	call Memcopy
+
+	ld de, EncounterTiles
+	;ld hl, _VRAM9000 + OWTilesEnd - OWTiles
+	ld bc, EncounterTilesEnd - EncounterTiles
 	call Memcopy
 
 .loadFont

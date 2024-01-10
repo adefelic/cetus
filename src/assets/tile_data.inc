@@ -1,11 +1,15 @@
 ; bg bank 0
+OWTiles::
+INCBIN "build/gfx/explore-simple.2bpp"
+OWTilesEnd::
+
 ModalTiles::
 INCBIN "build/gfx/modal-simple.2bpp"
 ModalTilesEnd::
 
-OWTiles::
-INCBIN "build/gfx/ow-simple.2bpp"
-OWTilesEnd::
+EncounterTiles::
+INCBIN "build/gfx/encounter-simple.2bpp"
+EncounterTilesEnd::
 
 ; bg bank 1
 ComputerDarkTiles::
