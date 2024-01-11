@@ -42,7 +42,7 @@ HandleInputPauseScreen::
 HandleStart:
 UnpauseGame:
 	ld a, SCREEN_EXPLORE
-	ld [wActiveScreen], a
+	ld [wActiveFrameScreen], a
 DirtyFpSegmentsAndTilemap:
 	call DirtyFpSegments
 DirtyTilemap:

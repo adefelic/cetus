@@ -44,7 +44,7 @@ HandleInputExploreScreen::
 HandleStart:
 PauseGame:
 	ld a, SCREEN_PAUSE
-	ld [wActiveScreen], a
+	ld [wActiveFrameScreen], a
 	jp DirtyTilemap
 
 HandleA:
@@ -282,9 +282,9 @@ UpdateDangerLevel:
 	ld a, DANGER_GREY
 	ld [wCurrentDangerLevel], a
 .initEncounter
-	; todo really this should begin the encounter on the next frame
+	; todo really this should begin the encounter on the next frame, after the player has moved
 	ld a, SCREEN_ENCOUNTER
-	ld [wActiveScreen], a
+	ld [wActiveFrameScreen], a
 	call RollNewDangerLevelSteps
 	jp GenerateEncounter
 

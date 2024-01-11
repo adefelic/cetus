@@ -1,6 +1,6 @@
 INCLUDE "src/constants/map_constants.inc"
 INCLUDE "src/macros/event.inc"
-INCLUDE "src/assets/tiles/indices/explore_encounter_tileset.inc"
+INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/assets/tiles/indices/computer_dark.inc"
 
 SECTION "Map Data", ROMX

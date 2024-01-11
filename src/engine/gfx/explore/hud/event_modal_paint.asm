@@ -1,6 +1,6 @@
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/map_constants.inc"
-INCLUDE "src/assets/tiles/indices/explore_encounter_tileset.inc"
+INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/utils/hardware.inc"
 
 DEF MODAL_TOP_LEFT EQU rows 2 + cols 4

@@ -41,7 +41,7 @@ HandleInputEncounterScreen::
 
 HandleA:
 	ld a, SCREEN_EXPLORE
-	ld [wActiveScreen], a
+	ld [wActiveFrameScreen], a
 	jp DirtyTilemap
 DirtyTilemap:
 	ld a, DIRTY

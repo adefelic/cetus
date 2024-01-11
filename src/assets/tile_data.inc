@@ -24,3 +24,7 @@ CompassTilesEnd::
 DangerIndicatorTiles::
 INCBIN "build/gfx/danger-indicator.2bpp"
 DangerIndicatorTilesEnd::
+
+ChinchillaTiles::
+INCBIN "build/gfx/chinchilla.2bpp"
+ChinchillaTilesEnd::

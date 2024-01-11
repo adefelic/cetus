@@ -18,4 +18,16 @@ LoadPauseScreen::
 	ld hl, wShadowTilemapAttrs
 	ld bc, TILEMAP_SIZE
 	call PaintTilemapAttrs
+.updateShadowOam:
+	ld a, [wPreviousFrameScreen]
+	cp SCREEN_ENCOUNTER
+	jp z, .unloadEncounterSprites
+	cp SCREEN_EXPLORE
+	jp z, .unloadExploreSprites
+.unloadEncounterSprites
+	; this is technically unnecessary. the pause screen isn't accessible from the encounter screen
+	call UnloadEncounterSprites
+	ret
+.unloadExploreSprites
+	call UnloadExploreSprites
 	ret

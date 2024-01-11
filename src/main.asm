@@ -9,16 +9,21 @@ SECTION "App State", WRAM0
 wIsRandSeeded:: db
 
 SECTION "Game State", WRAM0
-wActiveScreen:: db
+wActiveFrameScreen:: db
+wPreviousFrameScreen:: db
 wActiveMap:: dw
 wStepsToNextDangerLevel:: db
 wCurrentDangerLevel:: db
-wIsEncounterTime:: db ; this is a placeholder for changing the game screen state
 
-SECTION "Player State", WRAM0
+SECTION "Explore Player State", WRAM0
 wPlayerX:: db
 wPlayerY:: db
 wPlayerOrientation:: db
+
+SECTION "Encounter Player State", WRAM0
+; coords of top left pixel of sprite
+wPlayerSpriteX:: db
+wPlayerSpriteY:: db
 
 SECTION "Frame State", WRAM0
 wHasPlayerRotatedThisFrame:: db
@@ -63,10 +68,10 @@ EntryPoint:
 	call WaitVBlank
 	call DisableLcd
 
+; todo should make inc files for different tile aggregations?
+; so i dont have to track where in tile memory to put tiles
+LoadBgTiles:
 .loadExploreAndEncounterTiles
-	; todo should make inc files for different tile aggregations?
-	; so i dont have to track where in tile memory to put tiles
-
 	; Copy BG tile data into VRAM bank 0
 	ld de, OWTiles
 	ld hl, _VRAM9000
@@ -74,15 +79,12 @@ EntryPoint:
 	call Memcopy
 
 	ld de, ModalTiles
-	;ld hl, _VRAM9000 + OWTilesEnd - OWTiles
 	ld bc, ModalTilesEnd - ModalTiles
 	call Memcopy
 
 	ld de, EncounterTiles
-	;ld hl, _VRAM9000 + OWTilesEnd - OWTiles
 	ld bc, EncounterTilesEnd - EncounterTiles
 	call Memcopy
-
 .loadFont
 	; Copy BG tile data into VRAM bank 1
 	ld a, 1
@@ -91,18 +93,23 @@ EntryPoint:
 	ld hl, _VRAM9000
 	ld bc, ComputerDarkTilesEnd - ComputerDarkTiles
 	call Memcopy
-
 	; back to VRAM bank 0
 	ld a, 0
 	ld [rVBK], a
+
+LoadObjectTiles:
 .loadHudSprites
 	; copy into sprite tile area, bank 0
 	ld de, CompassTiles
 	ld hl, _VRAM8000
 	ld bc, DangerIndicatorTilesEnd - CompassTiles
 	call Memcopy
+.loadPlayerEncounterSprite
+	ld de, ChinchillaTiles
+	ld bc, ChinchillaTilesEnd - ChinchillaTiles
+	call Memcopy
 
-.loadPalettes
+loadPalettes:
 	call InitColorPalettes
 
 ClearOam:
@@ -114,6 +121,7 @@ ClearOam:
 	dec b
 	jp nz, .loop
 
+; necessary?
 ClearShadowTilemap:
 	ld bc, TILEMAP_SIZE
 	ld hl, wShadowTilemap
@@ -122,6 +130,7 @@ ClearShadowTilemap:
 	dec bc
 	jp nz, .loop
 
+; necessary?
 ClearShadowTilemapAttrs:
 	ld bc, TILEMAP_SIZE
 	ld hl, wShadowTilemapAttrs
@@ -149,7 +158,6 @@ InitGameState:
 	ld [wHasPlayerRotatedThisFrame], a
 	ld [wHasPlayerTranslatedThisFrame], a
 	ld [wIsRandSeeded], a
-	ld [wIsEncounterTime], a
 
 	; init player state
 	;call InitPlayerLocation
@@ -163,7 +171,9 @@ InitGameState:
 
 	; init game state
 	ld a, SCREEN_EXPLORE
-	ld [wActiveScreen], a
+	ld [wActiveFrameScreen], a
+	ld a, SCREEN_NONE
+	ld [wPreviousFrameScreen], a
 
 	xor a
 	ld [wRandomAdd], a
@@ -182,6 +192,9 @@ Main:
 	ld a, FALSE
 	ld [wHasPlayerRotatedThisFrame], a
 	ld [wHasPlayerTranslatedThisFrame], a
+	; set previous frame screen to current frame screen
+	ld a, [wActiveFrameScreen]
+	ld [wPreviousFrameScreen], a
 
 	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
 	call DrawScreen ; if dirty, draws screen, cleans. accesses vram
@@ -260,7 +273,7 @@ UpdateShadowScreen:
 	ld a, [wIsShadowTilemapDirty]
 	cp CLEAN
 	ret z
-	ld a, [wActiveScreen]
+	ld a, [wActiveFrameScreen]
 	cp a, SCREEN_EXPLORE
 	jp z, .loadExploreScreen
 	cp a, SCREEN_ENCOUNTER
@@ -277,7 +290,7 @@ UpdateShadowScreen:
 
 ; this handles one button of input then returns
 ProcessKeypress:
-	ld a, [wActiveScreen]
+	ld a, [wActiveFrameScreen]
 	cp SCREEN_EXPLORE
 	jp z, HandleInputExploreScreen
 	cp SCREEN_PAUSE
