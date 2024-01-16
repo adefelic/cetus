@@ -12,7 +12,6 @@ wPlayerSpriteFlags:: db
 
 SECTION "Player Sprite Paint Routines", ROMX
 
-; is the plan to have variables for the current sprite? yes
 PaintPlayerSprite::
 	ld a, [wPlayerDirection]
 	cp DIRECTION_LEFT

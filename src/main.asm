@@ -36,7 +36,7 @@ wIsShadowTilemapDirty:: db
 SECTION "Input Variables", WRAM0
 wPreviousFrameKeys: db
 wCurrentFrameKeys: db
-wJoypadDown: db
+wJoypadDown:: db
 wJoypadNewlyPressed:: db
 wJoypadNewlyReleased:: db
 
@@ -205,7 +205,12 @@ Main:
 	call UpdateKeys
 
 	; update game state from player input and get ready to draw next frame
-	call ProcessKeypress ; moves or rotates player. advances events.
+	call ProcessInput
+
+	; ongoing effects for encounter screen
+	call ApplyGravity
+
+	; ongoing effects for explore screen. could this be attached to movement?
 	call CheckForNewEvents ; checks location for new event
 	call UpdateShadowScreen ; processes game state and dirty flags, draws screen to shadow tilemaps
 	call AdvanceRandomVariables
@@ -290,7 +295,7 @@ UpdateShadowScreen:
 	ret
 
 ; this handles one button of input then returns
-ProcessKeypress:
+ProcessInput:
 	ld a, [wActiveFrameScreen]
 	cp SCREEN_EXPLORE
 	jp z, HandleInputExploreScreen

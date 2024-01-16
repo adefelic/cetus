@@ -10,6 +10,8 @@ wEventFrameIndex:: db ; index of current event frame of active event
 wEventFramesSize:: db ; index of final event frame of active event
 
 ; specifically _new_ event parsing. event loading? event initiation?
+
+; todo rename these to "explore events"
 SECTION "Event Parsing", ROMX
 
 InitEventState::

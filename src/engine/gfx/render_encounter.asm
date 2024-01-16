@@ -3,9 +3,6 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/assets/tiles/indices/object_tiles.inc"
 INCLUDE "src/constants/encounter_constants.inc"
 
-DEF INITIAL_PLAYER_ENCOUNTER_Y EQU TILE_HEIGHT * 12 + OAM_PADDING_Y
-DEF INITIAL_PLAYER_ENCOUNTER_X EQU TILE_WIDTH  * 4 + OAM_PADDING_X
-
 SECTION "Encounter Screen Renderer", ROMX
 
 ; load hardcoded screen into shadow tilemap

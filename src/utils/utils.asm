@@ -1,7 +1,7 @@
 SECTION "Utils", ROMX
 
 
-; TODO make these into macros
+; TODO make these into macros?
 
 
 ; @param a, offset

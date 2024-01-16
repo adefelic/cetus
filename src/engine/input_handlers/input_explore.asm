@@ -10,44 +10,50 @@ HandleInputExploreScreen::
 .checkPressedStart:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_START
-	jp nz, HandleStart
-;.checkPressedSelect:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_SELECT
-;	jp nz, HandleSelect
+	jp nz, HandlePressedStart
+.checkPressedSelect:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_SELECT
+	jp nz, HandlePressedSelect
 .checkPressedA:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_A
-	jp nz, HandleA
+	jp nz, HandlePressedA
 ;.checkPressedB:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_B
-;	jp nz, HandleB
+;	jp nz, HandlePressedB
 .checkPressedUp:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_UP
-	jp nz, HandleUp
+	jp nz, HandlePressedUp
 .checkPressedDown:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_DOWN
-	jp nz, HandleDown
+	jp nz, HandlePressedDown
 .checkPressedLeft:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_LEFT
-	jp nz, HandleLeft
+	jp nz, HandlePressedLeft
 .checkPressedRight:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_RIGHT
-	jp nz, HandleRight
+	jp nz, HandlePressedRight
 	ret
 
-HandleStart:
+HandlePressedStart:
 PauseGame:
 	ld a, SCREEN_PAUSE
 	ld [wActiveFrameScreen], a
 	jp DirtyTilemap
 
-HandleA:
+HandlePressedSelect:
+DebugEnterEncounter:
+	ld a, SCREEN_ENCOUNTER
+	ld [wActiveFrameScreen], a
+	jp DirtyTilemap
+
+HandlePressedA:
 	ld a, [wIsEventActive]
 	cp FALSE
 	ret z
@@ -103,7 +109,7 @@ CompleteWarpEvent:
 	ld [wHasPlayerTranslatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
-HandleUp:
+HandlePressedUp:
 .seedRandMaybe
 	ld a, [wIsRandSeeded]
 	cp TRUE
@@ -169,7 +175,7 @@ AdvanceIfNoCollisions:
 	ld [wHasPlayerTranslatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
-HandleDown:
+HandlePressedDown:
 .attemptTurnAround:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
@@ -187,7 +193,7 @@ HandleDown:
 .facingSouth
 	jp SetOrientationNorth
 
-HandleLeft:
+HandlePressedLeft:
 .attemptTurnLeft:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
@@ -205,7 +211,7 @@ HandleLeft:
 .facingSouth
 	jp SetOrientationEast
 
-HandleRight:
+HandlePressedRight:
 .attemptTurnRight:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH

@@ -8,38 +8,38 @@ HandleInputPauseScreen::
 .checkPressedStart:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_START
-	jp nz, HandleStart
+	jp nz, HandlePressedStart
 ;.checkPressedSelect:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_SELECT
-;	jp nz, HandleSelect
+;	jp nz, HandlePressedSelect
 ;.checkPressedA:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_A
-;	jp nz, HandleA
+;	jp nz, HandlePressedA
 ;.checkPressedB:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_B
-;	jp nz, HandleB
+;	jp nz, HandlePressedB
 ;.checkPressedUp:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_UP
-;	jp nz, HandleUp
+;	jp nz, HandlePressedUp
 ;.checkPressedDown:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_DOWN
-;	jp nz, HandleDown
+;	jp nz, HandlePressedDown
 ;.checkPressedLeft:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_LEFT
-;	jp nz, HandleLeft
+;	jp nz, HandlePressedLeft
 ;.checkPressedRight:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_RIGHT
-;	jp nz, HandleRight
+;	jp nz, HandlePressedRight
 	ret
 
-HandleStart:
+HandlePressedStart:
 UnpauseGame:
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
