@@ -1,6 +1,6 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
-INCLUDE "src/constants/map_constants.inc"
+INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/macros/event.inc"
 INCLUDE "src/utils/hardware.inc"
 
@@ -91,9 +91,9 @@ CompleteWarpEvent:
 	ld a, [hli]
 	; todo do something with the map id that's currently in a
 	ld a, [hli]
-	ld [wPlayerX], a
+	ld [wPlayerExploreX], a
 	ld a, [hli]
-	ld [wPlayerY], a
+	ld [wPlayerExploreY], a
 	ld a, [hl]
 	ld [wPlayerOrientation], a
 	; clear data todo?
@@ -112,9 +112,9 @@ HandleUp:
 	ld c, a
 	call Srand
 .attemptMoveUp:
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	ld e, a
 	call GetActiveMapRoomAddrFromCoords ; puts player bg map entry addr in hl
 	call GetRoomWallAttributesAddrFromMapAddr ; put related RoomWallAttributes addr in hl
@@ -130,33 +130,33 @@ AdvanceIfNoCollisions:
 	call GetWestWallTypeFromRoomAttrAddr
 	cp a, WALL_TYPE_NONE
 	jp nz, .doNotAdvance
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	dec a
-	ld [wPlayerX], a
+	ld [wPlayerExploreX], a
 	jp .finishAdvance
 .facingNorth
 	call GetNorthWallTypeFromRoomAttrAddr
 	cp a, WALL_TYPE_NONE
 	jp nz, .doNotAdvance
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	dec a
-	ld [wPlayerY], a
+	ld [wPlayerExploreY], a
 	jp .finishAdvance
 .facingEast
 	call GetEastWallTypeFromRoomAttrAddr
 	cp a, WALL_TYPE_NONE
 	jp nz, .doNotAdvance
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	inc a
-	ld [wPlayerX], a
+	ld [wPlayerExploreX], a
 	jp .finishAdvance
 .facingSouth
 	call GetSouthWallTypeFromRoomAttrAddr
 	cp a, WALL_TYPE_NONE
 	jp nz, .doNotAdvance
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	inc a
-	ld [wPlayerY], a
+	ld [wPlayerExploreY], a
 	jp .finishAdvance
 .doNotAdvance
 	; todo play bonk sound

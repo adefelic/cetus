@@ -44,6 +44,10 @@ DEF TILE_WIDTH EQU 8 ; pixels
 DEF TILE_HEIGHT EQU 8 ; pixels
 DEF TILE_SIZE EQU 16 ; bytes
 
+; oam coordinate padding
+DEF OAM_PADDING_Y EQU 16
+DEF OAM_PADDING_X EQU 8
+
 ; misc
 DEF CLEAN EQU $00
 DEF DIRTY EQU $01

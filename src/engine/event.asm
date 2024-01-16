@@ -31,9 +31,9 @@ CheckForNewEvents::
 .checkLocationTableForEvent
 	; get event trigger entry
 	ld bc, Map1EventLocations
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	ld e, a
 	call GetRoomAddrFromCoords ; into hl
 	ld a, [hl] ; contains offset

@@ -1,6 +1,6 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
-INCLUDE "src/constants/map_constants.inc"
+INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/assets/tiles/indices/object_tiles.inc"
 INCLUDE "src/utils/hardware.inc"
@@ -56,7 +56,7 @@ LoadExploreScreen::
 .unloadUnusedSprites
 	cp SCREEN_ENCOUNTER
 	jp nz, .updateExploreSprites
-	call UnloadEncounterSprites
+	call PaintEncounterSpritesOffScreen
 ;.initExploreSprites
 	; init maybe not right word.
 	; they should all be initialized (loaded into oam) when the game loads
@@ -68,7 +68,7 @@ LoadExploreScreen::
 	call PaintCompass
 	ret
 
-UnloadExploreSprites::
+PaintExploreSpritesOffScreen::
 	ld a, OFFSCREEN_Y
 	ld [wShadowOam + OAM_HUD_COMPASS_ARROW + OAMA_Y], a
 	ld [wShadowOam + OAM_HUD_COMPASS_CHAR + OAMA_Y], a

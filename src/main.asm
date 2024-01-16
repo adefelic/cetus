@@ -3,7 +3,7 @@ INCLUDE "src/assets/palette.inc"
 INCLUDE "src/assets/tile_data.inc"
 INCLUDE "src/assets/tiles/indices/computer_dark.inc"
 INCLUDE "src/constants/constants.inc"
-INCLUDE "src/constants/map_constants.inc"
+INCLUDE "src/constants/explore_constants.inc"
 
 SECTION "App State", WRAM0
 wIsRandSeeded:: db
@@ -16,14 +16,15 @@ wStepsToNextDangerLevel:: db
 wCurrentDangerLevel:: db
 
 SECTION "Explore Player State", WRAM0
-wPlayerX:: db
-wPlayerY:: db
+wPlayerExploreX:: db
+wPlayerExploreY:: db
 wPlayerOrientation:: db
 
 SECTION "Encounter Player State", WRAM0
 ; coords of top left pixel of sprite
-wPlayerSpriteX:: db
-wPlayerSpriteY:: db
+wPlayerEncounterX:: db
+wPlayerEncounterY:: db
+wPlayerDirection:: db
 
 SECTION "Frame State", WRAM0
 wHasPlayerRotatedThisFrame:: db
@@ -162,9 +163,9 @@ InitGameState:
 	; init player state
 	;call InitPlayerLocation
 	ld a, 3
-	ld [wPlayerX], a
+	ld [wPlayerExploreX], a
 	ld a, 1
-	ld [wPlayerY], a
+	ld [wPlayerExploreY], a
 	ld a, ORIENTATION_EAST
 	ld [wPlayerOrientation], a
 	call InitDangerLevel

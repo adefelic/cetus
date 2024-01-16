@@ -1,6 +1,7 @@
 INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
+INCLUDE "src/constants/encounter_constants.inc"
 
 SECTION "Battle Screen Input Handling", ROMX
 
@@ -29,20 +30,36 @@ HandleInputEncounterScreen::
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_DOWN
 ;	jp nz, HandleDown
-;.checkPressedLeft:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_LEFT
-;	jp nz, HandleLeft
-;.checkPressedRight:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_RIGHT
-;	jp nz, HandleRight
+.checkPressedLeft:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_LEFT
+	jp nz, HandleLeft
+.checkPressedRight:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_RIGHT
+	jp nz, HandleRight
 	ret
 
 HandleA:
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
 	jp DirtyTilemap
+
+HandleLeft:
+	ld a, DIRECTION_LEFT
+	ld [wPlayerDirection], a
+	ld a, [wPlayerEncounterX]
+	sub PLAYER_VELOCITY_X
+	; bounds check
+	ld [wPlayerEncounterX], a
+	jp DirtyTilemap
+HandleRight:
+	ld a, DIRECTION_RIGHT
+	ld [wPlayerDirection], a
+	ld a, [wPlayerEncounterX]
+	add PLAYER_VELOCITY_X
+	; bounds check
+	ld [wPlayerEncounterX], a
 DirtyTilemap:
 	ld a, DIRTY
 	ld [wIsShadowTilemapDirty], a

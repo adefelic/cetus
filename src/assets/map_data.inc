@@ -1,4 +1,4 @@
-INCLUDE "src/constants/map_constants.inc"
+INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/macros/event.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/assets/tiles/indices/computer_dark.inc"

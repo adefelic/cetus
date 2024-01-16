@@ -1,5 +1,5 @@
 INCLUDE "src/constants/constants.inc"
-INCLUDE "src/constants/map_constants.inc"
+INCLUDE "src/constants/explore_constants.inc"
 
 SECTION "Map / Room Parsing", ROMX
 
@@ -105,9 +105,9 @@ GetWestWallTypeFromRoomAttrAddr::
 ; @return d: bg map x coord
 ; @return e: bg map y coord
 GetRoomCoordsCenterNearWRTPlayer::
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	ld e, a
 	ret
 
@@ -122,31 +122,31 @@ GetRoomCoordsLeftNearWRTPlayer::
 	cp a, ORIENTATION_SOUTH
 	jp z, .facingSouth
 .facingWest
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	inc a
 	ld e, a
 	ret
 .facingNorth
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	dec a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	ld e, a
 	ret
 .facingEast
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	dec a
 	ld e, a
 	ret
 .facingSouth
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	inc a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	ld e, a
 	ret
 
@@ -161,31 +161,31 @@ GetRoomCoordsRightNearWRTPlayer::
 	cp a, ORIENTATION_SOUTH
 	jp z, .facingSouth
 .facingWest
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	dec a
 	ld e, a
 	ret
 .facingNorth
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	inc a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	ld e, a
 	ret
 .facingEast
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	inc a
 	ld e, a
 	ret
 .facingSouth
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	dec a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	ld e, a
 	ret
 
@@ -200,30 +200,30 @@ GetRoomCoordsCenterFarWRTPlayer::
 	cp a, ORIENTATION_SOUTH
 	jp z, .facingSouth
 .facingWest
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	dec a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	ld e, a
 	ret
 .facingNorth
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	dec a
 	ld e, a
 	ret
 .facingEast
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	inc a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	ld e, a
 	ret
 .facingSouth
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	inc a
 	ld e, a
 	ret
@@ -239,34 +239,34 @@ GetRoomCoordsLeftFarWRTPlayer::
 	cp a, ORIENTATION_SOUTH
 	jp z, .facingSouth
 .facingWest
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	dec a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	inc a
 	ld e, a
 	ret
 .facingNorth
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	dec a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	dec a
 	ld e, a
 	ret
 .facingEast
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	inc a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	dec a
 	ld e, a
 	ret
 .facingSouth
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	inc a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	inc a
 	ld e, a
 	ret
@@ -282,39 +282,39 @@ GetRoomCoordsRightFarWRTPlayer::
 	cp a, ORIENTATION_SOUTH
 	jp z, .facingSouth
 .facingWest
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	dec a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	dec a
 	ld e, a
 	ret
 .facingNorth
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	inc a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	dec a
 	ld e, a
 	ret
 .facingEast
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	inc a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	inc a
 	ld e, a
 	ret
 .facingSouth
-	ld a, [wPlayerX]
+	ld a, [wPlayerExploreX]
 	dec a
 	ld d, a
-	ld a, [wPlayerY]
+	ld a, [wPlayerExploreY]
 	inc a
 	ld e, a
 	ret
 
-; Map1 + wPlayerX + wPlayerY*32
+; Map1 + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: player X coord
 ; @param e: player Y coord
 ; @return hl: tile address of player occupied tile of Map1 (this need to change)
@@ -326,7 +326,7 @@ GetActiveMapRoomAddrFromCoords::
 	call GetRoomAddrFromCoords
 	ret
 
-; map addr + wPlayerX + wPlayerY*32
+; map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: player X coord
 ; @param e: player Y coord
 ; @param bc: map addr

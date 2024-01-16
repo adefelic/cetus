@@ -44,7 +44,7 @@ DEF OAM_HUD_DANGER_5 EQU $07 * sizeof_OAM_ATTRS ; tall  ; med   ; ~
 DEF OAM_HUD_DANGER_6 EQU $08 * sizeof_OAM_ATTRS ; med   ; short ; ~
 DEF OAM_HUD_DANGER_7 EQU $09 * sizeof_OAM_ATTRS ; short ; ~     ; ~
 
-; chinchilla
+; chinchilla, facing left
 DEF OAM_CHINCHILLA_TL EQU $0A * sizeof_OAM_ATTRS
 DEF OAM_CHINCHILLA_TR EQU $0B * sizeof_OAM_ATTRS
 DEF OAM_CHINCHILLA_BL EQU $0C * sizeof_OAM_ATTRS

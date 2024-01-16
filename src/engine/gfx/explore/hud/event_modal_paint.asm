@@ -1,5 +1,5 @@
 INCLUDE "src/constants/gfx_constants.inc"
-INCLUDE "src/constants/map_constants.inc"
+INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/utils/hardware.inc"
 

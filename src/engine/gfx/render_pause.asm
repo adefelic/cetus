@@ -21,13 +21,13 @@ LoadPauseScreen::
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]
 	cp SCREEN_ENCOUNTER
-	jp z, .unloadEncounterSprites
+	jp z, .paintEncounterSpritesOffScreen
 	cp SCREEN_EXPLORE
-	jp z, .unloadExploreSprites
-.unloadEncounterSprites
+	jp z, .paintExploreSpritesOffScreen
+.paintEncounterSpritesOffScreen
 	; this is technically unnecessary. the pause screen isn't accessible from the encounter screen
-	call UnloadEncounterSprites
+	call PaintEncounterSpritesOffScreen
 	ret
-.unloadExploreSprites
-	call UnloadExploreSprites
+.paintExploreSpritesOffScreen
+	call PaintExploreSpritesOffScreen
 	ret

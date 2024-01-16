@@ -1,4 +1,4 @@
-; player orientation. values are effectively masks for collision data :)
+; explore screen player orientation. values are effectively masks for collision data :)
 DEF ORIENTATION_NORTH EQU $8
 DEF ORIENTATION_EAST  EQU $4
 DEF ORIENTATION_SOUTH EQU $2
