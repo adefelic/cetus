@@ -17,9 +17,6 @@ wPlayerVelocityY: db
 SECTION "Battle Screen Input Handling", ROMX
 
 ; TODO
-; - add side collision to flat tiles
-;	- can add to ramps on both sides temporarily
-; - add mid-motion collision testing. move 2, check 1 and 2 in front
 ; - add jumping w/ acceleration
 ; - give gravity acceleration
 ; - add per-pixel collision for ramps, both for top collisions and side collisions
@@ -88,7 +85,6 @@ HandleHeldLeft:
 	ld a, DIRECTION_LEFT
 	ld [wPlayerDirection], a
 	; check for collision
-	ld a, [wPlayerEncounterX]
 	ld c, PLAYER_VELOCITY_X ; for each velocity, check one pixel out, move if no collision
 .tryLeftOnePixel
 	; do the thing
@@ -125,7 +121,6 @@ HandleHeldRight:
 	ld a, DIRECTION_RIGHT
 	ld [wPlayerDirection], a
 	; check for collision
-	ld a, [wPlayerEncounterX]
 	ld c, PLAYER_VELOCITY_X ; for each velocity, check one pixel out, move if no collision
 .tryRightOnePixel
 	ld a, [wPlayerEncounterX]
@@ -157,31 +152,38 @@ DirtyTilemap:
 	ret
 
 ApplyGravity::
-.checkBeneathBottomLeft
-	; convert from oam coords to tilemap pixel coords
+	ld c, PLAYER_GRAVITY_Y ; for each velocity, check one pixel out, move if no collision
+.tryOnePixelBeneathLeft
+	; get left pixel
 	ld a, [wPlayerEncounterX]
-	sub OAM_PADDING_X ; - 8
+	sub OAM_PADDING_X
 	ld b, a
 	ld a, [wPlayerEncounterY]
-	add PLAYER_SPRITE_PIXEL_OFFSET_Y - OAM_PADDING_Y ; 16 - 15
+	add PLAYER_SPRITE_PIXEL_OFFSET_Y
+	sub OAM_PADDING_Y
 	call GetTileMapTileAddrFromPixelCoords
 	ld a, [hl]
-	ld [wTileBeneathL], a
+	ld [wTileBeneathL], a ; for debugging
+	; compare
 	cp TILE_ENCOUNTER_FLAT
 	jp z, TopCollideFlat
 	cp TILE_ENCOUNTER_RAMP_LOW
 	jp z, TopCollideLowRamp
 	cp TILE_ENCOUNTER_RAMP_HIGH
 	jp z, TopCollideHighRamp
-.checkBeneathBottomRight
+.tryOnePixelBeneathRight
+	; get right pixel
 	ld a, [wPlayerEncounterX]
-	add PLAYER_SPRITE_PIXEL_OFFSET_RB_X - OAM_PADDING_X
+	add PLAYER_SPRITE_PIXEL_OFFSET_RB_X
+	sub OAM_PADDING_X
 	ld b, a
 	ld a, [wPlayerEncounterY]
-	add PLAYER_SPRITE_PIXEL_OFFSET_Y - OAM_PADDING_Y
+	add PLAYER_SPRITE_PIXEL_OFFSET_Y
+	sub OAM_PADDING_Y
 	call GetTileMapTileAddrFromPixelCoords
 	ld a, [hl]
-	ld [wTileBeneathR], a
+	ld [wTileBeneathR], a ; for debugging
+	; compare
 	cp TILE_ENCOUNTER_FLAT
 	jp z, TopCollideFlat
 	cp TILE_ENCOUNTER_RAMP_LOW
@@ -189,10 +191,11 @@ ApplyGravity::
 	cp TILE_ENCOUNTER_RAMP_HIGH
 	jp z, TopCollideHighRamp
 .adjustY
-	; todo: add gravity pixels until colliding with a collision pixel, so gravity can be more than 1 pixel
 	ld a, [wPlayerEncounterY]
-	add PLAYER_GRAVITY_Y
+	inc a
 	ld [wPlayerEncounterY], a
+	dec c ; dec counter
+	jp nz, .tryOnePixelBeneathLeft
 	jp DirtyTilemap
 
 ; do per-tile-pixel collision checks here
