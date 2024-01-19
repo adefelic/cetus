@@ -5,10 +5,26 @@ INCLUDE "src/constants/encounter_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 
 SECTION "debug motion", WRAM0
-wTileBeneathL:: db
-wTileBeneathR:: db
+wTileBeneathL: db
+wTileBeneathR: db
+
+SECTION "Player Velocity", WRAM0
+; these values are added to the player's position every frame?
+;
+wPlayerVelocityX: db
+wPlayerVelocityY: db
 
 SECTION "Battle Screen Input Handling", ROMX
+
+; TODO
+; - add side collision to flat tiles
+;	- can add to ramps on both sides temporarily
+; - add mid-motion collision testing. move 2, check 1 and 2 in front
+; - add jumping w/ acceleration
+; - give gravity acceleration
+; - add per-pixel collision for ramps, both for top collisions and side collisions
+;	- would it make sense to look for pixel colors rather than tiles
+;	- or to have "collision tiles" that describe non-collidable pixels on a tile
 
 HandleInputEncounterScreen::
 HandlePressed:
@@ -67,35 +83,72 @@ HandlePressedA:
 	jp DirtyTilemap
 
 HandlePressedLeft:
+HandleHeldLeft:
+	; you always turn
 	ld a, DIRECTION_LEFT
 	ld [wPlayerDirection], a
+	; check for collision
 	ld a, [wPlayerEncounterX]
-	sub PLAYER_VELOCITY_X
-	; bounds check todo
+	ld c, PLAYER_VELOCITY_X ; for each velocity, check one pixel out, move if no collision
+.tryLeftOnePixel
+	; do the thing
+	ld a, [wPlayerEncounterX]
+	sub PLAYER_SPRITE_PIXEL_OFFSET_SIDE_LEFT_X ; treat this const as negative
+	sub OAM_PADDING_X
+	ld b, a
+	ld a, [wPlayerEncounterY]
+	add PLAYER_SPRITE_PIXEL_OFFSET_SIDE_Y
+	sub OAM_PADDING_Y
+	;   a and b currently contain the coords of the target pixel. this should be stored as a single byte index into the tile's pixels, tl to br
+	call GetTileMapTileAddrFromPixelCoords
+	ld a, [hl]
+	; todo
+	;   use tile type to the tile's collision map.
+	;   check the stored target pixel value against the tile's collision map
+	cp TILE_ENCOUNTER_FLAT
+	jp z, SideCollideFlat
+	cp TILE_ENCOUNTER_RAMP_LOW
+	jp z, SideCollideLowRamp
+	cp TILE_ENCOUNTER_RAMP_HIGH
+	jp z, SideCollideHighRamp
+	; move left
+	ld a, [wPlayerEncounterX]
+	dec a
 	ld [wPlayerEncounterX], a
+	dec c ; dec counter
+	jp nz, .tryLeftOnePixel
 	jp DirtyTilemap
 
 HandlePressedRight:
+HandleHeldRight:
+	; you always turn
 	ld a, DIRECTION_RIGHT
 	ld [wPlayerDirection], a
+	; check for collision
 	ld a, [wPlayerEncounterX]
-	add PLAYER_VELOCITY_X
-	; bounds check todo
-	ld [wPlayerEncounterX], a
-	jp DirtyTilemap
-
-HandleHeldLeft:
+	ld c, PLAYER_VELOCITY_X ; for each velocity, check one pixel out, move if no collision
+.tryRightOnePixel
 	ld a, [wPlayerEncounterX]
-	sub PLAYER_VELOCITY_X
-	; bounds check todo
-	ld [wPlayerEncounterX], a
-	jp DirtyTilemap
-
-HandleHeldRight:
+	add PLAYER_SPRITE_PIXEL_OFFSET_SIDE_RIGHT_X
+	sub OAM_PADDING_X
+	ld b, a
+	ld a, [wPlayerEncounterY]
+	add PLAYER_SPRITE_PIXEL_OFFSET_SIDE_Y
+	sub OAM_PADDING_Y
+	call GetTileMapTileAddrFromPixelCoords
+	ld a, [hl]
+	cp TILE_ENCOUNTER_FLAT
+	jp z, SideCollideFlat
+	cp TILE_ENCOUNTER_RAMP_LOW
+	jp z, SideCollideLowRamp
+	cp TILE_ENCOUNTER_RAMP_HIGH
+	jp z, SideCollideHighRamp
+	; move left
 	ld a, [wPlayerEncounterX]
-	add PLAYER_VELOCITY_X
-	; bounds check todo
+	inc a
 	ld [wPlayerEncounterX], a
+	dec c ; dec counter
+	jp nz, .tryRightOnePixel
 	jp DirtyTilemap
 
 DirtyTilemap:
@@ -105,37 +158,36 @@ DirtyTilemap:
 
 ApplyGravity::
 .checkBeneathBottomLeft
-	ld a, [wPlayerEncounterY]
-	add TILE_HEIGHT * 2 - OAM_PADDING_Y
-	ld b, a
+	; convert from oam coords to tilemap pixel coords
 	ld a, [wPlayerEncounterX]
-	sub OAM_PADDING_X
+	sub OAM_PADDING_X ; - 8
+	ld b, a
+	ld a, [wPlayerEncounterY]
+	add PLAYER_SPRITE_PIXEL_OFFSET_Y - OAM_PADDING_Y ; 16 - 15
 	call GetTileMapTileAddrFromPixelCoords
-	ld c, a
 	ld a, [hl]
 	ld [wTileBeneathL], a
 	cp TILE_ENCOUNTER_FLAT
-	jp z, CollideFlat
+	jp z, TopCollideFlat
 	cp TILE_ENCOUNTER_RAMP_LOW
-	jp z, CollideLowRamp
+	jp z, TopCollideLowRamp
 	cp TILE_ENCOUNTER_RAMP_HIGH
-	jp z, CollideHighRamp
+	jp z, TopCollideHighRamp
 .checkBeneathBottomRight
-	ld a, [wPlayerEncounterY]
-	add TILE_HEIGHT * 2 - OAM_PADDING_Y
-	ld b, a
 	ld a, [wPlayerEncounterX]
-	add TILE_WIDTH * 2 - 1 - OAM_PADDING_X
-	ld c, a
+	add PLAYER_SPRITE_PIXEL_OFFSET_RB_X - OAM_PADDING_X
+	ld b, a
+	ld a, [wPlayerEncounterY]
+	add PLAYER_SPRITE_PIXEL_OFFSET_Y - OAM_PADDING_Y
 	call GetTileMapTileAddrFromPixelCoords
 	ld a, [hl]
 	ld [wTileBeneathR], a
 	cp TILE_ENCOUNTER_FLAT
-	jp z, CollideFlat
+	jp z, TopCollideFlat
 	cp TILE_ENCOUNTER_RAMP_LOW
-	jp z, CollideLowRamp
+	jp z, TopCollideLowRamp
 	cp TILE_ENCOUNTER_RAMP_HIGH
-	jp z, CollideHighRamp
+	jp z, TopCollideHighRamp
 .adjustY
 	; todo: add gravity pixels until colliding with a collision pixel, so gravity can be more than 1 pixel
 	ld a, [wPlayerEncounterY]
@@ -144,34 +196,37 @@ ApplyGravity::
 	jp DirtyTilemap
 
 ; do per-tile-pixel collision checks here
-CollideFlat:
-CollideLowRamp:
-CollideHighRamp:
+TopCollideFlat:
+TopCollideLowRamp:
+TopCollideHighRamp:
+SideCollideFlat:
+SideCollideLowRamp:
+SideCollideHighRamp:
 	ret
 
 
-; TODO this is definitely broken
+; @param a: y
 ; @param c: x
-; @param b: y
 ; @return hl
+; mangles a,c,d,e,h,l
 GetTileMapTileAddrFromPixelCoords:
 	; this assumes tilemaps are the size of the tilemap and not the size of the screen
 	; addr = wShadowTilemap + y/8 * 32 + x/8
-
-	xor a
-	ld h, a
-	ld l, b
-rept 2
-	sla h
-	sla l
-	ld a, h
-	adc 0
-	ld h, a
-endr
-
+	; y
+	ld h, 0
+	; gotta mask out the bottom bits to simulate dividing by 8 and dropping the remainder,
+	; otherwise we'll end up adding the pixel value associated with the extra y pixels to the final value
+	and a, %11111000
+	ld l, a
+	; multiply by 4
+	add hl, hl
+	add hl, hl
+	; x
+	ld a, b
+	; divide by 8
 	srl a
 	srl a
-	srl a
+	srl a ; largest decimal value is 20 (160/8)
 	add l
 	ld l, a
 	ld a, h
@@ -181,9 +236,3 @@ endr
 	ld de, wShadowTilemap
 	add hl, de
 	ret
-
-
-
-
-
-
