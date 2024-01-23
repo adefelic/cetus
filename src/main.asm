@@ -25,6 +25,9 @@ SECTION "Encounter Player State", WRAM0
 wPlayerEncounterX:: db
 wPlayerEncounterY:: db
 wPlayerDirection:: db
+wJumpsRemaining:: db
+wIsJumping:: db
+wJumpFramesRemaining:: db
 
 SECTION "Frame State", WRAM0
 wHasPlayerRotatedThisFrame:: db
@@ -200,15 +203,13 @@ Main:
 	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
 	call DrawScreen ; if dirty, draws screen, cleans. accesses vram
 	call UpdateAudio
-
-	; get new player input
-	call UpdateKeys
+	call GetKeys ; get new player input
 
 	; update game state from player input and get ready to draw next frame
 	call ProcessInput
 
 	; ongoing effects for encounter screen
-	call ApplyGravity
+	call ApplyMomentum
 
 	; ongoing effects for explore screen. could this be attached to movement?
 	call CheckForNewEvents ; checks location for new event
@@ -319,7 +320,7 @@ InitColorPalettes:
 	call CopyColorsToPalette
 	ret
 
-UpdateKeys:
+GetKeys:
 	; poll controller buttons
 	ld a, P1F_GET_BTN
 	call .getBottomNibble

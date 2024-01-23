@@ -7,21 +7,17 @@ INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 SECTION "debug motion", WRAM0
 wTileBeneathL: db
 wTileBeneathR: db
-
-SECTION "Player Velocity", WRAM0
-; these values are added to the player's position every frame?
-;
-wPlayerVelocityX: db
-wPlayerVelocityY: db
+wTileAboveL: db
+wTileAboveR: db
 
 SECTION "Battle Screen Input Handling", ROMX
 
 ; TODO
-; - add jumping w/ acceleration
-; - give gravity acceleration
+; - add acceleration to jumps and gravity
 ; - add per-pixel collision for ramps, both for top collisions and side collisions
 ;	- would it make sense to look for pixel colors rather than tiles
 ;	- or to have "collision tiles" that describe non-collidable pixels on a tile
+; - allow player direction change without moving X position
 
 HandleInputEncounterScreen::
 HandlePressed:
@@ -29,10 +25,11 @@ HandlePressed:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_START
 ;	jp nz, HandlePressedStart
-;.checkPressedSelect:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_SELECT
-;	jp nz, HandlePressedSelect
+.checkPressedSelect:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_SELECT
+	jp z, .checkPressedA
+	call HandlePressedSelect
 .checkPressedA:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_A
@@ -74,7 +71,20 @@ HandleHeld:
 	call HandleHeldRight
 	ret
 
+; begins a jump
 HandlePressedA:
+	ld a, [wJumpsRemaining]
+	or 0
+	ret z
+	dec a
+	ld [wJumpsRemaining], a
+	ld a, TRUE
+	ld [wIsJumping], a
+	ld a, JUMP_MAX_FRAMES
+	ld [wJumpFramesRemaining], a
+	ret
+
+HandlePressedSelect:
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
 	jp DirtyTilemap
@@ -151,7 +161,70 @@ DirtyTilemap:
 	ld [wIsShadowTilemapDirty], a
 	ret
 
-ApplyGravity::
+; apply gravity / continue jump
+; if there's a jump going on, apply jump, otherwise apply gravity
+ApplyMomentum::
+	ld a, [wIsJumping]
+	cp TRUE
+	jp nz, ApplyDownwardMotion
+.continueJump:
+	ld a, [wJumpFramesRemaining]
+	or 0
+	jp z, EndJump
+	dec a
+	ld [wJumpFramesRemaining], a
+.applyUpwardMotion:
+	ld c, JUMP_SPEED ; for each velocity, check one pixel out, move if no collision
+	; todo i haven't tested any top collision because ... there are no top tiles to collide with yet
+.tryOnePixelAboveLeft
+	; get left pixel
+	ld a, [wPlayerEncounterX]
+	sub OAM_PADDING_X
+	ld b, a
+	ld a, [wPlayerEncounterY]
+	sub PLAYER_SPRITE_PIXEL_OFFSET_T_Y ; it's negative
+	sub OAM_PADDING_Y
+	call GetTileMapTileAddrFromPixelCoords
+	ld a, [hl]
+	ld [wTileAboveL], a ; for debugging
+	; compare
+	cp TILE_ENCOUNTER_FLAT
+	jp z, BottomCollideFlat
+	cp TILE_ENCOUNTER_RAMP_LOW
+	jp z, BottomCollideLowRamp
+	cp TILE_ENCOUNTER_RAMP_HIGH
+	jp z, BottomCollideHighRamp
+.tryOnePixelAboveRight
+	; get right pixel
+	ld a, [wPlayerEncounterX]
+	add PLAYER_SPRITE_PIXEL_OFFSET_RT_X
+	sub OAM_PADDING_X
+	ld b, a
+	ld a, [wPlayerEncounterY]
+	sub PLAYER_SPRITE_PIXEL_OFFSET_T_Y ; it's negative
+	sub OAM_PADDING_Y
+	call GetTileMapTileAddrFromPixelCoords
+	ld a, [hl]
+	ld [wTileBeneathR], a ; for debugging
+	; compare
+	cp TILE_ENCOUNTER_FLAT
+	jp z, BottomCollideFlat
+	cp TILE_ENCOUNTER_RAMP_LOW
+	jp z, BottomCollideLowRamp
+	cp TILE_ENCOUNTER_RAMP_HIGH
+	jp z, BottomCollideHighRamp
+.adjustY
+	ld a, [wPlayerEncounterY]
+	dec a
+	ld [wPlayerEncounterY], a
+	dec c ; dec counter
+	jp nz, .tryOnePixelAboveLeft
+	jp DirtyTilemap
+
+EndJump:
+	ld a, FALSE
+	ld [wIsJumping], a
+ApplyDownwardMotion:
 	ld c, PLAYER_GRAVITY_Y ; for each velocity, check one pixel out, move if no collision
 .tryOnePixelBeneathLeft
 	; get left pixel
@@ -159,7 +232,7 @@ ApplyGravity::
 	sub OAM_PADDING_X
 	ld b, a
 	ld a, [wPlayerEncounterY]
-	add PLAYER_SPRITE_PIXEL_OFFSET_Y
+	add PLAYER_SPRITE_PIXEL_OFFSET_B_Y
 	sub OAM_PADDING_Y
 	call GetTileMapTileAddrFromPixelCoords
 	ld a, [hl]
@@ -178,7 +251,7 @@ ApplyGravity::
 	sub OAM_PADDING_X
 	ld b, a
 	ld a, [wPlayerEncounterY]
-	add PLAYER_SPRITE_PIXEL_OFFSET_Y
+	add PLAYER_SPRITE_PIXEL_OFFSET_B_Y
 	sub OAM_PADDING_Y
 	call GetTileMapTileAddrFromPixelCoords
 	ld a, [hl]
@@ -196,12 +269,19 @@ ApplyGravity::
 	ld [wPlayerEncounterY], a
 	dec c ; dec counter
 	jp nz, .tryOnePixelBeneathLeft
+	; todo reset wJumpsRemaining
 	jp DirtyTilemap
 
 ; do per-tile-pixel collision checks here
 TopCollideFlat:
 TopCollideLowRamp:
 TopCollideHighRamp:
+	; colliding with the ground resets jumps
+	ld a, MAX_JUMPS
+	ld [wJumpsRemaining], a
+BottomCollideFlat:
+BottomCollideLowRamp:
+BottomCollideHighRamp:
 SideCollideFlat:
 SideCollideLowRamp:
 SideCollideHighRamp:
