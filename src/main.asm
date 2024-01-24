@@ -43,9 +43,6 @@ wJoypadDown:: db
 wJoypadNewlyPressed:: db
 wJoypadNewlyReleased:: db
 
-SECTION "Utility State", WRAM0
-wRandomAdd:: db
-
 ; hardware interrupts
 SECTION "vblank", ROM0[$0040]
 	;jp VBlank
@@ -179,9 +176,6 @@ InitGameState:
 	ld a, SCREEN_NONE
 	ld [wPreviousFrameScreen], a
 
-	xor a
-	ld [wRandomAdd], a
-
 	; init screen state
 	ld a, DIRTY
 	ld [wIsShadowTilemapDirty], a
@@ -214,7 +208,6 @@ Main:
 	; ongoing effects for explore screen. could this be attached to movement?
 	call CheckForNewEvents ; checks location for new event
 	call UpdateShadowScreen ; processes game state and dirty flags, draws screen to shadow tilemaps
-	call AdvanceRandomVariables
 	jp Main
 
 ; dma copy shadow ram to VRAM
@@ -392,14 +385,6 @@ WaitVBlank:
 	ld a, [rLY]
 	cp 144
 	jp c, WaitVBlank
-	ret
-
-AdvanceRandomVariables:
-	ld a, [rDIV]
-	ld b, a
-	ld a, [wRandomAdd]
-	add b
-	ld [wRandomAdd], a
 	ret
 
 DisableLcd:

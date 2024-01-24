@@ -30,21 +30,6 @@ InitAudio::
 	ld [wIsCh4SfxActive], a
 	ret
 
-; unused
-InitTimer::
-	; timer modulo
-	ld a, $FF
-	ldh [rTMA], a
-
-	; enable timer at 4 khz
-	ld a, TACF_START | TACF_4KHZ
-	ldh [rTAC], a
-
-	; enable timer overflow interrupt
-	ld a, IEF_TIMER
-	ldh [rIE], a
-	ret
-
 PlayFootstepSfx::
 	ld hl, FootstepSfx
 	jp BeginPlayCh4Sfx
