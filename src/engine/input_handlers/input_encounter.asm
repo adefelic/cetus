@@ -7,6 +7,10 @@ INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 SECTION "debug motion", WRAM0
 wTileBeneathL: db
 wTileBeneathR: db
+wTileBeneathR_X: db
+wTileBeneathR_Y: db
+wTileBeneathL_X: db
+wTileBeneathL_Y: db
 wTileAboveL: db
 wTileAboveR: db
 
@@ -95,6 +99,7 @@ HandleHeldLeft:
 	ld a, DIRECTION_LEFT
 	ld [wPlayerDirection], a
 	; check for collision
+	; c is the loop counter
 	ld c, PLAYER_VELOCITY_X ; for each velocity, check one pixel out, move if no collision
 .tryLeftOnePixel
 	; do the thing
@@ -122,8 +127,10 @@ HandleHeldLeft:
 	dec a
 	ld [wPlayerEncounterX], a
 	dec c ; dec counter
+	ld a, DIRTY
+	ld [wIsShadowTilemapDirty], a
 	jp nz, .tryLeftOnePixel
-	jp DirtyTilemap
+	ret
 
 HandlePressedRight:
 HandleHeldRight:
@@ -131,6 +138,7 @@ HandleHeldRight:
 	ld a, DIRECTION_RIGHT
 	ld [wPlayerDirection], a
 	; check for collision
+	; c is the loop counter
 	ld c, PLAYER_VELOCITY_X ; for each velocity, check one pixel out, move if no collision
 .tryRightOnePixel
 	ld a, [wPlayerEncounterX]
@@ -153,8 +161,10 @@ HandleHeldRight:
 	inc a
 	ld [wPlayerEncounterX], a
 	dec c ; dec counter
+	ld a, DIRTY
+	ld [wIsShadowTilemapDirty], a
 	jp nz, .tryRightOnePixel
-	jp DirtyTilemap
+	ret
 
 DirtyTilemap:
 	ld a, DIRTY
@@ -163,8 +173,8 @@ DirtyTilemap:
 
 ; apply gravity / continue jump
 ; if there's a jump going on, apply jump, otherwise apply gravity
-ApplyMomentum::
-	ld a, [wIsJumping]
+ApplyVerticalMotion::
+	ld a, [wIsJumping] ;; isAscending
 	cp TRUE
 	jp nz, ApplyDownwardMotion
 .continueJump:
@@ -174,6 +184,7 @@ ApplyMomentum::
 	dec a
 	ld [wJumpFramesRemaining], a
 .applyUpwardMotion:
+	; c is the loop counter
 	ld c, JUMP_SPEED ; for each velocity, check one pixel out, move if no collision
 	; todo i haven't tested any top collision because ... there are no top tiles to collide with yet
 .tryOnePixelAboveLeft
@@ -218,26 +229,32 @@ ApplyMomentum::
 	dec a
 	ld [wPlayerEncounterY], a
 	dec c ; dec counter
+	ld a, DIRTY
+	ld [wIsShadowTilemapDirty], a
 	jp nz, .tryOnePixelAboveLeft
-	jp DirtyTilemap
+	ret
 
 EndJump:
 	ld a, FALSE
 	ld [wIsJumping], a
 ApplyDownwardMotion:
+	; c is the loop counter
 	ld c, PLAYER_GRAVITY_Y ; for each velocity, check one pixel out, move if no collision
 .tryOnePixelBeneathLeft
-	; get left pixel
+	; get bottom left collision pixel
 	ld a, [wPlayerEncounterX]
+	ld [wTileBeneathL_X], a ; for debugging
 	sub OAM_PADDING_X
 	ld b, a
 	ld a, [wPlayerEncounterY]
 	add PLAYER_SPRITE_PIXEL_OFFSET_B_Y
+	ld [wTileBeneathL_Y], a ; for debugging
 	sub OAM_PADDING_Y
 	call GetTileMapTileAddrFromPixelCoords
 	ld a, [hl]
 	ld [wTileBeneathL], a ; for debugging
 	; compare
+	; nb: when the player collides on the left, this skips calculating collision on the right
 	cp TILE_ENCOUNTER_FLAT
 	jp z, TopCollideFlat
 	cp TILE_ENCOUNTER_RAMP_LOW
@@ -245,13 +262,15 @@ ApplyDownwardMotion:
 	cp TILE_ENCOUNTER_RAMP_HIGH
 	jp z, TopCollideHighRamp
 .tryOnePixelBeneathRight
-	; get right pixel
+	; get bottom right collision pixel
 	ld a, [wPlayerEncounterX]
 	add PLAYER_SPRITE_PIXEL_OFFSET_RB_X
+	;ld [wTileBeneathR_X], a ; for debugging
 	sub OAM_PADDING_X
 	ld b, a
 	ld a, [wPlayerEncounterY]
 	add PLAYER_SPRITE_PIXEL_OFFSET_B_Y
+	;ld [wTileBeneathR_Y], a ; for debugging
 	sub OAM_PADDING_Y
 	call GetTileMapTileAddrFromPixelCoords
 	ld a, [hl]
@@ -268,9 +287,10 @@ ApplyDownwardMotion:
 	inc a
 	ld [wPlayerEncounterY], a
 	dec c ; dec counter
+	ld a, DIRTY
+	ld [wIsShadowTilemapDirty], a
 	jp nz, .tryOnePixelBeneathLeft
-	; todo reset wJumpsRemaining
-	jp DirtyTilemap
+	ret
 
 ; do per-tile-pixel collision checks here
 TopCollideFlat:
@@ -289,7 +309,7 @@ SideCollideHighRamp:
 
 
 ; @param a: y
-; @param c: x
+; @param b: x
 ; @return hl
 ; mangles a,c,d,e,h,l
 GetTileMapTileAddrFromPixelCoords:

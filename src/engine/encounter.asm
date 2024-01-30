@@ -1,5 +1,6 @@
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/encounter_constants.inc"
+INCLUDE "src/constants/constants.inc"
 
 SECTION "Encounter logic", ROMX
 
@@ -10,5 +11,7 @@ GenerateEncounter::
 	; set player character x/y
 	ld a, MAX_JUMPS
 	ld [wJumpsRemaining], a
+	ld a, FALSE
+	ld [wIsJumping], a
 	ret
 

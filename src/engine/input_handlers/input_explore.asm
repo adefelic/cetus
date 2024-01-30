@@ -49,8 +49,7 @@ PauseGame:
 
 HandlePressedSelect:
 DebugEnterEncounter:
-	ld a, SCREEN_ENCOUNTER
-	ld [wActiveFrameScreen], a
+	call InitEncounter
 	jp DirtyTilemap
 
 HandlePressedA:
@@ -287,7 +286,7 @@ UpdateDangerLevel:
 .resetDangerLevelToGrey:
 	ld a, DANGER_GREY
 	ld [wCurrentDangerLevel], a
-.initEncounter
+InitEncounter:
 	; todo really this should begin the encounter on the next frame, after the player has moved
 	ld a, SCREEN_ENCOUNTER
 	ld [wActiveFrameScreen], a

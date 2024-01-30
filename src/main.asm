@@ -200,10 +200,12 @@ Main:
 	call GetKeys ; get new player input
 
 	; update game state from player input and get ready to draw next frame
+	; apply x movement in encounters
 	call ProcessInput
 
 	; ongoing effects for encounter screen
-	call ApplyMomentum
+	; apply y movement in encounters
+	call ApplyVerticalMotion
 
 	; ongoing effects for explore screen. could this be attached to movement?
 	call CheckForNewEvents ; checks location for new event
