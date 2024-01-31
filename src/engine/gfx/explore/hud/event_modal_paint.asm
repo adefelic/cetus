@@ -17,7 +17,7 @@ PaintEventModal::
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT
 	ld bc, 1
 	call PaintTilemap
-	ld e, INDEX_OW_PALETTE_MODAL
+	ld e, BG_PALETTE_MODAL
 	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT
 	ld bc, 1
 	call PaintTilemapAttrs
@@ -26,7 +26,7 @@ PaintEventModal::
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 1
 	ld bc, 10
 	call PaintTilemap
-	ld e, INDEX_OW_PALETTE_MODAL
+	ld e, BG_PALETTE_MODAL
 	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + cols 1
 	ld bc, 10
 	call PaintTilemapAttrs
@@ -35,7 +35,7 @@ PaintEventModal::
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemap
-	ld e, INDEX_OW_PALETTE_MODAL + OAMF_XFLIP
+	ld e, BG_PALETTE_MODAL + OAMF_XFLIP
 	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemapAttrs
@@ -44,7 +44,7 @@ PaintEventModal::
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + rows 1
 	ld bc, 1
 	call PaintTilemap
-	ld e, INDEX_OW_PALETTE_MODAL
+	ld e, BG_PALETTE_MODAL
 	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + rows 1
 	ld bc, 1
 	call PaintTilemapAttrs
@@ -57,7 +57,7 @@ PaintEventModal::
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + rows 1 + cols 1
 	ld bc, 10
 	call Memcopy
-	ld e, INDEX_OW_PALETTE_MODAL + OAMF_BANK1
+	ld e, BG_PALETTE_MODAL + OAMF_BANK1
 	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + rows 1 + cols 1
 	ld bc, 10
 	call PaintTilemapAttrs
@@ -66,7 +66,7 @@ PaintEventModal::
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + rows 1 + cols (MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemap
-	ld e, INDEX_OW_PALETTE_MODAL + OAMF_XFLIP
+	ld e, BG_PALETTE_MODAL + OAMF_XFLIP
 	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + rows 1 + cols (MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemapAttrs
@@ -75,7 +75,7 @@ PaintEventModal::
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + rows 2
 	ld bc, 1
 	call PaintTilemap
-	ld e, INDEX_OW_PALETTE_MODAL
+	ld e, BG_PALETTE_MODAL
 	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + rows 2
 	ld bc, 1
 	call PaintTilemapAttrs
@@ -84,7 +84,7 @@ PaintEventModal::
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + rows 2 + cols 1
 	ld bc, 10
 	call PaintTilemap
-	ld e, INDEX_OW_PALETTE_MODAL
+	ld e, BG_PALETTE_MODAL
 	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + rows 2 + cols 1
 	ld bc, 10
 	call PaintTilemapAttrs
@@ -93,7 +93,7 @@ PaintEventModal::
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + rows 2 + cols (MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemap
-	ld e, INDEX_OW_PALETTE_MODAL + OAMF_XFLIP
+	ld e, BG_PALETTE_MODAL + OAMF_XFLIP
 	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + rows 2 + cols (MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemapAttrs

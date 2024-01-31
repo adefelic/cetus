@@ -30,7 +30,7 @@ PaintDangerGrey:
 	ld a, TILE_DANGER_NONE
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_1
 	; y
@@ -43,7 +43,7 @@ PaintDangerGrey:
 	ld a, TILE_DANGER_NONE
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_2
 	; y
@@ -56,7 +56,7 @@ PaintDangerGrey:
 	ld a, TILE_DANGER_NONE
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_3
 	; y
@@ -69,7 +69,7 @@ PaintDangerGrey:
 	ld a, TILE_DANGER_MED_GREY
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_4
 	; y
@@ -82,7 +82,7 @@ PaintDangerGrey:
 	ld a, TILE_DANGER_MED_GREY
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_5
 	; y
@@ -95,7 +95,7 @@ PaintDangerGrey:
 	ld a, TILE_DANGER_NONE
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_6
 	; y
@@ -108,7 +108,7 @@ PaintDangerGrey:
 	ld a, TILE_DANGER_NONE
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_7
 	; y
@@ -121,7 +121,7 @@ PaintDangerGrey:
 	ld a, TILE_DANGER_NONE
 	ld [wShadowOam + OAM_HUD_DANGER_7 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_7 + OAMA_FLAGS], a
 	ret
 
@@ -137,7 +137,7 @@ PaintDangerYellow:
 	ld a, TILE_DANGER_NONE
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_1
 	; y
@@ -150,7 +150,7 @@ PaintDangerYellow:
 	ld a, TILE_DANGER_SHORT_YELLOW
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_2
 	; y
@@ -163,7 +163,7 @@ PaintDangerYellow:
 	ld a, TILE_DANGER_MED_YELLOW
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_3
 	; y
@@ -176,7 +176,7 @@ PaintDangerYellow:
 	ld a, TILE_DANGER_TALL_YELLOW
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_4
 	; y
@@ -189,7 +189,7 @@ PaintDangerYellow:
 	ld a, TILE_DANGER_TALL_YELLOW
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_5
 	; y
@@ -202,7 +202,7 @@ PaintDangerYellow:
 	ld a, TILE_DANGER_MED_YELLOW
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_6
 	; y
@@ -215,7 +215,7 @@ PaintDangerYellow:
 	ld a, TILE_DANGER_SHORT_YELLOW
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_7
 	; y
@@ -228,7 +228,7 @@ PaintDangerYellow:
 	ld a, TILE_DANGER_NONE
 	ld [wShadowOam + OAM_HUD_DANGER_7 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_7 + OAMA_FLAGS], a
 	ret
 
@@ -244,7 +244,7 @@ PaintDangerRed:
 	ld a, TILE_DANGER_SHORT_RED
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_1
 	; y
@@ -257,7 +257,7 @@ PaintDangerRed:
 	ld a, TILE_DANGER_MED_RED
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_2
 	; y
@@ -270,7 +270,7 @@ PaintDangerRed:
 	ld a, TILE_DANGER_TALL_RED
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_3
 	; y
@@ -283,7 +283,7 @@ PaintDangerRed:
 	ld a, TILE_DANGER_TALL_RED
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_4
 	; y
@@ -296,7 +296,7 @@ PaintDangerRed:
 	ld a, TILE_DANGER_TALL_RED
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_5
 	; y
@@ -309,7 +309,7 @@ PaintDangerRed:
 	ld a, TILE_DANGER_TALL_RED
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_6
 	; y
@@ -322,7 +322,7 @@ PaintDangerRed:
 	ld a, TILE_DANGER_MED_RED
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_7
 	; y
@@ -335,6 +335,6 @@ PaintDangerRed:
 	ld a, TILE_DANGER_SHORT_RED
 	ld [wShadowOam + OAM_HUD_DANGER_7 + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_DANGER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_DANGER
 	ld [wShadowOam + OAM_HUD_DANGER_7 + OAMA_FLAGS], a
 	ret

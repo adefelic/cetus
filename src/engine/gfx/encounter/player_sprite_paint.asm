@@ -25,7 +25,7 @@ PaintPlayerSprite::
 	ld [wPlayerSpriteBL], a
 	ld a, TILE_CHINCHILLA_A_BL
 	ld [wPlayerSpriteBR], a
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_PLAYER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + OBJ_PALETTE_PLAYER
 	ld [wPlayerSpriteFlags], a
 	jp .paintTopLeft
 .setPlayerSpritesLeft:
@@ -37,7 +37,7 @@ PaintPlayerSprite::
 	ld [wPlayerSpriteBL], a
 	ld a, TILE_CHINCHILLA_A_BR
 	ld [wPlayerSpriteBR], a
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + INDEX_OW_PALETTE_PLAYER
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_PLAYER
 	ld [wPlayerSpriteFlags], a
 .paintTopLeft
 	; y

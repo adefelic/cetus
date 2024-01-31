@@ -91,7 +91,7 @@ HandlePressedA:
 HandlePressedSelect:
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
-	jp DirtyTilemap
+	jp DirtyTilemap ; this is broken, whatever
 
 HandlePressedLeft:
 HandleHeldLeft:

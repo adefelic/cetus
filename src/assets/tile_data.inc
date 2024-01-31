@@ -11,6 +11,10 @@ EncounterTiles::
 INCBIN "build/gfx/encounter-simple.2bpp"
 EncounterTilesEnd::
 
+FogTiles::
+INCBIN "build/gfx/fog.2bpp"
+FogTilesEnd::
+
 ; bg bank 1
 ComputerDarkTiles::
 INCBIN "build/gfx/computer-dark.2bpp"

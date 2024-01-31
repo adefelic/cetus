@@ -14,7 +14,7 @@ LoadPauseScreen::
 	ld bc, TILEMAP_SIZE
 	call Memcopy
 .loadShadowTilemapAttributes
-	ld e, INDEX_OW_PALETTE_Z0
+	ld e, BG_PALETTE_Z0
 	ld hl, wShadowTilemapAttrs
 	ld bc, TILEMAP_SIZE
 	call PaintTilemapAttrs

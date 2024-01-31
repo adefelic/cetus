@@ -1,6 +1,7 @@
 INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/ram/wram.inc"
+INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 
 SECTION "Segment Render State", WRAM0
 ; these could be a single bits
@@ -50,6 +51,13 @@ CheckSegmentC::
 	cp a, DIRTY
 	ret nz
 	call PaintSegmentC
+	ret
+
+CheckSegmentCFog::
+	ld a, [wCDirty]
+	cp a, DIRTY
+	ret nz
+	call PaintSegmentCFog
 	ret
 
 CheckSegmentD::
@@ -435,6 +443,134 @@ PaintSegmentC::
 	ld hl, wShadowTilemap + BG_ROW_12 + BG_COL_6
 	ld bc, 8
 	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_12 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.clean
+	ld a, CLEAN
+	ld [wCDirty], a
+	ret
+
+; this is rough lol
+PaintSegmentCFog::
+	ld d, TILE_FOG_BLANK
+.row0
+	ld hl, wShadowTilemap + BG_ROW_0 + BG_COL_6
+	ld bc, 8
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_0 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row1
+	ld hl, wShadowTilemap + BG_ROW_1 + BG_COL_6
+	ld bc, 8
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_1 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row2
+	ld hl, wShadowTilemap + BG_ROW_2 + BG_COL_6
+	ld bc, 8
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_2 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row3
+	ld hl, wShadowTilemap + BG_ROW_3 + BG_COL_6
+	ld bc, 8
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_3 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row4
+	ld hl, wShadowTilemap + BG_ROW_4 + BG_COL_6
+	ld bc, 8
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_4 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row5
+	ld hl, wShadowTilemap + BG_ROW_5 + BG_COL_6
+	ld bc, 8
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_5 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+
+	; things get complicated
+	; sigh, this makes a case for a 20*18 tilemap buffer. there could a tilecpy function that pastes tile ids to the buffer
+	; wait they're just incing by 1 there can just be a loop
+
+
+.row6_col0
+	ld d, TILE_FOG_R6_C0
+	ld hl, wShadowTilemap + BG_ROW_6 + BG_COL_6
+	ld bc, 1
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_6 + BG_COL_6
+	ld bc, 1
+	call PaintTilemapAttrs
+.row6_middle
+	ld d, TILE_FOG_BLANK
+	ld hl, wShadowTilemap + BG_ROW_6 + BG_COL_7
+	ld bc, 6
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_6 + BG_COL_7
+	ld bc, 6
+	call PaintTilemapAttrs
+.row6_col7
+	ld hl, wShadowTilemap + BG_ROW_6 + BG_COL_13
+	ld bc, 1
+	call PaintTilemap
+	ld hl, wShadowTilemapAttrs + BG_ROW_6 + BG_COL_13
+	ld bc, 1
+	call PaintTilemapAttrs
+
+.row7
+	ld d, TILE_FOG_R7_C0
+	ld hl, wShadowTilemap + BG_ROW_7 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapIncrementingTileId
+	ld hl, wShadowTilemapAttrs + BG_ROW_7 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row8
+	ld d, TILE_FOG_R8_C0
+	ld hl, wShadowTilemap + BG_ROW_8 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapIncrementingTileId
+	ld hl, wShadowTilemapAttrs + BG_ROW_8 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row9
+	ld d, TILE_FOG_R9_C0
+	ld hl, wShadowTilemap + BG_ROW_9 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapIncrementingTileId
+	ld hl, wShadowTilemapAttrs + BG_ROW_9 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row10
+	ld d, TILE_FOG_R10_C0
+	ld hl, wShadowTilemap + BG_ROW_10 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapIncrementingTileId
+	ld hl, wShadowTilemapAttrs + BG_ROW_10 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row11
+	ld d, TILE_FOG_R11_C0
+	ld hl, wShadowTilemap + BG_ROW_11 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapIncrementingTileId
+	ld hl, wShadowTilemapAttrs + BG_ROW_11 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapAttrs
+.row12
+	ld d, TILE_FOG_R12_C0
+	ld hl, wShadowTilemap + BG_ROW_12 + BG_COL_6
+	ld bc, 8
+	call PaintTilemapIncrementingTileId
 	ld hl, wShadowTilemapAttrs + BG_ROW_12 + BG_COL_6
 	ld bc, 8
 	call PaintTilemapAttrs
@@ -922,6 +1058,20 @@ PaintTilemap::
 	ld a, b
 	or c
 	jp nz, PaintTilemap
+	ret
+
+; @param d: source tile id
+; @param hl: destination
+; @param bc: length
+PaintTilemapIncrementingTileId::
+	ld a, d
+	ld [hli], a ; write tile id
+	inc a
+	ld d, a
+	dec bc
+	ld a, b
+	or c
+	jp nz, PaintTilemapIncrementingTileId
 	ret
 
 ; @param e: BG Map Attribute byte
