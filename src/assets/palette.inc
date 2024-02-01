@@ -9,9 +9,10 @@ OwBgPaletteSet::
 	RGB 4,4,4, 1,10,6,   8, 6, 8,   13,10,8 ; z = 2
 	RGB 4,4,4, 0,8,6,    7, 6, 8,   12,9,8  ; z = 3
 	RGB 1,1,1, 13,13,13, 2, 2,10,   2,10,2  ; modal
-	RGB 1,10,6, 1,4,1,    1,6,2,   1,8,4     ; fog
-	RGB 1,4,1, 1,4,1,    1,6,2,   1,8,4     ; fog2
-	RGB 0,0,0, 0,0,0,     0, 0, 0,    0,0,0  ; unused
+	RGB 4,12,8, 13,15,15,  10,15,12,   7,14,10  ; fog
+	;RGB 1,10,6, 6,13,9,    4,12,8,   2,11,7  ; fog, white green
+	;RGB 1,10,6, 1,4,1,    1,6,2,   1,8,4     ; fog, dark green ; this palette is great, should use somewhere else
+	RGB 1,4,1, 1,4,1,    1,6,2,   1,8,4     ; fog2 ; this is the dark fog for ABDE. temporary!
 	RGB 0,0,0, 0,0,0,     0, 0, 0,    0,0,0  ; unused
 
 OwObjPaletteSet::
