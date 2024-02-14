@@ -166,9 +166,9 @@ InitGameState:
 
 	; init player state
 	;call InitPlayerLocation
-	ld a, 3
-	ld [wPlayerExploreX], a
 	ld a, 1
+	ld [wPlayerExploreX], a
+	ld a, 29
 	ld [wPlayerExploreY], a
 	ld a, ORIENTATION_EAST
 	ld [wPlayerOrientation], a

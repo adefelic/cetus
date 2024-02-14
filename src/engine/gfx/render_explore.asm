@@ -99,7 +99,7 @@ RenderFirstPersonView::
 	; todo bounds check and skip rooms that are oob
 	; currently this does no bounds checking for rooms with negative coords.
 	;   the whole map starts at 1,1 rather than 0,0 to make it unnecessary
-ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only draw topmost z segments
+ProcessRoomCenterNear: ; process rooms closest to farthest w/ dirtying to only draw topmost z segments
 .checkLeftWall:
 	call GetRoomCoordsCenterNearWRTPlayer ; todo, put coords in ram?
 	call GetActiveMapRoomAddrFromCoords ; puts player tilemap entry addr in hl. should probably put this somewhere?
@@ -110,11 +110,11 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 .paintLeftWall
 	; okay instead we can say ... load that wall's panel index
 	ld e, BG_PALETTE_Z0
-	ld d, TILE_ENVIRONMENT_WALL_SIDE
+	ld d, TILE_EXPLORE_WALL_SIDE
 	call CheckSegmentA
 	call CheckSegmentK
 	call CheckSegmentP
-	ld d, TILE_ENVIRONMENT_DIAG_L
+	ld d, TILE_EXPLORE_DIAG_L
 	call CheckSegmentPDiag
 .checkTopWall
 	call GetRoomCoordsCenterNearWRTPlayer
@@ -125,7 +125,7 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	jp z, .checkRightWall
 .paintTopWall
 	ld e, BG_PALETTE_Z1
-	ld d, TILE_ENVIRONMENT_WALL_SIDE
+	ld d, TILE_EXPLORE_WALL_SIDE
 	call CheckSegmentB
 	call CheckSegmentC
 	call CheckSegmentD
@@ -143,18 +143,18 @@ ProcessTileCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	jp z, .paintGround
 .paintRightWall
 	ld e, BG_PALETTE_Z0
-	ld d, TILE_ENVIRONMENT_WALL_SIDE
+	ld d, TILE_EXPLORE_WALL_SIDE
 	call CheckSegmentE
 	call CheckSegmentO
 	call CheckSegmentR
-	ld d, TILE_ENVIRONMENT_DIAG_R
+	ld d, TILE_EXPLORE_DIAG_R
 	call CheckSegmentRDiag
 .paintGround
 	ld e, BG_PALETTE_Z0
-	ld d, TILE_ENVIRONMENT_GROUND ; todo on all ground paints, flip (shuffle could be cool) ground every step
+	ld d, TILE_EXPLORE_GROUND ; todo on all ground paints, flip (shuffle could be cool) ground every step
 	call CheckSegmentQ
 
-ProcessTileLeftNear:
+ProcessRoomLeftNear:
 	; todo bounds check
 .checkTopWall
 	call GetRoomCoordsLeftNearWRTPlayer
@@ -165,16 +165,16 @@ ProcessTileLeftNear:
 	jp z, .paintGround
 .paintTopWall
 	ld e, BG_PALETTE_Z1
-	ld d, TILE_ENVIRONMENT_WALL_SIDE
+	ld d, TILE_EXPLORE_WALL_SIDE
 	call CheckSegmentA
 	call CheckSegmentK
 .paintGround
 	ld e, BG_PALETTE_Z0
-	ld d, TILE_ENVIRONMENT_GROUND
+	ld d, TILE_EXPLORE_GROUND
 	call CheckSegmentP
 	call CheckSegmentPDiag
 
-ProcessTileRightNear:
+ProcessRoomRightNear:
 	; todo bounds check
 .checkTopWall
 	call GetRoomCoordsRightNearWRTPlayer
@@ -185,16 +185,16 @@ ProcessTileRightNear:
 	jp z, .paintGround
 .paintTopWall
 	ld e, BG_PALETTE_Z1
-	ld d, TILE_ENVIRONMENT_WALL_SIDE
+	ld d, TILE_EXPLORE_WALL_SIDE
 	call CheckSegmentE
 	call CheckSegmentO
 .paintGround
 	ld e, BG_PALETTE_Z0
-	ld d, TILE_ENVIRONMENT_GROUND
+	ld d, TILE_EXPLORE_GROUND
 	call CheckSegmentR
 	call CheckSegmentRDiag
 
-ProcessTileCenterFar:
+ProcessRoomCenterFar:
 .checkLeftWall
 	call GetRoomCoordsCenterFarWRTPlayer
 	call GetActiveMapRoomAddrFromCoords
@@ -204,15 +204,15 @@ ProcessTileCenterFar:
 	jp z, .paintLeftGround ; paint ground if no left wall
 .paintLeftWall
 	ld e, BG_PALETTE_Z2
-	ld d, TILE_ENVIRONMENT_WALL_SIDE
+	ld d, TILE_EXPLORE_WALL_SIDE
 	call CheckSegmentB
 	call CheckSegmentL
-	ld d, TILE_ENVIRONMENT_DIAG_L
+	ld d, TILE_EXPLORE_DIAG_L
 	call CheckSegmentLDiag
 	jp .checkTopWall
 .paintLeftGround
 	ld e, BG_PALETTE_Z2
-	ld d, TILE_ENVIRONMENT_GROUND
+	ld d, TILE_EXPLORE_GROUND
 	call CheckSegmentL
 	call CheckSegmentLDiag
 .checkTopWall
@@ -223,14 +223,14 @@ ProcessTileCenterFar:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance
 .paintTopWall
-	ld d, TILE_ENVIRONMENT_WALL_SIDE
+	ld d, TILE_EXPLORE_WALL_SIDE
 	ld e, BG_PALETTE_Z3
 	call CheckSegmentC
 	jp .checkRightWall
 .paintDistance
 	; todo: set to distance palette
 	ld e, BG_PALETTE_FOG
-	ld d, TILE_ENVIRONMENT_DARK
+	ld d, TILE_EXPLORE_DARK
 	call CheckSegmentCFog
 .checkRightWall
 	call GetRoomCoordsCenterFarWRTPlayer
@@ -241,23 +241,23 @@ ProcessTileCenterFar:
 	jp z, .paintRightGround ; paint ground if no right wall
 .paintRightWall
 	ld e, BG_PALETTE_Z2
-	ld d, TILE_ENVIRONMENT_WALL_SIDE
+	ld d, TILE_EXPLORE_WALL_SIDE
 	call CheckSegmentD
 	call CheckSegmentN
-	ld d, TILE_ENVIRONMENT_DIAG_R
+	ld d, TILE_EXPLORE_DIAG_R
 	call CheckSegmentNDiag
 	jp .paintCenterGround
 .paintRightGround
 	ld e, BG_PALETTE_Z2
-	ld d, TILE_ENVIRONMENT_GROUND
+	ld d, TILE_EXPLORE_GROUND
 	call CheckSegmentN
 	call CheckSegmentNDiag
 .paintCenterGround
 	ld e, BG_PALETTE_Z2
-	ld d, TILE_ENVIRONMENT_GROUND
+	ld d, TILE_EXPLORE_GROUND
 	call CheckSegmentM
 
-ProcessTileLeftFar:
+ProcessRoomLeftFar:
 .checkTopWall
 	call GetRoomCoordsLeftFarWRTPlayer
 	call GetActiveMapRoomAddrFromCoords
@@ -267,14 +267,14 @@ ProcessTileLeftFar:
 	jp z, .paintDistance
 .paintTopWall
 	ld e, BG_PALETTE_Z3
-	ld d, TILE_ENVIRONMENT_WALL_SIDE
+	ld d, TILE_EXPLORE_WALL_SIDE
 	call CheckSegmentA
 	call CheckSegmentB
 	jp .paintGround
 .paintDistance
 	; todo: set to distance palette
 	ld e, BG_PALETTE_FOG2
-	ld d, TILE_ENVIRONMENT_DARK
+	ld d, TILE_EXPLORE_DARK
 	; add fog
 	call CheckSegmentA
 	call CheckSegmentB
@@ -282,12 +282,12 @@ ProcessTileLeftFar:
 	;call CheckSegmentBFog
 .paintGround
 	ld e, BG_PALETTE_Z2
-	ld d, TILE_ENVIRONMENT_GROUND
+	ld d, TILE_EXPLORE_GROUND
 	call CheckSegmentK
 	call CheckSegmentL
 	call CheckSegmentLDiag
 
-ProcessTileRightFar:
+ProcessRoomRightFar:
 .checkTopWall
 	call GetRoomCoordsRightFarWRTPlayer
 	call GetActiveMapRoomAddrFromCoords
@@ -297,14 +297,14 @@ ProcessTileRightFar:
 	jp z, .paintDistance
 .paintTopWall
 	ld e, BG_PALETTE_Z3
-	ld d, TILE_ENVIRONMENT_WALL_SIDE
+	ld d, TILE_EXPLORE_WALL_SIDE
 	call CheckSegmentD
 	call CheckSegmentE
 	jp .paintGround
 .paintDistance
 	; todo: set to distance palette
 	ld e, BG_PALETTE_FOG2
-	ld d, TILE_ENVIRONMENT_DARK
+	ld d, TILE_EXPLORE_DARK
 	; add fog
 	call CheckSegmentD
 	call CheckSegmentE
@@ -312,7 +312,7 @@ ProcessTileRightFar:
 	;call CheckSegmentEFog
 .paintGround
 	ld e, BG_PALETTE_Z2
-	ld d, TILE_ENVIRONMENT_GROUND
+	ld d, TILE_EXPLORE_GROUND
 	call CheckSegmentO
 	call CheckSegmentN
 	call CheckSegmentNDiag

@@ -106,21 +106,23 @@ DEF BG_COL_18 EQU $12
 DEF BG_COL_19 EQU $13
 
 ; palette indices
-; these are currently both bg and object ...
+; todo: currently only colors 1 and 2 are used for rendering walls and floor. 0 and 3 are unused
+; one of those should become a fog color
 DEF BG_PALETTE_Z0     EQU $00
 DEF BG_PALETTE_Z1     EQU $01
 DEF BG_PALETTE_Z2     EQU $02
 DEF BG_PALETTE_Z3     EQU $03
-DEF BG_PALETTE_MODAL  EQU $04
-DEF BG_PALETTE_FOG    EQU $05
-DEF BG_PALETTE_FOG2   EQU $06
-DEF BG_PALETTE_B      EQU $07
 
-DEF OBJ_PALETTE_A       EQU $00
-DEF OBJ_PALETTE_B       EQU $01
-DEF OBJ_PALETTE_C       EQU $02
-DEF OBJ_PALETTE_D       EQU $03
-DEF OBJ_PALETTE_E  EQU $04
-DEF OBJ_PALETTE_DANGER EQU $05
-DEF OBJ_PALETTE_PLAYER EQU $06
-DEF OBJ_PALETTE_F       EQU $07
+DEF BG_PALETTE_MODAL  EQU $04 ; reserved for ui elements
+DEF BG_PALETTE_FOG    EQU $05 ; there will eventually be only 1 fog palette
+DEF BG_PALETTE_FOG2   EQU $06 ; to be deprecated
+DEF BG_PALETTE_H      EQU $07 ; unused
+
+DEF OBJ_PALETTE_A      EQU $00 ; unused
+DEF OBJ_PALETTE_B      EQU $01 ; unused
+DEF OBJ_PALETTE_C      EQU $02 ; unused
+DEF OBJ_PALETTE_D      EQU $03 ; unused
+DEF OBJ_PALETTE_E      EQU $04 ; unused
+DEF OBJ_PALETTE_DANGER EQU $05 ; unused
+DEF OBJ_PALETTE_PLAYER EQU $06 ; unused
+DEF OBJ_PALETTE_H      EQU $07 ; unused
