@@ -12,6 +12,7 @@ SECTION "Game State", WRAM0
 wActiveFrameScreen:: db
 wPreviousFrameScreen:: db
 wActiveMap:: dw
+wActiveMapEventLocations:: dw
 wStepsToNextDangerLevel:: db
 wCurrentDangerLevel:: db
 
@@ -42,6 +43,9 @@ wCurrentFrameKeys: db
 wJoypadDown:: db
 wJoypadNewlyPressed:: db
 wJoypadNewlyReleased:: db
+
+SECTION "Event Flags", WRAM0
+wInitialEventFlag:: db
 
 ; hardware interrupts
 SECTION "vblank", ROM0[$0040]
@@ -151,7 +155,14 @@ InitGameState:
 	ld a, l
 	ld [wActiveMap+1], a
 
+	ld hl, Map1EventLocations
+	ld a, h
+	ld [wActiveMapEventLocations], a
+	ld a, l
+	ld [wActiveMapEventLocations+1], a
+
 	call InitEventState
+	call InitExploreState
 
 	; init input
 	xor a
@@ -186,6 +197,10 @@ InitGameState:
 	call DirtyFpSegments
 	call UpdateShadowScreen
 
+	; init event flags
+	ld a, TRUE
+	ld [wInitialEventFlag], a
+
 	call InitAudio
 	call EnableLcd
 
@@ -212,7 +227,8 @@ Main:
 	call ApplyVerticalMotion
 
 	; ongoing effects for explore screen. could this be attached to movement?
-	call CheckForNewEvents ; checks location for new event
+	call UpdateEventState ; checks location for new event
+
 	call UpdateShadowScreen ; processes game state and dirty flags, draws screen to shadow tilemaps
 	jp Main
 

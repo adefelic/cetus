@@ -58,46 +58,10 @@ Map1Walls:: ; 32 x 32
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 Map1WallsEnd::
 
-; previous map
-;Map1Walls:: ; 32 x 32
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,TILE_MAP_TBL,  TILE_MAP_TB,   TILE_MAP_T,  TILE_MAP_TRB,  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,TILE_MAP_NONE, TILE_MAP_NONE, TILE_MAP_RL, TILE_MAP_NONE, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,TILE_MAP_TRL,  TILE_MAP_NONE, TILE_MAP_L,  TILE_MAP_TR,   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,TILE_MAP_L,    TILE_MAP_TB,   TILE_MAP_B,  TILE_MAP_RB,   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,TILE_MAP_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,TILE_MAP_RL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,TILE_MAP_BL,TILE_MAP_TR,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,TILE_MAP_RBL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,TILE_MAP_TRL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,TILE_MAP_RBL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-;Map1WallsEnd::
-
 ; the "event map"
 ; This table contains possible context events for the player on different squares
-; each entry is an offset into the Map1EventTriggers Table
-Map1EventLocations:
+; each entry is an offset into the Map1Events table
+Map1EventLocations::
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -128,30 +92,37 @@ Map1EventLocations:
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,TownHall-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,TownHall-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
-Map1EventTriggers:
+; deprecated
+;Map1EventTriggers:
+;	nop ; this is to make it so having an offset of 0 means there is no event
+
+;EventTriggerGoIntoBuilding:
+;	event_trigger WALLS_B, EVENT_TYPE_WARP, EventDefGoIntoBuilding ; it's probably more efficient to have a table offset than a ptr?
+;EventDefGoIntoBuilding:
+;	event_def_type_warp 1, EventFramesGoIntoBuilding, MAP1, 2, 9, ORIENTATION_SOUTH
+;EventFramesGoIntoBuilding:
+;	event_frame_simple "  Enter?  "
+
+;EventTriggerGoBackToOW:
+;	event_trigger WALLS_T, EVENT_TYPE_WARP, EventDefGoBackToOW
+;EventDefGoBackToOW:
+;	event_def_type_warp 1, EventFramesGoBackToOW, MAP1, 2, 8, ORIENTATION_NORTH
+;EventFramesGoBackToOW:
+;	event_frame_simple "  Leave?  "
+
+Map1Events:
 	nop ; this is a hack to make it so having an offset of 0 means there is no event
-
-EventTriggerGoIntoBuilding:
-	event_trigger WALLS_B, EVENT_TYPE_WARP, EventDefGoIntoBuilding ; it's probably more efficient to have a table offset than a ptr?
-EventDefGoIntoBuilding:
-	event_def_type_warp 1, EventFramesGoIntoBuilding, MAP1, 2, 9, ORIENTATION_SOUTH
-EventFramesGoIntoBuilding:
-	event_frame_simple "  Enter?  "
-
-EventTriggerGoBackToOW:
-	event_trigger WALLS_T, EVENT_TYPE_WARP, EventDefGoBackToOW
-EventDefGoBackToOW:
-	event_def_type_warp 1, EventFramesGoBackToOW, MAP1, 2, 8, ORIENTATION_NORTH
-EventFramesGoBackToOW:
-	event_frame_simple "  Leave?  "
-
-; todo
-; there should be an object for wall _presence_ (collision)
-; and there should be an object for wall _style_
+	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about ", 1, TownHallDialogOptions
+TownHallDialogOptions:
+	dstruct DialogOption, TownHallSayHello, wInitialEventFlag, "say hello", 1, TownHallIntroDialogOptionFrames
+TownHallIntroDialogOptionFrames:
+	dstruct DialogOptionFrame, TownHallIntroDOFrame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="hello back to", .TextLine1="you stranger", .TextLine2="123456789abcde", .TextLine3="456"
 
 ; maps tiles data to wall presence data. supports 3 wall types
 ; these require the same ordering as the map room tiles in explore-simple for the pausemap to work (is that true?)

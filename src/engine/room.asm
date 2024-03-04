@@ -329,9 +329,21 @@ GetActiveMapRoomAddrFromCoords::
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: player X coord
 ; @param e: player Y coord
+; @return hl: tile address of player occupied tile of Map1 (this need to change)
+GetActiveMapRoomEventsAddrFromCoords::
+	ld a, [wActiveMapEventLocations]
+	ld b, a
+	ld a, [wActiveMapEventLocations+1]
+	ld c, a
+	call GetRoomAddrFromCoords
+	ret
+
+; map addr + wPlayerExploreX + wPlayerExploreY*32
+; @param d: player X coord
+; @param e: player Y coord
 ; @param bc: map addr
 ; @return hl: tile address of player occupied tile of Map1 (this need to change)
-GetRoomAddrFromCoords::
+GetRoomAddrFromCoords:
 	ld l, e
 	ld h, 0
 	; shift left 5 times to multiply by 32

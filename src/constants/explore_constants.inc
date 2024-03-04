@@ -11,11 +11,17 @@ DEF WALL_TYPE_A    EQU $01
 DEF WALL_TYPE_B    EQU $10
 DEF WALL_TYPE_C    EQU $11
 
+; todo deprecate event types. events will have a separate optional warp struct like WarpOnCompletion
 ; event types
 DEF EVENT_TYPE_WARP EQU $00
 
 ; event locations
 DEF EVENT_NONE EQU $00 ; this isn't really a type it's an event location offset value
+
+; dialog modal states
+DEF DIALOG_STATE_LABEL EQU $00
+DEF DIALOG_STATE_ROOT EQU $01
+DEF DIALOG_STATE_OPTION EQU $01
 
 ; 8-bit masks
 DEF ROOM_MASK_NORTH_WALL EQU %11000000

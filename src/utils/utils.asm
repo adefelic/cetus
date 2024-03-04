@@ -19,7 +19,7 @@ AddOffsetToAddress::
 ; @param hl, addr to dereference
 ; @return hl, new addr
 ; uses a,b,c,h,l
-DereferenceHl::
+DereferenceHlIntoHl::
 	ld a, [hli]
 	ld b, a
 	ld a, [hl]

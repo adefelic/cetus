@@ -53,7 +53,8 @@ DebugEnterEncounter:
 	jp DirtyTilemap
 
 HandlePressedA:
-	ld a, [wIsEventActive]
+	; rename wIsPlayerFacingWallInteractable to isInteractableAvailable or something
+	ld a, [wIsPlayerFacingWallInteractable]
 	cp FALSE
 	ret z
 UpdateActiveEvent:
@@ -69,6 +70,7 @@ UpdateWarpEvent:
 	cp b
 	jp z, CompleteWarpEvent
 .incrementEventFrameAddress
+	; todo with new dialog system, maybe it would make more sense to increment an abstract frame(page) count here
 	; inc frame address by frame size
 	ld a, [wEventFrameAddr]
 	ld l, a
@@ -103,7 +105,7 @@ CompleteWarpEvent:
 	ld [wPlayerOrientation], a
 	; clear data todo?
 	ld a, FALSE
-	ld [wIsEventActive], a
+	ld [wIsPlayerFacingWallInteractable], a
 	ld a, TRUE
 	ld [wHasPlayerTranslatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
