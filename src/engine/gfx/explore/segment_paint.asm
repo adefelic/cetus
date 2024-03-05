@@ -501,7 +501,6 @@ PaintSegmentCFog::
 	; sigh, this makes a case for a 20*18 tilemap buffer. there could a tilecpy function that pastes tile ids to the buffer
 	; wait they're just incing by 1 there can just be a loop
 
-
 .row6_col0
 	ld d, TILE_FOG_R6_C0
 	ld hl, wShadowTilemap + BG_ROW_6 + BG_COL_6

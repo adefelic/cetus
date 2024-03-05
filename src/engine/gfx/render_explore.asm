@@ -330,9 +330,10 @@ ProcessRoomCenterFar:
 	jp .checkRightWall
 .paintDistance
 	; todo: set to distance palette
-	ld e, BG_PALETTE_FOG
+	ld e, BG_PALETTE_FOG2
 	ld d, TILE_EXPLORE_DARK
-	call CheckSegmentCFog
+	call CheckSegmentC
+	;call CheckSegmentCFog ; this looks cool but isnt wide enough
 .checkRightWall
 	call GetRoomCoordsCenterFarWRTPlayer
 	call GetActiveMapRoomAddrFromCoords
