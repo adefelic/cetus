@@ -50,7 +50,6 @@ PaintLabelModel::
 	ld bc, 1
 	call PaintTilemapAttrs
 .text
-	;todo should move this deref?
 	ld hl, wCurrentLabelAddr
 	ld a, [hli]
 	ld e, a
