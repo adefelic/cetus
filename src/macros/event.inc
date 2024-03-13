@@ -49,7 +49,7 @@ ENDM
 		bytes 1, EventWalls ; a 4-bit WALLS_ constant. this means that all events must be on the same wall
 		bytes 12, EventLabelText ; string. this is the text that occurs before entering the event eg "talk?"
 		bytes 12, EventPromptText ; string. this is the first event frame that precedes the player selecting an option eg "hello there"
-		bytes 1, DialogOptionsSize
+		bytes 1, DialogOptionsCount
 		words 1, DialogOptionsAddr ; a collection of DialogOptions that is (DialogOptionCount * sizeof_DialogOption) many bytes
 	end_struct
 
@@ -57,7 +57,7 @@ ENDM
 	struct DialogOption
 		words 1, IsVisibleFlagAddr
 		bytes 14, DialogOptionLabel ; string. this text is displayed in the dialog option menu
-		bytes 1, DialogOptionFramesSize
+		bytes 1, DialogOptionFramesCount
 		words 1, DialogOptionFramesAddr ; a collection of contiguous DialogOptionFrames that is (EventCount * sizeof_Event) many bytes
 	end_struct
 

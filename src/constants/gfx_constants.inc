@@ -113,10 +113,10 @@ DEF BG_PALETTE_Z1     EQU $01
 DEF BG_PALETTE_Z2     EQU $02
 DEF BG_PALETTE_Z3     EQU $03
 
-DEF BG_PALETTE_MODAL  EQU $04 ; reserved for ui elements
-DEF BG_PALETTE_FOG    EQU $05 ; there will eventually be only 1 fog palette
-DEF BG_PALETTE_FOG2   EQU $06 ; to be deprecated
-DEF BG_PALETTE_H      EQU $07 ; unused
+DEF BG_PALETTE_UI     EQU $04 ; ui elements
+DEF BG_PALETTE_UI2    EQU $05 ; ui elements (highlighted)
+DEF BG_PALETTE_FOG    EQU $06 ; there will eventually be only 1 fog palette
+DEF BG_PALETTE_FOG2   EQU $07 ; to be deprecated
 
 DEF OBJ_PALETTE_A      EQU $00 ; unused
 DEF OBJ_PALETTE_B      EQU $01 ; unused

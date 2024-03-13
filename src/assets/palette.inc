@@ -18,23 +18,17 @@ SECTION "Palette Data", ROMX
 ;empty
 
 OwBgPaletteSet::
-    ;   ?       floor      wall        ?
-	;   dark,   tan,       green,   grey-brown,
-	;RGB 4,4,4,  15,12,8,   2,11,6 ,   10,7, 8    ; z = 0, near sides
-	;RGB 4,4,4,  14,11,8,   1,10,6 ,   9, 7, 8    ; z = 1, near front
-	;RGB 4,4,4,  13,10,8,   1,9,6 ,   8, 6, 8     ; z = 2, far sides
-	;RGB 4,4,4,  12,9,8,    0,8,6  ,   7, 6, 8    ; z = 3, far front
-	RGB 4,4,4,  12,9,8,    0,8,6  ,   7, 6, 8    ; z = 0
-	RGB 4,4,4,  13,10,8,   1,9,6 ,   8, 6, 8     ; z = 1
-	RGB 4,4,4,  14,11,9,   1,10,7 ,   9, 7, 8    ; z = 2
-	RGB 4,4,4,  15,12,9,   1,11,7 ,   10,7, 8    ; z = 3
+    ;    ?         floor       wall       ?
+	;    dark,     tan,        green,     grey-brown,
+	RGB  4, 4, 4,  12, 9, 8,   0, 8, 6,   7, 6, 8 ; z = 0, near sides
+	RGB  4, 4, 4,  13,10, 8,   1, 9, 6,   8, 6, 8 ; z = 1, near front
+	RGB  4, 4, 4,  14,11, 9,   1,10, 7,   9, 7, 8 ; z = 2, far sides
+	RGB  4, 4, 4,  15,12, 9,   1,11, 7,  10, 7, 8 ; z = 3, far front
 
-	RGB 1,1,1,  13,13,13,  2,10,2 ,   2, 2,10     ; modal
-	RGB 4,12,8, 13,15,15,  7,14,10,   10,15,12    ; fog
-	;RGB 1,10,6, 6,13,9,    4,12,8,   2,11,7  ; fog, white green
-	;RGB 1,10,6, 1,4,1,    1,6,2,   1,8,4     ; fog, dark green ; this palette is great, should use somewhere else
-	RGB 1,4,1, 1,4,1,    1,6,2,   1,8,4     ; fog2 ; this is the dark fog for ABDE segments. temporary!
-	RGB 0,0,0, 0,0,0,     0, 0, 0,    0,0,0  ; unused
+	RGB  1, 1, 1,  13,13,13,   2,10, 2,   2, 2,10 ; ui
+	RGB  13,13,13,  2,10, 2,   2, 2,10,   1, 1, 1 ; ui2 (highlighted)
+	RGB  4,12, 8,  13,15,15,   7,14,10,  10,15,12 ; fog
+	RGB  1, 4, 1,   1, 4, 1,   1, 6, 2,   1, 8, 4 ; fog2 ; this is the dark fog for ABDE segments. temporary!
 
 ; Obj palettes
 OwObjPaletteSet::

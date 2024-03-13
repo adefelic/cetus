@@ -5,8 +5,8 @@ INCLUDE "src/constants/encounter_constants.inc"
 
 SECTION "Encounter Screen Renderer", ROMX
 
-; load hardcoded screen into shadow tilemap
 LoadEncounterScreen::
+; load hardcoded screen into shadow tilemap
 .loadShadowTilemap
 	ld de, Map1EncounterScreen
 	ld hl, wShadowTilemap

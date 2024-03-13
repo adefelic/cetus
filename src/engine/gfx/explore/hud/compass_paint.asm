@@ -24,22 +24,22 @@ PaintCompass::
 .facingWest
 	ld b, TILE_COMPASS_CHAR_W
 	ld c, TILE_COMPASS_ARROW_RIGHT
-	ld d, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + BG_PALETTE_MODAL
+	ld d, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + BG_PALETTE_UI
 	jp .paintCharacter
 .facingNorth
 	ld b, TILE_COMPASS_CHAR_N
 	ld c, TILE_COMPASS_ARROW_UP
-	ld d, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + BG_PALETTE_MODAL
+	ld d, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + BG_PALETTE_UI
 	jp .paintCharacter
 .facingEast
 	ld b, TILE_COMPASS_CHAR_E
 	ld c, TILE_COMPASS_ARROW_RIGHT
-	ld d, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + BG_PALETTE_MODAL
+	ld d, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + BG_PALETTE_UI
 	jp .paintCharacter
 .facingSouth
 	ld b, TILE_COMPASS_CHAR_S
 	ld c, TILE_COMPASS_ARROW_UP
-	ld d, (OAMF_PRI * 0) + (OAMF_YFLIP * 1) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + BG_PALETTE_MODAL
+	ld d, (OAMF_PRI * 0) + (OAMF_YFLIP * 1) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + BG_PALETTE_UI
 .paintCharacter
 	; y
 	ld a, COMPASS_CHAR_Y + 16
@@ -51,7 +51,7 @@ PaintCompass::
 	ld a, b
 	ld [wShadowOam + OAM_HUD_COMPASS_CHAR + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + BG_PALETTE_MODAL
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + BG_PALETTE_UI
 	ld [wShadowOam + OAM_HUD_COMPASS_CHAR + OAMA_FLAGS], a
 .paintArrow
 	; y

@@ -53,62 +53,18 @@ DebugEnterEncounter:
 	jp DirtyTilemap
 
 HandlePressedA:
-	; rename wIsPlayerFacingWallInteractable to isInteractableAvailable or something
 	ld a, [wIsPlayerFacingWallInteractable]
 	cp FALSE
 	ret z
-UpdateActiveEvent:
-	ld a, [wEventType]
-	cp EVENT_TYPE_WARP
-	jp z, UpdateWarpEvent
+.advanceDialog:
+	ld a, [wDialogState]
+	cp DIALOG_STATE_LABEL
+	jp z, PressedAFromDialogLabel
+	cp DIALOG_STATE_ROOT
+	jp z, PressedAFromDialogRoot
+	cp DIALOG_STATE_BRANCH
+	jp z, PressedAFromDialogOption
 	ret
-UpdateWarpEvent:
-	ld a, [wEventFramesSize]
-	ld b, a
-	ld a, [wEventFrameIndex]
-	inc a
-	cp b
-	jp z, CompleteWarpEvent
-.incrementEventFrameAddress
-	; todo with new dialog system, maybe it would make more sense to increment an abstract frame(page) count here
-	; inc frame address by frame size
-	ld a, [wEventFrameAddr]
-	ld l, a
-	ld a, [wEventFrameAddr + 1]
-	ld h, a
-	ld a, EVENT_FRAME_SIMPLE_SIZE
-	call AddOffsetToAddress ; this might be silly and inefficient
-	ld a, l
-	ld [wEventFrameAddr], a
-	ld a, h
-	ld [wEventFrameAddr + 1], a
-.incrementEventFrameIndex
-	ld a, [wEventFrameIndex]
-	inc a
-	ld [wEventFrameIndex], a
-	ret
-
-CompleteWarpEvent:
-	ld a, [wEventDefinition]
-	ld l, a
-	ld a, [wEventDefinition + 1]
-	ld h, a
-	ld a, ED_MAP_OFFSET
-	call AddOffsetToAddress
-	ld a, [hli]
-	; todo do something with the map id that's currently in a
-	ld a, [hli]
-	ld [wPlayerExploreX], a
-	ld a, [hli]
-	ld [wPlayerExploreY], a
-	ld a, [hl]
-	ld [wPlayerOrientation], a
-	; clear data todo?
-	ld a, FALSE
-	ld [wIsPlayerFacingWallInteractable], a
-	ld a, TRUE
-	ld [wHasPlayerTranslatedThisFrame], a
-	jp DirtyFpSegmentsAndTilemap
 
 HandlePressedUp:
 .seedRandMaybe
@@ -258,7 +214,7 @@ SetOrientationWest:
 	ld [wHasPlayerRotatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
-DirtyFpSegmentsAndTilemap:
+DirtyFpSegmentsAndTilemap::
 	call DirtyFpSegments
 DirtyTilemap:
 	ld a, DIRTY

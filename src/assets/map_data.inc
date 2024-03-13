@@ -118,9 +118,11 @@ Map1EventLocations::
 
 Map1Events:
 	nop ; this is a hack to make it so having an offset of 0 means there is no event
-	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about ", 1, TownHallDialogOptions
+	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about ", 3, TownHallDialogOptions
 TownHallDialogOptions:
-	dstruct DialogOption, TownHallSayHello, wInitialEventFlag, "say hello", 1, TownHallIntroDialogOptionFrames
+	dstruct DialogOption, TownHallSayHello, wAlwaysTrueEventFlag, "say hello", 1, TownHallIntroDialogOptionFrames
+	dstruct DialogOption, TownHallAskAboutFog, wAlwaysTrueEventFlag, "ask: fog", 1, TownHallIntroDialogOptionFrames
+	dstruct DialogOption, TownHallAskAboutSkull, wAlwaysTrueEventFlag, "ask: skull", 1, TownHallIntroDialogOptionFrames
 TownHallIntroDialogOptionFrames:
 	dstruct DialogOptionFrame, TownHallIntroDOFrame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="hello back to", .TextLine1="you stranger", .TextLine2="123456789abcde", .TextLine3="456"
 

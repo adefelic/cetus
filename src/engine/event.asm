@@ -1,24 +1,30 @@
 INCLUDE "src/assets/map_data.inc"
 INCLUDE "src/constants/constants.inc"
 
-SECTION "Event Variables", WRAM0
-wIsPlayerFacingWallInteractable:: db
+SECTION "Event Struct Storage", WRAM0
+; old below, deprecate
 wEventType:: db
 wEventDefinition:: dw ; address of active event definition
 wEventFrameAddr:: dw  ; address of active event frame. 0 if no active event
 wEventFrameIndex:: db ; index of current event frame of active event
 wEventFramesSize:: db ; index of final event frame of active event
-; ~
+; new below
 wRoomEventAddr:: dw
 wDialogOptionsAddr:: dw
 wDialogOptionsIndex:: db
-wDialogOptionsSize:: db
+wDialogOptionsCount:: db
 wDialogOptionFramesAddr:: dw
 wDialogOptionFramesIndex:: db
-wDialogOptionFramesSize:: db
+wDialogOptionFramesCount:: db
+
+SECTION "Event Game State", WRAM0
+wIsPlayerFacingWallInteractable:: db
+wDialogState:: db ; should the game render the dialog root or a dialog option
+wDialogHighlightedOption:: dw  ; addr of the dialog option that is currently highlighted if in the DIALOG_STATE_ROOT state
+wCurrentDialogFrame:: dw ; addr of the dialog option frame is currently rendered if in the DIALOG_STATE_BRANCH state
+wCurrentLabelAddr:: dw ; addr of the label to paint if the dialog state is DIALOG_STATE_LABEL
 
 ; specifically _new_ event parsing. event loading? event initiation?
-; todo rename these to "explore events"
 SECTION "Event Parsing", ROMX
 
 InitEventState::
@@ -27,22 +33,43 @@ InitEventState::
 	xor a
 	ld [wEventFrameIndex], a
 	ld [wEventFramesSize], a
-
 	ld [wRoomEventAddr], a
 	ld [wDialogOptionsAddr], a
 	ld [wDialogOptionsIndex], a
-	ld [wDialogOptionsSize], a
+	ld [wDialogOptionsCount], a
 	ld [wDialogOptionFramesAddr], a
 	ld [wDialogOptionFramesIndex], a
-	ld [wDialogOptionFramesSize], a
+	ld [wDialogOptionFramesCount], a
+	jp SetEventStateDialogLabel
+
+SetEventStateDialogLabel::
+	ld a, DIALOG_STATE_LABEL
+	ld [wDialogState], a
+
+	xor a
+	ld [wDialogOptionLinesRendered], a
+
+	ld a, TRUE
+	ld [wDialogModalDirty], a
+	ret
+
+SetEventStateDialogRoot::
+	ld a, DIALOG_STATE_ROOT
+	ld [wDialogState], a
+
+	xor a
+	ld [wDialogOptionLinesRendered], a
+
+	ld a, TRUE
+	ld [wDialogModalDirty], a
 	ret
 
 ; populate current event state with new events
-UpdateEventState::
+LoadVisibleEvents::
 	ld a, [wHasPlayerRotatedThisFrame]
 	ld b, a
 	ld a, [wHasPlayerTranslatedThisFrame]
-	and b ; false is 1. we want to check is either of these happened
+	and b ; false is 1. we want to check if either of these happened
 	cp FALSE
 	ret z
 .checkLocationTableForEvent
@@ -68,13 +95,14 @@ UpdateEventState::
 .setIsPlayerFacingWallInteractable:
 	ld a, TRUE
 	ld [wIsPlayerFacingWallInteractable], a
-	call SetInitialEventRenderingState
+	call SetEventStateDialogLabel
 .loadRoomEventIntoRam:
 	; store RoomEvent addr
 	ld a, l
 	ld [wRoomEventAddr], a
 	ld a, h
 	ld [wRoomEventAddr + 1], a
+	push hl ; stash RoomEvent addr
 
 	; store DialogOptionsAddr
 	ld a, RoomEvent_DialogOptionsAddr
@@ -85,10 +113,12 @@ UpdateEventState::
 	ld a, h
 	ld [wDialogOptionsAddr + 1], a
 
+	pop hl
 	; store DialogOptionsCount
-	ld a, RoomEvent_DialogOptionsSize
+	ld a, RoomEvent_DialogOptionsCount
 	call AddOffsetToAddress
-	ld [wDialogOptionsSize], a ; 0th byte of event def
+	ld a, [hl]
+	ld [wDialogOptionsCount], a
 
 	; store DialogOptionsIndex
 	xor a

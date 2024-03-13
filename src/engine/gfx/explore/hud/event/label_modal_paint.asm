@@ -18,7 +18,7 @@ PaintLabelModel::
 	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT
 	ld bc, 1
 	call PaintTilemap
-	ld e, BG_PALETTE_MODAL
+	ld e, BG_PALETTE_UI
 	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT
 	ld bc, 1
 	call PaintTilemapAttrs
@@ -27,7 +27,7 @@ PaintLabelModel::
 	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + cols 1
 	ld bc, 10
 	call PaintTilemap
-	ld e, BG_PALETTE_MODAL
+	ld e, BG_PALETTE_UI
 	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + cols 1
 	ld bc, 10
 	call PaintTilemapAttrs
@@ -36,7 +36,7 @@ PaintLabelModel::
 	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemap
-	ld e, BG_PALETTE_MODAL + OAMF_XFLIP
+	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemapAttrs
@@ -45,7 +45,7 @@ PaintLabelModel::
 	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + rows 1
 	ld bc, 1
 	call PaintTilemap
-	ld e, BG_PALETTE_MODAL
+	ld e, BG_PALETTE_UI
 	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 1
 	ld bc, 1
 	call PaintTilemapAttrs
@@ -57,7 +57,7 @@ PaintLabelModel::
 	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + rows 1 + cols 1
 	ld bc, 10
 	call Memcopy
-	ld e, BG_PALETTE_MODAL + OAMF_BANK1
+	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 1 + cols 1
 	ld bc, 10
 	call PaintTilemapAttrs
@@ -66,7 +66,7 @@ PaintLabelModel::
 	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + rows 1 + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemap
-	ld e, BG_PALETTE_MODAL + OAMF_XFLIP
+	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 1 + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemapAttrs
@@ -75,7 +75,7 @@ PaintLabelModel::
 	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + rows 2
 	ld bc, 1
 	call PaintTilemap
-	ld e, BG_PALETTE_MODAL
+	ld e, BG_PALETTE_UI
 	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 2
 	ld bc, 1
 	call PaintTilemapAttrs
@@ -84,7 +84,7 @@ PaintLabelModel::
 	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + rows 2 + cols 1
 	ld bc, 10
 	call PaintTilemap
-	ld e, BG_PALETTE_MODAL
+	ld e, BG_PALETTE_UI
 	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 2 + cols 1
 	ld bc, 10
 	call PaintTilemapAttrs
@@ -93,7 +93,7 @@ PaintLabelModel::
 	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + rows 2 + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemap
-	ld e, BG_PALETTE_MODAL + OAMF_XFLIP
+	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 2 + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemapAttrs

@@ -6,17 +6,7 @@ INCLUDE "src/assets/tiles/indices/object_tiles.inc"
 SECTION "Explore Screen Renderer", ROMX
 
 InitExploreState::
-	ld a, DIALOG_STATE_LABEL
-	ld [wDialogModalState], a
-	; todo put all state in here, give reasonable defaults
-	ret
-
-SetInitialEventRenderingState::
-	ld a, DIALOG_STATE_LABEL
-	ld [wDialogModalState], a
-	; really the below should happen once we enter DIALOG_ROOT state
-	xor a
-	ld [wTextRowsDrawnCount], a
+	call InitEventState
 	ret
 
 ; todo change map stuff to compass directions. trbl is player relative, nesw is absolute
@@ -29,6 +19,7 @@ LoadExploreScreen::
 	;   maybe make it so when rendering an event, all other background are painted with a single palette?
 	;   it might look weird flattening depth like that.
 	call RenderFirstPersonView
+
 	; maybe render event on top of first person view
 	ld a, [wIsPlayerFacingWallInteractable]
 	cp FALSE

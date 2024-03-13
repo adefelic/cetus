@@ -1061,6 +1061,17 @@ PaintTilemap::
 
 ; @param d: source tile id
 ; @param hl: destination
+; @param b: length
+PaintTilemapSmall::
+	ld a, d
+	ld [hli], a ; write tile id
+	dec b
+	ld a, b
+	jp nz, PaintTilemapSmall
+	ret
+
+; @param d: source tile id
+; @param hl: destination
 ; @param bc: length
 PaintTilemapIncrementingTileId::
 	ld a, d
@@ -1083,6 +1094,17 @@ PaintTilemapAttrs::
 	ld a, b
 	or c
 	jp nz, PaintTilemapAttrs
+	ret
+
+; @param e: BG Map Attribute byte
+; @param hl: destination
+; @param b: length
+PaintTilemapAttrsSmall::
+	ld a, e
+	ld [hli], a ; write palette id
+	dec b
+	ld a, b
+	jp nz, PaintTilemapAttrsSmall
 	ret
 
 ; todo there is probably a more efficient way to do this

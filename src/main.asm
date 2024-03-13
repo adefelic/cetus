@@ -45,7 +45,7 @@ wJoypadNewlyPressed:: db
 wJoypadNewlyReleased:: db
 
 SECTION "Event Flags", WRAM0
-wInitialEventFlag:: db
+wAlwaysTrueEventFlag:: db
 
 ; hardware interrupts
 SECTION "vblank", ROM0[$0040]
@@ -161,7 +161,6 @@ InitGameState:
 	ld a, l
 	ld [wActiveMapEventLocations+1], a
 
-	call InitEventState
 	call InitExploreState
 
 	; init input
@@ -199,7 +198,7 @@ InitGameState:
 
 	; init event flags
 	ld a, TRUE
-	ld [wInitialEventFlag], a
+	ld [wAlwaysTrueEventFlag], a
 
 	call InitAudio
 	call EnableLcd
@@ -227,7 +226,7 @@ Main:
 	call ApplyVerticalMotion
 
 	; ongoing effects for explore screen. could this be attached to movement?
-	call UpdateEventState ; checks location for new event
+	call LoadVisibleEvents ; checks location for new event
 
 	call UpdateShadowScreen ; processes game state and dirty flags, draws screen to shadow tilemaps
 	jp Main
@@ -390,6 +389,19 @@ Memcopy::
 	ld a, b
 	or c
 	jp nz, Memcopy
+	ret
+
+; copy bytes from one area to another. max 256 bytes
+; @param de: source
+; @param hl: destination
+; @param b: length
+MemcopySmall::
+	ld a, [de]
+	ld [hli], a
+	inc de
+	dec b
+	ld a, b
+	jp nz, MemcopySmall
 	ret
 
 ; @param de: source
