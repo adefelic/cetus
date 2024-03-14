@@ -46,6 +46,7 @@ wJoypadNewlyReleased:: db
 
 SECTION "Event Flags", WRAM0
 wAlwaysTrueEventFlag:: db
+wFoundSkullFlag:: db
 
 ; hardware interrupts
 SECTION "vblank", ROM0[$0040]
@@ -199,6 +200,8 @@ InitGameState:
 	; init event flags
 	ld a, TRUE
 	ld [wAlwaysTrueEventFlag], a
+	ld a, FALSE
+	ld [wFoundSkullFlag], a
 
 	call InitAudio
 	call EnableLcd

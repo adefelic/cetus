@@ -12,9 +12,9 @@ INCLUDE "src/utils/structs.inc"
 	; subsequent DialogBranches must be contiguous in memory
 	struct DialogBranch
 		words 1, IsVisibleFlagAddr
-		bytes 14, DialogBranchLabel ; string. this text is displayed in the dialog option menu
-		bytes 1, DialogBranchFramesCount
-		words 1, DialogBranchFramesAddr ; a collection of contiguous DialogBranchFrames that is (EventCount * sizeof_Event) many bytes
+		bytes 14, Label ; string. this text is displayed in the dialog option menu
+		bytes 1, FramesCount
+		words 1, FramesAddr ; a collection of contiguous DialogBranchFrames that is (EventCount * sizeof_Event) many bytes
 	end_struct
 
 	; subsequent DialogBranchFrames must be contiguous in memory

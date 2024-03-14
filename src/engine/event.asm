@@ -2,17 +2,13 @@ INCLUDE "src/assets/map_data.inc"
 INCLUDE "src/constants/constants.inc"
 
 SECTION "Event Struct Storage", WRAM0
-; old below, deprecate
-wEventType:: db
-wEventDefinition:: dw ; address of active event definition
-wEventFrameAddr:: dw  ; address of active event frame. 0 if no active event
-wEventFrameIndex:: db ; index of current event frame of active event
-wEventFramesSize:: db ; index of final event frame of active event
-; new below
+; current RoomEvent struct state
 wRoomEventAddr:: dw
 wDialogBranchesAddr:: dw
-wDialogBranchesIndex:: db
 wDialogBranchesCount:: db
+
+; current DialogBranch struct state
+wDialogBranchAddr:: dw
 wDialogBranchFramesAddr:: dw
 wDialogBranchFramesIndex:: db
 wDialogBranchFramesCount:: db
@@ -30,27 +26,29 @@ ResetAllEventState::
 	ld a, FALSE
 	ld [wIsPlayerFacingWallInteractable], a
 	xor a
-	ld [wEventFrameIndex], a
-	ld [wEventFramesSize], a
+
+	; current RoomEvent struct state
 	ld [wRoomEventAddr], a
 	ld [wDialogBranchesAddr], a
-	ld [wDialogBranchesIndex], a
 	ld [wDialogBranchesCount], a
+
+	; current DialogBranch struct state
+	ld [wDialogBranchAddr], a
 	ld [wDialogBranchFramesAddr], a
 	ld [wDialogBranchFramesIndex], a
 	ld [wDialogBranchFramesCount], a
-	ld [wDialogBranchLinesRendered], a
+
+	; current modal state
 	ld [wDialogBranchesVisibleCount], a
 	ld [wDialogTextRowHighlighted], a
+	ld [wDialogRootTextAreaRowsRendered], a
+	ld [wDialogBranchesIteratedOver], a
 
 	jp SetEventStateDialogLabel
 
 SetEventStateDialogLabel::
 	ld a, DIALOG_STATE_LABEL
 	ld [wDialogState], a
-
-	;xor a
-	;ld [wDialogBranchLinesRendered], a
 
 	ld a, TRUE
 	ld [wDialogModalDirty], a
@@ -59,12 +57,13 @@ SetEventStateDialogLabel::
 SetEventStateDialogRoot::
 	ld a, DIALOG_STATE_ROOT
 	ld [wDialogState], a
-
-	; reset ROOT specific state
 	xor a
-	ld [wDialogBranchLinesRendered], a
-	ld [wDialogBranchesVisibleCount], a
 	ld [wDialogTextRowHighlighted], a
+ResetModalStateAfterHighlightChange::
+	xor a
+	ld [wDialogRootTextAreaRowsRendered], a
+	ld [wDialogBranchesVisibleCount], a
+	ld [wDialogBranchesIteratedOver], a
 
 	ld a, TRUE
 	ld [wDialogModalDirty], a
@@ -125,10 +124,6 @@ LoadVisibleEvents::
 	call AddAToHl
 	ld a, [hl]
 	ld [wDialogBranchesCount], a
-
-	; store DialogBranchesIndex
-	xor a
-	ld [wDialogBranchesIndex], a
 	ret
 
 UnsetIsPlayerFacingWallInteractable:

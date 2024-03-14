@@ -7,9 +7,7 @@ SECTION "Utils", ROMX
 ; @param a, offset
 ; @param hl, address
 AddAToHl::
-	ld b, a
-	ld a, l
-	add b
+	add l
 	ld l, a
 	ld a, h
 	adc 0

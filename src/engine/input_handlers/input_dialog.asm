@@ -1,5 +1,6 @@
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/utils/hardware.inc"
+INCLUDE "src/macros/event.inc"
 
 
 SECTION "Explore Screen Dialog Input Handling", ROMX
@@ -42,8 +43,31 @@ HandleInputFromDialogRoot::
 	ret
 
 PressedAFromDialogRoot:
-; go to DIALOG_STATE_BRANCH state
-;	jp SetEventStateDialogBranch
+.getHighlightedDialogBranchAddr
+	ld a, [wDialogTextRowHighlighted]
+	sla a ; multiply by 2 to transform from index -> address offset
+	ld hl, wDialogBranchRendered0
+	call AddAToHl
+	ld c, [hl]
+	inc hl
+	ld b, [hl]
+	ld l, c
+	ld h, b
+.storeHighlightedDialogBranch
+	ld a, l
+	ld [wDialogBranchAddr], a
+	ld a, h
+	ld [wDialogBranchAddr + 1], a
+	ld a, DialogBranch_FramesCount ; FramesCount offset
+	call AddAToHl
+	ld a, [hli] ; hl now pointing to frames array
+	ld [wDialogBranchFramesCount], a
+	call DereferenceHlIntoHl
+	ld a, l
+	ld [wDialogBranchFramesAddr], a
+	ld a, h
+	ld [wDialogBranchFramesAddr + 1], a
+	;jp SetEventStateDialogBranch
 	;jp DirtyFpSegmentsAndTilemap
 	ret
 

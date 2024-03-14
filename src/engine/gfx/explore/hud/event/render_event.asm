@@ -9,8 +9,15 @@ wDialogModalDirty:: db
 wDialogTextRowHighlighted:: db ; index from 0 to 3. reads from the bottom 3 bits
 wDialogBranchesVisibleCount:: db ; # of dialog branches that have TRUE visible flags
 
+; these need to be contiguous in memory
+wDialogBranchRendered0:: dw
+wDialogBranchRendered1:: dw
+wDialogBranchRendered2:: dw
+wDialogBranchRendered3:: dw
+
 SECTION "Dialog Modal Scratch", WRAM0
-wDialogBranchLinesRendered:: db
+wDialogRootTextAreaRowsRendered:: db
+wDialogBranchesIteratedOver:: db
 
 SECTION "Explore Screen Event Renderer", ROMX
 
@@ -62,35 +69,64 @@ RenderDialogRoot:
 	ld h, a
 .renderTextLoop
 	; the word at offset 0 of a DialogBranch is the address of the flag that determines whether it should be displayed
-	push hl ; stash DialogBranch[wDialogBranchLinesRendered] addr
+	push hl ; stash DialogBranch[wDialogRootTextAreaRowsRendered] addr
 	call DereferenceHlIntoHl ; load addr of flag
 	ld a, [hl]
 	cp FALSE ; check if flag is false.
 	jp z, .checkNext
 .renderDialogBranchLabel
-	pop hl ; restore addr of DialogBranch[wDialogBranchLinesRendered]
-	push hl ; save addr of DialogBranch[wDialogBranchLinesRendered]
+	pop hl ; restore addr of DialogBranch[wDialogRootTextAreaRowsRendered]
+	push hl ; save addr of DialogBranch[wDialogRootTextAreaRowsRendered]
 	; add 2 to get the addr of the label text (DialogBranchLabel)
 	inc hl
 	inc hl
-	ld a, [wDialogBranchLinesRendered]
+	ld a, [wDialogRootTextAreaRowsRendered]
 	ld c, a
 	call PaintDialogTextRow
-	; inc # of text rows drawn
-	ld a, [wDialogBranchLinesRendered]
+
+	; fixme this isn't working
+	; correlate addr of branch in ram to placement in menu so its frames can be pulled up if selected
+	pop hl ; restore addr of DialogBranch[wDialogRootTextAreaRowsRendered]
+	ld d, h ; stash hl in de
+	ld e, l
+
+	ld hl, wDialogBranchRendered0
+	ld a, [wDialogRootTextAreaRowsRendered]
+	; add 2 for each in a
+	sla a ; a * 2
+	call AddAToHl ; hl += a
+	; move DialogBranch[wDialogRootTextAreaRowsRendered] into wDialogBranchRendered[wDialogRootTextAreaRowsRendered]
+
+	ld [hl], e
+	inc hl
+	ld [hl], d
+
+	ld h, d  ; put the old hl back on the stack
+	ld l, e
+	push hl
+
+	; inc # of text rows drawn. this row offset is used for rendering. it will be used to draw empty lines
+	ld a, [wDialogRootTextAreaRowsRendered]
 	inc a
-	ld [wDialogBranchLinesRendered], a
+	ld [wDialogRootTextAreaRowsRendered], a
+
+	; inc # of text rows visible. this is used to store the current size of the menu
 	ld a, [wDialogBranchesVisibleCount]
 	inc a
 	ld [wDialogBranchesVisibleCount], a
+
 .checkNext ; check if all options have been iterated over. get next if not
-	pop hl ; restore addr of DialogBranch[wDialogBranchLinesRendered]
+	ld a, [wDialogBranchesIteratedOver]
+	inc a
+	ld [wDialogBranchesIteratedOver], a
+
+	pop hl ; restore addr of DialogBranch[wDialogRootTextAreaRowsRendered]
 	ld a, [wDialogBranchesCount]
 	ld b, a
-	ld a, [wDialogBranchLinesRendered]
+	ld a, [wDialogBranchesIteratedOver]
 	cp b
-	jp z, .finishRenderingDialogRoot
-	; increment hl (addr in DialogBranches array) by sizeof_DialogBranch
+	jp z, .renderBlankLines
+	; increment hl (addr in DialogBranches array) by sizeof_DialogBranch to get next DialogBranch
 	ld a, sizeof_DialogBranch
 	add a, l
 	ld l, a
@@ -98,17 +134,17 @@ RenderDialogRoot:
 	adc 0
 	ld h, a
 	jp .renderTextLoop
-.finishRenderingDialogRoot
-	ld [wDialogBranchLinesRendered], a
-.fillWithEmptyRowsLoop
-	cp DIALOG_MODAL_TEXT_AREA_HEIGHT + 1
+.renderBlankLines
+	ld a, [wDialogRootTextAreaRowsRendered]
+.renderBlankLinesLoop
+	cp DIALOG_MODAL_TEXT_AREA_HEIGHT
 	jp z, .renderBottomRow
 	ld c, a
 	call PaintEmptyRow ; c is an arg to this
-	ld a, [wDialogBranchLinesRendered]
+	ld a, [wDialogRootTextAreaRowsRendered]
 	inc a
-	ld [wDialogBranchLinesRendered], a
-	jp .fillWithEmptyRowsLoop
+	ld [wDialogRootTextAreaRowsRendered], a
+	jp .renderBlankLinesLoop
 .renderBottomRow
 	call PaintDialogBottomRow
 	ld a, FALSE
@@ -141,16 +177,6 @@ DecrementLineHighlight::
 	dec a
 	ld [wDialogTextRowHighlighted], a
 	jp ResetModalStateAfterHighlightChange
-
-ResetModalStateAfterHighlightChange:
-	xor a
-	ld [wDialogBranchLinesRendered], a
-	ld [wDialogBranchesVisibleCount], a
-
-	ld a, TRUE
-	ld [wDialogModalDirty], a
-	ret
-
 
 RenderDialogBranch:
 ; old, saving for later in case useful

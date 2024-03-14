@@ -100,13 +100,17 @@ Map1EventLocations::
 
 Map1Events:
 	nop ; this is a hack to make it so having an offset of 0 means there is no event
-	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about ", 3, TownHallDialogBranches
-TownHallDialogBranches:
-	dstruct DialogBranch, TownHallSayHello, wAlwaysTrueEventFlag, "say hello", 1, TownHallIntroDialogBranchFrames
-	dstruct DialogBranch, TownHallAskAboutFog, wAlwaysTrueEventFlag, "ask: fog", 1, TownHallIntroDialogBranchFrames
-	dstruct DialogBranch, TownHallAskAboutSkull, wAlwaysTrueEventFlag, "ask: skull", 1, TownHallIntroDialogBranchFrames
-TownHallIntroDialogBranchFrames:
-	dstruct DialogBranchFrame, TownHallIntroDOFrame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="hello back to", .TextLine1="you stranger", .TextLine2="123456789abcde", .TextLine3="456"
+	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about ", 3, TownHall_DialogBranches
+TownHall_DialogBranches:
+	dstruct DialogBranch, TownHall_SayHello, wAlwaysTrueEventFlag, "say hello", 1, TownHall_SayHello_DialogBranchFrames
+	dstruct DialogBranch, TownHall_AskAboutFog, wAlwaysTrueEventFlag, "ask: fog", 1, TownHall_AskAboutFog_DialogBranchFrames
+	dstruct DialogBranch, TownHall_AskAboutSkull, wFoundSkullFlag, "ask: skull", 1, TownHall_AskAboutSkull_DialogBranchFrames
+TownHall_SayHello_DialogBranchFrames:
+	dstruct DialogBranchFrame, TownHall_SayHello_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="hello back to", .TextLine1="you stranger", .TextLine2="123456789abcde", .TextLine3="456"
+TownHall_AskAboutFog_DialogBranchFrames:
+	dstruct DialogBranchFrame, TownHall_AskAboutFog_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="real misty", .TextLine1="out there", .TextLine2="isnt it...", .TextLine3="cold too"
+TownHall_AskAboutSkull_DialogBranchFrames:
+	dstruct DialogBranchFrame, TownHall_AskAboutSkull_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="i'm not sure", .TextLine1="what you're", .TextLine2="speaking of...", .TextLine3="*cough*"
 
 ; maps tiles data to wall presence data. supports 3 wall types
 ; these require the same ordering as the map room tiles in explore-simple for the pausemap to work (is that true?)

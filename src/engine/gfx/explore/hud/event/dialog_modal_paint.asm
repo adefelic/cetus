@@ -94,7 +94,7 @@ PaintDialogTextRow::
 	ld b, DIALOG_MODAL_TEXT_AREA_WIDTH
 	call MemcopySmall
 
-	ld a, [wDialogBranchLinesRendered]
+	ld a, [wDialogRootTextAreaRowsRendered]
 	call PutTextPaletteInE
 	ld hl, wShadowTilemapAttrs + DIALOG_MODAL_TOP_LEFT + rows 1 + cols 1
 	; add row offset to hl
