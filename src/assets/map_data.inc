@@ -98,24 +98,6 @@ Map1EventLocations::
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
-; deprecated
-;Map1EventTriggers:
-;	nop ; this is to make it so having an offset of 0 means there is no event
-
-;EventTriggerGoIntoBuilding:
-;	event_trigger WALLS_B, EVENT_TYPE_WARP, EventDefGoIntoBuilding ; it's probably more efficient to have a table offset than a ptr?
-;EventDefGoIntoBuilding:
-;	event_def_type_warp 1, EventFramesGoIntoBuilding, MAP1, 2, 9, ORIENTATION_SOUTH
-;EventFramesGoIntoBuilding:
-;	event_frame_simple "  Enter?  "
-
-;EventTriggerGoBackToOW:
-;	event_trigger WALLS_T, EVENT_TYPE_WARP, EventDefGoBackToOW
-;EventDefGoBackToOW:
-;	event_def_type_warp 1, EventFramesGoBackToOW, MAP1, 2, 8, ORIENTATION_NORTH
-;EventFramesGoBackToOW:
-;	event_frame_simple "  Leave?  "
-
 Map1Events:
 	nop ; this is a hack to make it so having an offset of 0 means there is no event
 	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about ", 3, TownHallDialogBranches

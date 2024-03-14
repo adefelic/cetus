@@ -11,10 +11,6 @@ DEF WALL_TYPE_A    EQU $01
 DEF WALL_TYPE_B    EQU $10
 DEF WALL_TYPE_C    EQU $11
 
-; todo deprecate event types. events will have a separate optional warp struct like WarpOnCompletion
-; event types
-DEF EVENT_TYPE_WARP EQU $00
-
 ; event locations
 DEF EVENT_NONE EQU $00 ; this isn't really a type it's an event location offset value
 
