@@ -64,9 +64,9 @@ PaintDialogTextRow::
 	ld a, h
 	adc 0
 	ld h, a
-
 	ld b, 1
 	call PaintTilemapSmall
+
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowTilemapAttrs + DIALOG_MODAL_TOP_LEFT + rows 1
 	; add row offset to hl
@@ -76,7 +76,6 @@ PaintDialogTextRow::
 	ld a, h
 	adc 0
 	ld h, a
-
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .text
@@ -92,10 +91,11 @@ PaintDialogTextRow::
 	ld a, h
 	adc 0
 	ld h, a
-
 	ld b, DIALOG_MODAL_TEXT_AREA_WIDTH
 	call MemcopySmall
-	ld e, BG_PALETTE_UI + OAMF_BANK1
+
+	ld a, [wDialogBranchLinesRendered]
+	call PutTextPaletteInE
 	ld hl, wShadowTilemapAttrs + DIALOG_MODAL_TOP_LEFT + rows 1 + cols 1
 	; add row offset to hl
 	ld a, l
@@ -117,9 +117,9 @@ PaintDialogTextRow::
 	ld a, h
 	adc 0
 	ld h, a
-
 	ld b, 1
 	call PaintTilemapSmall
+
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowTilemapAttrs + DIALOG_MODAL_TOP_LEFT + rows 1 + cols (DIALOG_MODAL_WIDTH - 1)
 	; add row offset to hl
@@ -129,9 +129,21 @@ PaintDialogTextRow::
 	ld a, h
 	adc 0
 	ld h, a
-
 	ld b, 1
 	call PaintTilemapAttrsSmall
+	ret
+
+; @param a, text line #
+PutTextPaletteInE:
+	ld b, a
+	ld a, [wDialogTextRowHighlighted]
+	cp b
+	jp z, .useHighlightedPalette
+.useRegularPalette
+	ld e, BG_PALETTE_UI + OAMF_BANK1
+	ret
+.useHighlightedPalette
+	ld e, BG_PALETTE_UI2 + OAMF_BANK1
 	ret
 
 PaintEmptyRow::
@@ -225,6 +237,7 @@ PaintEmptyRow::
 	call PaintTilemapAttrsSmall
 	ret
 
+; todo make the bottom row have something like "b: leave"
 PaintDialogBottomRow::
 .bl_corner
 	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER

@@ -4,9 +4,13 @@ INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/gfx_event.inc"
 INCLUDE "src/macros/event.inc"
 
-SECTION "Dialog Rendering Scratch", WRAM0
-wDialogBranchLinesRendered:: db
+SECTION "Dialog Modal State", WRAM0
 wDialogModalDirty:: db
+wDialogTextRowHighlighted:: db ; index from 0 to 3. reads from the bottom 3 bits
+wDialogBranchesVisibleCount:: db ; # of dialog branches that have TRUE visible flags
+
+SECTION "Dialog Modal Scratch", WRAM0
+wDialogBranchLinesRendered:: db
 
 SECTION "Explore Screen Event Renderer", ROMX
 
@@ -76,6 +80,9 @@ RenderDialogRoot:
 	ld a, [wDialogBranchLinesRendered]
 	inc a
 	ld [wDialogBranchLinesRendered], a
+	ld a, [wDialogBranchesVisibleCount]
+	inc a
+	ld [wDialogBranchesVisibleCount], a
 .checkNext ; check if all options have been iterated over. get next if not
 	pop hl ; restore addr of DialogBranch[wDialogBranchLinesRendered]
 	ld a, [wDialogBranchesCount]
@@ -107,6 +114,43 @@ RenderDialogRoot:
 	ld a, FALSE
 	ld [wDialogModalDirty], a
 	ret
+
+IncrementLineHighlight::
+	ld a, [wDialogBranchesVisibleCount]
+	ld b, a
+	ld a, [wDialogTextRowHighlighted]
+	inc a
+	cp b
+	jp z, .overflow
+	ld [wDialogTextRowHighlighted], a
+	jp ResetModalStateAfterHighlightChange
+.overflow
+	xor a
+	ld [wDialogTextRowHighlighted], a
+	jp ResetModalStateAfterHighlightChange
+
+DecrementLineHighlight::
+	ld a, [wDialogTextRowHighlighted]
+	dec a
+	cp -1
+	jp z, .underflow
+	ld [wDialogTextRowHighlighted], a
+	jp ResetModalStateAfterHighlightChange
+.underflow
+	ld a, [wDialogBranchesVisibleCount]
+	dec a
+	ld [wDialogTextRowHighlighted], a
+	jp ResetModalStateAfterHighlightChange
+
+ResetModalStateAfterHighlightChange:
+	xor a
+	ld [wDialogBranchLinesRendered], a
+	ld [wDialogBranchesVisibleCount], a
+
+	ld a, TRUE
+	ld [wDialogModalDirty], a
+	ret
+
 
 RenderDialogBranch:
 ; old, saving for later in case useful

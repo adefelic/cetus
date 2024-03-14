@@ -53,13 +53,12 @@ PressedBFromDialogRoot:
 	jp DirtyFpSegmentsAndTilemap
 
 PressedUpFromDialogRoot:
-	ret
+	jp DecrementLineHighlight
 
 PressedDownFromDialogRoot:
-	ret
+	jp IncrementLineHighlight
 
 ;; DIALOG_STATE_BRANCH handlers
-
 HandleInputFromDialogBranch::
 	ret
 
@@ -73,9 +72,6 @@ PressedAFromDialogBranch:
 PressedAFromDialogLabel::
 	call SetEventStateDialogRoot
 	jp DirtyFpSegmentsAndTilemap
-
-
-
 
 
 ; old: would jump here if index == max frames

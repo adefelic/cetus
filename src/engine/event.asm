@@ -20,14 +20,13 @@ wDialogBranchFramesCount:: db
 SECTION "Event Game State", WRAM0
 wIsPlayerFacingWallInteractable:: db
 wDialogState:: db ; should the game render the dialog root or a dialog option
-wDialogHighlightedOption:: dw  ; addr of the dialog option that is currently highlighted if in the DIALOG_STATE_ROOT state
 wCurrentDialogFrame:: dw ; addr of the dialog option frame is currently rendered if in the DIALOG_STATE_BRANCH state
 wCurrentLabelAddr:: dw ; addr of the label to paint if the dialog state is DIALOG_STATE_LABEL
 
 ; specifically _new_ event parsing. event loading? event initiation?
 SECTION "Event Parsing", ROMX
 
-ResetEventState::
+ResetAllEventState::
 	ld a, FALSE
 	ld [wIsPlayerFacingWallInteractable], a
 	xor a
@@ -40,14 +39,18 @@ ResetEventState::
 	ld [wDialogBranchFramesAddr], a
 	ld [wDialogBranchFramesIndex], a
 	ld [wDialogBranchFramesCount], a
+	ld [wDialogBranchLinesRendered], a
+	ld [wDialogBranchesVisibleCount], a
+	ld [wDialogTextRowHighlighted], a
+
 	jp SetEventStateDialogLabel
 
 SetEventStateDialogLabel::
 	ld a, DIALOG_STATE_LABEL
 	ld [wDialogState], a
 
-	xor a
-	ld [wDialogBranchLinesRendered], a
+	;xor a
+	;ld [wDialogBranchLinesRendered], a
 
 	ld a, TRUE
 	ld [wDialogModalDirty], a
@@ -57,8 +60,11 @@ SetEventStateDialogRoot::
 	ld a, DIALOG_STATE_ROOT
 	ld [wDialogState], a
 
+	; reset ROOT specific state
 	xor a
 	ld [wDialogBranchLinesRendered], a
+	ld [wDialogBranchesVisibleCount], a
+	ld [wDialogTextRowHighlighted], a
 
 	ld a, TRUE
 	ld [wDialogModalDirty], a

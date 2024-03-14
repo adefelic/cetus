@@ -9,7 +9,7 @@ SECTION "Explore Screen Input Handling", ROMX
 HandleInputExploreScreen::
 	ld a, [wIsPlayerFacingWallInteractable]
 	cp FALSE
-	jp z, .checkPressedStart
+	jp z, .handleExploreInput
 .handleDialogInput:
 	ld a, [wDialogState]
 	cp DIALOG_STATE_ROOT
