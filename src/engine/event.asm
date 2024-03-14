@@ -10,12 +10,12 @@ wEventFrameIndex:: db ; index of current event frame of active event
 wEventFramesSize:: db ; index of final event frame of active event
 ; new below
 wRoomEventAddr:: dw
-wDialogOptionsAddr:: dw
-wDialogOptionsIndex:: db
-wDialogOptionsCount:: db
-wDialogOptionFramesAddr:: dw
-wDialogOptionFramesIndex:: db
-wDialogOptionFramesCount:: db
+wDialogBranchesAddr:: dw
+wDialogBranchesIndex:: db
+wDialogBranchesCount:: db
+wDialogBranchFramesAddr:: dw
+wDialogBranchFramesIndex:: db
+wDialogBranchFramesCount:: db
 
 SECTION "Event Game State", WRAM0
 wIsPlayerFacingWallInteractable:: db
@@ -27,19 +27,19 @@ wCurrentLabelAddr:: dw ; addr of the label to paint if the dialog state is DIALO
 ; specifically _new_ event parsing. event loading? event initiation?
 SECTION "Event Parsing", ROMX
 
-InitEventState::
+ResetEventState::
 	ld a, FALSE
 	ld [wIsPlayerFacingWallInteractable], a
 	xor a
 	ld [wEventFrameIndex], a
 	ld [wEventFramesSize], a
 	ld [wRoomEventAddr], a
-	ld [wDialogOptionsAddr], a
-	ld [wDialogOptionsIndex], a
-	ld [wDialogOptionsCount], a
-	ld [wDialogOptionFramesAddr], a
-	ld [wDialogOptionFramesIndex], a
-	ld [wDialogOptionFramesCount], a
+	ld [wDialogBranchesAddr], a
+	ld [wDialogBranchesIndex], a
+	ld [wDialogBranchesCount], a
+	ld [wDialogBranchFramesAddr], a
+	ld [wDialogBranchFramesIndex], a
+	ld [wDialogBranchFramesCount], a
 	jp SetEventStateDialogLabel
 
 SetEventStateDialogLabel::
@@ -47,7 +47,7 @@ SetEventStateDialogLabel::
 	ld [wDialogState], a
 
 	xor a
-	ld [wDialogOptionLinesRendered], a
+	ld [wDialogBranchLinesRendered], a
 
 	ld a, TRUE
 	ld [wDialogModalDirty], a
@@ -58,7 +58,7 @@ SetEventStateDialogRoot::
 	ld [wDialogState], a
 
 	xor a
-	ld [wDialogOptionLinesRendered], a
+	ld [wDialogBranchLinesRendered], a
 
 	ld a, TRUE
 	ld [wDialogModalDirty], a
@@ -84,7 +84,7 @@ LoadVisibleEvents::
 	cp EVENT_NONE ; offset is 0 == no event
 	jp z, UnsetIsPlayerFacingWallInteractable
 	ld hl, Map1Events ; contains event def table address
-	call AddOffsetToAddress
+	call AddAToHl
 	; hl now contains that room's RoomEvent address
 .checkIfPlayerFacingWallInteractable
 	ld a, [hl] ; get event walls, which are the 0th byte of the RoomEvent
@@ -104,25 +104,25 @@ LoadVisibleEvents::
 	ld [wRoomEventAddr + 1], a
 	push hl ; stash RoomEvent addr
 
-	; store DialogOptionsAddr
-	ld a, RoomEvent_DialogOptionsAddr
-	call AddOffsetToAddress
+	; store DialogBranchesAddr
+	ld a, RoomEvent_DialogBranchesAddr
+	call AddAToHl
 	call DereferenceHlIntoHl ; put addr of event def in hl
 	ld a, l
-	ld [wDialogOptionsAddr], a
+	ld [wDialogBranchesAddr], a
 	ld a, h
-	ld [wDialogOptionsAddr + 1], a
+	ld [wDialogBranchesAddr + 1], a
 
 	pop hl
-	; store DialogOptionsCount
-	ld a, RoomEvent_DialogOptionsCount
-	call AddOffsetToAddress
+	; store DialogBranchesCount
+	ld a, RoomEvent_DialogBranchesCount
+	call AddAToHl
 	ld a, [hl]
-	ld [wDialogOptionsCount], a
+	ld [wDialogBranchesCount], a
 
-	; store DialogOptionsIndex
+	; store DialogBranchesIndex
 	xor a
-	ld [wDialogOptionsIndex], a
+	ld [wDialogBranchesIndex], a
 	ret
 
 UnsetIsPlayerFacingWallInteractable:

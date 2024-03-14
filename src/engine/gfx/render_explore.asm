@@ -6,7 +6,7 @@ INCLUDE "src/assets/tiles/indices/object_tiles.inc"
 SECTION "Explore Screen Renderer", ROMX
 
 InitExploreState::
-	call InitEventState
+	call ResetEventState
 	ret
 
 ; todo change map stuff to compass directions. trbl is player relative, nesw is absolute

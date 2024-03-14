@@ -7,6 +7,17 @@ INCLUDE "src/utils/hardware.inc"
 SECTION "Explore Screen Input Handling", ROMX
 
 HandleInputExploreScreen::
+	ld a, [wIsPlayerFacingWallInteractable]
+	cp FALSE
+	jp z, .checkPressedStart
+.handleDialogInput:
+	ld a, [wDialogState]
+	cp DIALOG_STATE_ROOT
+	jp z, HandleInputFromDialogRoot
+	cp DIALOG_STATE_BRANCH
+	jp z, HandleInputFromDialogBranch
+	; being in DIALOG_STATE_LABEL is essentially the same as exploring, only the "A" handler behaves differently
+.handleExploreInput:
 .checkPressedStart:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_START
@@ -56,14 +67,11 @@ HandlePressedA:
 	ld a, [wIsPlayerFacingWallInteractable]
 	cp FALSE
 	ret z
-.advanceDialog:
+.enterDialogMaybe:
 	ld a, [wDialogState]
 	cp DIALOG_STATE_LABEL
 	jp z, PressedAFromDialogLabel
-	cp DIALOG_STATE_ROOT
-	jp z, PressedAFromDialogRoot
-	cp DIALOG_STATE_BRANCH
-	jp z, PressedAFromDialogOption
+	; control should not reach here
 	ret
 
 HandlePressedUp:

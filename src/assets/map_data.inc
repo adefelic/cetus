@@ -118,13 +118,13 @@ Map1EventLocations::
 
 Map1Events:
 	nop ; this is a hack to make it so having an offset of 0 means there is no event
-	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about ", 3, TownHallDialogOptions
-TownHallDialogOptions:
-	dstruct DialogOption, TownHallSayHello, wAlwaysTrueEventFlag, "say hello", 1, TownHallIntroDialogOptionFrames
-	dstruct DialogOption, TownHallAskAboutFog, wAlwaysTrueEventFlag, "ask: fog", 1, TownHallIntroDialogOptionFrames
-	dstruct DialogOption, TownHallAskAboutSkull, wAlwaysTrueEventFlag, "ask: skull", 1, TownHallIntroDialogOptionFrames
-TownHallIntroDialogOptionFrames:
-	dstruct DialogOptionFrame, TownHallIntroDOFrame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="hello back to", .TextLine1="you stranger", .TextLine2="123456789abcde", .TextLine3="456"
+	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about ", 3, TownHallDialogBranches
+TownHallDialogBranches:
+	dstruct DialogBranch, TownHallSayHello, wAlwaysTrueEventFlag, "say hello", 1, TownHallIntroDialogBranchFrames
+	dstruct DialogBranch, TownHallAskAboutFog, wAlwaysTrueEventFlag, "ask: fog", 1, TownHallIntroDialogBranchFrames
+	dstruct DialogBranch, TownHallAskAboutSkull, wAlwaysTrueEventFlag, "ask: skull", 1, TownHallIntroDialogBranchFrames
+TownHallIntroDialogBranchFrames:
+	dstruct DialogBranchFrame, TownHallIntroDOFrame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="hello back to", .TextLine1="you stranger", .TextLine2="123456789abcde", .TextLine3="456"
 
 ; maps tiles data to wall presence data. supports 3 wall types
 ; these require the same ordering as the map room tiles in explore-simple for the pausemap to work (is that true?)

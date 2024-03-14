@@ -6,7 +6,7 @@ SECTION "Utils", ROMX
 
 ; @param a, offset
 ; @param hl, address
-AddOffsetToAddress::
+AddAToHl::
 	ld b, a
 	ld a, l
 	add b
