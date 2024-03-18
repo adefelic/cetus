@@ -1,21 +1,12 @@
+INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/utils/hardware.inc"
 INCLUDE "src/macros/event.inc"
 
-
 SECTION "Explore Screen Dialog Input Handling", ROMX
 
-
-;; DIALOG_STATE_ROOT handlers
+;;; DIALOG_STATE_ROOT handlers
 HandleInputFromDialogRoot::
-;.checkPressedStart:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_START
-;	jp nz, HandlePressedStart
-;.checkPressedSelect:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_SELECT
-;	jp nz, HandlePressedSelect
 .checkPressedA:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_A
@@ -32,14 +23,6 @@ HandleInputFromDialogRoot::
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_DOWN
 	jp nz, PressedDownFromDialogRoot
-;.checkPressedLeft:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_LEFT
-;	jp nz, HandlePressedLeft
-;.checkPressedRight:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_RIGHT
-;	jp nz, HandlePressedRight
 	ret
 
 PressedAFromDialogRoot:
@@ -54,6 +37,7 @@ PressedAFromDialogRoot:
 	ld l, c
 	ld h, b
 .storeHighlightedDialogBranch
+	; sets wDialogBranchAddr, wDialogBranchFramesAddr, wCurrentDialogBranchFrameAddr, wDialogBranchFramesCount
 	ld a, l
 	ld [wDialogBranchAddr], a
 	ld a, h
@@ -65,9 +49,11 @@ PressedAFromDialogRoot:
 	call DereferenceHlIntoHl
 	ld a, l
 	ld [wDialogBranchFramesAddr], a
+	ld [wCurrentDialogBranchFrameAddr], a
 	ld a, h
 	ld [wDialogBranchFramesAddr + 1], a
-	;jp SetEventStateDialogBranch
+	ld [wCurrentDialogBranchFrameAddr + 1], a
+	call SetEventStateDialogBranch
 	;jp DirtyFpSegmentsAndTilemap
 	ret
 
@@ -82,12 +68,31 @@ PressedUpFromDialogRoot:
 PressedDownFromDialogRoot:
 	jp IncrementLineHighlight
 
-;; DIALOG_STATE_BRANCH handlers
+;;; DIALOG_STATE_BRANCH handlers
+
 HandleInputFromDialogBranch::
+.checkPressedA:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_A
+	jp nz, PressedAFromDialogBranch
 	ret
 
-; either advance frame or go to to PressedAFromDialogRoot state if frames = max
 PressedAFromDialogBranch:
+	; either advance frame index or go to DIALOG_STATE_ROOT state if at the last frame in the branch
+	ld a, [wDialogBranchFramesIndex]
+	inc a
+	ld b, a
+	ld a, [wDialogBranchFramesCount]
+	cp b
+	jp z, .goToRootState
+	ld a, b
+	ld [wDialogBranchFramesIndex], a
+
+	ld a, TRUE
+	ld [wDialogModalDirty], a
+	ret
+.goToRootState
+	call SetEventStateDialogRoot
 	ret
 
 ;; DIALOG_STATE_LABEL handlers
@@ -95,8 +100,8 @@ PressedAFromDialogBranch:
 ; called from explore_input handler. go to DIALOG_STATE_ROOT state
 PressedAFromDialogLabel::
 	call SetEventStateDialogRoot
-	jp DirtyFpSegmentsAndTilemap
-
+	jp DirtyFpSegmentsAndTilemap ; this is done to remove the label
+	ret
 
 ; old: would jump here if index == max frames
 ; saving for later

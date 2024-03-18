@@ -179,22 +179,55 @@ DecrementLineHighlight::
 	jp ResetModalStateAfterHighlightChange
 
 RenderDialogBranch:
-; old, saving for later in case useful
-;.incrementEventFrameAddress
-;	; todo with new dialog system, maybe it would make more sense to increment an abstract frame(page) count here
-;	; inc frame address by frame size
-;	ld a, [wEventFrameAddr]
-;	ld l, a
-;	ld a, [wEventFrameAddr + 1]
-;	ld h, a
-;	ld a, EVENT_FRAME_SIMPLE_SIZE
-;	call AddAToHl ; this might be silly and inefficient
-;	ld a, l
-;	ld [wEventFrameAddr], a
-;	ld a, h
-;	ld [wEventFrameAddr + 1], a
-;.incrementEventFrameIndex
-;	ld a, [wEventFrameIndex]
-;	inc a
-;	ld [wEventFrameIndex], a
+.disableTextHighlight
+	ld a, $FF ; this is a goofy hack. tells the text painter to highlight line 255 out of 3
+	ld [wDialogTextRowHighlighted], a
+.renderTopRow
+	call PaintDialogTopRow
+.updateAddressOfCurrentFrame
+	; load current frame into hl
+	ld a, [wCurrentDialogBranchFrameAddr]
+	ld l, a
+	ld a, [wCurrentDialogBranchFrameAddr + 1]
+	ld h, a
+
+	ld a, [wDialogBranchFramesIndex]
+	cp 0
+	; go straight to rendering text if the index is 0, as there is no array offset to add
+	jp z, .addTextLine0Offset
+
+	; update wCurrentDialogBranchFrameAddr to point to new frame
+	ld a, sizeof_DialogBranchFrame
+	call AddAToHl
+	ld a, l
+	ld [wCurrentDialogBranchFrameAddr], a
+	ld a, h
+	ld [wCurrentDialogBranchFrameAddr + 1], a
+
+	; if wCurrentDialogBranchFrameAddr had to be updated, then wDialogRootTextAreaRowsRendered should be reset too
+	xor a
+	ld [wDialogRootTextAreaRowsRendered], a
+.addTextLine0Offset
+	ld a, DialogBranchFrame_TextLine0
+	call AddAToHl
+.renderTextLine
+	push hl ; stash addr of text line to draw
+	ld a, [wDialogRootTextAreaRowsRendered]
+	ld c, a
+	call PaintDialogTextRow
+	; inc # of text rows drawn. this row offset is used for rendering. it will be used to draw empty lines
+	ld a, [wDialogRootTextAreaRowsRendered]
+	inc a
+	ld [wDialogRootTextAreaRowsRendered], a
+	pop hl ; restore addr of text line (the one just drawn)
+.checkNextLine
+	cp DIALOG_MODAL_TEXT_AREA_HEIGHT
+	jp z, .renderBottomRow
+	ld a, BYTES_IN_DIALOG_STRING
+	call AddAToHl ; add offset to get next text line addr
+	jp .renderTextLine
+.renderBottomRow
+	call PaintDialogBottomRow
+	ld a, FALSE
+	ld [wDialogModalDirty], a
 	ret

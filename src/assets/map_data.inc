@@ -102,11 +102,15 @@ Map1Events:
 	nop ; this is a hack to make it so having an offset of 0 means there is no event
 	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about ", 3, TownHall_DialogBranches
 TownHall_DialogBranches:
-	dstruct DialogBranch, TownHall_SayHello, wAlwaysTrueEventFlag, "say hello", 1, TownHall_SayHello_DialogBranchFrames
+	dstruct DialogBranch, TownHall_SayHello, wAlwaysTrueEventFlag, "say hello", 5, TownHall_SayHello_DialogBranchFrames
 	dstruct DialogBranch, TownHall_AskAboutFog, wAlwaysTrueEventFlag, "ask: fog", 1, TownHall_AskAboutFog_DialogBranchFrames
 	dstruct DialogBranch, TownHall_AskAboutSkull, wFoundSkullFlag, "ask: skull", 1, TownHall_AskAboutSkull_DialogBranchFrames
 TownHall_SayHello_DialogBranchFrames:
-	dstruct DialogBranchFrame, TownHall_SayHello_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="hello back to", .TextLine1="you stranger", .TextLine2="123456789abcde", .TextLine3="456"
+	dstruct DialogBranchFrame, TownHall_SayHello_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="well,", .TextLine1="hello back to", .TextLine2="you stranger", .TextLine3="... say,"
+	dstruct DialogBranchFrame, TownHall_SayHello_Frame1, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="not from round", .TextLine1="here, are you?", .TextLine2="", .TextLine3=""
+	dstruct DialogBranchFrame, TownHall_SayHello_Frame2, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="well, if youre", .TextLine1="looking to get", .TextLine2="the lay of", .TextLine3="this old place"
+	dstruct DialogBranchFrame, TownHall_SayHello_Frame3, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="take this note", .TextLine1="up to the", .TextLine2="house, through", .TextLine3="the swamp,"
+	dstruct DialogBranchFrame, TownHall_SayHello_Frame4, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="to the north-", .TextLine1="east.", .TextLine2="", .TextLine3=""
 TownHall_AskAboutFog_DialogBranchFrames:
 	dstruct DialogBranchFrame, TownHall_AskAboutFog_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="real misty", .TextLine1="out there", .TextLine2="isnt it...", .TextLine3="cold too"
 TownHall_AskAboutSkull_DialogBranchFrames:

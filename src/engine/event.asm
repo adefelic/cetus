@@ -12,6 +12,7 @@ wDialogBranchAddr:: dw
 wDialogBranchFramesAddr:: dw
 wDialogBranchFramesIndex:: db
 wDialogBranchFramesCount:: db
+wCurrentDialogBranchFrameAddr:: dw
 
 SECTION "Event Game State", WRAM0
 wIsPlayerFacingWallInteractable:: db
@@ -25,8 +26,8 @@ SECTION "Event Parsing", ROMX
 ResetAllEventState::
 	ld a, FALSE
 	ld [wIsPlayerFacingWallInteractable], a
-	xor a
 
+	xor a
 	; current RoomEvent struct state
 	ld [wRoomEventAddr], a
 	ld [wDialogBranchesAddr], a
@@ -35,7 +36,6 @@ ResetAllEventState::
 	; current DialogBranch struct state
 	ld [wDialogBranchAddr], a
 	ld [wDialogBranchFramesAddr], a
-	ld [wDialogBranchFramesIndex], a
 	ld [wDialogBranchFramesCount], a
 
 	; current modal state
@@ -43,6 +43,8 @@ ResetAllEventState::
 	ld [wDialogTextRowHighlighted], a
 	ld [wDialogRootTextAreaRowsRendered], a
 	ld [wDialogBranchesIteratedOver], a
+	ld [wDialogBranchFramesIndex], a
+	ld [wCurrentDialogBranchFrameAddr], a
 
 	jp SetEventStateDialogLabel
 
@@ -64,6 +66,18 @@ ResetModalStateAfterHighlightChange::
 	ld [wDialogRootTextAreaRowsRendered], a
 	ld [wDialogBranchesVisibleCount], a
 	ld [wDialogBranchesIteratedOver], a
+
+	ld a, TRUE
+	ld [wDialogModalDirty], a
+	ret
+
+SetEventStateDialogBranch::
+	xor a
+	ld [wDialogBranchFramesIndex], a
+	ld [wDialogRootTextAreaRowsRendered], a
+
+	ld a, DIALOG_STATE_BRANCH
+	ld [wDialogState], a
 
 	ld a, TRUE
 	ld [wDialogModalDirty], a
