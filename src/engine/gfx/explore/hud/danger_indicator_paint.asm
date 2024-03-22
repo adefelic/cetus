@@ -1,4 +1,4 @@
-INCLUDE "src/utils/hardware.inc"
+INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/tiles/indices/object_tiles.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"

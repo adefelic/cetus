@@ -323,8 +323,7 @@ GetActiveMapRoomAddrFromCoords::
 	ld b, a
 	ld a, [wActiveMap+1]
 	ld c, a
-	call GetRoomAddrFromCoords
-	ret
+	jp GetRoomAddrFromCoords
 
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: player X coord
@@ -335,8 +334,20 @@ GetActiveMapRoomEventsAddrFromCoords::
 	ld b, a
 	ld a, [wActiveMapEventLocations+1]
 	ld c, a
-	call GetRoomAddrFromCoords
-	ret
+	jp GetRoomAddrFromCoords
+
+; map addr + wPlayerExploreX + wPlayerExploreY*32
+; @return hl: item map room address of player occupied tile of Map1
+GetActiveMapRoomItemAddrFromCoords::
+	ld a, [wPlayerExploreX]
+	ld d, a
+	ld a, [wPlayerExploreY]
+	ld e, a
+	ld a, [wItemMap]
+	ld b, a
+	ld a, [wItemMap+1]
+	ld c, a
+	jp GetRoomAddrFromCoords
 
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: player X coord

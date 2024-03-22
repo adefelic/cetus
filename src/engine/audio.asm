@@ -1,6 +1,6 @@
 INCLUDE "src/assets/audio.inc"
 INCLUDE "src/constants/constants.inc"
-INCLUDE "src/utils/hardware.inc"
+INCLUDE "src/lib/hardware.inc"
 
 SECTION "Audio WRAM Values", WRAM0
 

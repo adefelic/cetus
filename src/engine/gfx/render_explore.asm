@@ -20,11 +20,19 @@ LoadExploreScreen::
 	;   it might look weird flattening depth like that.
 	call RenderFirstPersonView
 
-	; maybe render event on top of first person view
+.checkIfShouldRenderExploreMenu
+	ld a, [wExploreState]
+	cp EXPLORE_STATE_NORMAL
+	jp z, .checkIfShouldRenderEvent
+	call RenderExploreItemMenu
+	; do not render dialog if in explore menu. jp to updating oam
+	jp .updateShadowOam
+
+.checkIfShouldRenderEvent ; (label or dialog)
 	ld a, [wIsPlayerFacingWallInteractable]
 	cp FALSE
-	jp z, .updateShadowOam
-	call RenderDialog
+	call nz, RenderDialog
+
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]
 	cp SCREEN_EXPLORE

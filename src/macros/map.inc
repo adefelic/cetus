@@ -1,13 +1,14 @@
+; unused
 
 ; really it's 30 by 30 because buffer rooms
-DEF MAP_HEIGHT EQU 32 ; rooms
-DEF MAP_WIDTH  EQU 32 ; rooms
+;DEF MAP_HEIGHT EQU 32 ; rooms
+;DEF MAP_WIDTH  EQU 32 ; rooms
 
-DEF WALL_ROOM_SIZE EQU 1 ; bytes
-DEF EVENT_ROOM_SIZE EQU 1 ; bytes
+;DEF WALL_ROOM_SIZE EQU 1 ; bytes
+;DEF EVENT_ROOM_SIZE EQU 1 ; bytes
 
-DEF WALL_MAP_SIZE EQU MAP_HEIGHT * MAP_WIDTH * WALL_ROOM_SIZE ; bytes
-DEF EVENT_MAP_SIZE EQU MAP_HEIGHT * MAP_WIDTH * EVENT_ROOM_SIZE ; bytes
+;DEF WALL_MAP_SIZE EQU MAP_HEIGHT * MAP_WIDTH * WALL_ROOM_SIZE ; bytes
+;DEF EVENT_MAP_SIZE EQU MAP_HEIGHT * MAP_WIDTH * EVENT_ROOM_SIZE ; bytes
 
 ;MACRO map
 ;	db \1                 ; initial player coords

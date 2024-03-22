@@ -1,8 +1,9 @@
 INCLUDE "src/constants/constants.inc"
-INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
+INCLUDE "src/constants/gfx_constants.inc"
+INCLUDE "src/constants/item_constants.inc"
 INCLUDE "src/macros/event.inc"
-INCLUDE "src/utils/hardware.inc"
+INCLUDE "src/lib/hardware.inc"
 
 SECTION "Explore Screen Input Handling", ROMX
 
@@ -11,6 +12,7 @@ HandleInputExploreScreen::
 	cp FALSE
 	jp z, .handleExploreInput
 .handleDialogInput:
+	; todo should also handle the explore menu. they'll probably have shared controls
 	ld a, [wDialogState]
 	cp DIALOG_STATE_ROOT
 	jp z, HandleInputFromDialogRoot
@@ -18,6 +20,9 @@ HandleInputExploreScreen::
 	jp z, HandleInputFromDialogBranch
 	; being in DIALOG_STATE_LABEL is essentially the same as exploring, only the "A" handler behaves differently
 .handleExploreInput:
+	ld a, [wExploreState]
+	cp EXPLORE_STATE_MENU
+	jp z, HandleInputFromItemMenu
 .checkPressedStart:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_START
@@ -30,10 +35,10 @@ HandleInputExploreScreen::
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_A
 	jp nz, HandlePressedA
-;.checkPressedB:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_B
-;	jp nz, HandlePressedB
+.checkPressedB:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_B
+	jp nz, HandlePressedB
 .checkPressedUp:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_UP
@@ -73,6 +78,18 @@ HandlePressedA:
 	jp z, PressedAFromDialogLabel
 	; control should not reach here
 	ret
+
+HandlePressedB:
+	; if current room has an item, call PickUpItem::
+	call GetItemFromCurrentRoom ; puts current room item id in A
+	cp ITEM_NONE
+	jp nz, PickUpItem ; pick item if there is one, toggle menu otherwise
+.setMenuState
+	ld a, EXPLORE_STATE_MENU
+	ld [wExploreState], a
+	ld a, TRUE
+	ld [wDialogModalDirty], a
+	jp DirtyFpSegmentsAndTilemap ; this is to remove the event label if there is one
 
 HandlePressedUp:
 .seedRandMaybe

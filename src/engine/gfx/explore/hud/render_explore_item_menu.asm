@@ -1,0 +1,130 @@
+INCLUDE "src/assets/items.inc"
+INCLUDE "src/constants/constants.inc"
+INCLUDE "src/constants/gfx_event.inc"
+
+SECTION "Explore Item Menu Renderer", ROMX
+
+; todo make it so that the inventory menuitems begin with "99x" where 99 is the item's quantity
+; todo highlighting is broken
+RenderExploreItemMenu::
+.checkDirty
+	ld a, [wDialogModalDirty]
+	cp TRUE
+	ret nz
+.renderTopRow
+	call PaintDialogTopRow ; todo replace with row with helpful descriptions
+.checkNeedsToRepopulateMenuItemsList
+	; todo, compare current menu state w previous menu state
+	call PopulateListToRenderInMenu
+.setStartingMenuItemIndex
+	; todo, compare current menu state w previous menu state
+	; this should maybe be done a level above this.
+	xor a
+	ld [wMenuItemTopVisible], a
+.setup
+	; have wCurrentMenuItem point to wMenuItems
+	ld hl, wMenuItems ; source
+	ld a, [wMenuItemCount] ; maybe populating the list should set this
+
+	ld a, [wMenuItemTopVisible]
+	ld b, a ; b is the menu item offset that being rendered.
+	ld c, 0 ; row offset, 0-3.
+.renderMenuItemRowsLoop
+	push hl ; stash Item def ptr
+	push bc ; stash b and c
+	; the label is the 0th element of an item def so hl already points to that item's label
+	; dereference hl into hl
+	ld a, [hli]
+	ld b, a
+	ld a, [hl]
+	ld c, a
+
+	ld a, b
+	ld l, a
+	ld a, c
+	ld h, a
+	pop bc ; restore c
+	push bc ; save c
+	call PaintDialogTextRow
+.updateIterators
+	pop bc
+
+	pop hl ; restore item def ptr and inc hl by sizeof_Item
+	inc hl
+	inc hl ; add 2 to point to next wMenuItems entry
+
+	; inc and check
+	inc c
+	ld a, c
+	ld [wDialogRootTextAreaRowsRendered], a ; painting uses this
+	cp DIALOG_MODAL_TEXT_AREA_HEIGHT
+	jp z, .renderBottomRow
+
+	ld a, [wMenuItemCount]
+	inc b
+	cp b
+	jp nz, .renderMenuItemRowsLoop
+.renderBlankRows
+	ld a, [wDialogRootTextAreaRowsRendered]
+.renderBlankRowsLoop
+	cp DIALOG_MODAL_TEXT_AREA_HEIGHT
+	jp z, .renderBottomRow
+	ld c, a
+	call PaintEmptyRow ; c is an arg to this
+	ld a, [wDialogRootTextAreaRowsRendered]
+	inc a
+	ld [wDialogRootTextAreaRowsRendered], a
+	jp .renderBlankRowsLoop
+.renderBottomRow
+	call PaintDialogBottomRow ; todo replace with row with helpful descriptions
+	ld a, FALSE
+	ld [wDialogModalDirty], a
+	ret
+
+; populates wMenuItems::
+; mangles a,b,d,e,h,l
+PopulateListToRenderInMenu:
+.setup
+	xor a
+	ld [wMenuItemCount], a
+	; b is the loop counter / current item's offset in Items / current item's offset in wInventory
+	ld b, a
+	ld de, Items ; source, item definitions
+	ld hl, wMenuItems ; destination, area for Item definition addrs
+.filterInventoryItemsWithNonZeroQuantityLoop
+.checkQuantityOfItemInInventory
+	push hl ; stash addr of wMenuItems[b]
+	ld hl, wInventory
+	ld a, b
+	call AddAToHl
+	ld a, [hl]
+	; todo, stash quantity so it can be written to label? maybe it can be passed to the paint function :(
+	pop hl ; restore wMenuItems[b]
+	cp 0
+	jp z, .updateIterator ; skip if none
+.saveItemToMenuItems
+	; update hl: move addr of current item def (in de) into wMenuItems[b] (in hl)
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a ; inc once more to point to next space in wMenuItems
+
+	; inc wMenuItemCount
+	ld a, [wMenuItemCount]
+	inc a
+	ld [wMenuItemCount], a
+
+.updateIterator
+	; inc de by sizeof_Item
+	ld a, sizeof_Item
+	add e
+	ld e, a
+	ld a, d
+	adc 0
+	ld d, a
+
+	inc b
+	ld a, b
+	cp ITEMS_COUNT
+	jp nz, .filterInventoryItemsWithNonZeroQuantityLoop
+	ret

@@ -1,7 +1,5 @@
-INCLUDE "src/utils/structs.inc"
-
-DEF BYTES_IN_DIALOG_LABEL EQU 12
-DEF BYTES_IN_DIALOG_STRING EQU 14
+INCLUDE "src/lib/structs.inc"
+INCLUDE "src/constants/menu_constants.inc"
 
 	; todo rename to DialogEvent?
 	struct RoomEvent

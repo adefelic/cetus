@@ -1,8 +1,7 @@
-INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/gfx_event.inc"
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
-INCLUDE "src/utils/hardware.inc"
+INCLUDE "src/lib/hardware.inc"
 
 SECTION "Dialog Modal Paint Routines", ROMX
 

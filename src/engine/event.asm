@@ -20,6 +20,7 @@ wDialogState:: db ; should the game render the dialog root or a dialog option
 wCurrentDialogFrame:: dw ; addr of the dialog option frame is currently rendered if in the DIALOG_STATE_BRANCH state
 wCurrentLabelAddr:: dw ; addr of the label to paint if the dialog state is DIALOG_STATE_LABEL
 
+
 ; specifically _new_ event parsing. event loading? event initiation?
 SECTION "Event Parsing", ROMX
 

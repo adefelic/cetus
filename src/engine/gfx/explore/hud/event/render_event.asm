@@ -1,6 +1,5 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
-INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/gfx_event.inc"
 INCLUDE "src/macros/event.inc"
 
@@ -9,15 +8,26 @@ wDialogModalDirty:: db
 wDialogTextRowHighlighted:: db ; index from 0 to 3. reads from the bottom 3 bits
 wDialogBranchesVisibleCount:: db ; # of dialog branches that have TRUE visible flags
 
+; filtered list of addresses of menu item structs
+; todo should probably make them generic / unions. they should all start with a 1)label field
 ; these need to be contiguous in memory
-wDialogBranchRendered0:: dw
-wDialogBranchRendered1:: dw
-wDialogBranchRendered2:: dw
-wDialogBranchRendered3:: dw
+wMenuItems::
+wMenuItemRendered0: dw
+wMenuItemRendered1: dw
+wMenuItemRendered2: dw
+wMenuItemRendered3: dw
+wMenuItemRendered4: dw
+wMenuItemRendered5: dw
+wMenuItemRendered6: dw
+wMenuItemRendered7: dw
+
+wMenuItemCount:: db
+wMenuItemTopVisible:: db
 
 SECTION "Dialog Modal Scratch", WRAM0
 wDialogRootTextAreaRowsRendered:: db
 wDialogBranchesIteratedOver:: db
+wCurrentMenuItem:: dw ; points to the menu item (wMenuItemRendered) being presently filled by some filtering function
 
 SECTION "Explore Screen Event Renderer", ROMX
 
@@ -55,9 +65,16 @@ RenderDialogRoot:
 ; when A is pressed, text is replaced with the text of the first frame ofthe highlighted entry.
 ; when an entry is highlighted, the _wHighlightedDialogBranch_ flag is updated, which points to the option
 ; when A is pressed, we switch to option rendering mode and render the first frame
+.setup
+	; have wCurrentMenuItem point to wMenuItems
+	ld hl, wMenuItems
+	ld a, l
+	ld [wCurrentMenuItem], a
+	ld a, h
+	ld [wCurrentMenuItem + 1], a
 .renderTopRow
 	call PaintDialogTopRow
-.renderDialogBranchLabelsWithTrueFlag
+.renderDialogBranchLabelsWithTrueFlag ; (gather menu items by filtering branch options)
 	; iterate over DialogBranches array @ wDialogBranchesAddr w wDialogBranchesCount
 	; load counter
 	ld a, [wDialogBranchesCount]
@@ -84,22 +101,27 @@ RenderDialogRoot:
 	ld c, a
 	call PaintDialogTextRow
 
-	; fixme this isn't working
 	; correlate addr of branch in ram to placement in menu so its frames can be pulled up if selected
 	pop hl ; restore addr of DialogBranch[wDialogRootTextAreaRowsRendered]
 	ld d, h ; stash hl in de
 	ld e, l
 
-	ld hl, wDialogBranchRendered0
-	ld a, [wDialogRootTextAreaRowsRendered]
-	; add 2 for each in a
-	sla a ; a * 2
-	call AddAToHl ; hl += a
-	; move DialogBranch[wDialogRootTextAreaRowsRendered] into wDialogBranchRendered[wDialogRootTextAreaRowsRendered]
+	; put the current menu item pointer in hl to store the addr of the branch of the label we just drew
+	ld a, [wCurrentMenuItem]
+	ld l, a
+	ld a, [wCurrentMenuItem + 1]
+	ld h, a
 
+	; move DialogBranch[wDialogRootTextAreaRowsRendered] (in de) into wDialogBranchRendered[wDialogRootTextAreaRowsRendered]
 	ld [hl], e
 	inc hl
 	ld [hl], d
+
+	inc hl ; inc once more to point to next word and store
+	ld a, l
+	ld [wCurrentMenuItem], a
+	ld a, h
+	ld [wCurrentMenuItem + 1], a
 
 	ld h, d  ; put the old hl back on the stack
 	ld l, e

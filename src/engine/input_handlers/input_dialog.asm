@@ -1,6 +1,6 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
-INCLUDE "src/utils/hardware.inc"
+INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/macros/event.inc"
 
 SECTION "Explore Screen Dialog Input Handling", ROMX
@@ -27,17 +27,17 @@ HandleInputFromDialogRoot::
 
 PressedAFromDialogRoot:
 .getHighlightedDialogBranchAddr
-	ld a, [wDialogTextRowHighlighted]
+	ld a, [wDialogTextRowHighlighted] ; this is an index into wMenuItems
 	sla a ; multiply by 2 to transform from index -> address offset
-	ld hl, wDialogBranchRendered0
+	ld hl, wMenuItems
 	call AddAToHl
-	ld c, [hl]
+	ld c, [hl] ; stash the first byte of the zeroth element
 	inc hl
-	ld b, [hl]
+	ld b, [hl] ; stash the second byte
 	ld l, c
 	ld h, b
 .storeHighlightedDialogBranch
-	; sets wDialogBranchAddr, wDialogBranchFramesAddr, wCurrentDialogBranchFrameAddr, wDialogBranchFramesCount
+	; sets wDialogBranchAddr, wDialogBranchFramesAddr (unused), wCurrentDialogBranchFrameAddr, wDialogBranchFramesCount
 	ld a, l
 	ld [wDialogBranchAddr], a
 	ld a, h

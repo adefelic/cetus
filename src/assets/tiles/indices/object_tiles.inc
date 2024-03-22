@@ -1,4 +1,4 @@
-INCLUDE "src/utils/hardware.inc"
+INCLUDE "src/lib/hardware.inc"
 
 ;; tile indices
 ; compass tiles

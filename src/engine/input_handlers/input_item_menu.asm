@@ -1,14 +1,14 @@
 INCLUDE "src/constants/constants.inc"
-INCLUDE "src/constants/gfx_constants.inc"
+INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/lib/hardware.inc"
 
-SECTION "Pause Screen Input Handling", ROMX
+SECTION "Explore Screen Item Menu Input Handling", ROMX
 
-HandleInputPauseScreen::
-.checkPressedStart:
-	ld a, [wJoypadNewlyPressed]
-	and a, PADF_START
-	jp nz, HandlePressedStart
+HandleInputFromItemMenu::
+;.checkPressedStart:
+;	ld a, [wJoypadNewlyPressed]
+;	and a, PADF_START
+;	jp nz, HandlePressedStart
 ;.checkPressedSelect:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_SELECT
@@ -17,10 +17,10 @@ HandleInputPauseScreen::
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_A
 ;	jp nz, HandlePressedA
-;.checkPressedB:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_B
-;	jp nz, HandlePressedB
+.checkPressedB:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_B
+	jp nz, HandlePressedB
 ;.checkPressedUp:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_UP
@@ -39,13 +39,10 @@ HandleInputPauseScreen::
 ;	jp nz, HandlePressedRight
 	ret
 
-HandlePressedStart:
-UnpauseGame:
-	ld a, SCREEN_EXPLORE
-	ld [wActiveFrameScreen], a
-DirtyFpSegmentsAndTilemap:
-	call DirtyFpSegments
-DirtyTilemap:
-	ld a, DIRTY
-	ld [wIsShadowTilemapDirty], a
-	ret
+HandlePressedB:
+.setNormalState
+	ld a, EXPLORE_STATE_NORMAL
+	ld [wExploreState], a
+	ld a, TRUE
+	ld [wDialogModalDirty], a
+	jp DirtyFpSegmentsAndTilemap

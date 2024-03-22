@@ -1,4 +1,4 @@
-INCLUDE "src/utils/hardware.inc"
+INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/palette.inc"
 INCLUDE "src/assets/tile_data.inc"
 INCLUDE "src/assets/tiles/indices/computer_dark.inc"
@@ -149,6 +149,20 @@ ClearShadowTilemapAttrs:
 	dec bc
 	jp nz, .loop
 
+
+	; init explore state
+	call InitExploreScreenState
+
+
+; necessary?
+ClearItemMap:
+	ld bc, TILEMAP_SIZE
+	ld hl, wItemMap
+.loop:
+	ld [hli], a
+	dec bc
+	jp nz, .loop
+
 InitGameState:
 	ld hl, Map1Walls
 	ld a, h
@@ -202,6 +216,9 @@ InitGameState:
 	ld [wAlwaysTrueEventFlag], a
 	ld a, FALSE
 	ld [wFoundSkullFlag], a
+
+	; init inventory
+	call InitInventory
 
 	call InitAudio
 	call EnableLcd

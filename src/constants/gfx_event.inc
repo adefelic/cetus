@@ -1,3 +1,5 @@
+INCLUDE "src/constants/gfx_constants.inc"
+
 ; event constants
 
 DEF DIALOG_MODAL_TOP_LEFT EQU rows 12 + cols 2
