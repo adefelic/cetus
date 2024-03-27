@@ -40,7 +40,7 @@ ResetAllEventState::
 	ld [wDialogBranchFramesCount], a
 
 	; current modal state
-	ld [wDialogBranchesVisibleCount], a
+	ld [wMenuItemCount], a
 	ld [wDialogTextRowHighlighted], a
 	ld [wDialogRootTextAreaRowsRendered], a
 	ld [wDialogBranchesIteratedOver], a
@@ -65,7 +65,7 @@ SetEventStateDialogRoot::
 ResetModalStateAfterHighlightChange::
 	xor a
 	ld [wDialogRootTextAreaRowsRendered], a
-	ld [wDialogBranchesVisibleCount], a
+	ld [wMenuItemCount], a
 	ld [wDialogBranchesIteratedOver], a
 
 	ld a, TRUE

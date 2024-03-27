@@ -87,6 +87,12 @@ HandlePressedB:
 .setMenuState
 	ld a, EXPLORE_STATE_MENU
 	ld [wExploreState], a
+
+	; these two variables reset the highlight state
+	xor a
+	ld [wDialogTextRowHighlighted], a
+	ld [wDialogRootTextAreaRowsRendered], a
+
 	ld a, TRUE
 	ld [wDialogModalDirty], a
 	jp DirtyFpSegmentsAndTilemap ; this is to remove the event label if there is one

@@ -21,14 +21,14 @@ HandleInputFromItemMenu::
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_B
 	jp nz, HandlePressedB
-;.checkPressedUp:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_UP
-;	jp nz, HandlePressedUp
-;.checkPressedDown:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_DOWN
-;	jp nz, HandlePressedDown
+.checkPressedUp:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_UP
+	jp nz, HandlePressedUp
+.checkPressedDown:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_DOWN
+	jp nz, HandlePressedDown
 ;.checkPressedLeft:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_LEFT
@@ -46,3 +46,9 @@ HandlePressedB:
 	ld a, TRUE
 	ld [wDialogModalDirty], a
 	jp DirtyFpSegmentsAndTilemap
+
+HandlePressedUp:
+	jp DecrementLineHighlight
+
+HandlePressedDown:
+	jp IncrementLineHighlight

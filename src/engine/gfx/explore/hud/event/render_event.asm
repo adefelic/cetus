@@ -6,7 +6,6 @@ INCLUDE "src/macros/event.inc"
 SECTION "Dialog Modal State", WRAM0
 wDialogModalDirty:: db
 wDialogTextRowHighlighted:: db ; index from 0 to 3. reads from the bottom 3 bits
-wDialogBranchesVisibleCount:: db ; # of dialog branches that have TRUE visible flags
 
 ; filtered list of addresses of menu item structs
 ; todo should probably make them generic / unions. they should all start with a 1)label field
@@ -133,9 +132,9 @@ RenderDialogRoot:
 	ld [wDialogRootTextAreaRowsRendered], a
 
 	; inc # of text rows visible. this is used to store the current size of the menu
-	ld a, [wDialogBranchesVisibleCount]
+	ld a, [wMenuItemCount]
 	inc a
-	ld [wDialogBranchesVisibleCount], a
+	ld [wMenuItemCount], a
 
 .checkNext ; check if all options have been iterated over. get next if not
 	ld a, [wDialogBranchesIteratedOver]
@@ -174,7 +173,7 @@ RenderDialogRoot:
 	ret
 
 IncrementLineHighlight::
-	ld a, [wDialogBranchesVisibleCount]
+	ld a, [wMenuItemCount]
 	ld b, a
 	ld a, [wDialogTextRowHighlighted]
 	inc a
@@ -195,7 +194,7 @@ DecrementLineHighlight::
 	ld [wDialogTextRowHighlighted], a
 	jp ResetModalStateAfterHighlightChange
 .underflow
-	ld a, [wDialogBranchesVisibleCount]
+	ld a, [wMenuItemCount]
 	dec a
 	ld [wDialogTextRowHighlighted], a
 	jp ResetModalStateAfterHighlightChange
