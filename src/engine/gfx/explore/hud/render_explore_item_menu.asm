@@ -2,6 +2,10 @@ INCLUDE "src/assets/items.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_event.inc"
 
+SECTION "Item Rendering Scratch", WRAM0
+wItemQuantityNameStringBuffer:: ds BYTES_IN_DIALOG_STRING
+wCurrentItemAddr:: dw
+
 SECTION "Explore Item Menu Renderer", ROMX
 
 ; todo make it so that the inventory menuitems begin with "99x" where 99 is the item's quantity
@@ -30,24 +34,64 @@ RenderExploreItemMenu::
 	ld b, a ; b is the menu item offset that being rendered.
 	ld c, 0 ; row offset, 0-3.
 .renderMenuItemRowsLoop
-	push hl ; stash Item def ptr
-	push bc ; stash b and c
-	; the label is the 0th element of an item def so hl already points to that item's label
-	; dereference hl into hl
+	push hl ; stash current wMenuItems position ptr
+	push bc ; stash b and c iterators
+
+	; dereference wMenuItems position ptr to get Item addr in hl and wCurrentItemAddr
 	ld a, [hli]
 	ld b, a
 	ld a, [hl]
-	ld c, a
+	ld c, a ; bc now contains addr of Item
 
 	ld a, b
 	ld l, a
+	ld [wCurrentItemAddr], a
+
 	ld a, c
 	ld h, a
-	pop bc ; restore c
-	push bc ; save c
+	ld [wCurrentItemAddr + 1], a
+
+	;;; get item quantity and convert to decimal
+	ld a, Item_InventoryOffset
+	call AddAToHl
+	ld a, [hl] ; a now contains wInventory offset
+	ld hl, wInventory
+	call AddAToHl
+	ld a, [hl] ; a now contains wInventory quantity
+	call ConvertBinaryNumberToDecimalNumber ; 10s in d, 1s in e
+	pop hl ; restore wMenuItems position ptr
+	push hl ; stash wMenuItems position ptr
+
+	; copy decimal characters + item name into wItemQuantityNameStringBuffer
+	ld hl, wItemQuantityNameStringBuffer
+	; 10s place
+	ld a, d
+	add NUMBER_CHARACTER_OFFSET
+	ld [hli], a
+	; 1s place
+	ld a, e
+	add NUMBER_CHARACTER_OFFSET
+	ld [hli], a
+
+	; skip "99x" characters
+	ld a, [wCurrentItemAddr]
+	ld e, a
+	ld a, [wCurrentItemAddr + 1]
+	ld d, a
+	inc de
+	inc de
+	ld a, BYTES_IN_DIALOG_STRING - 3
+	ld b, a
+	call MemcopySmall
+
+	ld hl, wItemQuantityNameStringBuffer
+
+	; hl should be ptr to first char of wItemQuantityNameStringBuffer
+	pop bc ; restore iterators for PaintDialogTextRow
+	push bc ; save iterators
 	call PaintDialogTextRow
 .updateIterators
-	pop bc
+	pop bc ; restore iterators
 
 	pop hl ; restore item def ptr and inc hl by sizeof_Item
 	inc hl
@@ -98,7 +142,6 @@ PopulateListToRenderInMenu:
 	ld a, b
 	call AddAToHl
 	ld a, [hl]
-	; todo, stash quantity so it can be written to label? maybe it can be passed to the paint function :(
 	pop hl ; restore wMenuItems[b]
 	cp 0
 	jp z, .updateIterator ; skip if none

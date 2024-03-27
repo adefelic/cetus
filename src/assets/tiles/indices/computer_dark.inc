@@ -1,5 +1,7 @@
 ; computer-dark tile indices
 
+DEF NUMBER_CHARACTER_OFFSET EQU $10
+
 ;NEWCHARMAP computer-dark
 charmap "!",  $01
 charmap "\"", $02
