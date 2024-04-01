@@ -1,6 +1,9 @@
 ; item ids
 ; also offsets into wInventory
 
+DEF ITEMS_COUNT EQU 3
+
 DEF ITEM_NONE EQU $00
 DEF ITEM_ROCK EQU $01
 DEF ITEM_LAMP EQU $02
+DEF ITEM_TENT EQU $03

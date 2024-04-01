@@ -98,7 +98,7 @@ LoadVisibleEvents::
 	ld d, a
 	ld a, [wPlayerExploreY]
 	ld e, a
-	call GetActiveMapRoomEventsAddrFromCoords ; into hl
+	call GetActiveEventMapRoomAddrFromCoords ; into hl
 	ld a, [hl] ; contains offset of the room's RoomEvent from Map1Events
 	; check for presence of RoomEvent
 	cp EVENT_NONE ; offset is 0 == no event

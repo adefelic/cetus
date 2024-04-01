@@ -1,6 +1,8 @@
-INCLUDE "src/assets/items.inc"
+INCLUDE "src/assets/tiles/indices/computer_dark.inc"
 INCLUDE "src/constants/constants.inc"
+INCLUDE "src/constants/item_constants.inc"
 INCLUDE "src/constants/gfx_event.inc"
+INCLUDE "src/macros/item.inc"
 
 SECTION "Item Rendering Scratch", WRAM0
 wItemQuantityNameStringBuffer:: ds BYTES_IN_DIALOG_STRING
@@ -8,8 +10,7 @@ wCurrentItemAddr:: dw
 
 SECTION "Explore Item Menu Renderer", ROMX
 
-; todo make it so that the inventory menuitems begin with "99x" where 99 is the item's quantity
-; todo highlighting is broken
+; todo rendering breaks when the inventory is totally empty
 RenderExploreItemMenu::
 .checkDirty
 	ld a, [wDialogModalDirty]
@@ -131,14 +132,14 @@ PopulateListToRenderInMenu:
 .setup
 	xor a
 	ld [wMenuItemCount], a
-	; b is the loop counter / current item's offset in Items / current item's offset in wInventory
+	; b is the loop counter / current item's offset in Items / current item's offset in wInventory ( -1 )
 	ld b, a
 	ld de, Items ; source, item definitions
 	ld hl, wMenuItems ; destination, area for Item definition addrs
 .filterInventoryItemsWithNonZeroQuantityLoop
 .checkQuantityOfItemInInventory
 	push hl ; stash addr of wMenuItems[b]
-	ld hl, wInventory
+	ld hl, wInventory + 1 ; to deal with 0 meaning empty space
 	ld a, b
 	call AddAToHl
 	ld a, [hl]

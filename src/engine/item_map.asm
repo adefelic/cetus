@@ -1,9 +1,11 @@
+INCLUDE "src/constants/explore_constants.inc"
 
 SECTION "Item Map Parsing", ROMX
 
-; this assumes that a room can only have a 1 of an item.
-; @return a, the id of the item in the player's current room. 0 if no item
-GetItemFromCurrentRoom::
-	call GetActiveMapRoomItemAddrFromCoords
-	ld a, [hl]
-	ret
+;; @param d: room X coord
+;; @param e: room Y coord
+;; @return a, the id of the item in the player's current room. 0 if no item
+;GetItemFromRoomInFrontOfPlayer::
+;	call GetActiveItemMapRoomAddrFromCoords
+;	ld a, [hl]
+;	ret

@@ -79,11 +79,23 @@ HandlePressedA:
 	; control should not reach here
 	ret
 
+; open menu or pickup item
 HandlePressedB:
+	; OLD PSEUDOCODE
 	; if current room has an item, call PickUpItem::
-	call GetItemFromCurrentRoom ; puts current room item id in A
-	cp ITEM_NONE
-	jp nz, PickUpItem ; pick item if there is one, toggle menu otherwise
+	;call GetItemFromCurrentRoom ; puts current room item id in A
+	;cp ITEM_NONE
+	;jp nz, PickUpItem ; pick item if there is one, toggle menu otherwise
+
+	; NEWER PSEUDOCODE
+	; get room in front of player
+	; if there isn't a wall in front of the player
+		; if there is an item
+		; remove item from room
+		; inc item in inventory
+		; play item pickup sound
+		; jp SetNormalState
+
 .setMenuState
 	ld a, EXPLORE_STATE_MENU
 	ld [wExploreState], a

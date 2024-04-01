@@ -252,3 +252,13 @@ RenderDialogBranch:
 	ld a, FALSE
 	ld [wDialogModalDirty], a
 	ret
+
+; @return hl, address of menu item
+GetHighlightedMenuItemAddr::
+	; todo this will need to be updated when scrolling is implemented
+	ld a, [wDialogTextRowHighlighted]
+	sla a ; x2 to go from index to address offset
+	ld hl, wMenuItems
+	call AddAToHl
+	call DereferenceHlIntoHl
+	ret

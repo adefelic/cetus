@@ -119,7 +119,7 @@ LoadObjectTiles:
 	ld bc, ChinchillaTilesEnd - ChinchillaTiles
 	call Memcopy
 
-loadPalettes:
+LoadPalettes:
 	call InitColorPalettes
 
 ClearOam:
@@ -132,36 +132,57 @@ ClearOam:
 	jp nz, .loop
 
 ; necessary?
-ClearShadowTilemap:
-	ld bc, TILEMAP_SIZE
-	ld hl, wShadowTilemap
+ClearShadowOam:
+	xor a
+	ld bc, wShadowOamEnd - wShadowOam
+	ld hl, wShadowOam
 .loop:
+	xor a
 	ld [hli], a
 	dec bc
+	ld a, b
+	or c
+	jp nz, .loop
+
+
+; necessary?
+ClearShadowTilemap:
+	xor a
+	ld bc, wShadowTilemapEnd - wShadowTilemap
+	ld hl, wShadowTilemap
+.loop:
+	xor a
+	ld [hli], a
+	dec bc
+	ld a, b
+	or c
 	jp nz, .loop
 
 ; necessary?
 ClearShadowTilemapAttrs:
-	ld bc, TILEMAP_SIZE
+	xor a
+	ld bc, wShadowTilemapAttrsEnd - wShadowTilemapAttrs
 	ld hl, wShadowTilemapAttrs
 .loop:
+	xor a
 	ld [hli], a
 	dec bc
+	ld a, b
+	or c
 	jp nz, .loop
-
-
-	; init explore state
-	call InitExploreScreenState
-
 
 ; necessary?
 ClearItemMap:
-	ld bc, TILEMAP_SIZE
+	ld bc, wItemMapEnd - wItemMap
 	ld hl, wItemMap
 .loop:
+	xor a
 	ld [hli], a
 	dec bc
+	ld a, b
+	or c
 	jp nz, .loop
+
 
 InitGameState:
 	ld hl, Map1Walls
@@ -175,6 +196,10 @@ InitGameState:
 	ld [wActiveMapEventLocations], a
 	ld a, l
 	ld [wActiveMapEventLocations+1], a
+
+	; init explore state
+	call InitExploreScreenState
+
 
 	call InitExploreState
 

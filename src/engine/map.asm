@@ -315,9 +315,9 @@ GetRoomCoordsRightFarWRTPlayer::
 	ret
 
 ; Map1 + wPlayerExploreX + wPlayerExploreY*32
-; @param d: player X coord
-; @param e: player Y coord
-; @return hl: tile address of player occupied tile of Map1 (this need to change)
+; @param d: room X coord
+; @param e: room Y coord
+; @return hl: tile address of room of Map1
 GetActiveMapRoomAddrFromCoords::
 	ld a, [wActiveMap]
 	ld b, a
@@ -326,27 +326,22 @@ GetActiveMapRoomAddrFromCoords::
 	jp GetRoomAddrFromCoords
 
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
-; @param d: player X coord
-; @param e: player Y coord
-; @return hl: tile address of player occupied tile of Map1 (this need to change)
-GetActiveMapRoomEventsAddrFromCoords::
+; @param d: room X coord
+; @param e: room Y coord
+; @return hl: tile address of room of Map1
+GetActiveEventMapRoomAddrFromCoords::
 	ld a, [wActiveMapEventLocations]
 	ld b, a
 	ld a, [wActiveMapEventLocations+1]
 	ld c, a
 	jp GetRoomAddrFromCoords
 
-; map addr + wPlayerExploreX + wPlayerExploreY*32
-; @return hl: item map room address of player occupied tile of Map1
-GetActiveMapRoomItemAddrFromCoords::
-	ld a, [wPlayerExploreX]
-	ld d, a
-	ld a, [wPlayerExploreY]
-	ld e, a
-	ld a, [wItemMap]
-	ld b, a
-	ld a, [wItemMap+1]
-	ld c, a
+; item map addr + wPlayerExploreX + wPlayerExploreY*32
+; @param d: room X coord
+; @param e: room Y coord
+; @return hl: item map room address of tile
+GetActiveItemMapRoomAddrFromCoords::
+	ld bc, wItemMap
 	jp GetRoomAddrFromCoords
 
 ; map addr + wPlayerExploreX + wPlayerExploreY*32

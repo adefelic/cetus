@@ -154,6 +154,8 @@ TownHall_AskAboutSkull_DialogBranchFrames:
 ; 00 = open, 01 = wallA, 10 = wallB, 11 = wallC
 ; todo rename to room definition? wall sets?
 ; todo make a macro to define rooms with wall types
+
+; todo move these out of this file. they are engine constants and not data
 RoomWallAttributes::
 	db %00000000 ; 0,  ROOM_NONE
 	db %00000001 ; 1,  ROOM_L
