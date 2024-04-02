@@ -2,6 +2,7 @@ INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/tiles/indices/object_tiles.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/encounter_constants.inc"
+INCLUDE "src/constants/palette_constants.inc"
 
 SECTION "Player Sprite Variables", WRAM0
 wPlayerSpriteTL:: db

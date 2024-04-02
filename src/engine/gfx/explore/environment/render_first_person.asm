@@ -1,5 +1,6 @@
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
+INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 
 SECTION "First Person Environment Renderer", ROMX

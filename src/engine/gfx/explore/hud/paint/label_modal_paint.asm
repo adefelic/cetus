@@ -1,6 +1,7 @@
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
+INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/lib/hardware.inc"
 
 DEF LABEL_MODAL_TOP_LEFT EQU rows 2 + cols 4

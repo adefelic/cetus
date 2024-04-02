@@ -20,7 +20,8 @@ GFX  := rgbgfx
 
 # tool flags
 ASM_FLAGS := -L
-FIX_FLAGS := -v -p 0xFF -C
+LINK_FLAGS := -t # this makes the rom "tiny", such that all ROM is considered a single unextensible ROM0 bank. will remove when rom exceeds 64k
+FIX_FLAGS := -v -p 0xFF -C --mbc-type MBC1
 
 # from https://stackoverflow.com/a/18258352/1221106
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
@@ -37,7 +38,7 @@ BUILD_2BPP_DIRS := $(sort $(addprefix $(BUILD_GFX_DIR)/, $(dir $(TILE_FILES:$(TI
 all: $(2BPP_FILES) $(BIN) 
 
 $(BIN): $(OBJ_FILES) 
-	$(LINK) -m $(BUILD_DIR)/$(PROJECT_NAME).map -n $(BUILD_DIR)/$(PROJECT_NAME).sym -o $@ $^
+	$(LINK) $(LINK_FLAGS) -m $(BUILD_DIR)/$(PROJECT_NAME).map -n $(BUILD_DIR)/$(PROJECT_NAME).sym -o $@ $^
 	$(FIX) $(FIX_FLAGS) $@
 
 $(BUILD_OBJ_DIR)/%.o: $(SRC_DIR)/%.asm | $(BUILD_OBJ_DIRS)

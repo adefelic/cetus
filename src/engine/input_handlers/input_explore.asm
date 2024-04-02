@@ -99,13 +99,7 @@ HandlePressedB:
 	ld d, h ; stash item map room in de
 	ld e, l
 
-	; inc inventory location
-	ld hl, wInventory
-	call AddAToHl ; add item id/inv offset to get item inventory address
-	ld a, [hl]
-	inc a
-	; todo make it so quantity in inventory cant go over 99
-	ld [hl], a
+	call IncrementItemQuantity
 
 	xor a
 	ld [de], a ; remove item from item map

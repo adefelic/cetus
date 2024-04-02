@@ -85,12 +85,7 @@ HandlePressedA:
 	ld a, [hl] ; item index is in a
 	ld [wItemTypeBeingPlaced], a ; debug
 	ld [de], a ; store item id in item map room
-	; get inventory location of item
-	ld hl, wInventory
-	call AddAToHl
-	ld a, [hl]
-	dec a
-	ld [hl], a
+	call DecrementItemQuantity
 	; todo play item placement sound
 	jp SetNormalState
 

@@ -1,5 +1,6 @@
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/constants.inc"
+INCLUDE "src/constants/palette_constants.inc"
 
 SECTION "Pause Screen Renderer", ROMX
 

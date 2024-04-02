@@ -8,6 +8,4 @@ INCLUDE "src/constants/menu_constants.inc"
 
 		bytes 1, InventoryOffset ; index into wInventory to find the item's current quantity.
 		; this might be unnessecary as you can just subtract the item's addr from Items:: ??
-
-		; todo address of sprite?
 	end_struct

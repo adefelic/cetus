@@ -14,11 +14,13 @@ InitExploreState::
 ; trbl are all relative to the player's orientation
 LoadExploreScreen::
 .updateShadowBgTilemap
-	; render walls
+	; render environment walls
 	; todo:
 	;   maybe make it so when rendering an event, all other background are painted with a single palette?
 	;   it might look weird flattening depth like that.
 	call RenderFirstPersonView
+
+; menus and item sprites are mutually exclusive
 
 .checkIfShouldRenderExploreMenu
 	ld a, [wExploreState]
@@ -33,6 +35,16 @@ LoadExploreScreen::
 	cp FALSE
 	call nz, RenderDialog
 
+; dont render item if we're facing an interactable and not in the label state
+.checkIfShouldRenderItemSprite
+	ld a, [wIsPlayerFacingWallInteractable]
+	cp FALSE
+	jp z, .renderGroundItem
+	ld a, [wDialogState]
+	cp DIALOG_STATE_LABEL
+	jp nz, .updateShadowOam
+.renderGroundItem
+	call RenderGroundItem
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]
 	cp SCREEN_EXPLORE
@@ -53,6 +65,7 @@ LoadExploreScreen::
 	ret
 
 PaintExploreSpritesOffScreen::
+	call PaintNoItems
 	ld a, OFFSCREEN_Y
 	ld [wShadowOam + OAM_HUD_COMPASS_ARROW + OAMA_Y], a
 	ld [wShadowOam + OAM_HUD_COMPASS_CHAR + OAMA_Y], a

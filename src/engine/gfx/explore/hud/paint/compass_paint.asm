@@ -3,6 +3,7 @@ INCLUDE "src/assets/tiles/indices/object_tiles.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
+INCLUDE "src/constants/palette_constants.inc"
 
 ; top left corners
 DEF COMPASS_ARROW_Y EQU TILE_HEIGHT * 1

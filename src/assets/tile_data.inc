@@ -32,3 +32,7 @@ DangerIndicatorTilesEnd::
 ChinchillaTiles::
 INCBIN "build/gfx/chinchilla.2bpp"
 ChinchillaTilesEnd::
+
+ItemTiles::
+INCBIN "build/gfx/item-tiles.2bpp"
+ItemTilesEnd::

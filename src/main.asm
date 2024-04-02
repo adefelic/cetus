@@ -4,6 +4,7 @@ INCLUDE "src/assets/tile_data.inc"
 INCLUDE "src/assets/tiles/indices/computer_dark.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
+INCLUDE "src/constants/gfx_constants.inc"
 
 SECTION "App State", WRAM0
 wIsRandSeeded:: db
@@ -117,6 +118,10 @@ LoadObjectTiles:
 .loadPlayerEncounterSprite
 	ld de, ChinchillaTiles
 	ld bc, ChinchillaTilesEnd - ChinchillaTiles
+	call Memcopy
+.loadItemSprites
+	ld de, ItemTiles
+	ld bc, ItemTilesEnd - ItemTiles
 	call Memcopy
 
 LoadPalettes:
@@ -235,6 +240,7 @@ InitGameState:
 	ld [wIsShadowTilemapDirty], a
 	call DirtyFpSegments
 	call UpdateShadowScreen
+	call InitGroundItem ; i dont think this is right
 
 	; init event flags
 	ld a, TRUE

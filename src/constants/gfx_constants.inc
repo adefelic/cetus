@@ -2,33 +2,6 @@
 ;DEF LEN_2BPP_TILE EQU 2 * TILE_WIDTH ; bytes
 ;DEF tiles EQUS "* LEN_2BPP_TILE"
 
-; palette macros
-MACRO assert_valid_rgb
-	rept _NARG
-		assert 0 <= (\1) && (\1) <= 31, "RGB channel must be 0-31"
-		shift
-	endr
-ENDM
-
-MACRO RGB
-	rept _NARG / 3
-		assert_valid_rgb \1, \2, \3
-		dw palred (\1) + palgreen (\2) + palblue (\3)
-		shift 3
-	endr
-ENDM
-
-DEF palred   EQUS "(1 << 0) *"
-DEF palgreen EQUS "(1 << 5) *"
-DEF palblue  EQUS "(1 << 10) *"
-
-; palette defs
-DEF NUM_PAL_COLORS EQU 4
-DEF NUM_PAL_IN_SET EQU 8
-DEF PAL_COLOR_SIZE EQU 2 ; bytes
-DEF PALETTE_SIZE EQU NUM_PAL_COLORS * PAL_COLOR_SIZE ; bytes
-DEF PALETTE_SET_SIZE EQU PALETTE_SIZE * NUM_PAL_IN_SET ; bytes
-
 ; screen defs
 DEF SCREEN_WIDTH EQU 20  ; tiles
 DEF SCREEN_HEIGHT EQU 18 ; tiles
@@ -104,25 +77,3 @@ DEF BG_COL_16 EQU $10
 DEF BG_COL_17 EQU $11
 DEF BG_COL_18 EQU $12
 DEF BG_COL_19 EQU $13
-
-; palette indices
-; todo: currently only colors 1 and 2 are used for rendering walls and floor. 0 and 3 are unused
-; one of those should become a fog color
-DEF BG_PALETTE_Z0     EQU $00
-DEF BG_PALETTE_Z1     EQU $01
-DEF BG_PALETTE_Z2     EQU $02
-DEF BG_PALETTE_Z3     EQU $03
-
-DEF BG_PALETTE_UI     EQU $04 ; ui elements
-DEF BG_PALETTE_UI2    EQU $05 ; ui elements (highlighted)
-DEF BG_PALETTE_FOG    EQU $06 ; there will eventually be only 1 fog palette
-DEF BG_PALETTE_FOG2   EQU $07 ; to be deprecated
-
-DEF OBJ_PALETTE_A      EQU $00 ; unused
-DEF OBJ_PALETTE_B      EQU $01 ; unused
-DEF OBJ_PALETTE_C      EQU $02 ; unused
-DEF OBJ_PALETTE_D      EQU $03 ; unused
-DEF OBJ_PALETTE_E      EQU $04 ; unused
-DEF OBJ_PALETTE_DANGER EQU $05 ; unused
-DEF OBJ_PALETTE_PLAYER EQU $06 ; unused
-DEF OBJ_PALETTE_H      EQU $07 ; unused
