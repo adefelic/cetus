@@ -60,8 +60,7 @@ HandlePressedA:
 .checkForWall
 	; check closest player facing wall
 	call GetRoomCoordsCenterNearWRTPlayer
-	call GetActiveMapRoomAddrFromCoords
-	call GetRoomWallAttributesAddrFromMapAddr
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetTopWallWrtPlayer
 	cp WALL_TYPE_NONE
 	jp z, .checkForItem

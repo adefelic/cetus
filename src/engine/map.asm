@@ -1,21 +1,34 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
 
-SECTION "Map / Room Parsing", ROMX
+SECTION "Room Attribute Definitions", ROMX
+; maps tiles data to wall presence data. supports 3 wall types
+; these require the same ordering as the map room tiles in explore-simple for the pausemap to work (is that true?)
+; 00 00 00 00 = wall definition, in n e s w order.
+; 00 = open, 01 = wallA, 10 = wallB, 11 = wallC
+; todo rename to room definition? wall sets?
+; todo make a macro to define rooms with wall types
 
-; @param hl, address of bg tile map entry representing current tile
-; @return hl, address of entry tile's RoomWallAttributes
-GetRoomWallAttributesAddrFromMapAddr::
-	ld a, [hl] ; get tile data index from tilemap. each is one byte in size so no need to multiply by entry size
-	ld hl, RoomWallAttributes
-	; add to lsb
-	add a, l; get addr of correct tile attrs
-	ld l, a
-	; add to msb
-	ld a, h
-	adc a, 0 ; in case of overflow
-	ld h, a
-	ret
+RoomWallAttributes::
+	db %00000000 ; 0,  ROOM_NONE
+	db %00000001 ; 1,  ROOM_L
+	db %00000100 ; 2,  ROOM_B
+	db %00000101 ; 3,  ROOM_BL
+	db %00010000 ; 4,  ROOM_R
+	db %00010001 ; 5,  ROOM_RL
+	db %00010100 ; 6,  ROOM_RB
+	db %00010101 ; 7,  ROOM_RBL
+	db %01000000 ; 8,  ROOM_T
+	db %01000001 ; 9,  ROOM_TL
+	db %01000100 ; 10, ROOM_TB
+	db %01000101 ; 11, ROOM_TBL
+	db %01010000 ; 12, ROOM_TR
+	db %01010001 ; 13, ROOM_TRL
+	db %01010100 ; 14, ROOM_TRB
+	db %01010100 ; 15, ROOM_TRBL
+RoomWallAttributesEnd:
+
+SECTION "Map / Room Parsing", ROMX
 
 ; @param hl, address of map room representing current tile
 ; @return a, wall type
@@ -314,17 +327,6 @@ GetRoomCoordsRightFarWRTPlayer::
 	ld e, a
 	ret
 
-; Map1 + wPlayerExploreX + wPlayerExploreY*32
-; @param d: room X coord
-; @param e: room Y coord
-; @return hl: tile address of room of Map1
-GetActiveMapRoomAddrFromCoords::
-	ld a, [wActiveMap]
-	ld b, a
-	ld a, [wActiveMap+1]
-	ld c, a
-	jp GetRoomAddrFromCoords
-
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: room X coord
 ; @param e: room Y coord
@@ -362,4 +364,27 @@ GetRoomAddrFromCoords:
 	add a, l
 	ld l, a
 	add hl, bc
+	ret
+
+; Map1 + wPlayerExploreX + wPlayerExploreY*32
+; @param d: room X coord
+; @param e: room Y coord
+; @return hl: address of room tile's RoomWallAttributes
+GetRoomWallAttributesFromRoomCoords::
+.getActiveMapRoomAddr
+	ld a, [wActiveMap]
+	ld b, a
+	ld a, [wActiveMap+1]
+	ld c, a
+	call GetRoomAddrFromCoords
+.getRoomWallAttributesAddrFromMapRoomAddr:
+	ld a, [hl] ; get tile data index from tilemap. each is one byte in size so no need to multiply by entry size
+	ld hl, RoomWallAttributes
+	; add to lsb
+	add a, l; get addr of correct tile attrs
+	ld l, a
+	; add to msb
+	ld a, h
+	adc a, 0 ; in case of overflow
+	ld h, a
 	ret

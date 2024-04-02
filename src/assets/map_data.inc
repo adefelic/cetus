@@ -21,9 +21,9 @@ Map1Header::
 
 ; the "wall map"
 ; this is essentially a collision map that we're building through indices in vram for the pausemap tiles.
-; todo it should be its own thing
+; each tilemap entry offset is correlated to an entry in RoomWallAttributes
 ; this can be printed to screen by making it writing it to tilemap vram, but only the top 18 rows, 20 columns
-Map1Walls:: ; 32 x 32
+Map1Tiles:: ; 32 x 32
 	;0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	;1
@@ -88,7 +88,7 @@ Map1Walls:: ; 32 x 32
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,TILE_MAP_RBL,0,0,TILE_MAP_RBL,0
 	;31
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-Map1WallsEnd::
+Map1TilesEnd::
 
 ; the "event map"
 ; This table contains possible context events for the player on different squares
@@ -147,33 +147,6 @@ TownHall_AskAboutFog_DialogBranchFrames:
 	dstruct DialogBranchFrame, TownHall_AskAboutFog_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="real misty", .TextLine1="out there", .TextLine2="isnt it...", .TextLine3="cold too"
 TownHall_AskAboutSkull_DialogBranchFrames:
 	dstruct DialogBranchFrame, TownHall_AskAboutSkull_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="i'm not sure", .TextLine1="what you're", .TextLine2="speaking of...", .TextLine3="*cough*"
-
-; maps tiles data to wall presence data. supports 3 wall types
-; these require the same ordering as the map room tiles in explore-simple for the pausemap to work (is that true?)
-; 00 00 00 00 = wall definition, in n e s w order.
-; 00 = open, 01 = wallA, 10 = wallB, 11 = wallC
-; todo rename to room definition? wall sets?
-; todo make a macro to define rooms with wall types
-
-; todo move these out of this file. they are engine constants and not data
-RoomWallAttributes::
-	db %00000000 ; 0,  ROOM_NONE
-	db %00000001 ; 1,  ROOM_L
-	db %00000100 ; 2,  ROOM_B
-	db %00000101 ; 3,  ROOM_BL
-	db %00010000 ; 4,  ROOM_R
-	db %00010001 ; 5,  ROOM_RL
-	db %00010100 ; 6,  ROOM_RB
-	db %00010101 ; 7,  ROOM_RBL
-	db %01000000 ; 8,  ROOM_T
-	db %01000001 ; 9,  ROOM_TL
-	db %01000100 ; 10, ROOM_TB
-	db %01000101 ; 11, ROOM_TBL
-	db %01010000 ; 12, ROOM_TR
-	db %01010001 ; 13, ROOM_TRL
-	db %01010100 ; 14, ROOM_TRB
-	db %01010100 ; 15, ROOM_TRBL
-RoomWallAttributesEnd:
 
 ; tile ids for a hard-coded encounter screen
 Map1EncounterScreen::

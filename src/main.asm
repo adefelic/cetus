@@ -185,7 +185,7 @@ ClearItemMap:
 
 
 InitGameState:
-	ld hl, Map1Walls
+	ld hl, Map1Tiles
 	ld a, h
 	ld [wActiveMap], a
 	ld a, l

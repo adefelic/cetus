@@ -19,8 +19,7 @@ RenderFirstPersonView::
 ProcessRoomCenterNear: ; process rooms closest to farthest w/ dirtying to only draw topmost z segments
 .checkLeftWall:
 	call GetRoomCoordsCenterNearWRTPlayer ; todo, put coords in ram?
-	call GetActiveMapRoomAddrFromCoords ; puts player tilemap entry addr in hl. should probably put this somewhere?
-	call GetRoomWallAttributesAddrFromMapAddr ; put related RoomWallAttributes addr in hl
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetLeftWallWrtPlayer
 	cp a, WALL_TYPE_NONE
 	jp z, .checkTopWall
@@ -35,8 +34,7 @@ ProcessRoomCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	call CheckSegmentPDiag
 .checkTopWall
 	call GetRoomCoordsCenterNearWRTPlayer
-	call GetActiveMapRoomAddrFromCoords
-	call GetRoomWallAttributesAddrFromMapAddr
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetTopWallWrtPlayer
 	cp a, WALL_TYPE_NONE
 	jp z, .checkRightWall
@@ -53,8 +51,7 @@ ProcessRoomCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	call CheckSegmentNDiag
 .checkRightWall
 	call GetRoomCoordsCenterNearWRTPlayer
-	call GetActiveMapRoomAddrFromCoords
-	call GetRoomWallAttributesAddrFromMapAddr
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetRightWallWrtPlayer
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGround
@@ -75,8 +72,7 @@ ProcessRoomLeftNear:
 	; todo bounds check
 .checkTopWall
 	call GetRoomCoordsLeftNearWRTPlayer
-	call GetActiveMapRoomAddrFromCoords
-	call GetRoomWallAttributesAddrFromMapAddr
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetTopWallWrtPlayer
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGround
@@ -95,8 +91,7 @@ ProcessRoomRightNear:
 	; todo bounds check
 .checkTopWall
 	call GetRoomCoordsRightNearWRTPlayer
-	call GetActiveMapRoomAddrFromCoords
-	call GetRoomWallAttributesAddrFromMapAddr
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetTopWallWrtPlayer
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGround
@@ -114,8 +109,7 @@ ProcessRoomRightNear:
 ProcessRoomCenterFar:
 .checkLeftWall
 	call GetRoomCoordsCenterFarWRTPlayer
-	call GetActiveMapRoomAddrFromCoords
-	call GetRoomWallAttributesAddrFromMapAddr
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetLeftWallWrtPlayer
 	cp a, WALL_TYPE_NONE
 	jp z, .paintLeftGround ; paint ground if no left wall
@@ -134,8 +128,7 @@ ProcessRoomCenterFar:
 	call CheckSegmentLDiag
 .checkTopWall
 	call GetRoomCoordsCenterFarWRTPlayer
-	call GetActiveMapRoomAddrFromCoords
-	call GetRoomWallAttributesAddrFromMapAddr
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetTopWallWrtPlayer
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance
@@ -152,8 +145,7 @@ ProcessRoomCenterFar:
 	;call CheckSegmentCFog ; this looks cool but isnt wide enough
 .checkRightWall
 	call GetRoomCoordsCenterFarWRTPlayer
-	call GetActiveMapRoomAddrFromCoords
-	call GetRoomWallAttributesAddrFromMapAddr
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetRightWallWrtPlayer
 	cp a, WALL_TYPE_NONE
 	jp z, .paintRightGround ; paint ground if no right wall
@@ -178,8 +170,7 @@ ProcessRoomCenterFar:
 ProcessRoomLeftFar:
 .checkTopWall
 	call GetRoomCoordsLeftFarWRTPlayer
-	call GetActiveMapRoomAddrFromCoords
-	call GetRoomWallAttributesAddrFromMapAddr
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetTopWallWrtPlayer
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance
@@ -208,8 +199,7 @@ ProcessRoomLeftFar:
 ProcessRoomRightFar:
 .checkTopWall
 	call GetRoomCoordsRightFarWRTPlayer
-	call GetActiveMapRoomAddrFromCoords
-	call GetRoomWallAttributesAddrFromMapAddr
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetTopWallWrtPlayer
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance

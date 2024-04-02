@@ -122,8 +122,7 @@ HandlePressedUp:
 	ld d, a
 	ld a, [wPlayerExploreY]
 	ld e, a
-	call GetActiveMapRoomAddrFromCoords ; puts player bg map entry addr in hl
-	call GetRoomWallAttributesAddrFromMapAddr ; put related RoomWallAttributes addr in hl
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 AdvanceIfNoCollisions:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
