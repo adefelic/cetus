@@ -17,10 +17,8 @@ OwBgPaletteSet::
 
 ; Obj palettes
 OwObjPaletteSet::
-	;   clear  lightblue  blue       unused
-	RGB 0,0,0,  0,27,31,  00,14,24,  31,31,31 ; quartz
-	;   clear  lightbrown brown      yellow
-	RGB 0,0,0, 20,12, 3,  13, 9, 0,  31,26, 0 ; lamp
+	RGB 0,0,0,  0,27,31,  00,14,24,  31,31,31 ; quartz: clear, lightblue, blue, unused
+	RGB 0,0,0, 31,25,00,  20,12, 3,  13,09,00 ; lamp: clear, yellow, dark brown, light brown
 	RGB 0,0,0,  1,10, 6,  14, 5, 6,  13,10, 8 ; tent
 	RGB 0,0,0,  0, 8, 6,  13, 4, 5,  12, 9, 8 ; unused
 	RGB 0,0,0, 13,13,13,   2, 2,10,   2,10, 2 ; unused

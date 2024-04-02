@@ -6,8 +6,11 @@ INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
 
-DEF ITEM_TOP_LEFT_X EQU TILE_WIDTH * $09
-DEF ITEM_TOP_LEFT_Y EQU TILE_HEIGHT * $0E
+DEF QUARTZ_TOP_LEFT_X EQU TILE_WIDTH * $09 + TILE_WIDTH * 1
+DEF QUARTZ_TOP_LEFT_Y EQU TILE_HEIGHT * $0E + TILE_HEIGHT * 2
+DEF LAMP_TOP_LEFT_X EQU TILE_WIDTH * $09 + TILE_WIDTH * 1
+DEF LAMP_TOP_LEFT_Y EQU TILE_HEIGHT * $0D + TILE_HEIGHT * 2
+
 
 SECTION "Ground Item State", ROMX
 wGroundItemDirty:: db
@@ -31,19 +34,20 @@ RenderGroundItem::
 	cp FALSE
 	ret z
 	; get room in front of player, see if there's a wall in the way
+.renderCenterFarGround
 .checkForWall
 	; check closest player facing wall
 	call GetRoomCoordsCenterNearWRTPlayer
 	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetTopWallWrtPlayer
 	cp WALL_TYPE_NONE
-	jp nz, PaintNoItems
+	jp nz, ClearGroundItemsFromOam
 .drawOrClearItem
 	call GetRoomCoordsCenterFarWRTPlayer
 	call GetActiveItemMapRoomAddrFromCoords
 	ld a, [hl]
 	cp ITEM_NONE
-	jp z, PaintNoItems
+	jp z, ClearGroundItemsFromOam
 	cp ITEM_QUARTZ
 	jp z, PaintQuartz
 	cp ITEM_LAMP
@@ -53,12 +57,13 @@ RenderGroundItem::
 	ret
 
 PaintQuartz:
+	call ClearGroundItemsFromOam
 .paintQuartzA
 	; y
-	ld a, ITEM_TOP_LEFT_Y + 16
+	ld a, QUARTZ_TOP_LEFT_Y
 	ld [wShadowOam + OAM_QUARTZ_A + OAMA_Y], a
 	; x
-	ld a, ITEM_TOP_LEFT_X + 8
+	ld a, QUARTZ_TOP_LEFT_X
 	ld [wShadowOam + OAM_QUARTZ_A + OAMA_X], a
 	; tile id
 	ld a, TILE_QUARTZ_A
@@ -68,10 +73,10 @@ PaintQuartz:
 	ld [wShadowOam + OAM_QUARTZ_A + OAMA_FLAGS], a
 .paintQuartzB
 	; y
-	ld a, ITEM_TOP_LEFT_Y + 16
+	ld a, QUARTZ_TOP_LEFT_Y
 	ld [wShadowOam + OAM_QUARTZ_B + OAMA_Y], a
 	; x
-	ld a, ITEM_TOP_LEFT_X + 8 + 8
+	ld a, QUARTZ_TOP_LEFT_X + TILE_WIDTH
 	ld [wShadowOam + OAM_QUARTZ_B + OAMA_X], a
 	; tile id
 	ld a, TILE_QUARTZ_B
@@ -83,7 +88,61 @@ PaintQuartz:
 	ld [wGroundItemDirty], a
 	ret
 
+; todo this could be made less redundant
 PaintLamp:
+	call ClearGroundItemsFromOam
+.paintTopL
+	; y
+	ld a, LAMP_TOP_LEFT_Y
+	ld [wShadowOam + OAM_LAMP_TOP_L + OAMA_Y], a
+	; x
+	ld a, LAMP_TOP_LEFT_X
+	ld [wShadowOam + OAM_LAMP_TOP_L + OAMA_X], a
+	; tile id
+	ld a, TILE_LAMP_TOP
+	ld [wShadowOam + OAM_LAMP_TOP_L + OAMA_TILEID], a
+	; attrs/flags
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_LAMP
+	ld [wShadowOam + OAM_LAMP_TOP_L + OAMA_FLAGS], a
+.paintTopR
+	; y
+	ld a, LAMP_TOP_LEFT_Y
+	ld [wShadowOam + OAM_LAMP_TOP_R + OAMA_Y], a
+	; x
+	ld a, LAMP_TOP_LEFT_X + TILE_WIDTH
+	ld [wShadowOam + OAM_LAMP_TOP_R + OAMA_X], a
+	; tile id
+	ld a, TILE_LAMP_TOP
+	ld [wShadowOam + OAM_LAMP_TOP_R + OAMA_TILEID], a
+	; attrs/flags
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + OBJ_PALETTE_LAMP
+	ld [wShadowOam + OAM_LAMP_TOP_R + OAMA_FLAGS], a
+.paintBottomL
+	; y
+	ld a, LAMP_TOP_LEFT_Y + TILE_HEIGHT
+	ld [wShadowOam + OAM_LAMP_BOTTOM_L + OAMA_Y], a
+	; x
+	ld a, LAMP_TOP_LEFT_X
+	ld [wShadowOam + OAM_LAMP_BOTTOM_L + OAMA_X], a
+	; tile id
+	ld a, TILE_LAMP_BOTTOM
+	ld [wShadowOam + OAM_LAMP_BOTTOM_L + OAMA_TILEID], a
+	; attrs/flags
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_LAMP
+	ld [wShadowOam + OAM_LAMP_BOTTOM_L + OAMA_FLAGS], a
+.paintBottomR
+	; y
+	ld a, LAMP_TOP_LEFT_Y + TILE_HEIGHT
+	ld [wShadowOam + OAM_LAMP_BOTTOM_R + OAMA_Y], a
+	; x
+	ld a, LAMP_TOP_LEFT_X + TILE_WIDTH
+	ld [wShadowOam + OAM_LAMP_BOTTOM_R + OAMA_X], a
+	; tile id
+	ld a, TILE_LAMP_BOTTOM
+	ld [wShadowOam + OAM_LAMP_BOTTOM_R + OAMA_TILEID], a
+	; attrs/flags
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + OBJ_PALETTE_LAMP
+	ld [wShadowOam + OAM_LAMP_BOTTOM_R + OAMA_FLAGS], a
 	ld a, FALSE
 	ld [wGroundItemDirty], a
 	ret
@@ -93,18 +152,22 @@ PaintTent:
 	ld [wGroundItemDirty], a
 	ret
 
-PaintNoItems::
+ClearGroundItemsFromOam::
 	ld a, OFFSCREEN_Y
 	ld [wShadowOam + OAM_QUARTZ_A + OAMA_Y], a
 	ld [wShadowOam + OAM_QUARTZ_B + OAMA_Y], a
-	ld [wShadowOam + OAM_LAMP_TOP + OAMA_Y], a
-	ld [wShadowOam + OAM_LAMP_BOTTOM + OAMA_Y], a
+	ld [wShadowOam + OAM_LAMP_TOP_L + OAMA_Y], a
+	ld [wShadowOam + OAM_LAMP_TOP_R + OAMA_Y], a
+	ld [wShadowOam + OAM_LAMP_BOTTOM_L + OAMA_Y], a
+	ld [wShadowOam + OAM_LAMP_BOTTOM_R + OAMA_Y], a
 
 	ld a, OFFSCREEN_X
 	ld [wShadowOam + OAM_QUARTZ_A + OAMA_X], a
 	ld [wShadowOam + OAM_QUARTZ_B + OAMA_X], a
-	ld [wShadowOam + OAM_LAMP_TOP + OAMA_X], a
-	ld [wShadowOam + OAM_LAMP_BOTTOM + OAMA_X], a
+	ld [wShadowOam + OAM_LAMP_TOP_L + OAMA_X], a
+	ld [wShadowOam + OAM_LAMP_TOP_R + OAMA_X], a
+	ld [wShadowOam + OAM_LAMP_BOTTOM_L + OAMA_X], a
+	ld [wShadowOam + OAM_LAMP_BOTTOM_R + OAMA_X], a
 	ld a, FALSE
 	ld [wGroundItemDirty], a
 	ret

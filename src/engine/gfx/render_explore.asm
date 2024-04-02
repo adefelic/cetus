@@ -65,7 +65,7 @@ LoadExploreScreen::
 	ret
 
 PaintExploreSpritesOffScreen::
-	call PaintNoItems
+	call ClearGroundItemsFromOam
 	ld a, OFFSCREEN_Y
 	ld [wShadowOam + OAM_HUD_COMPASS_ARROW + OAMA_Y], a
 	ld [wShadowOam + OAM_HUD_COMPASS_CHAR + OAMA_Y], a
