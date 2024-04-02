@@ -79,22 +79,37 @@ HandlePressedA:
 	; control should not reach here
 	ret
 
-; open menu or pickup item
+; open menu or pickup item if there is one
+; todo move item pickup to long press of B
 HandlePressedB:
-	; OLD PSEUDOCODE
-	; if current room has an item, call PickUpItem::
-	;call GetItemFromCurrentRoom ; puts current room item id in A
-	;cp ITEM_NONE
-	;jp nz, PickUpItem ; pick item if there is one, toggle menu otherwise
+	; check closest player facing wall. if it exists, the player isn't picking up an item, they are opening the item menu
+.checkForWall
+	call GetRoomCoordsCenterNearWRTPlayer
+	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
+	call GetTopWallWrtPlayer
+	cp WALL_TYPE_NONE
+	jp nz, .setMenuState
+.checkForItem
+	call GetRoomCoordsCenterFarWRTPlayer
+	call GetActiveItemMapRoomAddrFromCoords
+	ld a, [hl]
+	cp ITEM_NONE ; if there isn't an item to pick up, the player is opening the item menu
+	jp z, .setMenuState
+.pickUpItem
+	ld d, h ; stash item map room in de
+	ld e, l
 
-	; NEWER PSEUDOCODE
-	; get room in front of player
-	; if there isn't a wall in front of the player
-		; if there is an item
-		; remove item from room
-		; inc item in inventory
-		; play item pickup sound
-		; jp SetNormalState
+	; inc inventory location
+	ld hl, wInventory
+	call AddAToHl ; add item id/inv offset to get item inventory address
+	ld a, [hl]
+	inc a
+	; todo make it so quantity in inventory cant go over 99
+	ld [hl], a
+
+	xor a
+	ld [de], a ; remove item from item map
+	jp DirtyFpSegmentsAndTilemap
 
 .setMenuState
 	ld a, EXPLORE_STATE_MENU
