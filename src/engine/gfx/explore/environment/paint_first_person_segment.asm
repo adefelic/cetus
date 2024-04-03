@@ -1064,10 +1064,10 @@ PaintTilemap::
 ; @param b: length
 PaintTilemapSmall::
 	ld a, d
+.loop
 	ld [hli], a ; write tile id
 	dec b
-	ld a, b
-	jp nz, PaintTilemapSmall
+	jp nz, .loop
 	ret
 
 ; @param d: source tile id
@@ -1101,10 +1101,10 @@ PaintTilemapAttrs::
 ; @param b: length
 PaintTilemapAttrsSmall::
 	ld a, e
+.loop
 	ld [hli], a ; write palette id
 	dec b
-	ld a, b
-	jp nz, PaintTilemapAttrsSmall
+	jp nz, .loop
 	ret
 
 ; todo there is probably a more efficient way to do this

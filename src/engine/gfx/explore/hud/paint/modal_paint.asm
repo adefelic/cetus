@@ -160,7 +160,7 @@ PaintModalEmptyRow::
 	dec c
 	jp .checkIfCZero
 .left
-	ld c, d
+	ld c, d ; put offset back into c
 	ld d, TILE_MODAL_VERTICAL
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + rows 1
 	; add row offset to hl
@@ -170,9 +170,10 @@ PaintModalEmptyRow::
 	ld a, h
 	adc 0
 	ld h, a
-
+	; paint
 	ld b, 1
 	call PaintTilemapSmall
+
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + rows 1
 	; add row offset to hl
@@ -186,7 +187,7 @@ PaintModalEmptyRow::
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .emptySpace
-	ld d, TILE_MODAL_EMPTY
+	ld d, $40 ; this is the space character
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + rows 1 + cols 1
 	; add row offset to hl
 	ld a, l
@@ -195,9 +196,10 @@ PaintModalEmptyRow::
 	ld a, h
 	adc 0
 	ld h, a
-
+	; paint tiles
 	ld b, MODAL_TEXT_AREA_WIDTH
-	call MemcopySmall
+	call PaintTilemapSmall
+
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + rows 1 + cols 1
 	; add row offset to hl
@@ -207,7 +209,7 @@ PaintModalEmptyRow::
 	ld a, h
 	adc 0
 	ld h, a
-
+	; paint tile attrs
 	ld b, MODAL_TEXT_AREA_WIDTH
 	call PaintTilemapAttrsSmall
 .right
