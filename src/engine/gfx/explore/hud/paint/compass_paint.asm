@@ -6,10 +6,10 @@ INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
 
 ; top left corners
-DEF COMPASS_ARROW_Y EQU TILE_HEIGHT * 1
-DEF COMPASS_ARROW_X EQU TILE_WIDTH * 10
-DEF COMPASS_CHAR_Y EQU TILE_HEIGHT * 1
-DEF COMPASS_CHAR_X EQU TILE_WIDTH * 9
+DEF COMPASS_ARROW_Y EQU TILE_HEIGHT * 1 + OAM_PADDING_Y
+DEF COMPASS_ARROW_X EQU TILE_WIDTH * 10 + OAM_PADDING_X
+DEF COMPASS_CHAR_Y EQU TILE_HEIGHT * 1 + OAM_PADDING_Y
+DEF COMPASS_CHAR_X EQU TILE_WIDTH * 9 + OAM_PADDING_X
 
 SECTION "HUD Compass Paint Routines", ROMX
 
@@ -43,10 +43,10 @@ PaintCompass::
 	ld d, (OAMF_PRI * 0) + (OAMF_YFLIP * 1) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + BG_PALETTE_UI
 .paintCharacter
 	; y
-	ld a, COMPASS_CHAR_Y + 16
+	ld a, COMPASS_CHAR_Y
 	ld [wShadowOam + OAM_HUD_COMPASS_CHAR + OAMA_Y], a
 	; x
-	ld a, COMPASS_CHAR_X + 8
+	ld a, COMPASS_CHAR_X
 	ld [wShadowOam + OAM_HUD_COMPASS_CHAR + OAMA_X], a
 	; tile id
 	ld a, b
@@ -56,10 +56,10 @@ PaintCompass::
 	ld [wShadowOam + OAM_HUD_COMPASS_CHAR + OAMA_FLAGS], a
 .paintArrow
 	; y
-	ld a, COMPASS_ARROW_Y + 16
+	ld a, COMPASS_ARROW_Y
 	ld [wShadowOam + OAM_HUD_COMPASS_ARROW + OAMA_Y], a
 	; x
-	ld a, COMPASS_ARROW_X + 8
+	ld a, COMPASS_ARROW_X
 	ld [wShadowOam + OAM_HUD_COMPASS_ARROW + OAMA_X], a
 	; tile id
 	ld a, c

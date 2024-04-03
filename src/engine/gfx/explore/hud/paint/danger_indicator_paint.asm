@@ -6,8 +6,8 @@ INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
 
 ; top left corners
-DEF DANGER_Y EQU 0
-DEF DANGER_X EQU TILE_WIDTH * 6
+DEF DANGER_Y EQU OAM_PADDING_Y
+DEF DANGER_X EQU TILE_WIDTH * 6 + OAM_PADDING_X
 
 SECTION "HUD Danger Indicator Paint Routines", ROMX
 
@@ -22,10 +22,10 @@ PaintDangerIndicator::
 PaintDangerGrey:
 .OAM_HUD_DANGER_0
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + 8
+	ld a, DANGER_X
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_NONE
@@ -35,10 +35,10 @@ PaintDangerGrey:
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_1
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 1) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 1)
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_NONE
@@ -48,10 +48,10 @@ PaintDangerGrey:
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_2
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 2) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 2)
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_NONE
@@ -61,10 +61,10 @@ PaintDangerGrey:
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_3
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 3) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 3)
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_MED_GREY
@@ -74,10 +74,10 @@ PaintDangerGrey:
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_4
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 4) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 4)
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_MED_GREY
@@ -87,10 +87,10 @@ PaintDangerGrey:
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_5
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 5) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 5)
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_NONE
@@ -100,10 +100,10 @@ PaintDangerGrey:
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_6
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 2) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 2)
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_NONE
@@ -113,10 +113,10 @@ PaintDangerGrey:
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_7
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_7 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 7) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 7)
 	ld [wShadowOam + OAM_HUD_DANGER_7 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_NONE
@@ -129,10 +129,10 @@ PaintDangerGrey:
 PaintDangerYellow:
 .OAM_HUD_DANGER_0
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + 8
+	ld a, DANGER_X
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_NONE
@@ -142,10 +142,10 @@ PaintDangerYellow:
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_1
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 1) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 1)
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_SHORT_YELLOW
@@ -155,10 +155,10 @@ PaintDangerYellow:
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_2
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 2) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 2)
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_MED_YELLOW
@@ -168,10 +168,10 @@ PaintDangerYellow:
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_3
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 3) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 3)
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_TALL_YELLOW
@@ -181,10 +181,10 @@ PaintDangerYellow:
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_4
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 4) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 4)
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_TALL_YELLOW
@@ -194,10 +194,10 @@ PaintDangerYellow:
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_5
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 5) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 5)
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_MED_YELLOW
@@ -207,10 +207,10 @@ PaintDangerYellow:
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_6
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 6) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 6)
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_SHORT_YELLOW
@@ -220,10 +220,10 @@ PaintDangerYellow:
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_7
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_7 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 7) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 7)
 	ld [wShadowOam + OAM_HUD_DANGER_7 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_NONE
@@ -236,10 +236,10 @@ PaintDangerYellow:
 PaintDangerRed:
 .OAM_HUD_DANGER_0
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + 8
+	ld a, DANGER_X
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_SHORT_RED
@@ -249,10 +249,10 @@ PaintDangerRed:
 	ld [wShadowOam + OAM_HUD_DANGER_0 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_1
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 1) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 1)
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_MED_RED
@@ -262,10 +262,10 @@ PaintDangerRed:
 	ld [wShadowOam + OAM_HUD_DANGER_1 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_2
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 2) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 2)
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_TALL_RED
@@ -275,10 +275,10 @@ PaintDangerRed:
 	ld [wShadowOam + OAM_HUD_DANGER_2 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_3
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 3) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 3)
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_TALL_RED
@@ -288,10 +288,10 @@ PaintDangerRed:
 	ld [wShadowOam + OAM_HUD_DANGER_3 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_4
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 4) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 4)
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_TALL_RED
@@ -301,10 +301,10 @@ PaintDangerRed:
 	ld [wShadowOam + OAM_HUD_DANGER_4 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_5
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 5) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 5)
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_TALL_RED
@@ -314,10 +314,10 @@ PaintDangerRed:
 	ld [wShadowOam + OAM_HUD_DANGER_5 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_6
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 6) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 6)
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_MED_RED
@@ -327,10 +327,10 @@ PaintDangerRed:
 	ld [wShadowOam + OAM_HUD_DANGER_6 + OAMA_FLAGS], a
 .OAM_HUD_DANGER_7
 	; y
-	ld a, DANGER_Y + 16
+	ld a, DANGER_Y
 	ld [wShadowOam + OAM_HUD_DANGER_7 + OAMA_Y], a
 	; x
-	ld a, DANGER_X + (TILE_WIDTH * 7) + 8
+	ld a, DANGER_X + (TILE_WIDTH * 7)
 	ld [wShadowOam + OAM_HUD_DANGER_7 + OAMA_X], a
 	; tile id
 	ld a, TILE_DANGER_SHORT_RED
