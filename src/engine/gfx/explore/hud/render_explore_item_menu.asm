@@ -17,7 +17,7 @@ RenderExploreItemMenu::
 	cp TRUE
 	ret nz
 .renderTopRow
-	call PaintDialogTopRow ; todo replace with row with helpful descriptions
+	call PaintModalTopRow ; todo replace with row with helpful descriptions
 .checkNeedsToRepopulateMenuItemsList
 	; todo, compare current menu state w previous menu state
 	call PopulateListToRenderInMenu
@@ -88,9 +88,9 @@ RenderExploreItemMenu::
 	ld hl, wItemQuantityNameStringBuffer
 
 	; hl should be ptr to first char of wItemQuantityNameStringBuffer
-	pop bc ; restore iterators for PaintDialogTextRow
+	pop bc ; restore iterators for PaintModalTextRow
 	push bc ; save iterators
-	call PaintDialogTextRow
+	call PaintModalTextRow
 .updateIterators
 	pop bc ; restore iterators
 
@@ -102,7 +102,7 @@ RenderExploreItemMenu::
 	inc c
 	ld a, c
 	ld [wDialogRootTextAreaRowsRendered], a ; painting uses this
-	cp DIALOG_MODAL_TEXT_AREA_HEIGHT
+	cp MODAL_TEXT_AREA_HEIGHT
 	jp z, .renderBottomRow
 
 	ld a, [wMenuItemCount]
@@ -112,16 +112,16 @@ RenderExploreItemMenu::
 .renderBlankRows
 	ld a, [wDialogRootTextAreaRowsRendered]
 .renderBlankRowsLoop
-	cp DIALOG_MODAL_TEXT_AREA_HEIGHT
+	cp MODAL_TEXT_AREA_HEIGHT
 	jp z, .renderBottomRow
 	ld c, a
-	call PaintEmptyRow ; c is an arg to this
+	call PaintModalEmptyRow ; c is an arg to this
 	ld a, [wDialogRootTextAreaRowsRendered]
 	inc a
 	ld [wDialogRootTextAreaRowsRendered], a
 	jp .renderBlankRowsLoop
 .renderBottomRow
-	call PaintDialogBottomRow ; todo replace with row with helpful descriptions
+	call PaintModalBottomRow ; todo replace with row with helpful descriptions
 	ld a, FALSE
 	ld [wDialogModalDirty], a
 	ret

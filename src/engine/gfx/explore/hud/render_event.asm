@@ -72,7 +72,7 @@ RenderDialogRoot:
 	ld a, h
 	ld [wCurrentMenuItem + 1], a
 .renderTopRow
-	call PaintDialogTopRow
+	call PaintModalTopRow
 .renderDialogBranchLabelsWithTrueFlag ; (gather menu items by filtering branch options)
 	; iterate over DialogBranches array @ wDialogBranchesAddr w wDialogBranchesCount
 	; load counter
@@ -98,7 +98,7 @@ RenderDialogRoot:
 	inc hl
 	ld a, [wDialogRootTextAreaRowsRendered]
 	ld c, a
-	call PaintDialogTextRow
+	call PaintModalTextRow
 
 	; correlate addr of branch in ram to placement in menu so its frames can be pulled up if selected
 	pop hl ; restore addr of DialogBranch[wDialogRootTextAreaRowsRendered]
@@ -158,16 +158,16 @@ RenderDialogRoot:
 .renderBlankLines
 	ld a, [wDialogRootTextAreaRowsRendered]
 .renderBlankLinesLoop
-	cp DIALOG_MODAL_TEXT_AREA_HEIGHT
+	cp MODAL_TEXT_AREA_HEIGHT
 	jp z, .renderBottomRow
 	ld c, a
-	call PaintEmptyRow ; c is an arg to this
+	call PaintModalEmptyRow ; c is an arg to this
 	ld a, [wDialogRootTextAreaRowsRendered]
 	inc a
 	ld [wDialogRootTextAreaRowsRendered], a
 	jp .renderBlankLinesLoop
 .renderBottomRow
-	call PaintDialogBottomRow
+	call PaintModalBottomRow
 	ld a, FALSE
 	ld [wDialogModalDirty], a
 	ret
@@ -204,7 +204,7 @@ RenderDialogBranch:
 	ld a, $FF ; this is a goofy hack. tells the text painter to highlight line 255 out of 3
 	ld [wDialogTextRowHighlighted], a
 .renderTopRow
-	call PaintDialogTopRow
+	call PaintModalTopRow
 .updateAddressOfCurrentFrame
 	; load current frame into hl
 	ld a, [wCurrentDialogBranchFrameAddr]
@@ -235,20 +235,20 @@ RenderDialogBranch:
 	push hl ; stash addr of text line to draw
 	ld a, [wDialogRootTextAreaRowsRendered]
 	ld c, a
-	call PaintDialogTextRow
+	call PaintModalTextRow
 	; inc # of text rows drawn. this row offset is used for rendering. it will be used to draw empty lines
 	ld a, [wDialogRootTextAreaRowsRendered]
 	inc a
 	ld [wDialogRootTextAreaRowsRendered], a
 	pop hl ; restore addr of text line (the one just drawn)
 .checkNextLine
-	cp DIALOG_MODAL_TEXT_AREA_HEIGHT
+	cp MODAL_TEXT_AREA_HEIGHT
 	jp z, .renderBottomRow
 	ld a, BYTES_IN_DIALOG_STRING
 	call AddAToHl ; add offset to get next text line addr
 	jp .renderTextLine
 .renderBottomRow
-	call PaintDialogBottomRow
+	call PaintModalBottomRow
 	ld a, FALSE
 	ld [wDialogModalDirty], a
 	ret
