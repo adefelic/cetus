@@ -126,13 +126,15 @@ Map1EventLocations::
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,TownHall-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,TownHall-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,BackWarp-Map1Events,TownHall-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 Map1Events:
 	nop ; this is a hack to make it so having an offset of 0 means there is no event
-	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about ", 3, TownHall_DialogBranches
+	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about", ROOMEVENT_DIALOG, 3, TownHall_DialogBranches
+	dstruct RoomEvent, BackWarp, WALLS_L, "cross fog?", "", ROOMEVENT_WARP, 0, BackWarp_WarpDestination
+
 TownHall_DialogBranches:
 	dstruct DialogBranch, TownHall_SayHello, wAlwaysTrueEventFlag, "say hello", 5, TownHall_SayHello_DialogBranchFrames
 	dstruct DialogBranch, TownHall_AskAboutFog, wAlwaysTrueEventFlag, "ask: fog", 1, TownHall_AskAboutFog_DialogBranchFrames
@@ -147,6 +149,9 @@ TownHall_AskAboutFog_DialogBranchFrames:
 	dstruct DialogBranchFrame, TownHall_AskAboutFog_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="real misty", .TextLine1="out there", .TextLine2="isnt it...", .TextLine3="cold too"
 TownHall_AskAboutSkull_DialogBranchFrames:
 	dstruct DialogBranchFrame, TownHall_AskAboutSkull_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="i'm not sure", .TextLine1="what you're", .TextLine2="speaking of...", .TextLine3="*cough*"
+
+;BackWarp_WarpDestination: this is for me. the struct below creates the name BackWarp_WarpDestination
+	dstruct WarpDestination, BackWarp_WarpDestination, 7, 12, ORIENTATION_SOUTH, SwampBgPaletteSet
 
 ; tile ids for a hard-coded encounter screen
 Map1EncounterScreen::

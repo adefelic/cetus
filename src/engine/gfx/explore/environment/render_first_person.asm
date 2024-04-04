@@ -140,7 +140,7 @@ ProcessRoomCenterFar:
 	jp .checkRightWall
 .paintDistance
 	; todo: set to distance palette
-	ld e, BG_PALETTE_FOG2
+	ld e, BG_PALETTE_FOG
 	ld d, TILE_EXPLORE_DARK
 	call CheckSegmentC
 	;call CheckSegmentCFog ; this looks cool but isnt wide enough
@@ -183,7 +183,7 @@ ProcessRoomLeftFar:
 	jp .paintGround
 .paintDistance
 	; todo: set to distance palette
-	ld e, BG_PALETTE_FOG2
+	ld e, BG_PALETTE_FOG
 	ld d, TILE_EXPLORE_DARK
 	; add fog
 	call CheckSegmentA
@@ -212,7 +212,7 @@ ProcessRoomRightFar:
 	jp .paintGround
 .paintDistance
 	; todo: set to distance palette
-	ld e, BG_PALETTE_FOG2
+	ld e, BG_PALETTE_FOG
 	ld d, TILE_EXPLORE_DARK
 	; add fog
 	call CheckSegmentD

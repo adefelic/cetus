@@ -1,5 +1,4 @@
 INCLUDE "src/lib/hardware.inc"
-INCLUDE "src/assets/palette.inc"
 INCLUDE "src/assets/tile_data.inc"
 INCLUDE "src/assets/tiles/indices/computer_dark.inc"
 INCLUDE "src/constants/constants.inc"
@@ -264,6 +263,7 @@ Main:
 	ld [wPreviousFrameScreen], a
 
 	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
+	call SetEnqueuedBgPaletteSet
 	call DrawScreen ; if dirty, draws screen, cleans. accesses vram
 	call UpdateAudio
 	call GetKeys ; get new player input
@@ -369,21 +369,6 @@ ProcessInput:
 	jp z, HandleInputPauseScreen
 	jp HandleInputEncounterScreen
 
-InitColorPalettes:
-	ld a, BCPSF_AUTOINC ; load bg color palette specification auto increment on write + addr of zero
-	ld [rBCPS], a
-	ld de, OwBgPaletteSet
-	ld hl, rBCPD
-	ld b, PALETTE_SET_SIZE
-	call CopyColorsToPalette
-
-	ld a, OCPSF_AUTOINC ; load obj color palette specification auto increment on write + addr of zero
-	ld [rOCPS], a
-	ld de, OwObjPaletteSet
-	ld hl, rOCPD
-	ld b, PALETTE_SET_SIZE
-	call CopyColorsToPalette
-	ret
 
 GetKeys:
 	; poll controller buttons
@@ -453,17 +438,6 @@ MemcopySmall::
 	dec b
 	ld a, b
 	jp nz, MemcopySmall
-	ret
-
-; @param de: source
-; @param hl: destination
-; @param b: length
-CopyColorsToPalette:
-	ld a, [de]
-	ld [hl], a
-	inc de
-	dec b
-	jp nz, CopyColorsToPalette
 	ret
 
 WaitVBlank:

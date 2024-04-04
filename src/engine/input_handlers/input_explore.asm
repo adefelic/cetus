@@ -72,10 +72,12 @@ HandlePressedA:
 	ld a, [wIsPlayerFacingWallInteractable]
 	cp FALSE
 	ret z
-.enterDialogMaybe:
-	ld a, [wDialogState]
-	cp DIALOG_STATE_LABEL
+.advanceEventState
+	ld a, [wRoomEventType]
+	cp ROOMEVENT_DIALOG
 	jp z, PressedAFromDialogLabel
+	cp ROOMEVENT_WARP
+	jp z, DoWarp
 	; control should not reach here
 	ret
 

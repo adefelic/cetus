@@ -4,6 +4,8 @@ INCLUDE "src/constants/constants.inc"
 SECTION "Event Struct Storage", WRAM0
 ; current RoomEvent struct state
 wRoomEventAddr:: dw
+wRoomEventType:: db
+wWarpDestinationAddr:: ; wWarpDestinationAddr and wDialogBranchesAddr are mutually exclusive
 wDialogBranchesAddr:: dw
 wDialogBranchesCount:: db
 
@@ -124,6 +126,22 @@ LoadVisibleEvents::
 	ld [wRoomEventAddr + 1], a
 	push hl ; stash RoomEvent addr
 
+	; store RoomEvent type and handle by type
+	ld a, RoomEvent_Type
+	call AddAToHl
+	ld a, [hl]
+	ld [wRoomEventType], a
+	cp ROOMEVENT_DIALOG
+	jp z, HandleNewDialogRoomEvent
+	cp ROOMEVENT_WARP
+	jp z, HandleNewDialogWarpEvent
+	pop hl
+	ret
+
+HandleNewDialogRoomEvent:
+.storeDialogBranchData
+	pop hl
+	push hl
 	; store DialogBranchesAddr
 	ld a, RoomEvent_DialogBranchesAddr
 	call AddAToHl
@@ -139,6 +157,19 @@ LoadVisibleEvents::
 	call AddAToHl
 	ld a, [hl]
 	ld [wDialogBranchesCount], a
+	ret
+
+; thhis function is the same as the first half of HandleNewDialogRoomEvent
+HandleNewDialogWarpEvent:
+	pop hl
+	; store DialogBranchesAddr
+	ld a, RoomEvent_DialogBranchesAddr
+	call AddAToHl
+	call DereferenceHlIntoHl ; put addr of event def in hl
+	ld a, l
+	ld [wWarpDestinationAddr], a
+	ld a, h
+	ld [wWarpDestinationAddr + 1], a
 	ret
 
 UnsetIsPlayerFacingWallInteractable:

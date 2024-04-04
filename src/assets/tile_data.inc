@@ -1,3 +1,5 @@
+SECTION "Tile Data", ROMX
+
 ; bg bank 0
 OWTiles::
 INCBIN "build/gfx/explore-simple.2bpp"

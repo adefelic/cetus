@@ -1,12 +1,21 @@
 INCLUDE "src/lib/structs.inc"
 INCLUDE "src/constants/menu_constants.inc"
 
-	; todo rename to DialogEvent?
+; RoomEvent Types
+DEF ROOMEVENT_DIALOG EQU $00
+DEF ROOMEVENT_WARP EQU $01
+
+; todo? augh i should've just made it so the first byte of every collection is the count
+; it would mean that a collection can't be more than 255 things but that seems fine
+
 	struct RoomEvent
 		bytes 1, EventWalls ; a 4-bit WALLS_ constant. this means that all events must be on the same wall
 		bytes BYTES_IN_DIALOG_LABEL, EventLabelText ; string. this is the text that occurs before entering the event eg "talk?"
 		bytes BYTES_IN_DIALOG_LABEL, EventPromptText ; string. this is the first event frame that precedes the player selecting an option eg "hello there"
-		bytes 1, DialogBranchesCount
+		bytes 1, Type
+		bytes 1, DialogBranchesCount ; unused
+
+		alias WarpDestinationAddr ; if the event type is ROOMEVENT_WARP, this points to the corresponding WarpDestination
 		words 1, DialogBranchesAddr ; a collection of DialogBranches that is (DialogBranchCount * sizeof_DialogBranch) many bytes
 	end_struct
 
@@ -27,4 +36,11 @@ INCLUDE "src/constants/menu_constants.inc"
 		bytes BYTES_IN_DIALOG_STRING, TextLine1 ; string
 		bytes BYTES_IN_DIALOG_STRING, TextLine2 ; string
 		bytes BYTES_IN_DIALOG_STRING, TextLine3 ; string
+	end_struct
+
+	struct WarpDestination
+		bytes 1, DestinationX
+		bytes 1, DestinationY
+		bytes 1, DestinationOrientation
+		words 1, BgPaletteSetAddr
 	end_struct
