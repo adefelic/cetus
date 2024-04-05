@@ -95,10 +95,6 @@ LoadBgTiles:
 	ld de, FogTiles
 	ld bc, FogTilesEnd - FogTiles
 	call Memcopy
-
-	ld de, GrassTiles
-	ld bc, GrassTilesEnd - GrassTiles
-	call Memcopy
 .loadFont
 	; Copy BG tile data into VRAM bank 1
 	ld a, 1

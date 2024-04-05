@@ -102,6 +102,13 @@ CheckSegmentM::
 	call PaintSegmentM
 	ret
 
+CheckSegmentMGround::
+	ld a, [wMDirty]
+	cp a, DIRTY
+	ret nz
+	call PaintSegmentMGround
+	ret
+
 CheckSegmentN::
 	ld a, [wNDirty]
 	cp a, DIRTY
@@ -874,6 +881,109 @@ PaintSegmentM::
 	ld [wMDirty], a
 	ret
 
+PaintSegmentMGround::
+.row13
+	ld hl, wShadowTilemap + rows 13 + cols 6
+	ld b, 8
+	call PaintTilemapSmall
+	ld hl, wShadowTilemapAttrs + rows 13 + cols 6
+	ld b, 8
+	call PaintTilemapAttrsSmall
+.row14
+	ld hl, wShadowTilemap + rows 14 + cols 5
+	ld b, 10
+	call PaintTilemapSmall
+	ld hl, wShadowTilemapAttrs + rows 14 + cols 5
+	ld b, 10
+	call PaintTilemapAttrsSmall
+.row15
+	ld hl, wShadowTilemap + rows 15 + cols 4
+	ld b, 12
+	call PaintTilemapSmall
+	ld hl, wShadowTilemapAttrs + rows 15 + cols 4
+	ld b, 12
+	call PaintTilemapAttrsSmall
+
+.randomGrassRow13
+	; randomly generate a tile locations that will be grass
+	ld d, 8
+	call Rand ; between 0 and 255
+	and `00000111 ; mask to be between 0 and 7 to remove some subtractions from the mod operation
+	call SingleByteModulo ; result in a
+
+	push af ; stash random column #
+	ld hl, wShadowTilemap + rows 13 + cols 6
+	call AddAToHl
+	ld d, TILE_GRASS_FAR
+	ld b, 1
+	call PaintTilemapSmall
+
+	; randomize x flip
+	call Rand
+	and `00100000 ; byte 5 of bg attributes is x flip. mask out other bits
+	or e
+	ld e, a
+
+	pop af
+	ld hl, wShadowTilemapAttrs + rows 13 + cols 6
+	call AddAToHl
+	ld b, 1
+	call PaintTilemapAttrsSmall
+.randomGrassRow14
+	; randomly generate a tile locations that will be grass
+	ld d, 10
+	call Rand ; between 0 and 255
+	and `00001111 ; mask to be between 0 and 15 to remove some subtractions from the mod operation
+	call SingleByteModulo ; result in a
+
+	push af ; stash random column #
+	ld hl, wShadowTilemap + rows 14 + cols 5
+	call AddAToHl
+	ld d, TILE_GRASS_FAR
+	ld b, 1
+	call PaintTilemapSmall
+
+	; randomize x flip
+	call Rand
+	and `00100000 ; byte 5 of bg attributes is x flip. mask out other bits
+	or e
+	ld e, a
+
+	pop af
+	ld hl, wShadowTilemapAttrs + rows 14 + cols 5
+	call AddAToHl
+	ld b, 1
+	call PaintTilemapAttrsSmall
+.randomGrassRow15
+	; randomly generate a tile locations that will be grass
+	ld d, 12
+	call Rand ; between 0 and 255
+	and `00001111 ; mask to be between 0 and 15 to remove some subtractions from the mod operation
+	call SingleByteModulo ; result in a
+
+	push af ; stash random column #
+	ld hl, wShadowTilemap + rows 15 + cols 4
+	call AddAToHl
+	ld d, TILE_GRASS_FAR
+	ld b, 1
+	call PaintTilemapSmall
+
+	; randomize x flip
+	call Rand
+	and `00100000 ; byte 5 of bg attributes is x flip. mask out other bits
+	or e
+	ld e, a
+
+	pop af
+	ld hl, wShadowTilemapAttrs + rows 15 + cols 4
+	call AddAToHl
+	ld b, 1
+	call PaintTilemapAttrsSmall
+.clean
+	ld a, CLEAN
+	ld [wMDirty], a
+	ret
+
 PaintSegmentN::
 .row13
 	ld hl, wShadowTilemap + rows 13 + cols 15
@@ -1017,7 +1127,13 @@ PaintSegmentQ::
 	ld b, 1
 	call PaintTilemapSmall
 
-	pop af ; restore random column #
+	; randomize x flip
+	call Rand
+	and `00100000 ; byte 5 of bg attributes is x flip. mask out other bits
+	or e
+	ld e, a
+
+	pop af
 	ld hl, wShadowTilemapAttrs + rows 16 + cols 3
 	call AddAToHl
 	ld b, 1
@@ -1035,6 +1151,12 @@ PaintSegmentQ::
 	ld d, TILE_GRASS_NEAR
 	ld b, 1
 	call PaintTilemapSmall
+
+	; randomize x flip
+	call Rand
+	and `00100000
+	or e
+	ld e, a
 
 	pop af ; restore random column #
 	ld hl, wShadowTilemapAttrs + rows 17 + cols 2

@@ -122,7 +122,7 @@ ProcessRoomCenterFar:
 	ld d, TILE_EXPLORE_DIAG_L
 	call CheckSegmentLDiag
 	jp .checkTopWall
-.paintLeftGround
+.paintLeftGround ;todo ground?
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_GROUND
 	call CheckSegmentL
@@ -161,12 +161,12 @@ ProcessRoomCenterFar:
 .paintRightGround
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_GROUND
-	call CheckSegmentN
+	call CheckSegmentN ;todo ground?
 	call CheckSegmentNDiag
 .paintCenterGround
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_GROUND
-	call CheckSegmentM
+	call CheckSegmentMGround
 
 ProcessRoomLeftFar:
 .checkTopWall
