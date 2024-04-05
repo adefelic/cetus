@@ -17,6 +17,10 @@ FogTiles::
 INCBIN "build/gfx/fog.2bpp"
 FogTilesEnd::
 
+GrassTiles::
+INCBIN "build/gfx/explore-grass.2bpp"
+GrassTilesEnd::
+
 ; bg bank 1
 ComputerDarkTiles::
 INCBIN "build/gfx/computer-dark.2bpp"

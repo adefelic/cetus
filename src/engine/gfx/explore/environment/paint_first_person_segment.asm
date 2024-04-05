@@ -137,7 +137,8 @@ CheckSegmentPDiag::
 	call PaintSegmentPDiag
 	ret
 
-CheckSegmentQ::
+; todo, dirty this every time probably
+CheckSegmentQGround::
 	ld a, [wQDirty]
 	cp a, DIRTY
 	ret nz
@@ -163,95 +164,95 @@ CheckSegmentRDiag::
 PaintSegmentA::
 .row0
 	ld hl, wShadowTilemap + rows 0 ; dest in VRAM
-	ld bc, 3      ; # of bytes (tile indices) remaining.
-	call PaintTilemap
+	ld b, 3      ; # of bytes (tile indices) remaining.
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 0
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row1
 	ld hl, wShadowTilemap + rows 1
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 1
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row2
 	ld hl, wShadowTilemap + rows 2
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 2
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row3
 	ld hl, wShadowTilemap + rows 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row4
 	ld hl, wShadowTilemap + rows 4
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 4
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row5
 	ld hl, wShadowTilemap + rows 5
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 5
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row6
 	ld hl, wShadowTilemap + rows 6
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 6
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row7
 	ld hl, wShadowTilemap + rows 7
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 7
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row8
 	ld hl, wShadowTilemap + rows 8
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 8
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row9
 	ld hl, wShadowTilemap + rows 9
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 9
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row10
 	ld hl, wShadowTilemap + rows 10
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 10
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row11
 	ld hl, wShadowTilemap + rows 11
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 11
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row12
 	ld hl, wShadowTilemap + rows 12
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 12
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wADirty], a
@@ -260,95 +261,95 @@ PaintSegmentA::
 PaintSegmentB::
 .row0
 	ld hl, wShadowTilemap + rows 0 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 0 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row1
 	ld hl, wShadowTilemap + rows 1 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 1 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row2
 	ld hl, wShadowTilemap + rows 2 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 2 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row3
 	ld hl, wShadowTilemap + rows 3 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 3 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row4
 	ld hl, wShadowTilemap + rows 4 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 4 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row5
 	ld hl, wShadowTilemap + rows 5 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 5 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row6
 	ld hl, wShadowTilemap + rows 6 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 6 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row7
 	ld hl, wShadowTilemap + rows 7 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 7 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row8
 	ld hl, wShadowTilemap + rows 8 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 8 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row9
 	ld hl, wShadowTilemap + rows 9 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 9 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row10
 	ld hl, wShadowTilemap + rows 10 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 10 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row11
 	ld hl, wShadowTilemap + rows 11 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 11 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row12
 	ld hl, wShadowTilemap + rows 12 + cols 3
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 12 + cols 3
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wBDirty], a
@@ -357,95 +358,95 @@ PaintSegmentB::
 PaintSegmentC::
 .row0
 	ld hl, wShadowTilemap + rows 0 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 0 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row1
 	ld hl, wShadowTilemap + rows 1 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 1 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row2
 	ld hl, wShadowTilemap + rows 2 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 2 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row3
 	ld hl, wShadowTilemap + rows 3 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 3 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row4
 	ld hl, wShadowTilemap + rows 4 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 4 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row5
 	ld hl, wShadowTilemap + rows 5 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 5 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row6
 	ld hl, wShadowTilemap + rows 6 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 6 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row7
 	ld hl, wShadowTilemap + rows 7 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 7 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row8
 	ld hl, wShadowTilemap + rows 8 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 8 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row9
 	ld hl, wShadowTilemap + rows 9 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 9 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row10
 	ld hl, wShadowTilemap + rows 10 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 10 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row11
 	ld hl, wShadowTilemap + rows 11 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 11 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row12
 	ld hl, wShadowTilemap + rows 12 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 12 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wCDirty], a
@@ -456,46 +457,46 @@ PaintSegmentCFog::
 	ld d, TILE_FOG_BLANK
 .row0
 	ld hl, wShadowTilemap + rows 0 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 0 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row1
 	ld hl, wShadowTilemap + rows 1 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 1 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row2
 	ld hl, wShadowTilemap + rows 2 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 2 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row3
 	ld hl, wShadowTilemap + rows 3 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 3 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row4
 	ld hl, wShadowTilemap + rows 4 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 4 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row5
 	ld hl, wShadowTilemap + rows 5 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 5 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 
 	; things get complicated
 	; sigh, this makes a case for a 20*18 tilemap buffer. there could a tilecpy function that pastes tile ids to the buffer
@@ -504,75 +505,75 @@ PaintSegmentCFog::
 .row6_col0
 	ld d, TILE_FOG_R6_C0
 	ld hl, wShadowTilemap + rows 6 + cols 6
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 6 + cols 6
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .row6_middle
 	ld d, TILE_FOG_BLANK
 	ld hl, wShadowTilemap + rows 6 + cols 7
-	ld bc, 6
-	call PaintTilemap
+	ld b, 6
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 6 + cols 7
-	ld bc, 6
-	call PaintTilemapAttrs
+	ld b, 6
+	call PaintTilemapAttrsSmall
 .row6_col7
 	ld hl, wShadowTilemap + rows 6 + cols 13
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 6 + cols 13
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 
 .row7
 	ld d, TILE_FOG_R7_C0
 	ld hl, wShadowTilemap + rows 7 + cols 6
-	ld bc, 8
+	ld b, 8
 	call PaintTilemapIncrementingTileId
 	ld hl, wShadowTilemapAttrs + rows 7 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row8
 	ld d, TILE_FOG_R8_C0
 	ld hl, wShadowTilemap + rows 8 + cols 6
-	ld bc, 8
+	ld b, 8
 	call PaintTilemapIncrementingTileId
 	ld hl, wShadowTilemapAttrs + rows 8 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row9
 	ld d, TILE_FOG_R9_C0
 	ld hl, wShadowTilemap + rows 9 + cols 6
-	ld bc, 8
+	ld b, 8
 	call PaintTilemapIncrementingTileId
 	ld hl, wShadowTilemapAttrs + rows 9 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row10
 	ld d, TILE_FOG_R10_C0
 	ld hl, wShadowTilemap + rows 10 + cols 6
-	ld bc, 8
+	ld b, 8
 	call PaintTilemapIncrementingTileId
 	ld hl, wShadowTilemapAttrs + rows 10 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row11
 	ld d, TILE_FOG_R11_C0
 	ld hl, wShadowTilemap + rows 11 + cols 6
-	ld bc, 8
+	ld b, 8
 	call PaintTilemapIncrementingTileId
 	ld hl, wShadowTilemapAttrs + rows 11 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row12
 	ld d, TILE_FOG_R12_C0
 	ld hl, wShadowTilemap + rows 12 + cols 6
-	ld bc, 8
+	ld b, 8
 	call PaintTilemapIncrementingTileId
 	ld hl, wShadowTilemapAttrs + rows 12 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wCDirty], a
@@ -581,95 +582,95 @@ PaintSegmentCFog::
 PaintSegmentD::
 .row0
 	ld hl, wShadowTilemap + rows 0 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 0 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row1
 	ld hl, wShadowTilemap + rows 1 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 1 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row2
 	ld hl, wShadowTilemap + rows 2 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 2 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row3
 	ld hl, wShadowTilemap + rows 3 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 3 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row4
 	ld hl, wShadowTilemap + rows 4 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 4 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row5
 	ld hl, wShadowTilemap + rows 5 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 5 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row6
 	ld hl, wShadowTilemap + rows 6 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 6 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row7
 	ld hl, wShadowTilemap + rows 7 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 7 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row8
 	ld hl, wShadowTilemap + rows 8 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 8 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row9
 	ld hl, wShadowTilemap + rows 9 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 9 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row10
 	ld hl, wShadowTilemap + rows 10 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 10 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row11
 	ld hl, wShadowTilemap + rows 11 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 11 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row12
 	ld hl, wShadowTilemap + rows 12 + cols 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 12 + cols 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wDDirty], a
@@ -678,95 +679,95 @@ PaintSegmentD::
 PaintSegmentE::
 .row0
 	ld hl, wShadowTilemap + rows 0 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 0 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row1
 	ld hl, wShadowTilemap + rows 1 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 1 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row2
 	ld hl, wShadowTilemap + rows 2 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 2 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row3
 	ld hl, wShadowTilemap + rows 3 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 3 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row4
 	ld hl, wShadowTilemap + rows 4 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 4 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row5
 	ld hl, wShadowTilemap + rows 5 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 5 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row6
 	ld hl, wShadowTilemap + rows 6 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 6 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row7
 	ld hl, wShadowTilemap + rows 7 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 7 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row8
 	ld hl, wShadowTilemap + rows 8 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 8 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row9
 	ld hl, wShadowTilemap + rows 9 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 9 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row10
 	ld hl, wShadowTilemap + rows 10 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 10 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row11
 	ld hl, wShadowTilemap + rows 11 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 11 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row12
 	ld hl, wShadowTilemap + rows 12 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 12 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wEDirty], a
@@ -775,25 +776,25 @@ PaintSegmentE::
 PaintSegmentK::
 .row13
 	ld hl, wShadowTilemap + rows 13
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 13
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row14
 	ld hl, wShadowTilemap + rows 14
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 14
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row15
 	ld hl, wShadowTilemap + rows 15
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 15
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wKDirty], a
@@ -802,18 +803,18 @@ PaintSegmentK::
 PaintSegmentL::
 .row13
 	ld hl, wShadowTilemap + rows 13 + cols 3
-	ld bc, 2
-	call PaintTilemap
+	ld b, 2
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 13 + cols 3
-	ld bc, 2
-	call PaintTilemapAttrs
+	ld b, 2
+	call PaintTilemapAttrsSmall
 .row14
 	ld hl, wShadowTilemap + rows 14 + cols 3
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 14 + cols 3
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wLDirty], a
@@ -822,25 +823,25 @@ PaintSegmentL::
 PaintSegmentLDiag::
 .row13
 	ld hl, wShadowTilemap + rows 13 + cols 5
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 13 + cols 5
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .row14
 	ld hl, wShadowTilemap + rows 14 + cols 4
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 14 + cols 4
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .row15
 	ld hl, wShadowTilemap + rows 15 + cols 3
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 15 + cols 3
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wLDiagDirty], a
@@ -849,25 +850,25 @@ PaintSegmentLDiag::
 PaintSegmentM::
 .row13
 	ld hl, wShadowTilemap + rows 13 + cols 6
-	ld bc, 8
-	call PaintTilemap
+	ld b, 8
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 13 + cols 6
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .row14
 	ld hl, wShadowTilemap + rows 14 + cols 5
-	ld bc, 10
-	call PaintTilemap
+	ld b, 10
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 14 + cols 5
-	ld bc, 10
-	call PaintTilemapAttrs
+	ld b, 10
+	call PaintTilemapAttrsSmall
 .row15
 	ld hl, wShadowTilemap + rows 15 + cols 4
-	ld bc, 12
-	call PaintTilemap
+	ld b, 12
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 15 + cols 4
-	ld bc, 12
-	call PaintTilemapAttrs
+	ld b, 12
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wMDirty], a
@@ -876,18 +877,18 @@ PaintSegmentM::
 PaintSegmentN::
 .row13
 	ld hl, wShadowTilemap + rows 13 + cols 15
-	ld bc, 2
-	call PaintTilemap
+	ld b, 2
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 13 + cols 15
-	ld bc, 2
-	call PaintTilemapAttrs
+	ld b, 2
+	call PaintTilemapAttrsSmall
 .row14
 	ld hl, wShadowTilemap + rows 14 + cols 16
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 14 + cols 16
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wNDirty], a
@@ -896,25 +897,25 @@ PaintSegmentN::
 PaintSegmentNDiag::
 .row13
 	ld hl, wShadowTilemap + rows 13 + cols 14
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 13 + cols 14
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .row14
 	ld hl, wShadowTilemap + rows 14 + cols 15
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 14 + cols 15
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .row15
 	ld hl, wShadowTilemap + rows 15 + cols 16
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 15 + cols 16
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wNDiagDirty], a
@@ -923,25 +924,25 @@ PaintSegmentNDiag::
 PaintSegmentO::
 .row13
 	ld hl, wShadowTilemap + rows 13 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 13 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row14
 	ld hl, wShadowTilemap + rows 14 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 14 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .row15
 	ld hl, wShadowTilemap + rows 15 + cols 17
-	ld bc, 3
-	call PaintTilemap
+	ld b, 3
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 15 + cols 17
-	ld bc, 3
-	call PaintTilemapAttrs
+	ld b, 3
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wODirty], a
@@ -950,18 +951,18 @@ PaintSegmentO::
 PaintSegmentP::
 .row16
 	ld hl, wShadowTilemap + rows 16
-	ld bc, 2
-	call PaintTilemap
+	ld b, 2
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 16
-	ld bc, 2
-	call PaintTilemapAttrs
+	ld b, 2
+	call PaintTilemapAttrsSmall
 .row17
 	ld hl, wShadowTilemap + rows 17
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 17
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wPDirty], a
@@ -970,18 +971,18 @@ PaintSegmentP::
 PaintSegmentPDiag:
 .row16
 	ld hl, wShadowTilemap + rows 16 + cols 2
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 16 + cols 2
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .row17
 	ld hl, wShadowTilemap + rows 17 + cols 1
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 17 + cols 1
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wPDiagDirty], a
@@ -990,18 +991,57 @@ PaintSegmentPDiag:
 PaintSegmentQ::
 .row16
 	ld hl, wShadowTilemap + rows 16 + cols 3
-	ld bc, 14
-	call PaintTilemap
+	ld b, 14
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 16 + cols 3
-	ld bc, 14
-	call PaintTilemapAttrs
+	ld b, 14
+	call PaintTilemapAttrsSmall
 .row17
 	ld hl, wShadowTilemap + rows 17 + cols 2
-	ld bc, 16
-	call PaintTilemap
+	ld b, 16
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 17 + cols 2
-	ld bc, 16
-	call PaintTilemapAttrs
+	ld b, 16
+	call PaintTilemapAttrsSmall
+.randomGrassRow16
+	; randomly generate a tile locations that will be grass
+	ld d, 14
+	call Rand ; between 0 and 255
+	and `00001111 ; mask to be between 0 and 15 to remove some subtractions from the mod operation
+	call SingleByteModulo ; result in a, between
+
+	push af ; stash random column #
+	ld hl, wShadowTilemap + rows 16 + cols 3
+	call AddAToHl
+	ld d, TILE_GRASS_NEAR
+	ld b, 1
+	call PaintTilemapSmall
+
+	pop af ; restore random column #
+	ld hl, wShadowTilemapAttrs + rows 16 + cols 3
+	call AddAToHl
+	ld b, 1
+	call PaintTilemapAttrsSmall
+.randomGrassRow17
+	; randomly generate a tile locations that will be grass
+	ld d, 16
+	call Rand ; between 0 and 255
+	and `00011111 ; mask to be between 0 and 31 to remove some subtractions from the mod operation
+	call SingleByteModulo ; result in a
+
+	push af ; stash random column #
+	ld hl, wShadowTilemap + rows 17 + cols 2
+	call AddAToHl
+	ld d, TILE_GRASS_NEAR
+	ld b, 1
+	call PaintTilemapSmall
+
+	pop af ; restore random column #
+	ld hl, wShadowTilemapAttrs + rows 17 + cols 2
+	call AddAToHl
+	ld b, 1
+	call PaintTilemapAttrsSmall
+
 .clean
 	ld a, CLEAN
 	ld [wQDirty], a
@@ -1010,18 +1050,18 @@ PaintSegmentQ::
 PaintSegmentR::
 .column18
 	ld hl, wShadowTilemap + rows 16 + cols 18
-	ld bc, 2
-	call PaintTilemap
+	ld b, 2
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 16 + cols 18
-	ld bc, 2
-	call PaintTilemapAttrs
+	ld b, 2
+	call PaintTilemapAttrsSmall
 .column19
 	ld hl, wShadowTilemap + rows 17 + cols 19
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 17 + cols 19
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wRDirty], a
@@ -1030,18 +1070,18 @@ PaintSegmentR::
 PaintSegmentRDiag::
 .row16
 	ld hl, wShadowTilemap + rows 16 + cols 17
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 16 + cols 17
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .row17
 	ld hl, wShadowTilemap + rows 17 + cols 18
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call PaintTilemapSmall
 	ld hl, wShadowTilemapAttrs + rows 17 + cols 18
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .clean
 	ld a, CLEAN
 	ld [wRDiagDirty], a

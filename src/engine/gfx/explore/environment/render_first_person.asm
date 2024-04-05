@@ -67,7 +67,7 @@ ProcessRoomCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 .paintGround
 	ld e, BG_PALETTE_Z0
 	ld d, TILE_EXPLORE_GROUND ; todo on all ground paints, flip (shuffle could be cool) ground every step
-	call CheckSegmentQ
+	call CheckSegmentQGround
 
 ProcessRoomLeftNear:
 	; todo bounds check
