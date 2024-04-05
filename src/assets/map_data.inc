@@ -77,9 +77,9 @@ Map1Tiles:: ; 32 x 32
 	;25
 	db 0,TILE_MAP_RL,0,0,0,0,0,0,0,0,TILE_MAP_RL,0,0,0,0,0,0,0,0,TILE_MAP_TL,TILE_MAP_TB,TILE_MAP_NONE,TILE_MAP_R,0,TILE_MAP_BL,TILE_MAP_TB,TILE_MAP_R,0,TILE_MAP_RL,0,TILE_MAP_RL,0
 	;26
-	db 0,TILE_MAP_RBL,0,0,0,0,0,0,0,0,TILE_MAP_RL,0,0,0,0,0,0,TILE_MAP_TL,TILE_MAP_TB,TILE_MAP_RB,0,TILE_MAP_BL,TILE_MAP_RB,0,0,0,TILE_MAP_L,TILE_MAP_TB,TILE_MAP_RB,0,TILE_MAP_RL,0
+	db 0,TILE_MAP_RBL,0,0,0,0,0,0,0,0,TILE_MAP_RBL,0,0,0,0,0,0,TILE_MAP_TL,TILE_MAP_TB,TILE_MAP_RB,0,TILE_MAP_BL,TILE_MAP_RB,0,0,0,TILE_MAP_L,TILE_MAP_TB,TILE_MAP_RB,0,TILE_MAP_RL,0
 	;27
-	db 0,0,0,0,0,0,0,0,TILE_MAP_TRL,0,TILE_MAP_RL,0,TILE_MAP_TL,TILE_MAP_TB,TILE_MAP_TB,TILE_MAP_TB,TILE_MAP_TB,TILE_MAP_RB,0,0,0,0,0,0,TILE_MAP_TRL,0,TILE_MAP_RL,0,0,0,TILE_MAP_RL,0
+	db 0,0,0,0,0,0,0,0,TILE_MAP_TRL,0,TILE_MAP_TRL,0,TILE_MAP_TL,TILE_MAP_TB,TILE_MAP_TB,TILE_MAP_TB,TILE_MAP_TB,TILE_MAP_RB,0,0,0,0,0,0,TILE_MAP_TRL,0,TILE_MAP_RL,0,0,0,TILE_MAP_RL,0
 	;28
 	db 0,0,0,0,TILE_MAP_TL,TILE_MAP_TB,TILE_MAP_TB,TILE_MAP_TB,TILE_MAP_B,TILE_MAP_TB,TILE_MAP_NONE,TILE_MAP_TB,TILE_MAP_RB,0,0,0,0,0,0,0,0,0,0,0,TILE_MAP_RL,0,TILE_MAP_RL,0,0,0,TILE_MAP_RL,0
 	;29
@@ -123,18 +123,22 @@ Map1EventLocations::
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,TownHall-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,SouthSwampFogWarpDown-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,TownHall-Map1Events,0,SouthSwampFogWarpUp-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,BackWarp-Map1Events,TownHall-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
+; event triggers
 Map1Events:
 	nop ; this is a hack to make it so having an offset of 0 means there is no event
 	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about", ROOMEVENT_DIALOG, 3, TownHall_DialogBranches
-	dstruct RoomEvent, BackWarp, WALLS_L, "cross fog?", "", ROOMEVENT_WARP, 0, BackWarp_WarpDestination
+	dstruct RoomEvent, SouthSwampFogWarpUp, WALLS_T, "cross fog?", "", ROOMEVENT_WARP, 0, SouthSwampFogWarpUp_WarpDestination
+	dstruct RoomEvent, SouthSwampFogWarpDown, WALLS_B, "cross fog?", "", ROOMEVENT_WARP, 0, SouthSwampFogWarpDown_WarpDestination
+	dstruct RoomEvent, BackWarp, WALLS_L, "sneak", "", ROOMEVENT_WARP, 0, BackWarp_WarpDestination ; debug warp
 
+; dialog
 TownHall_DialogBranches:
 	dstruct DialogBranch, TownHall_SayHello, wAlwaysTrueEventFlag, "say hello", 5, TownHall_SayHello_DialogBranchFrames
 	dstruct DialogBranch, TownHall_AskAboutFog, wAlwaysTrueEventFlag, "ask: fog", 1, TownHall_AskAboutFog_DialogBranchFrames
@@ -150,8 +154,10 @@ TownHall_AskAboutFog_DialogBranchFrames:
 TownHall_AskAboutSkull_DialogBranchFrames:
 	dstruct DialogBranchFrame, TownHall_AskAboutSkull_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="i'm not sure", .TextLine1="what you're", .TextLine2="speaking of...", .TextLine3="*cough*"
 
-;BackWarp_WarpDestination: this is for me. the struct below creates the name BackWarp_WarpDestination
+; warps
 	dstruct WarpDestination, BackWarp_WarpDestination, 7, 12, ORIENTATION_SOUTH, SwampBgPaletteSet
+	dstruct WarpDestination, SouthSwampFogWarpUp_WarpDestination, 10, 26, ORIENTATION_NORTH, SwampBgPaletteSet
+	dstruct WarpDestination, SouthSwampFogWarpDown_WarpDestination, 10, 27, ORIENTATION_SOUTH, ForestBgPaletteSet
 
 ; tile ids for a hard-coded encounter screen
 Map1EncounterScreen::
@@ -181,9 +187,9 @@ Map1EncounterScreen::
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,TILE_ENCOUNTER_ARROW_SHAFT,TILE_ENCOUNTER_ARROW_SHAFT,TILE_ENCOUNTER_ARROW_SHAFT,TILE_ENCOUNTER_ARROW_POINT,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,TILE_ENCOUNTER_ARROW_SHAFT,TILE_ENCOUNTER_ARROW_SHAFT,TILE_ENCOUNTER_ARROW_SHAFT,TILE_ENCOUNTER_ARROW_POINT,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,TILE_ENCOUNTER_ARROW_SHAFT,TILE_ENCOUNTER_ARROW_SHAFT,TILE_ENCOUNTER_ARROW_SHAFT,TILE_ENCOUNTER_ARROW_POINT,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
+	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,TILE_ENCOUNTER_GRASS,0, 0,0,0,0,0,0,0,0,0,0,0,0
