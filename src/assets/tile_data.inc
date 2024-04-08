@@ -22,6 +22,10 @@ ComputerDarkTiles::
 INCBIN "build/gfx/computer-dark.2bpp"
 ComputerDarkTilesEnd::
 
+ScribTiles::
+INCBIN "build/gfx/scrib.2bpp"
+ScribTilesEnd::
+
 ; sprites bank 0
 CompassTiles::
 INCBIN "build/gfx/compass.2bpp"

@@ -99,9 +99,11 @@ LoadBgTiles:
 	; Copy BG tile data into VRAM bank 1
 	ld a, 1
 	ld [rVBK], a
-	ld de, ComputerDarkTiles
+	;ld de, ComputerDarkTiles
+	ld de, ScribTiles
 	ld hl, _VRAM9000
-	ld bc, ComputerDarkTilesEnd - ComputerDarkTiles
+	;ld bc, ComputerDarkTilesEnd - ComputerDarkTiles
+	ld bc, ScribTilesEnd - ScribTiles
 	call Memcopy
 	; back to VRAM bank 0
 	ld a, 0
