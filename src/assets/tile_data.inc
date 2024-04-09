@@ -13,9 +13,15 @@ EncounterTiles::
 INCBIN "build/gfx/encounter-simple.2bpp"
 EncounterTilesEnd::
 
+; this is the big image version of fog
 FogTiles::
 INCBIN "build/gfx/fog.2bpp"
 FogTilesEnd::
+
+; this is the lightweight one
+DistanceFogTiles::
+INCBIN "build/gfx/distance-fog.2bpp"
+DistanceFogTilesEnd::
 
 ; bg bank 1
 ComputerDarkTiles::

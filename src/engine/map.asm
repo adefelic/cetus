@@ -42,44 +42,47 @@ GetTopWallWrtPlayer::
 	jp z, GetSouthWallTypeFromRoomAttrAddr
 	jp GetWestWallTypeFromRoomAttrAddr
 
-; @param hl, address of map room representing current tile
-; @return a, wall type
-GetRightWallWrtPlayer::
-	ld a, [wPlayerOrientation]
-	cp a, ORIENTATION_NORTH
-	jp z, GetEastWallTypeFromRoomAttrAddr
-	cp a, ORIENTATION_EAST
-	jp z, GetSouthWallTypeFromRoomAttrAddr
-	cp a, ORIENTATION_SOUTH
-	jp z, GetWestWallTypeFromRoomAttrAddr
-	jp GetNorthWallTypeFromRoomAttrAddr
+; deprecated?
 
-; @param hl, address of map room representing current tile
-; @return a, wall type
-GetBottomWallWrtPlayer::
-	ld a, [wPlayerOrientation]
-	cp a, ORIENTATION_NORTH
-	jp z, GetSouthWallTypeFromRoomAttrAddr
-	cp a, ORIENTATION_EAST
-	jp z, GetWestWallTypeFromRoomAttrAddr
-	cp a, ORIENTATION_SOUTH
-	jp z, GetNorthWallTypeFromRoomAttrAddr
-	jp GetEastWallTypeFromRoomAttrAddr
+;; @param hl, address of map room representing current tile
+;; @return a, wall type
+;GetRightWallWrtPlayer::
+;	ld a, [wPlayerOrientation]
+;	cp a, ORIENTATION_NORTH
+;	jp z, GetEastWallTypeFromRoomAttrAddr
+;	cp a, ORIENTATION_EAST
+;	jp z, GetSouthWallTypeFromRoomAttrAddr
+;	cp a, ORIENTATION_SOUTH
+;	jp z, GetWestWallTypeFromRoomAttrAddr
+;	jp GetNorthWallTypeFromRoomAttrAddr
 
-; @param hl, address of map room representing current tile
-; @return a, wall type
-GetLeftWallWrtPlayer::
-	ld a, [wPlayerOrientation]
-	cp a, ORIENTATION_NORTH
-	jp z, GetWestWallTypeFromRoomAttrAddr
-	cp a, ORIENTATION_EAST
-	jp z, GetNorthWallTypeFromRoomAttrAddr
-	cp a, ORIENTATION_SOUTH
-	jp z, GetEastWallTypeFromRoomAttrAddr
-	jp GetSouthWallTypeFromRoomAttrAddr
+;; @param hl, address of map room representing current tile
+;; @return a, wall type
+;GetBottomWallWrtPlayer::
+;	ld a, [wPlayerOrientation]
+;	cp a, ORIENTATION_NORTH
+;	jp z, GetSouthWallTypeFromRoomAttrAddr
+;	cp a, ORIENTATION_EAST
+;	jp z, GetWestWallTypeFromRoomAttrAddr
+;	cp a, ORIENTATION_SOUTH
+;	jp z, GetNorthWallTypeFromRoomAttrAddr
+;	jp GetEastWallTypeFromRoomAttrAddr
+
+;; @param hl, address of map room representing current tile
+;; @return a, wall type
+;GetLeftWallWrtPlayer::
+;	ld a, [wPlayerOrientation]
+;	cp a, ORIENTATION_NORTH
+;	jp z, GetWestWallTypeFromRoomAttrAddr
+;	cp a, ORIENTATION_EAST
+;	jp z, GetNorthWallTypeFromRoomAttrAddr
+;	cp a, ORIENTATION_SOUTH
+;	jp z, GetEastWallTypeFromRoomAttrAddr
+;	jp GetSouthWallTypeFromRoomAttrAddr
 
 ; @param hl, address of room attrs representing current tile
 ; @return a, wall type
+GetTopWallTypeFromRoomAttrAddr::
 GetNorthWallTypeFromRoomAttrAddr::
 	ld a, [hl]
 	and a, ROOM_MASK_NORTH_WALL
@@ -90,6 +93,7 @@ endr
 
 ; @param hl, address of room attrs representing current tile
 ; @return a, wall type
+GetRightWallTypeFromRoomAttrAddr::
 GetEastWallTypeFromRoomAttrAddr::
 	ld a, [hl]
 	and a, ROOM_MASK_EAST_WALL
@@ -100,6 +104,7 @@ endr
 
 ; @param hl, address of room attrs representing current tile
 ; @return a, wall type
+GetBottomWallTypeFromRoomAttrAddr::
 GetSouthWallTypeFromRoomAttrAddr::
 	ld a, [hl]
 	and a, ROOM_MASK_SOUTH_WALL
@@ -110,6 +115,7 @@ endr
 
 ; @param hl, address of room attrs representing current tile
 ; @return a, wall type
+GetLeftWallTypeFromRoomAttrAddr::
 GetWestWallTypeFromRoomAttrAddr::
 	ld a, [hl]
 	and a, ROOM_MASK_WEST_WALL

@@ -15,9 +15,6 @@ InitExploreState::
 LoadExploreScreen::
 .updateShadowBgTilemap
 	; render environment walls
-	; todo:
-	;   maybe make it so when rendering an event, all other background are painted with a single palette?
-	;   it might look weird flattening depth like that.
 	call RenderFirstPersonView
 
 ; menus and item sprites are mutually exclusive

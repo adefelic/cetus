@@ -92,8 +92,11 @@ LoadBgTiles:
 	ld bc, EncounterTilesEnd - EncounterTiles
 	call Memcopy
 
-	ld de, FogTiles
-	ld bc, FogTilesEnd - FogTiles
+	;ld de, FogTiles
+	;ld bc, FogTilesEnd - FogTiles
+
+	ld de, DistanceFogTiles
+	ld bc, DistanceFogTilesEnd - DistanceFogTiles
 	call Memcopy
 .loadFont
 	; Copy BG tile data into VRAM bank 1

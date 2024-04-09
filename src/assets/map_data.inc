@@ -136,7 +136,7 @@ Map1Events:
 	dstruct RoomEvent, TownHall, WALLS_T, "  Enter?  ", "Ask about", ROOMEVENT_DIALOG, 3, TownHall_DialogBranches
 	dstruct RoomEvent, SouthSwampFogWarpUp, WALLS_T, "cross fog?", "", ROOMEVENT_WARP, 0, SouthSwampFogWarpUp_WarpDestination
 	dstruct RoomEvent, SouthSwampFogWarpDown, WALLS_B, "cross fog?", "", ROOMEVENT_WARP, 0, SouthSwampFogWarpDown_WarpDestination
-	dstruct RoomEvent, BackWarp, WALLS_L, "sneak", "", ROOMEVENT_WARP, 0, BackWarp_WarpDestination ; debug warp
+	dstruct RoomEvent, BackWarp, WALLS_L, "swamp", "", ROOMEVENT_WARP, 0, BackWarp_WarpDestination ; debug warp
 
 ; dialog
 TownHall_DialogBranches:
