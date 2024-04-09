@@ -142,14 +142,12 @@ ProcessRoomCenterFar:
 	call CheckSegmentC
 	jp .checkRightWall
 .paintDistance
-	; todo: set to distance palette
+	; borders todo
+	; C will draw left border if far-left has a right or back wall
+	; C will draw right border if far-right has a left or back wall
+	; C will always draw bottom border
 	ld e, BG_PALETTE_FOG
-	ld d, TILE_EXPLORE_DARK
-	call CheckSegmentC
-	; C will draw left border if B isn't fog, so if far-left has a right or back wall
-	; C will draw right border if D isn't fog, so if far-right has a left or back wall
-	; C will draw bottom border if M is ground, so if near-center has no top wall
-	;call CheckSegmentCFog ; this looks cool but isnt wide enough
+	call CheckSegmentCDistanceFog ; this looks cool but isnt wide enough
 .checkRightWall
 	ld hl, wRoomAttributesFarCenter
 	call GetRightWallTypeFromRoomAttrAddr
@@ -186,14 +184,12 @@ ProcessRoomLeftFar:
 	call CheckSegmentB
 	jp .paintGround
 .paintDistance
-	; todo: set to distance palette
+	; borders todo
+	; B will draw right border if far-center has top wall
+	; A and B will always draw bottom border
 	ld e, BG_PALETTE_FOG
-	ld d, TILE_EXPLORE_DARK
-	; add fog
-	call CheckSegmentA
-	call CheckSegmentB
-	;call CheckSegmentAFog
-	;call CheckSegmentBFog
+	call CheckSegmentADistanceFog
+	call CheckSegmentBDistanceFog
 .paintGround
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_GROUND
@@ -214,14 +210,12 @@ ProcessRoomRightFar:
 	call CheckSegmentE
 	jp .paintGround
 .paintDistance
-	; todo: set to distance palette
+	; borders todo
+	; B will draw right border if far-center has top wall
+	; A and B will always draw bottom border
 	ld e, BG_PALETTE_FOG
-	ld d, TILE_EXPLORE_DARK
-	; add fog
-	call CheckSegmentD
-	call CheckSegmentE
-	;call CheckSegmentDFog
-	;call CheckSegmentEFog
+	call CheckSegmentDDistanceFog
+	call CheckSegmentEDistanceFog
 .paintGround
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_GROUND

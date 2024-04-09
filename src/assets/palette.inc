@@ -13,7 +13,8 @@ ForestBgPaletteSet::
 	RGB  1, 1, 1,  13,13,13,   2,10, 2,   2, 2,10 ; ui
 	RGB  13,13,13,  2,10, 2,   2, 2,10,   1, 1, 1 ; ui2 (highlighted)
 	RGB  0, 0, 0,   4, 0, 4,   8, 3, 8,   0, 0, 0 ; special, for ocean tiles. has no depth. unused so far
-	RGB  1, 1, 1,  10, 0, 0,  00,10,00,  00,00,10 ; fog ; this is the dark fog for ABDE segments. temporary!
+	;    fog 1     fog 2
+	RGB  15,15,15, 14,14,14,  00,10,00,  00,00,10 ; fog
 
 SwampBgPaletteSet::
 	RGB  4, 4, 4,   4, 4, 4,   5, 5, 8,   0, 0, 0
@@ -23,7 +24,8 @@ SwampBgPaletteSet::
 	RGB  1, 1, 1,  13,13,13,   2,10, 2,   2, 2,10 ; ui
 	RGB  13,13,13,  2,10, 2,   2, 2,10,   1, 1, 1 ; ui2 (highlighted)
 	RGB  4,12, 8,  13,15,15,   7,14,10,  10,15,12 ; special, for ocean tiles. has no depth. unused so far
-	RGB  1, 1, 1,  10, 0, 0,  00,10,00,  00,00,10 ; fog ; this is the dark fog for ABDE segments. temporary!
+	;    fog 1     fog 2
+	RGB  11,11,11, 10,10,10,  00,10,00,  00,00,10 ; fog
 
 ; Obj palettes
 OwObjPaletteSet::
