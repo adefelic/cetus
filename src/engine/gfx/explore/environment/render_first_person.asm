@@ -126,7 +126,7 @@ ProcessRoomCenterFar:
 	ld d, TILE_EXPLORE_DIAG_L
 	call CheckSegmentLDiag
 	jp .checkTopWall
-.paintLeftGround ;todo ground?
+.paintLeftGround
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_GROUND
 	call CheckSegmentL
@@ -145,7 +145,6 @@ ProcessRoomCenterFar:
 	; borders todo
 	; C will draw left border if far-left has a right or back wall
 	; C will draw right border if far-right has a left or back wall
-	; C will always draw bottom border
 	ld e, BG_PALETTE_FOG
 	call CheckSegmentCDistanceFog ; this looks cool but isnt wide enough
 .checkRightWall
@@ -164,7 +163,7 @@ ProcessRoomCenterFar:
 .paintRightGround
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_GROUND
-	call CheckSegmentN ;todo ground?
+	call CheckSegmentN
 	call CheckSegmentNDiag
 .paintCenterGround
 	ld e, BG_PALETTE_Z2
@@ -186,7 +185,6 @@ ProcessRoomLeftFar:
 .paintDistance
 	; borders todo
 	; B will draw right border if far-center has top wall
-	; A and B will always draw bottom border
 	ld e, BG_PALETTE_FOG
 	call CheckSegmentADistanceFog
 	call CheckSegmentBDistanceFog
@@ -212,7 +210,6 @@ ProcessRoomRightFar:
 .paintDistance
 	; borders todo
 	; B will draw right border if far-center has top wall
-	; A and B will always draw bottom border
 	ld e, BG_PALETTE_FOG
 	call CheckSegmentDDistanceFog
 	call CheckSegmentEDistanceFog
