@@ -3,7 +3,6 @@ INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 
-
 SECTION "First Person View Room Cache", WRAM0
 ; this is a cache of 1 byte RoomWallAttributes objects representing the rooms currently within the player's view
 ; this is useful when rendering
@@ -142,11 +141,8 @@ ProcessRoomCenterFar:
 	call CheckSegmentC
 	jp .checkRightWall
 .paintDistance
-	; borders todo
-	; C will draw left border if far-left has a right or back wall
-	; C will draw right border if far-right has a left or back wall
 	ld e, BG_PALETTE_FOG
-	call CheckSegmentCDistanceFog ; this looks cool but isnt wide enough
+	call CheckSegmentCDistanceFog
 .checkRightWall
 	ld hl, wRoomAttributesFarCenter
 	call GetRightWallTypeFromRoomAttrAddr
@@ -183,8 +179,6 @@ ProcessRoomLeftFar:
 	call CheckSegmentB
 	jp .paintGround
 .paintDistance
-	; borders todo
-	; B will draw right border if far-center has top wall
 	ld e, BG_PALETTE_FOG
 	call CheckSegmentADistanceFog
 	call CheckSegmentBDistanceFog
@@ -208,8 +202,6 @@ ProcessRoomRightFar:
 	call CheckSegmentE
 	jp .paintGround
 .paintDistance
-	; borders todo
-	; B will draw right border if far-center has top wall
 	ld e, BG_PALETTE_FOG
 	call CheckSegmentDDistanceFog
 	call CheckSegmentEDistanceFog

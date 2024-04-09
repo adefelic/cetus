@@ -1,7 +1,10 @@
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/constants/gfx_constants.inc"
+INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/ram/wram.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
+
+; the uncontested worst file in this project
 
 SECTION "Segment Render State", WRAM0
 ; these could be a single bits
@@ -58,6 +61,11 @@ CheckSegmentBDistanceFog::
 	cp a, DIRTY
 	ret nz
 	call PaintSegmentBDistanceFog
+
+	; B will draw right border if far-center has top wall
+	ld hl, wRoomAttributesFarCenter
+	call GetTopWallTypeFromRoomAttrAddr
+	call nz, PaintSegmentBFogBorderRight
 	ret
 
 CheckSegmentC::
@@ -72,6 +80,24 @@ CheckSegmentCDistanceFog::
 	cp a, DIRTY
 	ret nz
 	call PaintSegmentCDistanceFog
+
+	; C will draw left border if far-center has a left wall or far-left has a top wall
+	ld hl, wRoomAttributesFarCenter
+	call GetLeftWallTypeFromRoomAttrAddr
+	ld b, a
+	ld hl, wRoomAttributesFarLeft
+	call GetTopWallTypeFromRoomAttrAddr
+	or b
+	call nz, PaintSegmentCFogBorderLeft
+
+	; C will draw left border if far-center has a right wall or far-right has a top wall
+	ld hl, wRoomAttributesFarCenter
+	call GetRightWallTypeFromRoomAttrAddr
+	ld b, a
+	ld hl, wRoomAttributesFarRight
+	call GetTopWallTypeFromRoomAttrAddr
+	or b
+	call nz, PaintSegmentCFogBorderRight
 	ret
 
 CheckSegmentD::
@@ -93,6 +119,11 @@ CheckSegmentDDistanceFog::
 	cp a, DIRTY
 	ret nz
 	call PaintSegmentDDistanceFog
+
+	; D will draw left border if far-center has top wall
+	ld hl, wRoomAttributesFarCenter
+	call GetTopWallTypeFromRoomAttrAddr
+	call nz, PaintSegmentDFogBorderLeft
 	ret
 
 CheckSegmentEDistanceFog::
@@ -585,6 +616,121 @@ PaintSegmentBDistanceFog::
 		ld [wBDirty], a
 		ret
 
+PaintSegmentBFogBorderRight::
+		call Rand ; we'll use the byte in c
+		ld d, TILE_DISTANCE_FOG_LEFT_WALL
+	.row0
+		ld hl, wShadowTilemap + rows 0 + cols 5
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 0 + cols 5
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row1
+		ld hl, wShadowTilemap + rows 1 + cols 5
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 1 + cols 5
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row2
+		ld hl, wShadowTilemap + rows 2 + cols 5
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 2 + cols 5
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row3
+		ld hl, wShadowTilemap + rows 3 + cols 5
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 3 + cols 5
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row4
+		ld hl, wShadowTilemap + rows 4 + cols 5
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 4 + cols 5
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row5
+		ld hl, wShadowTilemap + rows 5 + cols 5
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 5 + cols 5
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row6
+		ld hl, wShadowTilemap + rows 6 + cols 5
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 6 + cols 5
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row7
+		ld hl, wShadowTilemap + rows 7 + cols 5
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 7 + cols 5
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.getAnotherRandomByte
+		call Rand ; we'll use the byte in c
+	.row8
+		ld hl, wShadowTilemap + rows 8 + cols 5
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 8 + cols 5
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row9
+		ld hl, wShadowTilemap + rows 9 + cols 5
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 9 + cols 5
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row10
+		ld hl, wShadowTilemap + rows 10 + cols 5
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 10 + cols 5
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row11
+		ld hl, wShadowTilemap + rows 11 + cols 5
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 11 + cols 5
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row12
+		ld hl, wShadowTilemap + rows 12 + cols 5
+		ld d, TILE_DISTANCE_FOG_LEFT_CORNER
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 12 + cols 5
+		ld b, 1
+		ld e, BG_PALETTE_FOG + OAMF_XFLIP
+		call PaintTilemapAttrsSmall
+	.clean
+		ld a, CLEAN
+		ld [wBDirty], a
+		ret
+
 PaintSegmentC::
 .row0
 	ld hl, wShadowTilemap + rows 0 + cols 6
@@ -779,12 +925,237 @@ PaintSegmentCDistanceFog::
 		; the area we need to paint is 8 * 12
 		; we can add one of those bits to TILE_DISTANCE_FOG_A to get pick a random tile
 		; it would be nice to also randomize the x flip and y flip attributes, that's 3 bits per tile
+	.clean
+		ld a, CLEAN
+		ld [wCDirty], a
+		ret
 
-		; start by painting all of the distance fog
+PaintSegmentCFogBorderLeft::
+		call Rand ; we'll use the byte in c
+		ld d, TILE_DISTANCE_FOG_LEFT_WALL
+	.row0
+		ld hl, wShadowTilemap + rows 0 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 0 + cols 6
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row1
+		ld hl, wShadowTilemap + rows 1 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 1 + cols 6
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row2
+		ld hl, wShadowTilemap + rows 2 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 2 + cols 6
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row3
+		ld hl, wShadowTilemap + rows 3 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 3 + cols 6
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row4
+		ld hl, wShadowTilemap + rows 4 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 4 + cols 6
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row5
+		ld hl, wShadowTilemap + rows 5 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 5 + cols 6
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row6
+		ld hl, wShadowTilemap + rows 6 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 6 + cols 6
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row7
+		ld hl, wShadowTilemap + rows 7 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 7 + cols 6
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.getAnotherRandomByte
+		call Rand ; we'll use the byte in c
+	.row8
+		ld hl, wShadowTilemap + rows 8 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 8 + cols 6
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row9
+		ld hl, wShadowTilemap + rows 9 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 9 + cols 6
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row10
+		ld hl, wShadowTilemap + rows 10 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 10 + cols 6
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row11
+		ld hl, wShadowTilemap + rows 11 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 11 + cols 6
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row12
+		ld d, TILE_DISTANCE_FOG_LEFT_CORNER
+		ld hl, wShadowTilemap + rows 12 + cols 6
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 12 + cols 6
+		ld e, BG_PALETTE_FOG
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.clean
+		ld a, CLEAN
+		ld [wCDirty], a
+		ret
 
-		; C will draw left border if B isn't fog, so if far-left has a right or back wall
-		; C will draw right border if D isn't fog, so if far-right has a left or back wall
-		; C will draw bottom border if M is ground, so if near-center has no top wall
+
+PaintSegmentCFogBorderRight::
+		call Rand ; we'll use the byte in c
+		ld d, TILE_DISTANCE_FOG_LEFT_WALL
+	.row0
+		ld hl, wShadowTilemap + rows 0 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 0 + cols 13
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row1
+		ld hl, wShadowTilemap + rows 1 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 1 + cols 13
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row2
+		ld hl, wShadowTilemap + rows 2 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 2 + cols 13
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row3
+		ld hl, wShadowTilemap + rows 3 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 3 + cols 13
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row4
+		ld hl, wShadowTilemap + rows 4 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 4 + cols 13
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row5
+		ld hl, wShadowTilemap + rows 5 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 5 + cols 13
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row6
+		ld hl, wShadowTilemap + rows 6 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 6 + cols 13
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row7
+		ld hl, wShadowTilemap + rows 7 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 7 + cols 13
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.getAnotherRandomByte
+		call Rand ; we'll use the byte in c
+	.row8
+		ld hl, wShadowTilemap + rows 8 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 8 + cols 13
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row9
+		ld hl, wShadowTilemap + rows 9 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 9 + cols 13
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row10
+		ld hl, wShadowTilemap + rows 10 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 10 + cols 13
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row11
+		ld hl, wShadowTilemap + rows 11 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 11 + cols 13
+		call GetRandomYFlipFogAttrsXFlip
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row12
+		ld d, TILE_DISTANCE_FOG_LEFT_CORNER
+		ld hl, wShadowTilemap + rows 12 + cols 13
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 12 + cols 13
+		ld e, BG_PALETTE_FOG + OAMF_XFLIP
+		ld b, 1
+		call PaintTilemapAttrsSmall
 	.clean
 		ld a, CLEAN
 		ld [wCDirty], a
@@ -979,6 +1350,122 @@ PaintSegmentDDistanceFog::
 		call PaintTilemapSmall
 		ld hl, wShadowTilemapAttrs + rows 12 + cols 14
 		ld b, 3
+		call PaintTilemapAttrsSmall
+	.clean
+		ld a, CLEAN
+		ld [wDDirty], a
+		ret
+
+PaintSegmentDFogBorderLeft::
+		call Rand ; we'll use the byte in c
+		ld d, TILE_DISTANCE_FOG_LEFT_WALL
+	.row0
+		ld hl, wShadowTilemap + rows 0 + cols 14
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 0 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row1
+		ld hl, wShadowTilemap + rows 1 + cols 14
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 1 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row2
+		ld hl, wShadowTilemap + rows 2 + cols 14
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 2 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row3
+		ld hl, wShadowTilemap + rows 3 + cols 14
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 3 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row4
+		ld hl, wShadowTilemap + rows 4 + cols 14
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 4 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row5
+		ld hl, wShadowTilemap + rows 5 + cols 14
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 5 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row6
+		ld hl, wShadowTilemap + rows 6 + cols 14
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 6 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row7
+		ld hl, wShadowTilemap + rows 7 + cols 14
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 7 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.getAnotherRandomByte
+		call Rand ; we'll use the byte in c
+	.row8
+		ld hl, wShadowTilemap + rows 8 + cols 14
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 8 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row9
+		ld hl, wShadowTilemap + rows 9 + cols 14
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 9 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row10
+		ld hl, wShadowTilemap + rows 10 + cols 14
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 10 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row11
+		ld hl, wShadowTilemap + rows 11 + cols 14
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 11 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		call PaintTilemapAttrsSmall
+	.row12
+		ld hl, wShadowTilemap + rows 12 + cols 14
+		ld d, TILE_DISTANCE_FOG_LEFT_CORNER
+		ld b, 1
+		call PaintTilemapSmall
+		ld hl, wShadowTilemapAttrs + rows 12 + cols 14
+		call GetRandomYFlipFogAttrs
+		ld b, 1
+		ld e, BG_PALETTE_FOG
 		call PaintTilemapAttrsSmall
 	.clean
 		ld a, CLEAN
@@ -1687,7 +2174,28 @@ PaintTilemapAttrsSmall::
 	jp nz, .loop
 	ret
 
-PaintFogTilemapAttrsWithRandomFlips:
+; @param c, random byte
+; @return e, fog attrs with random yflip
+GetRandomYFlipFogAttrs:
+	ld a, c
+	and 1 ; grab the bottom bit
+	rrc a
+	rrc a ; move it to the 6th bit position (OAMF_YFLIP)
+	add BG_PALETTE_FOG
+	ld e, a
+	sra c ; shift c
+	ret
+
+; @param c, random byte
+; @return e, fog attrs with random yflip
+GetRandomYFlipFogAttrsXFlip:
+	ld a, c
+	and 1 ; grab the bottom bit
+	rrc a
+	rrc a ; move it to the 6th bit position (OAMF_YFLIP)
+	add BG_PALETTE_FOG + OAMF_XFLIP
+	ld e, a
+	sra c ; shift c
 	ret
 
 ; todo there is probably a more efficient way to do this

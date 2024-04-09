@@ -13,8 +13,8 @@ ForestBgPaletteSet::
 	RGB  1, 1, 1,  13,13,13,   2,10, 2,   2, 2,10 ; ui
 	RGB  13,13,13,  2,10, 2,   2, 2,10,   1, 1, 1 ; ui2 (highlighted)
 	RGB  0, 0, 0,   4, 0, 4,   8, 3, 8,   0, 0, 0 ; special, for ocean tiles. has no depth. unused so far
-	;    fog 1     fog 2      ground     wall
-	RGB  15,15,15, 14,14,14,  14,11,09,  00,00,10 ; fog
+	;    fog 1     fog 2       ground     wall
+	RGB  15,15,15, 14,14,14,   14,11,09,  01,12,07 ; fog
 
 SwampBgPaletteSet::
 	;    unused    ground      wall       unused
@@ -25,8 +25,8 @@ SwampBgPaletteSet::
 	RGB  1, 1, 1,  13,13,13,   2,10, 2,   2, 2,10 ; ui
 	RGB  13,13,13,  2,10, 2,   2, 2,10,   1, 1, 1 ; ui2 (highlighted)
 	RGB  4,12, 8,  13,15,15,   7,14,10,  10,15,12 ; special, for ocean tiles. has no depth. unused so far
-	;    fog 1     fog 2      ground     wall
-	RGB  11,11,11, 10,10,10,   6, 5, 6,  00,00,10 ; fog
+	;    fog 1     fog 2       ground     wall
+	RGB  11,11,11, 10,10,10,   6, 5, 6,  05,06,12, ; fog
 
 ; Obj palettes
 OwObjPaletteSet::
