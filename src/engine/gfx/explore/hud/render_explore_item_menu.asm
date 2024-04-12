@@ -121,7 +121,7 @@ RenderExploreItemMenu::
 	ld [wDialogRootTextAreaRowsRendered], a
 	jp .renderBlankRowsLoop
 .renderBottomRow
-	call PaintModalBottomRowItemMenu
+	call PaintModalBottomRowCheckX
 	ld a, FALSE
 	ld [wDialogModalDirty], a
 	ret

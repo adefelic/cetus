@@ -5,8 +5,8 @@ INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
 
-SECTION "Item Modal Paint Routines", ROMX
-PaintModalTopRowItemMenu::
+SECTION "Dialog Root Modal Paint Routines", ROMX
+PaintModalTopRowDialogRoot::
 .tl_corner
 	ld d, TILE_MODAL_TOP_LEFT_CORNER
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT
@@ -17,59 +17,55 @@ PaintModalTopRowItemMenu::
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .text
-	ld d, "p"
+	ld d, "a"
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 1
 	ld b, 1
 	call PaintTilemapSmall
-	ld d, "l"
+	ld d, "s"
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 2
 	ld b, 1
 	call PaintTilemapSmall
-	ld d, "a"
+	ld d, "k"
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 3
 	ld b, 1
 	call PaintTilemapSmall
-	ld d, "c"
+	ld d, " "
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 4
 	ld b, 1
 	call PaintTilemapSmall
-	ld d, "e"
+	ld d, "a"
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 5
 	ld b, 1
 	call PaintTilemapSmall
-	ld d, " "
+	ld d, "b"
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 6
 	ld b, 1
 	call PaintTilemapSmall
-	ld d, "i"
+	ld d, "o"
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 7
 	ld b, 1
 	call PaintTilemapSmall
-	ld d, "t"
+	ld d, "u"
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 8
 	ld b, 1
 	call PaintTilemapSmall
-	ld d, "e"
+	ld d, "t"
 	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 9
-	ld b, 1
-	call PaintTilemapSmall
-	ld d, "m"
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 10
 	ld b, 1
 	call PaintTilemapSmall
 
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + cols 1
-	ld b, 10
+	ld b, 9
 	call PaintTilemapAttrsSmall
 .top_line
 	ld d, TILE_MODAL_HORIZONTAL
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 11
-	ld b, 4
+	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 10
+	ld b, 5
 	call PaintTilemapSmall
 	ld e, BG_PALETTE_UI
-	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + cols 11
-	ld b, 4
+	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + cols 10
+	ld b, 5
 	call PaintTilemapAttrsSmall
 .tr_corner
 	ld d, TILE_MODAL_TOP_LEFT_CORNER

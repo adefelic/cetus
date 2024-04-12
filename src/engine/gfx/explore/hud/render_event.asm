@@ -72,7 +72,7 @@ RenderDialogRoot:
 	ld a, h
 	ld [wCurrentMenuItem + 1], a
 .renderTopRow
-	call PaintModalTopRow
+	call PaintModalTopRowDialogRoot
 .renderDialogBranchLabelsWithTrueFlag ; (gather menu items by filtering branch options)
 	; iterate over DialogBranches array @ wDialogBranchesAddr w wDialogBranchesCount
 	; load counter
@@ -167,7 +167,7 @@ RenderDialogRoot:
 	ld [wDialogRootTextAreaRowsRendered], a
 	jp .renderBlankLinesLoop
 .renderBottomRow
-	call PaintModalBottomRow
+	call PaintModalBottomRowCheckX
 	ld a, FALSE
 	ld [wDialogModalDirty], a
 	ret
