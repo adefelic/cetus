@@ -267,19 +267,24 @@ Main:
 	ld a, [wActiveFrameScreen]
 	ld [wPreviousFrameScreen], a
 
+	call UpdateAudio ; trying having this here
+
 	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
+
 	call SetEnqueuedBgPaletteSet
 	call DrawScreen ; if dirty, draws screen, cleans. accesses vram
-	call UpdateAudio
 	call GetKeys ; get new player input
 
 	; update game state from player input and get ready to draw next frame
 	; apply x movement in encounters
 	call ProcessInput
 
+	; todo this will probably end up being part of an Animate function
 	; ongoing effects for encounter screen
 	; apply y movement in encounters
-	call ApplyVerticalMotion
+	ld a, [wActiveFrameScreen]
+	cp SCREEN_ENCOUNTER
+	call z, ApplyVerticalMotion
 
 	; ongoing effects for explore screen. could this be attached to movement?
 	call LoadVisibleEvents ; checks location for new event
