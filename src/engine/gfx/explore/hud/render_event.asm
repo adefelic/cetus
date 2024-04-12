@@ -248,7 +248,7 @@ RenderDialogBranch:
 	call AddAToHl ; add offset to get next text line addr
 	jp .renderTextLine
 .renderBottomRow
-	call PaintModalBottomRow
+	call PaintModalBottomRowDialogBranch
 	ld a, FALSE
 	ld [wDialogModalDirty], a
 	ret
