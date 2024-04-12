@@ -1,4 +1,4 @@
-INCLUDE "src/assets/tiles/indices/computer_dark.inc"
+INCLUDE "src/assets/tiles/indices/scrib.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/item_constants.inc"
 INCLUDE "src/constants/gfx_event.inc"
@@ -17,7 +17,7 @@ RenderExploreItemMenu::
 	cp TRUE
 	ret nz
 .renderTopRow
-	call PaintModalTopRow ; todo replace with row with helpful descriptions
+	call PaintModalTopRowItemMenu
 .checkNeedsToRepopulateMenuItemsList
 	; todo, compare current menu state w previous menu state
 	call PopulateListToRenderInMenu
@@ -121,7 +121,7 @@ RenderExploreItemMenu::
 	ld [wDialogRootTextAreaRowsRendered], a
 	jp .renderBlankRowsLoop
 .renderBottomRow
-	call PaintModalBottomRow ; todo replace with row with helpful descriptions
+	call PaintModalBottomRowItemMenu
 	ld a, FALSE
 	ld [wDialogModalDirty], a
 	ret

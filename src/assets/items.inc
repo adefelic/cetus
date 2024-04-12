@@ -1,4 +1,4 @@
-INCLUDE "src/assets/tiles/indices/computer_dark.inc"
+INCLUDE "src/assets/tiles/indices/scrib.inc"
 INCLUDE "src/macros/item.inc"
 INCLUDE "src/constants/item_constants.inc"
 
@@ -9,7 +9,7 @@ ItemsMinusOne::
 	nop ; so index 0 can equal "no item"
 Items::
 	; items must begin with 3 spaces that will be replaced with quantities when rendered
-	dstruct Item, Quartz, "99x quartz", ITEM_QUARTZ
+	dstruct Item, Quartz, "99x rock", ITEM_QUARTZ
 	dstruct Item, Lamp, "99x lamp", ITEM_LAMP
 	dstruct Item, Tent, "99x tent", ITEM_TENT
 	;dstruct Item, Tent, "99x tent"

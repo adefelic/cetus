@@ -239,7 +239,6 @@ PaintModalEmptyRow::
 	call PaintTilemapAttrsSmall
 	ret
 
-; todo make the bottom row have something like "b: leave"
 PaintModalBottomRow::
 .bl_corner
 	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER

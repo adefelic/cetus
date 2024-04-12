@@ -1,8 +1,8 @@
-; computer-dark tile indices
+; scrib tile indices
 
 DEF NUMBER_CHARACTER_OFFSET EQU $10
 
-;NEWCHARMAP computer-dark
+;NEWCHARMAP "scrib"
 charmap "!",  $01
 charmap "\"", $02
 charmap "#",  $03
@@ -97,3 +97,4 @@ charmap "\{", $5B
 charmap "|",  $5C
 charmap "\}", $5D
 charmap "~",  $5E
+charmap "check",  $5F

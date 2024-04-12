@@ -1,6 +1,6 @@
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/tile_data.inc"
-INCLUDE "src/assets/tiles/indices/computer_dark.inc"
+INCLUDE "src/assets/tiles/indices/scrib.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
