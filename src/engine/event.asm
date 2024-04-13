@@ -72,6 +72,8 @@ ResetModalStateAfterHighlightChange::
 
 	ld a, TRUE
 	ld [wDialogModalDirty], a
+
+	call DirtyTilemap
 	ret
 
 SetEventStateDialogBranch::

@@ -267,12 +267,11 @@ Main:
 	ld a, [wActiveFrameScreen]
 	ld [wPreviousFrameScreen], a
 
-	call UpdateAudio ; trying having this here
-
 	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
-
 	call SetEnqueuedBgPaletteSet
 	call DrawScreen ; if dirty, draws screen, cleans. accesses vram
+	call UpdateAudio ; trying having this here
+
 	call GetKeys ; get new player input
 
 	; update game state from player input and get ready to draw next frame

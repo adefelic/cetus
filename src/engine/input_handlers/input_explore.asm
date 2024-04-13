@@ -269,7 +269,7 @@ SetOrientationWest:
 
 DirtyFpSegmentsAndTilemap::
 	call DirtyFpSegments
-DirtyTilemap:
+DirtyTilemap::
 	ld a, DIRTY
 	ld [wIsShadowTilemapDirty], a
 	ret

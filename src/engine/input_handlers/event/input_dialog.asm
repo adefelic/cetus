@@ -54,8 +54,7 @@ PressedAFromDialogRoot:
 	ld [wDialogBranchFramesAddr + 1], a
 	ld [wCurrentDialogBranchFrameAddr + 1], a
 	call SetEventStateDialogBranch
-	;jp DirtyFpSegmentsAndTilemap
-	ret
+	jp DirtyTilemap
 
 PressedBFromDialogRoot:
 	; this might need to be zeroing out more things than it is
@@ -90,10 +89,10 @@ PressedAFromDialogBranch:
 
 	ld a, TRUE
 	ld [wDialogModalDirty], a
-	ret
+	jp DirtyTilemap
 .goToRootState
 	call SetEventStateDialogRoot
-	ret
+	jp DirtyTilemap
 
 ;; DIALOG_STATE_LABEL handlers
 
