@@ -2,22 +2,37 @@ INCLUDE "src/assets/audio.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/lib/hardware.inc"
 
+SECTION "Shadow Audio Registers", WRAM0
+wNR50: db ; not used yet
+wNR51: db ; not used yet
+wNR52: db ; not used yet
+
 SECTION "Audio WRAM Values", WRAM0
 
 wCh4CurrentSound: dw ; address
 wCh4CurrentAudCmd: dw ; address
 wCh4NoteDurationRemaining: db ; counter
-wIsCh4Playing: db ; flag. used so we dont restart a note that's currently playing
+wIsCh4SoundLoaded: db ; flag. used so we dont restart a note that's currently playing
 wIsCh4SfxActive: db ; flag. used to bypass audio engine if nothing is happening
+
 SECTION "Audio Routines", ROMX
 
 InitAudio::
-	xor a
-	ldh [rNR50], a ; master volume / vin
-	ld a, %11111111 ; all audio both speakers
-	ldh [rNR51], a ;
+	; turn on APU
 	ld a, AUDENA_ON
 	ldh [rNR52], a
+
+	; set all channels to play out of both speakers
+	ld a, AUDTERM_4_LEFT + AUDTERM_3_LEFT + AUDTERM_2_LEFT + AUDTERM_1_LEFT + AUDTERM_4_RIGHT + AUDTERM_3_RIGHT + AUDTERM_2_RIGHT + AUDTERM_1_RIGHT
+	ldh [rNR51], a
+
+	; set VIN channel left and right bits (like in rNR51) to 0
+	; set left and right speakers to both play at full
+	ld a, NR50_LEFT_SPEAKER_VOLUME_MAX + NR50_RIGHT_SPEAKER_VOLUME_MAX
+	ldh [rNR50], a
+
+	;ld hl, pokemoncenter
+	;call hUGE_init
 
 	xor a
 	ld [wCh4NoteDurationRemaining], a
@@ -26,7 +41,7 @@ InitAudio::
 	ld [wCh4CurrentSound], a
 	ld [wCh4CurrentSound + 1], a
 	ld a, FALSE
-	ld [wIsCh4Playing], a
+	ld [wIsCh4SoundLoaded], a
 	ld [wIsCh4SfxActive], a
 	ret
 
@@ -39,11 +54,13 @@ PlayFootstepSfx::
 BeginPlayCh4Sfx:
 	ld a, TRUE
 	ld [wIsCh4SfxActive], a
-.stashFirstAudCmd
+	; store first aud_cmd addr
 	ld a, l
 	ld [wCh4CurrentAudCmd], a
 	ld a, h
 	ld [wCh4CurrentAudCmd + 1], a
+	jp ProcessAudCmd
+
 ProcessAudCmd:
 	; process audcmd type
 	ld hl, wCh4CurrentAudCmd
@@ -82,7 +99,7 @@ PlayChannel4:
 	jp nz, .playNote
 .unsetIsPlaying
 	ld a, FALSE
-	ld [wIsCh4Playing], a ; todo should sfx interrupt?? or should i make them shorter
+	ld [wIsCh4SoundLoaded], a ; todo should sfx interrupt?? or should i make them shorter
 .incrementCh4CurrentAudCmd
 	ld a, [wCh4CurrentAudCmd]
 	add a, AUD_CMD_SIZE
@@ -94,7 +111,7 @@ PlayChannel4:
 .playNote:
 	dec a
 	ld [wCh4NoteDurationRemaining], a
-	ld a, [wIsCh4Playing]
+	ld a, [wIsCh4SoundLoaded]
 	cp TRUE
 	ret z
 	; first dereference
@@ -152,5 +169,5 @@ LoadChannel4Sound:
 	ld a, [hl] ; r/l vin, volume
 	ldh [rNR44], a
 	ld a, TRUE
-	ld [wIsCh4Playing], a
+	ld [wIsCh4SoundLoaded], a
 	ret

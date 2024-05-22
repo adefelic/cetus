@@ -1,4 +1,9 @@
+INCLUDE "src/macros/audio.inc"
+
 SECTION "Audio Data", ROMX
+
+DEF NR50_LEFT_SPEAKER_VOLUME_MAX  EQU %01110000
+DEF NR50_RIGHT_SPEAKER_VOLUME_MAX EQU %00000111
 
 ; channel ids
 DEF CHANNEL_1 EQU $00
@@ -31,15 +36,18 @@ DEF AUD_CMD_SIZE    EQU 4
 ; aud_cmd types
 DEF NOTE     EQU $00
 DEF END      EQU $01
-DEF LOOP_INF EQU $02 ; nyi
-DEF REPEAT   EQU $03 ; nyi
+DEF LOOP     EQU $02 ; nyi
 
-; ack this still makes a noise
+; ack this still makes a popping noise. is the channel being switched off and on?
 RestSound:: ; channel 4
 	sound $00, $01, $00, $00
 
+; todo deprecate
 FootstepSound:: ; channnel 4
 	sound $35, $F1, $80, $C0
+
+; new sounds B)
+	;dstruct Channel4Sound, FootstepCh4Sound, $35, $F1, $80, $C0
 
 FootstepSfx::
 	; tempo (almost bpm) ; unused
@@ -49,4 +57,3 @@ FootstepSfx::
 	;aud_cmd NOTE, RestSound, 1, 120
 	aud_cmd NOTE, FootstepSound, 2, 120
 	aud_cmd END, RestSound, 4, 0
-
