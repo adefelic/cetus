@@ -86,6 +86,9 @@ ProcessAudCmd:
 	ld [wCh4NoteDurationRemaining], a ; stash duration of sound
 
 UpdateAudio::
+	;call hUGE_dosound
+	;ret
+
 PlayChannel1:
 PlayChannel2:
 PlayChannel3:
