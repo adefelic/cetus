@@ -184,14 +184,11 @@ AdvanceIfNoCollisions:
 	call UpdateDangerLevel ; todo only do this if you're not on a safe space
 	; todo reset danger if you're on a safe space
 	call PlayFootstepSfx
-	ld a, TRUE
-	ld [wHasPlayerTranslated], a
+	call HandleVisibleEvents
 	jp DirtyFpSegmentsAndTilemap
 
 HandlePressedDown:
 .turnAround
-	ld a, TRUE
-	ld [wHasPlayerRotated], a
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, SetOrientationSouth
@@ -203,8 +200,6 @@ HandlePressedDown:
 
 HandlePressedLeft:
 .turnLeft
-	ld a, TRUE
-	ld [wHasPlayerRotated], a
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, SetOrientationWest
@@ -216,8 +211,6 @@ HandlePressedLeft:
 
 HandlePressedRight:
 .turnRight
-	ld a, TRUE
-	ld [wHasPlayerRotated], a
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, SetOrientationEast
@@ -230,21 +223,25 @@ HandlePressedRight:
 SetOrientationNorth:
 	ld a, ORIENTATION_NORTH
 	ld [wPlayerOrientation], a
+	call HandleVisibleEvents
 	jp DirtyFpSegmentsAndTilemap
 
 SetOrientationSouth:
 	ld a, ORIENTATION_SOUTH
 	ld [wPlayerOrientation], a
+	call HandleVisibleEvents
 	jp DirtyFpSegmentsAndTilemap
 
 SetOrientationEast:
 	ld a, ORIENTATION_EAST
 	ld [wPlayerOrientation], a
+	call HandleVisibleEvents
 	jp DirtyFpSegmentsAndTilemap
 
 SetOrientationWest:
 	ld a, ORIENTATION_WEST
 	ld [wPlayerOrientation], a
+	call HandleVisibleEvents
 	jp DirtyFpSegmentsAndTilemap
 
 ; todo move this to entering explore screen from encounter or main menu

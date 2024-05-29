@@ -72,8 +72,11 @@ CopyColorsToPalette:
 	jp nz, CopyColorsToPalette
 	ret
 
+; necessary when drawing background environment tiles
 DirtyFpSegmentsAndTilemap::
 	call DirtyFpSegments
+
+; necessary when drawing over background environmenttiles
 DirtyTilemap::
 	ld a, DIRTY
 	ld [wIsShadowTilemapDirty], a

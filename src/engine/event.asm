@@ -61,6 +61,7 @@ SetEventStateDialogLabel::
 SetEventStateDialogRoot::
 	ld a, DIALOG_STATE_ROOT
 	ld [wDialogState], a
+.setHighlightedMenuRowZero
 	xor a
 	ld [wDialogTextRowHighlighted], a
 ResetModalStateAfterHighlightChange::
@@ -71,9 +72,7 @@ ResetModalStateAfterHighlightChange::
 
 	ld a, TRUE
 	ld [wDialogModalDirty], a
-
-	call DirtyTilemap
-	ret
+	jp DirtyTilemap
 
 SetEventStateDialogBranch::
 	xor a
@@ -88,14 +87,7 @@ SetEventStateDialogBranch::
 	ret
 
 ; populate current event state with new events
-LoadVisibleEvents::
-	; todo get rid of this check
-	ld a, [wHasPlayerRotated]
-	ld b, a
-	ld a, [wHasPlayerTranslated]
-	and b ; false is 1. we want to check if either of these happened
-	cp FALSE
-	ret z
+HandleVisibleEvents::
 .checkLocationTableForEvent
 	call GetEventRoomAddrFromPlayerCoords ; into hl
 	ld a, [hl] ; contains offset of the room's RoomEvent from Map1Events

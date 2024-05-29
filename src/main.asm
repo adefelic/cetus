@@ -31,11 +31,6 @@ wJumpsRemaining:: db
 wIsJumping:: db
 wJumpFramesRemaining:: db
 
-; todo these feel like an antipattern
-SECTION "Update Loop State", WRAM0
-wHasPlayerRotated:: db
-wHasPlayerTranslated:: db
-
 SECTION "Screen Variables", WRAM0
 wIsShadowTilemapDirty:: db
 
@@ -182,8 +177,6 @@ InitGame:
 	ld [wJoypadNewlyReleased], a
 
 	ld a, FALSE
-	ld [wHasPlayerRotated], a
-	ld [wHasPlayerTranslated], a
 	ld [wHasInputBeenProcessedThisFrame], a
 	ld [wIsRandSeeded], a
 
@@ -224,7 +217,6 @@ InitGame:
 	call EnableLcd
 Main:
 	call ProcessInput
-	call LoadVisibleEvents ; checks location for new event. todo this should be executed after movement/rotation. rotation could be made to just "rotate" a cached version of the current event walls for the current room
 	call UpdateShadowVram ; processes game state and dirty flags, draws screen to shadow maps
 	jr Main
 
@@ -275,27 +267,13 @@ GdmaShadowTilemapToVram:
 UpdateShadowVram::
 	ld a, [wActiveFrameScreen]
 	cp SCREEN_EXPLORE
-	jp z, .updateShadowTilemapExploreScreen
+	jp z, UpdateShadowTilemapExploreScreen
 	cp SCREEN_ENCOUNTER
-	jp z, .updateShadowTilemapEncounterScreen
+	jp z, UpdateShadowTilemapPauseScreen
+	;jp z, UpdateShadowTilemapEncounterScreen
 	cp SCREEN_PAUSE
-	jp z, .updateShadowTilemapPauseScreen
-	ret
-.updateShadowTilemapExploreScreen:
-	call UpdateShadowTilemapExploreScreen
-	jp .cleanup
-.updateShadowTilemapEncounterScreen:
-	;call UpdateShadowTilemapEncounterScreen
-	call UpdateShadowTilemapPauseScreen
-	jp .cleanup
-.updateShadowTilemapPauseScreen:
-	call UpdateShadowTilemapPauseScreen
-	jp .cleanup
-.cleanup
-	; todo remove these
-	ld a, FALSE
-	ld [wHasPlayerRotated], a
-	ld [wHasPlayerTranslated], a
+	jp z, UpdateShadowTilemapPauseScreen
+	; control should not reach here
 	ret
 
 ; this handles one button of input then returns
@@ -312,6 +290,7 @@ ProcessInput::
 	jp z, HandleInputEncounterScreen
 	cp SCREEN_PAUSE
 	jp z, HandleInputPauseScreen
+	; control should not reach here
 	ret
 
 GetKeys::

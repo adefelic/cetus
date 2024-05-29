@@ -37,8 +37,4 @@ DoWarp::
 
 	ld a, FALSE
 	ld [wIsPlayerFacingWallInteractable], a
-	ld a, TRUE
-	ld [wHasPlayerTranslated], a
-	ld a, TRUE
-	ld [wHasPlayerRotated], a ; possibly. it's probably fine to just set this
 	jp DirtyFpSegmentsAndTilemap

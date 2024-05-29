@@ -57,7 +57,6 @@ PressedAFromDialogRoot:
 	jp DirtyTilemap
 
 PressedBFromDialogRoot:
-	; this might need to be zeroing out more things than it is
 	call SetEventStateDialogLabel
 	jp DirtyFpSegmentsAndTilemap
 
@@ -83,15 +82,12 @@ PressedAFromDialogBranch:
 	ld b, a
 	ld a, [wDialogBranchFramesCount]
 	cp b
-	jp z, .goToRootState
+	jp z, SetEventStateDialogRoot
 	ld a, b
 	ld [wDialogBranchFramesIndex], a
 
 	ld a, TRUE
 	ld [wDialogModalDirty], a
-	jp DirtyTilemap
-.goToRootState
-	call SetEventStateDialogRoot
 	jp DirtyTilemap
 
 ;; DIALOG_STATE_LABEL handlers
@@ -100,4 +96,3 @@ PressedAFromDialogBranch:
 PressedAFromDialogLabel::
 	call SetEventStateDialogRoot
 	jp DirtyFpSegmentsAndTilemap ; this is done to remove the label
-	ret
