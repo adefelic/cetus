@@ -18,8 +18,8 @@ UpdateShadowTilemapExploreScreen::
 
 ; menus and item sprites are mutually exclusive
 .checkIfShouldRenderExploreMenu
-	ld a, [wExploreState]
-	cp EXPLORE_STATE_NORMAL
+	ld a, [wInExploreMenu]
+	cp FALSE
 	jp z, .checkIfShouldRenderEvent
 	call RenderExploreItemMenu
 	; do not render dialog if in explore menu. jp to updating oam

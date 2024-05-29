@@ -46,7 +46,7 @@ HandleInputFromItemMenu::
 	ret
 
 HandlePressedB:
-	jp SetNormalState
+	jp CloseExploreMenu
 
 HandlePressedUp:
 	jp DecrementLineHighlight
@@ -87,11 +87,11 @@ HandlePressedA:
 	ld [de], a ; store item id in item map room
 	call DecrementItemQuantity
 	; todo play item placement sound
-	jp SetNormalState
+	jp CloseExploreMenu
 
-SetNormalState:
-	ld a, EXPLORE_STATE_NORMAL
-	ld [wExploreState], a
+CloseExploreMenu:
+	ld a, FALSE
+	ld [wInExploreMenu], a
 	ld a, TRUE
 	ld [wDialogModalDirty], a
 	jp DirtyFpSegmentsAndTilemap

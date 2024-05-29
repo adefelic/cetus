@@ -20,8 +20,8 @@ HandleInputExploreScreen::
 	jp z, HandleInputFromDialogBranch
 	; being in DIALOG_STATE_LABEL is essentially the same as exploring, only the "A" handler behaves differently
 .handleExploreInput:
-	ld a, [wExploreState]
-	cp EXPLORE_STATE_MENU
+	ld a, [wInExploreMenu]
+	cp TRUE
 	jp z, HandleInputFromItemMenu
 .checkPressedStart:
 	ld a, [wJoypadNewlyPressed]
@@ -92,13 +92,13 @@ HandlePressedB:
 	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetTopWallWrtPlayer
 	cp WALL_TYPE_NONE
-	jp nz, .setMenuState
+	jp nz, .openExploreMenu ; double negative >_< if there is a wall, then there isn't an item, so open explore menu
 .checkForItem
 	call GetRoomCoordsCenterFarWRTPlayer
 	call GetActiveItemMapRoomAddrFromCoords
 	ld a, [hl]
 	cp ITEM_NONE ; if there isn't an item to pick up, the player is opening the item menu
-	jp z, .setMenuState
+	jp z, .openExploreMenu
 .pickUpItem
 	ld d, h ; stash item map room in de
 	ld e, l
@@ -109,9 +109,9 @@ HandlePressedB:
 	ld [de], a ; remove item from item map
 	jp DirtyFpSegmentsAndTilemap
 
-.setMenuState
-	ld a, EXPLORE_STATE_MENU
-	ld [wExploreState], a
+.openExploreMenu
+	ld a, TRUE
+	ld [wInExploreMenu], a
 
 	; these two variables reset the highlight state
 	xor a

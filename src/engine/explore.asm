@@ -1,11 +1,11 @@
-INCLUDE "src/constants/explore_constants.inc"
+INCLUDE "src/constants/constants.inc"
 
 SECTION "Explore Screen State", WRAM0
-	wExploreState:: db
+	wInExploreMenu:: db
 
 SECTION "Explore Screen State Change Functions", ROMX
 
 InitExploreMenuState::
-	ld a, EXPLORE_STATE_NORMAL
-	ld [wExploreState], a
+	ld a, FALSE
+	ld [wInExploreMenu], a
 	ret
