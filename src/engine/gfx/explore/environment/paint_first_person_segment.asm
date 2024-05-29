@@ -34,6 +34,7 @@ wRDiagDirty: db
 SECTION "Segment Paint Routines", ROMX
 
 ; todo combine/dedup routines that paint similar shapes
+; todo use macros to make this way smaller
 
 CheckSegmentA::
 	ld a, [wADirty]
@@ -2151,6 +2152,8 @@ PaintTilemapIncrementingTileId::
 	jp nz, PaintTilemapIncrementingTileId
 	ret
 
+
+; todo rename to CopySingleByteToRange
 ; @param e: BG Map Attribute byte
 ; @param hl: destination
 ; @param bc: length

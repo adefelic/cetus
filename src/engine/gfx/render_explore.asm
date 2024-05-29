@@ -5,20 +5,18 @@ INCLUDE "src/assets/tiles/indices/object_tiles.inc"
 
 SECTION "Explore Screen Renderer", ROMX
 
-InitExploreState::
-	call ResetAllEventState
-	ret
+InitExploreEventState::
+	jp ResetAllEventState
 
 ; todo change map stuff to compass directions. trbl is player relative, nesw is absolute
 ; todo rename this to ... draw FP Tilemap?
 ; trbl are all relative to the player's orientation
-LoadExploreScreen::
+UpdateShadowTilemapExploreScreen::
 .updateShadowBgTilemap
 	; render environment walls
 	call RenderFirstPersonView
 
 ; menus and item sprites are mutually exclusive
-
 .checkIfShouldRenderExploreMenu
 	ld a, [wExploreState]
 	cp EXPLORE_STATE_NORMAL
@@ -34,6 +32,7 @@ LoadExploreScreen::
 
 ; dont render item if we're facing an interactable and not in the label state
 .checkIfShouldRenderItemSprite
+	call ClearGroundItemsFromOam
 	ld a, [wIsPlayerFacingWallInteractable]
 	cp FALSE
 	jp z, .renderGroundItem
@@ -41,7 +40,7 @@ LoadExploreScreen::
 	cp DIALOG_STATE_LABEL
 	jp nz, .updateShadowOam
 .renderGroundItem
-	call RenderGroundItem
+	call RenderGroundItemCenterFar
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]
 	cp SCREEN_EXPLORE

@@ -30,6 +30,34 @@ RoomWallAttributesEnd:
 
 SECTION "Map / Room Parsing", ROMX
 
+; todo make this more than the one hardcoded map
+SetMap::
+	ld hl, Map1Tiles
+	ld a, h
+	ld [wActiveMap], a
+	ld a, l
+	ld [wActiveMap+1], a
+
+	ld hl, Map1EventLocations
+	ld a, h
+	ld [wActiveMapEventLocations], a
+	ld a, l
+	ld [wActiveMapEventLocations+1], a
+	ret
+
+; necessary? probably
+ClearItemMap:
+	ld bc, wItemMapEnd - wItemMap
+	ld hl, wItemMap
+.loop:
+	xor a
+	ld [hli], a
+	dec bc
+	ld a, b
+	or c
+	jp nz, .loop
+	ret
+
 ; @param hl, address of map room representing current tile
 ; @return a, wall type
 GetTopWallWrtPlayer::

@@ -31,8 +31,9 @@ InitAudio::
 	ld a, NR50_LEFT_SPEAKER_VOLUME_MAX + NR50_RIGHT_SPEAKER_VOLUME_MAX
 	ldh [rNR50], a
 
-	;ld hl, pokemoncenter
-	;call hUGE_init
+	; comment out to disable hUGE
+	ld hl, pokemoncenter
+	call hUGE_init
 
 	xor a
 	ld [wCh4NoteDurationRemaining], a
@@ -86,8 +87,8 @@ ProcessAudCmd:
 	ld [wCh4NoteDurationRemaining], a ; stash duration of sound
 
 UpdateAudio::
-	;call hUGE_dosound
-	;ret
+	; comment out to disable hUGE
+	jp hUGE_dosound
 
 PlayChannel1:
 PlayChannel2:

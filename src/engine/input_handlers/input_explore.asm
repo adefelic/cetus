@@ -59,6 +59,8 @@ HandleInputExploreScreen::
 
 HandlePressedStart:
 PauseGame:
+	ld a, [wActiveFrameScreen]
+	ld [wPreviousFrameScreen], a
 	ld a, SCREEN_PAUSE
 	ld [wActiveFrameScreen], a
 	jp DirtyTilemap
@@ -182,98 +184,69 @@ AdvanceIfNoCollisions:
 	; todo reset danger if you're on a safe space
 	call PlayFootstepSfx
 	ld a, TRUE
-	ld [wHasPlayerTranslatedThisFrame], a
+	ld [wHasPlayerTranslated], a
 	jp DirtyFpSegmentsAndTilemap
 
 HandlePressedDown:
-.attemptTurnAround:
+.turnAround
+	ld a, TRUE
+	ld [wHasPlayerRotated], a
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
-	jp z, .facingNorth
+	jp z, SetOrientationSouth
 	cp a, ORIENTATION_EAST
-	jp z, .facingEast
+	jp z, SetOrientationWest
 	cp a, ORIENTATION_SOUTH
-	jp z, .facingSouth
-.facingWest
+	jp z, SetOrientationNorth
 	jp SetOrientationEast
-.facingNorth
-	jp SetOrientationSouth
-.facingEast
-	jp SetOrientationWest
-.facingSouth
-	jp SetOrientationNorth
 
 HandlePressedLeft:
-.attemptTurnLeft:
+.turnLeft
+	ld a, TRUE
+	ld [wHasPlayerRotated], a
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
-	jp z, .facingNorth
+	jp z, SetOrientationWest
 	cp a, ORIENTATION_EAST
-	jp z, .facingEast
+	jp z, SetOrientationNorth
 	cp a, ORIENTATION_SOUTH
-	jp z, .facingSouth
-.facingWest
+	jp z, SetOrientationEast
 	jp SetOrientationSouth
-.facingNorth
-	jp SetOrientationWest
-.facingEast
-	jp SetOrientationNorth
-.facingSouth
-	jp SetOrientationEast
 
 HandlePressedRight:
-.attemptTurnRight:
+.turnRight
+	ld a, TRUE
+	ld [wHasPlayerRotated], a
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
-	jp z, .facingNorth
+	jp z, SetOrientationEast
 	cp a, ORIENTATION_EAST
-	jp z, .facingEast
+	jp z, SetOrientationSouth
 	cp a, ORIENTATION_SOUTH
-	jp z, .facingSouth
-.facingWest
+	jp z, SetOrientationWest
 	jp SetOrientationNorth
-.facingNorth
-	jp SetOrientationEast
-.facingEast
-	jp SetOrientationSouth
-.facingSouth
-	jp SetOrientationWest
 
 SetOrientationNorth:
 	ld a, ORIENTATION_NORTH
 	ld [wPlayerOrientation], a
-	ld a, TRUE
-	ld [wHasPlayerRotatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
 SetOrientationSouth:
 	ld a, ORIENTATION_SOUTH
 	ld [wPlayerOrientation], a
-	ld a, TRUE
-	ld [wHasPlayerRotatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
 SetOrientationEast:
 	ld a, ORIENTATION_EAST
 	ld [wPlayerOrientation], a
-	ld a, TRUE
-	ld [wHasPlayerRotatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
 SetOrientationWest:
 	ld a, ORIENTATION_WEST
 	ld [wPlayerOrientation], a
-	ld a, TRUE
-	ld [wHasPlayerRotatedThisFrame], a
 	jp DirtyFpSegmentsAndTilemap
 
-DirtyFpSegmentsAndTilemap::
-	call DirtyFpSegments
-DirtyTilemap::
-	ld a, DIRTY
-	ld [wIsShadowTilemapDirty], a
-	ret
-
+; todo move this to entering explore screen from encounter or main menu
 InitDangerLevel::
 	ld a, DANGER_INITIAL
 	ld [wCurrentDangerLevel], a
@@ -299,6 +272,8 @@ UpdateDangerLevel:
 	ld [wCurrentDangerLevel], a
 InitEncounter:
 	; todo really this should begin the encounter on the next frame, after the player has moved
+	ld a, [wActiveFrameScreen]
+	ld [wPreviousFrameScreen], a
 	ld a, SCREEN_ENCOUNTER
 	ld [wActiveFrameScreen], a
 	call RollNewDangerLevelSteps

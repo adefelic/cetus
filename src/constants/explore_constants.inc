@@ -10,10 +10,10 @@ DEF EXPLORE_STATE_NORMAL EQU $0
 DEF EXPLORE_STATE_MENU   EQU $1
 
 ; wall types
-DEF WALL_TYPE_NONE EQU $00
-DEF WALL_TYPE_A    EQU $01
-DEF WALL_TYPE_B    EQU $10
-DEF WALL_TYPE_C    EQU $11
+DEF WALL_TYPE_NONE EQU %00
+DEF WALL_TYPE_A    EQU %01
+DEF WALL_TYPE_B    EQU %10
+DEF WALL_TYPE_C    EQU %11
 
 ; event locations
 DEF EVENT_NONE EQU $00 ; this isn't really a type it's an event location offset value

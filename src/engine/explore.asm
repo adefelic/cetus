@@ -5,7 +5,7 @@ SECTION "Explore Screen State", WRAM0
 
 SECTION "Explore Screen State Change Functions", ROMX
 
-InitExploreScreenState::
+InitExploreMenuState::
 	ld a, EXPLORE_STATE_NORMAL
 	ld [wExploreState], a
 	ret

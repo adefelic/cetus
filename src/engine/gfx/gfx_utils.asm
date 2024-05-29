@@ -1,5 +1,6 @@
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/palette.inc"
+INCLUDE "src/constants/gfx_constants.inc"
 
 SECTION "Palette Update State", WRAM0
 wBgPaletteUpdateAddr:: dw
@@ -69,4 +70,11 @@ CopyColorsToPalette:
 	inc de
 	dec b
 	jp nz, CopyColorsToPalette
+	ret
+
+DirtyFpSegmentsAndTilemap::
+	call DirtyFpSegments
+DirtyTilemap::
+	ld a, DIRTY
+	ld [wIsShadowTilemapDirty], a
 	ret

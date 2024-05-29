@@ -89,6 +89,8 @@ HandlePressedA:
 	ret
 
 HandlePressedSelect:
+	ld a, [wActiveFrameScreen]
+	ld [wPreviousFrameScreen], a
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
 	jp DirtyTilemap ; this is broken, whatever

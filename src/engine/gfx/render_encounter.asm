@@ -6,7 +6,7 @@ INCLUDE "src/constants/palette_constants.inc"
 
 SECTION "Encounter Screen Renderer", ROMX
 
-LoadEncounterScreen::
+UpdateShadowTilemapEncounterScreen::
 ; load hardcoded screen into shadow tilemap
 .loadShadowTilemap
 	ld de, Map1EncounterScreen
@@ -16,7 +16,7 @@ LoadEncounterScreen::
 .loadShadowTilemapAttributes
 	ld e, BG_PALETTE_Z0
 	ld hl, wShadowTilemapAttrs
-	ld bc, TILEMAP_SIZE
+	ld bc, VISIBLE_TILEMAP_SIZE
 	call PaintTilemapAttrs
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]

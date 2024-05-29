@@ -30,9 +30,10 @@ wJumpsRemaining:: db
 wIsJumping:: db
 wJumpFramesRemaining:: db
 
-SECTION "Frame State", WRAM0
-wHasPlayerRotatedThisFrame:: db
-wHasPlayerTranslatedThisFrame:: db
+; todo these feel like an antipattern
+SECTION "Update Loop State", WRAM0
+wHasPlayerRotated:: db
+wHasPlayerTranslated:: db
 
 SECTION "Screen Variables", WRAM0
 wIsShadowTilemapDirty:: db
@@ -48,13 +49,7 @@ SECTION "Event Flags", WRAM0
 wAlwaysTrueEventFlag:: db
 wFoundSkullFlag:: db
 
-; hardware interrupts
-SECTION "vblank", ROM0[$0040]
-	;jp VBlank
-
-SECTION "lcd", ROM0[$0048]
-	;jp LCD
-
+; unused hardware interrupts
 SECTION "timer", ROM0[$0050]
 	;jp TimerInterruptHandler
 
@@ -66,17 +61,45 @@ SECTION "joypad", ROM0[$0060]
 
 SECTION "Header", ROM0[$100]
 	jp EntryPoint
-	; make room for the header
-	; rgbfix will overwrite this region
+	; make room for the header. rgbfix will overwrite this region
 	ds $150 - @, 0
 EntryPoint:
-	; don't turn off the lcd outside of VBlank
-	call WaitVBlank
-	call DisableLcd
+	di
+
+	; from gb-starter-kit
+	;; Kill sound
+	;xor a
+	;ldh [rNR52], a
+	; i wonder if this will get rid of the boot pop
+
+.waitVBlank:
+	ldh a, [rLY]
+	cp SCRN_Y
+	jr c, .waitVBlank
+.disableLcd
+	xor a
+	ld [rLCDC], a
+
+.enableInterrupts
+	; arbitrary line, 0-153
+	ld a, 50
+	ldh [rLYC], a
+
+	; set lcd interrupt to be fired when LY == LCY
+	ld a, STATF_LYC
+	ldh [rSTAT], a
+
+	; enable vblank and lcd interrupts
+	ld a, IEF_VBLANK + IEF_STAT
+	ldh [rIE], a
+
+	ei ; Only takes effect after the following instruction
+	xor a
+	ldh [rIF], a ; Clears "accumulated" interrupts
 
 ; todo should make inc files for different tile aggregations?
 ; so i dont have to track where in tile memory to put tiles
-LoadBgTiles:
+LoadBgTilesIntoVram:
 .loadExploreAndEncounterTiles
 	; Copy BG tile data into VRAM bank 0
 	ld de, OWTiles
@@ -92,9 +115,6 @@ LoadBgTiles:
 	ld bc, EncounterTilesEnd - EncounterTiles
 	call Memcopy
 
-	;ld de, FogTiles
-	;ld bc, FogTilesEnd - FogTiles
-
 	ld de, DistanceFogTiles
 	ld bc, DistanceFogTilesEnd - DistanceFogTiles
 	call Memcopy
@@ -102,17 +122,15 @@ LoadBgTiles:
 	; Copy BG tile data into VRAM bank 1
 	ld a, 1
 	ld [rVBK], a
-	;ld de, ComputerDarkTiles
 	ld de, ScribTiles
 	ld hl, _VRAM9000
-	;ld bc, ComputerDarkTilesEnd - ComputerDarkTiles
 	ld bc, ScribTilesEnd - ScribTiles
 	call Memcopy
 	; back to VRAM bank 0
 	ld a, 0
 	ld [rVBK], a
 
-LoadObjectTiles:
+LoadObjectTilesIntoVram:
 .loadHudSprites
 	; copy into sprite tile area, bank 0
 	ld de, CompassTiles
@@ -153,64 +171,8 @@ ClearShadowOam:
 	or c
 	jp nz, .loop
 
-
-; necessary?
-ClearShadowTilemap:
-	xor a
-	ld bc, wShadowTilemapEnd - wShadowTilemap
-	ld hl, wShadowTilemap
-.loop:
-	xor a
-	ld [hli], a
-	dec bc
-	ld a, b
-	or c
-	jp nz, .loop
-
-; necessary?
-ClearShadowTilemapAttrs:
-	xor a
-	ld bc, wShadowTilemapAttrsEnd - wShadowTilemapAttrs
-	ld hl, wShadowTilemapAttrs
-.loop:
-	xor a
-	ld [hli], a
-	dec bc
-	ld a, b
-	or c
-	jp nz, .loop
-
-; necessary?
-ClearItemMap:
-	ld bc, wItemMapEnd - wItemMap
-	ld hl, wItemMap
-.loop:
-	xor a
-	ld [hli], a
-	dec bc
-	ld a, b
-	or c
-	jp nz, .loop
-
-
-InitGameState:
-	ld hl, Map1Tiles
-	ld a, h
-	ld [wActiveMap], a
-	ld a, l
-	ld [wActiveMap+1], a
-
-	ld hl, Map1EventLocations
-	ld a, h
-	ld [wActiveMapEventLocations], a
-	ld a, l
-	ld [wActiveMapEventLocations+1], a
-
-	; init explore state
-	call InitExploreScreenState
-
-
-	call InitExploreState
+InitGame:
+	call SetMap
 
 	; init input
 	xor a
@@ -219,12 +181,11 @@ InitGameState:
 	ld [wJoypadNewlyReleased], a
 
 	ld a, FALSE
-	ld [wHasPlayerRotatedThisFrame], a
-	ld [wHasPlayerTranslatedThisFrame], a
+	ld [wHasPlayerRotated], a
+	ld [wHasPlayerTranslated], a
 	ld [wIsRandSeeded], a
 
 	; init player state
-	;call InitPlayerLocation
 	ld a, 1
 	ld [wPlayerExploreX], a
 	ld a, 29
@@ -233,97 +194,65 @@ InitGameState:
 	ld [wPlayerOrientation], a
 	call InitDangerLevel
 
-	; init game state
+	; init game screen state
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
 	ld a, SCREEN_NONE
 	ld [wPreviousFrameScreen], a
 
-	; init screen state
+	; init explore state
+	call InitExploreMenuState
+	call InitExploreEventState
+
+	; init screen rendering state
 	ld a, DIRTY
 	ld [wIsShadowTilemapDirty], a
 	call DirtyFpSegments
-	call UpdateShadowScreen
-	call InitGroundItem ; i dont think this is right
+	call UpdateShadowVram
 
+	; todo move this to sram code
 	; init event flags
 	ld a, TRUE
 	ld [wAlwaysTrueEventFlag], a
 	ld a, FALSE
 	ld [wFoundSkullFlag], a
-
-	; init inventory
 	call InitInventory
 
 	call InitAudio
 	call EnableLcd
-
 Main:
-	;call ResetFrameState ; ResetPerFrameState?
-	ld a, FALSE
-	ld [wHasPlayerRotatedThisFrame], a
-	ld [wHasPlayerTranslatedThisFrame], a
-	; set previous frame screen to current frame screen
-	ld a, [wActiveFrameScreen]
-	ld [wPreviousFrameScreen], a
-
-	call WaitVBlank ; this (sort of) ensures that we do the main loop only once per vblank
-	call SetEnqueuedBgPaletteSet
-	call DrawScreen ; if dirty, draws screen, cleans. accesses vram
-	call UpdateAudio ; trying having this here
-
-	call GetKeys ; get new player input
-
-	; update game state from player input and get ready to draw next frame
-	; apply x movement in encounters
 	call ProcessInput
-
-	; todo this will probably end up being part of an Animate function
-	; ongoing effects for encounter screen
-	; apply y movement in encounters
-	ld a, [wActiveFrameScreen]
-	cp SCREEN_ENCOUNTER
-	call z, ApplyVerticalMotion
-
-	; ongoing effects for explore screen. could this be attached to movement?
-	call LoadVisibleEvents ; checks location for new event
-
-	call UpdateShadowScreen ; processes game state and dirty flags, draws screen to shadow tilemaps
-	jp Main
+	call LoadVisibleEvents ; checks location for new event. todo this should be executed after movement/rotation. rotation could be made to just "rotate" a cached version of the current event walls for the current room
+	call UpdateShadowVram ; processes game state and dirty flags, draws screen to shadow maps
+	jr Main
 
 ; dma copy shadow ram to VRAM
-DrawScreen:
-	ld a, [wIsShadowTilemapDirty]
-	cp CLEAN
-	ret z
+CopyShadowsToVram::
 .copyShadowTilemapIntoVram
 	; select vram bank 0
 	xor a
 	ld [rVBK], a
-
 	ld hl, wShadowTilemap
-	ld a, h
-	ldh [rHDMA1], a
-	ld a, l
-	ldh [rHDMA2], a
-	ld hl, _SCRN0
-	ld a, h
-	ldh [rHDMA3], a
-	ld a, l
-	ldh [rHDMA4], a
-	ld a, HDMA5F_MODE_GP + (TILEMAP_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1) (63 bytes, $10 * 4)
-	ld [rHDMA5], a ; begin dma transfer
-	; in single speed mode this takes (4 + 32 × blocks) clocks. so, TILEMAP_SIZE * 2 + 4
-	ld bc, TILEMAP_SIZE * 2 + 4
-.waitforDmaToFinish: ; necessary?
-    dec bc
-    jr nz, .waitforDmaToFinish
+	call DmaShadowTilemapToVram
 .copyShadowTilemapAttrsIntoVram
 	; select vram bank 1
 	ld a, 1
 	ld [rVBK], a
-
 	ld hl, wShadowTilemapAttrs
+	call DmaShadowTilemapToVram
+	; select vram bank 0.
+	xor a
+	ld [rVBK], a
+.copyShadowOamIntoOam ; this isn't working ?
+	ld hl, wShadowOam
+	call RunDma
+.clean ; necessary?
+	ld a, CLEAN
+	ld [wIsShadowTilemapDirty], a
+	ret
+
+; @param hl, src shadow tilemap to copy
+DmaShadowTilemapToVram:
 	ld a, h
 	ldh [rHDMA1], a
 	ld a, l
@@ -333,53 +262,55 @@ DrawScreen:
 	ldh [rHDMA3], a
 	ld a, l
 	ldh [rHDMA4], a
-	ld a, HDMA5F_MODE_GP + (TILEMAP_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1) (63 bytes, $10 * 4)
+	ld a, HDMA5F_MODE_GP + (VISIBLE_TILEMAP_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1) (63 bytes, $10 * 4)
 	ld [rHDMA5], a ; begin dma transfer
-	ld bc, TILEMAP_SIZE * 2 + 4
-.waitforDmaToFinishAgain: ; necessary?
+	ld bc, VISIBLE_TILEMAP_SIZE * 2 + 4
+.waitforDmaToFinish: ; necessary?
     dec bc
-    jr nz, .waitforDmaToFinishAgain
-.copyShadowOamIntoOam
-	ld hl, wShadowOam
-	call RunDma
-.clean ; necessary?
-	; select vram bank 0.
-	xor a
-	ld [rVBK], a
-	ld a, CLEAN
-	ld [wIsShadowTilemapDirty], a
-	ret
+    jr nz, .waitforDmaToFinish
+    ret
 
-UpdateShadowScreen:
+; todo there are some problems here
+UpdateShadowVram::
 	ld a, [wIsShadowTilemapDirty]
 	cp CLEAN
 	ret z
 	ld a, [wActiveFrameScreen]
-	cp a, SCREEN_EXPLORE
-	jp z, .loadExploreScreen
-	cp a, SCREEN_ENCOUNTER
-	jp z, .loadEncounterScreen
-.loadPauseScreen:
-	call LoadPauseScreen
+	cp SCREEN_EXPLORE
+	jp z, .updateShadowTilemapExploreScreen
+	cp SCREEN_ENCOUNTER
+	jp z, .updateShadowTilemapEncounterScreen
+	cp SCREEN_PAUSE
+	jp z, .updateShadowTilemapPauseScreen
 	ret
-.loadExploreScreen:
-	call LoadExploreScreen
-	ret
-.loadEncounterScreen:
-	call LoadEncounterScreen
+.updateShadowTilemapExploreScreen:
+	call UpdateShadowTilemapExploreScreen
+	jp .cleanup
+.updateShadowTilemapEncounterScreen:
+	;call UpdateShadowTilemapEncounterScreen
+	call UpdateShadowTilemapPauseScreen
+	jp .cleanup
+.updateShadowTilemapPauseScreen:
+	call UpdateShadowTilemapPauseScreen
+	jp .cleanup
+.cleanup
+	ld a, FALSE
+	ld [wHasPlayerRotated], a
+	ld [wHasPlayerTranslated], a
 	ret
 
 ; this handles one button of input then returns
-ProcessInput:
+ProcessInput::
 	ld a, [wActiveFrameScreen]
 	cp SCREEN_EXPLORE
 	jp z, HandleInputExploreScreen
+	cp SCREEN_ENCOUNTER
+	jp z, HandleInputEncounterScreen
 	cp SCREEN_PAUSE
 	jp z, HandleInputPauseScreen
-	jp HandleInputEncounterScreen
+	ret
 
-
-GetKeys:
+GetKeys::
 	; poll controller buttons
 	ld a, P1F_GET_BTN
 	call .getBottomNibble
@@ -449,17 +380,6 @@ MemcopySmall::
 	jp nz, MemcopySmall
 	ret
 
-WaitVBlank:
-	ld a, [rLY]
-	cp 144
-	jp c, WaitVBlank
-	ret
-
-DisableLcd:
-	xor a
-	ld [rLCDC], a
-	ret
-
 EnableLcd:
 	ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
 	ld [rLCDC], a
@@ -474,4 +394,3 @@ RunDma:
     dec a           ; 1 cycle
     jr nz, .wait    ; 3 cycles
     ret
-

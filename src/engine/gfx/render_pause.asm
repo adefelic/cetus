@@ -5,30 +5,24 @@ INCLUDE "src/constants/palette_constants.inc"
 SECTION "Pause Screen Renderer", ROMX
 
 ; pause screen contains current map
-LoadPauseScreen::
+UpdateShadowTilemapPauseScreen::
 .loadShadowTilemap
 	ld a, [wActiveMap]
 	ld d, a
 	ld a, [wActiveMap+1]
 	ld e, a
 	ld hl, wShadowTilemap
-	ld bc, TILEMAP_SIZE
+	ld bc, VISIBLE_TILEMAP_SIZE
 	call Memcopy
 .loadShadowTilemapAttributes
 	ld e, BG_PALETTE_Z0
 	ld hl, wShadowTilemapAttrs
-	ld bc, TILEMAP_SIZE
-	call PaintTilemapAttrs
+	ld bc, VISIBLE_TILEMAP_SIZE
+	call PaintTilemapAttrs ; more like, copySingleByteToRange
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]
 	cp SCREEN_ENCOUNTER
-	jp z, .paintEncounterSpritesOffScreen
+	jp z, PaintEncounterSpritesOffScreen
 	cp SCREEN_EXPLORE
-	jp z, .paintExploreSpritesOffScreen
-.paintEncounterSpritesOffScreen
-	; this is technically unnecessary. the pause screen isn't accessible from the encounter screen
-	call PaintEncounterSpritesOffScreen
-	ret
-.paintExploreSpritesOffScreen
-	call PaintExploreSpritesOffScreen
+	jp z, PaintExploreSpritesOffScreen
 	ret

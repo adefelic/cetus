@@ -43,9 +43,4 @@ HandlePressedStart:
 UnpauseGame:
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
-DirtyFpSegmentsAndTilemap:
-	call DirtyFpSegments
-DirtyTilemap:
-	ld a, DIRTY
-	ld [wIsShadowTilemapDirty], a
-	ret
+	jp DirtyFpSegmentsAndTilemap
