@@ -19,13 +19,13 @@ RenderGroundItemCenterFar::
 	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
 	call GetTopWallWrtPlayer
 	cp WALL_TYPE_NONE
-	ret nz
+	jp nz, PaintNone
 .drawOrClearItem
 	call GetRoomCoordsCenterFarWRTPlayer
 	call GetActiveItemMapRoomAddrFromCoords
 	ld a, [hl]
 	cp ITEM_NONE
-	ret z
+	jp z, PaintNone
 	cp ITEM_QUARTZ
 	jp z, PaintQuartz
 	cp ITEM_LAMP
@@ -61,6 +61,18 @@ PaintQuartz:
 	; attrs/flags
 	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_QUARTZ
 	ld [wShadowOam + OAM_QUARTZ_B + OAMA_FLAGS], a
+.clearOthers
+	ld a, OFFSCREEN_Y
+	ld [wShadowOam + OAM_LAMP_TOP_L + OAMA_Y], a
+	ld [wShadowOam + OAM_LAMP_TOP_R + OAMA_Y], a
+	ld [wShadowOam + OAM_LAMP_BOTTOM_L + OAMA_Y], a
+	ld [wShadowOam + OAM_LAMP_BOTTOM_R + OAMA_Y], a
+
+	ld a, OFFSCREEN_X
+	ld [wShadowOam + OAM_LAMP_TOP_L + OAMA_X], a
+	ld [wShadowOam + OAM_LAMP_TOP_R + OAMA_X], a
+	ld [wShadowOam + OAM_LAMP_BOTTOM_L + OAMA_X], a
+	ld [wShadowOam + OAM_LAMP_BOTTOM_R + OAMA_X], a
 	ret
 
 ; todo this could be made less redundant
@@ -117,11 +129,20 @@ PaintLamp:
 	; attrs/flags
 	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 1) + (OAMF_BANK1 * 0) + OBJ_PALETTE_LAMP
 	ld [wShadowOam + OAM_LAMP_BOTTOM_R + OAMA_FLAGS], a
+.clearOthers
+	ld a, OFFSCREEN_Y
+	ld [wShadowOam + OAM_QUARTZ_A + OAMA_Y], a
+	ld [wShadowOam + OAM_QUARTZ_B + OAMA_Y], a
+
+	ld a, OFFSCREEN_X
+	ld [wShadowOam + OAM_QUARTZ_A + OAMA_X], a
+	ld [wShadowOam + OAM_QUARTZ_B + OAMA_X], a
 	ret
 
 PaintTent:
 	ret
 
+PaintNone:
 ClearGroundItemsFromOam::
 	ld a, OFFSCREEN_Y
 	ld [wShadowOam + OAM_QUARTZ_A + OAMA_Y], a

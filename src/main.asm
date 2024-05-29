@@ -272,11 +272,7 @@ GdmaShadowTilemapToVram:
     jr nz, .waitforDmaToFinish
     ret
 
-; todo there are some problems here
 UpdateShadowVram::
-	ld a, [wIsShadowTilemapDirty]
-	cp CLEAN
-	ret z
 	ld a, [wActiveFrameScreen]
 	cp SCREEN_EXPLORE
 	jp z, .updateShadowTilemapExploreScreen
@@ -296,6 +292,7 @@ UpdateShadowVram::
 	call UpdateShadowTilemapPauseScreen
 	jp .cleanup
 .cleanup
+	; todo remove these
 	ld a, FALSE
 	ld [wHasPlayerRotated], a
 	ld [wHasPlayerTranslated], a

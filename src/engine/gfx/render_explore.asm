@@ -32,7 +32,6 @@ UpdateShadowTilemapExploreScreen::
 
 ; dont render item if we're facing an interactable and not in the label state
 .checkIfShouldRenderItemSprite
-	call ClearGroundItemsFromOam
 	ld a, [wIsPlayerFacingWallInteractable]
 	cp FALSE
 	jp z, .renderGroundItem

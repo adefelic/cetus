@@ -100,14 +100,15 @@ HandlePressedB:
 	cp ITEM_NONE ; if there isn't an item to pick up, the player is opening the item menu
 	jp z, .openExploreMenu
 .pickUpItem
-	ld d, h ; stash item map room in de
+	; stash item map room in de
+	ld d, h
 	ld e, l
 
-	call IncrementItemQuantity
+	call IncrementInventoryItemQuantity
 
 	xor a
 	ld [de], a ; remove item from item map
-	jp DirtyFpSegmentsAndTilemap
+	ret
 
 .openExploreMenu
 	ld a, TRUE

@@ -26,7 +26,7 @@ InitInventory::
 	ret
 
 ; @param a, item offset
-IncrementItemQuantity::
+IncrementInventoryItemQuantity::
 	ld hl, wInventory
 	call AddAToHl
 	ld a, [hl]
@@ -38,7 +38,7 @@ IncrementItemQuantity::
 
 
 ; @param a, item offset
-DecrementItemQuantity::
+DecrementInventoryItemQuantity::
 	ld hl, wInventory
 	call AddAToHl
 	ld a, [hl]

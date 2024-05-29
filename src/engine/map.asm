@@ -43,8 +43,7 @@ SetMap::
 	ld [wActiveMapEventLocations], a
 	ld a, l
 	ld [wActiveMapEventLocations+1], a
-; necessary? probably
-; replace with LoadItemMap which would dump some sram into wItemMap
+; todo replace with LoadItemMap which would dump some sram into wItemMap
 .clearItemMap:
 	ld bc, wItemMapEnd - wItemMap
 	ld hl, wItemMap

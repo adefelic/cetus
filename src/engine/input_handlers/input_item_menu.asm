@@ -85,7 +85,7 @@ HandlePressedA:
 	ld a, [hl] ; item index is in a
 	ld [wItemTypeBeingPlaced], a ; debug
 	ld [de], a ; store item id in item map room
-	call DecrementItemQuantity
+	call DecrementInventoryItemQuantity
 	; todo play item placement sound
 	jp CloseExploreMenu
 
