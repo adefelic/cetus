@@ -15,6 +15,7 @@ wActiveMap:: dw
 wActiveMapEventLocations:: dw
 wStepsToNextDangerLevel:: db
 wCurrentDangerLevel:: db
+wHasInputBeenProcessedThisFrame::db
 
 SECTION "Explore Player State", WRAM0
 wPlayerExploreX:: db
@@ -183,6 +184,7 @@ InitGame:
 	ld a, FALSE
 	ld [wHasPlayerRotated], a
 	ld [wHasPlayerTranslated], a
+	ld [wHasInputBeenProcessedThisFrame], a
 	ld [wIsRandSeeded], a
 
 	; init player state
@@ -233,17 +235,17 @@ CopyShadowsToVram::
 	xor a
 	ld [rVBK], a
 	ld hl, wShadowTilemap
-	call DmaShadowTilemapToVram
+	call GdmaShadowTilemapToVram
 .copyShadowTilemapAttrsIntoVram
 	; select vram bank 1
 	ld a, 1
 	ld [rVBK], a
 	ld hl, wShadowTilemapAttrs
-	call DmaShadowTilemapToVram
+	call GdmaShadowTilemapToVram
 	; select vram bank 0.
 	xor a
 	ld [rVBK], a
-.copyShadowOamIntoOam ; this isn't working ?
+.copyShadowOamIntoOam
 	ld hl, wShadowOam
 	call RunDma
 .clean ; necessary?
@@ -252,7 +254,7 @@ CopyShadowsToVram::
 	ret
 
 ; @param hl, src shadow tilemap to copy
-DmaShadowTilemapToVram:
+GdmaShadowTilemapToVram:
 	ld a, h
 	ldh [rHDMA1], a
 	ld a, l
@@ -301,6 +303,11 @@ UpdateShadowVram::
 
 ; this handles one button of input then returns
 ProcessInput::
+	ld a, [wHasInputBeenProcessedThisFrame]
+	cp TRUE
+	ret z
+	ld a, TRUE
+	ld [wHasInputBeenProcessedThisFrame], a
 	ld a, [wActiveFrameScreen]
 	cp SCREEN_EXPLORE
 	jp z, HandleInputExploreScreen
@@ -342,6 +349,10 @@ GetKeys::
 
 	ld a, b
 	ld [wJoypadDown], a ; update keys down
+
+	ld a, FALSE
+	ld [wHasInputBeenProcessedThisFrame], a
+
 	ret
 .getBottomNibble ; load nibble into a
 	ldh [rP1], a ; switch the key matrix.
