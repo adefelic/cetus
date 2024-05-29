@@ -89,6 +89,7 @@ SetEventStateDialogBranch::
 
 ; populate current event state with new events
 LoadVisibleEvents::
+	; todo get rid of this check
 	ld a, [wHasPlayerRotated]
 	ld b, a
 	ld a, [wHasPlayerTranslated]
@@ -96,20 +97,15 @@ LoadVisibleEvents::
 	cp FALSE
 	ret z
 .checkLocationTableForEvent
-	; get RoomEvent entry from location map
-	ld a, [wPlayerExploreX]
-	ld d, a
-	ld a, [wPlayerExploreY]
-	ld e, a
-	call GetActiveEventMapRoomAddrFromCoords ; into hl
+	call GetEventRoomAddrFromPlayerCoords ; into hl
 	ld a, [hl] ; contains offset of the room's RoomEvent from Map1Events
 	; check for presence of RoomEvent
 	cp EVENT_NONE ; offset is 0 == no event
 	jp z, UnsetIsPlayerFacingWallInteractable
-	ld hl, Map1Events ; contains event def table address
+.checkIfPlayerFacingWallInteractable
+	ld hl, Map1Events ; get event definitions
 	call AddAToHl
 	; hl now contains that room's RoomEvent address
-.checkIfPlayerFacingWallInteractable
 	ld a, [hl] ; get event walls, which are the 0th byte of the RoomEvent
 	ld b, a
 	ld a, [wPlayerOrientation]

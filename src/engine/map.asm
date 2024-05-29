@@ -360,10 +360,12 @@ GetRoomCoordsRightFarWRTPlayer::
 	ret
 
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
-; @param d: room X coord
-; @param e: room Y coord
-; @return hl: tile address of room of Map1
-GetActiveEventMapRoomAddrFromCoords::
+; @return hl: tile address of room of event map
+GetEventRoomAddrFromPlayerCoords::
+	ld a, [wPlayerExploreX]
+	ld d, a
+	ld a, [wPlayerExploreY]
+	ld e, a
 	ld a, [wActiveMapEventLocations]
 	ld b, a
 	ld a, [wActiveMapEventLocations+1]
