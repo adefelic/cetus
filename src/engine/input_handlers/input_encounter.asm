@@ -129,7 +129,7 @@ HandleHeldLeft:
 	dec a
 	ld [wPlayerEncounterX], a
 	dec c ; dec counter
-	ld a, DIRTY
+	ld a, TRUE
 	ld [wIsShadowTilemapDirty], a
 	jp nz, .tryLeftOnePixel
 	ret
@@ -163,13 +163,13 @@ HandleHeldRight:
 	inc a
 	ld [wPlayerEncounterX], a
 	dec c ; dec counter
-	ld a, DIRTY
+	ld a, TRUE
 	ld [wIsShadowTilemapDirty], a
 	jp nz, .tryRightOnePixel
 	ret
 
 DirtyTilemap:
-	ld a, DIRTY
+	ld a, TRUE
 	ld [wIsShadowTilemapDirty], a
 	ret
 
@@ -231,7 +231,7 @@ ApplyVerticalMotion::
 	dec a
 	ld [wPlayerEncounterY], a
 	dec c ; dec counter
-	ld a, DIRTY
+	ld a, TRUE
 	ld [wIsShadowTilemapDirty], a
 	jp nz, .tryOnePixelAboveLeft
 	ret
@@ -289,7 +289,7 @@ ApplyDownwardMotion:
 	inc a
 	ld [wPlayerEncounterY], a
 	dec c ; dec counter
-	ld a, DIRTY
+	ld a, TRUE
 	ld [wIsShadowTilemapDirty], a
 	jp nz, .tryOnePixelBeneathLeft
 	ret

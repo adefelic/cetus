@@ -1,4 +1,5 @@
 INCLUDE "src/lib/hardware.inc"
+INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/ram/wram.inc"
@@ -38,28 +39,28 @@ SECTION "Segment Paint Routines", ROMX
 
 CheckSegmentA::
 	ld a, [wADirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentA
 	ret
 
 CheckSegmentB::
 	ld a, [wBDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentB
 	ret
 
 CheckSegmentADistanceFog::
 	ld a, [wADirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentADistanceFog
 	ret
 
 CheckSegmentBDistanceFog::
 	ld a, [wBDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentBDistanceFog
 
@@ -71,14 +72,14 @@ CheckSegmentBDistanceFog::
 
 CheckSegmentC::
 	ld a, [wCDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentC
 	ret
 
 CheckSegmentCDistanceFog::
 	ld a, [wCDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentCDistanceFog
 
@@ -103,21 +104,21 @@ CheckSegmentCDistanceFog::
 
 CheckSegmentD::
 	ld a, [wDDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentD
 	ret
 
 CheckSegmentE::
 	ld a, [wEDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentE
 	ret
 
 CheckSegmentDDistanceFog::
 	ld a, [wDDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentDDistanceFog
 
@@ -129,77 +130,77 @@ CheckSegmentDDistanceFog::
 
 CheckSegmentEDistanceFog::
 	ld a, [wEDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentEDistanceFog
 	ret
 
 CheckSegmentK::
 	ld a, [wKDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentK
 	ret
 
 CheckSegmentL::
 	ld a, [wLDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentL
 	ret
 
 CheckSegmentLDiag::
 	ld a, [wLDiagDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentLDiag
 	ret
 
 CheckSegmentM::
 	ld a, [wMDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentM
 	ret
 
 CheckSegmentMGround::
 	ld a, [wMDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentMGround
 	ret
 
 CheckSegmentN::
 	ld a, [wNDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentN
 	ret
 
 CheckSegmentNDiag::
 	ld a, [wNDiagDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentNDiag
 	ret
 
 CheckSegmentO::
 	ld a, [wODirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentO
 	ret
 
 CheckSegmentP::
 	ld a, [wPDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentP
 	ret
 
 CheckSegmentPDiag::
 	ld a, [wPDiagDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentPDiag
 	ret
@@ -207,21 +208,21 @@ CheckSegmentPDiag::
 ; todo, dirty this every time probably
 CheckSegmentQGround::
 	ld a, [wQDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentQ
 	ret
 
 CheckSegmentR::
 	ld a, [wRDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentR
 	ret
 
 CheckSegmentRDiag::
 	ld a, [wRDiagDirty]
-	cp a, DIRTY
+	cp a, TRUE
 	ret nz
 	call PaintSegmentRDiag
 	ret
@@ -320,7 +321,7 @@ PaintSegmentA::
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wADirty], a
 	ret
 
@@ -418,7 +419,7 @@ PaintSegmentADistanceFog::
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.clean
-		ld a, CLEAN
+		ld a, FALSE
 		ld [wADirty], a
 		ret
 
@@ -515,7 +516,7 @@ PaintSegmentB::
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wBDirty], a
 	ret
 
@@ -613,7 +614,7 @@ PaintSegmentBDistanceFog::
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.clean
-		ld a, CLEAN
+		ld a, FALSE
 		ld [wBDirty], a
 		ret
 
@@ -728,7 +729,7 @@ PaintSegmentBFogBorderRight::
 		ld e, BG_PALETTE_FOG + OAMF_XFLIP
 		call PaintTilemapAttrsSmall
 	.clean
-		ld a, CLEAN
+		ld a, FALSE
 		ld [wBDirty], a
 		ret
 
@@ -825,7 +826,7 @@ PaintSegmentC::
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wCDirty], a
 	ret
 
@@ -927,7 +928,7 @@ PaintSegmentCDistanceFog::
 		; we can add one of those bits to TILE_DISTANCE_FOG_A to get pick a random tile
 		; it would be nice to also randomize the x flip and y flip attributes, that's 3 bits per tile
 	.clean
-		ld a, CLEAN
+		ld a, FALSE
 		ld [wCDirty], a
 		ret
 
@@ -1042,7 +1043,7 @@ PaintSegmentCFogBorderLeft::
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.clean
-		ld a, CLEAN
+		ld a, FALSE
 		ld [wCDirty], a
 		ret
 
@@ -1158,7 +1159,7 @@ PaintSegmentCFogBorderRight::
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.clean
-		ld a, CLEAN
+		ld a, FALSE
 		ld [wCDirty], a
 		ret
 
@@ -1255,7 +1256,7 @@ PaintSegmentD::
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wDDirty], a
 	ret
 
@@ -1353,7 +1354,7 @@ PaintSegmentDDistanceFog::
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.clean
-		ld a, CLEAN
+		ld a, FALSE
 		ld [wDDirty], a
 		ret
 
@@ -1469,7 +1470,7 @@ PaintSegmentDFogBorderLeft::
 		ld e, BG_PALETTE_FOG
 		call PaintTilemapAttrsSmall
 	.clean
-		ld a, CLEAN
+		ld a, FALSE
 		ld [wDDirty], a
 		ret
 
@@ -1566,7 +1567,7 @@ PaintSegmentE::
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wEDirty], a
 	ret
 
@@ -1664,7 +1665,7 @@ PaintSegmentEDistanceFog::
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.clean
-		ld a, CLEAN
+		ld a, FALSE
 		ld [wEDirty], a
 		ret
 
@@ -1692,7 +1693,7 @@ PaintSegmentK::
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wKDirty], a
 	ret
 
@@ -1712,7 +1713,7 @@ PaintSegmentL::
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wLDirty], a
 	ret
 
@@ -1739,7 +1740,7 @@ PaintSegmentLDiag::
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wLDiagDirty], a
 	ret
 
@@ -1766,7 +1767,7 @@ PaintSegmentM::
 	ld b, 12
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wMDirty], a
 	ret
 
@@ -1869,7 +1870,7 @@ PaintSegmentMGround::
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wMDirty], a
 	ret
 
@@ -1889,7 +1890,7 @@ PaintSegmentN::
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wNDirty], a
 	ret
 
@@ -1916,7 +1917,7 @@ PaintSegmentNDiag::
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wNDiagDirty], a
 	ret
 
@@ -1943,7 +1944,7 @@ PaintSegmentO::
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wODirty], a
 	ret
 
@@ -1963,7 +1964,7 @@ PaintSegmentP::
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wPDirty], a
 	ret
 
@@ -1983,7 +1984,7 @@ PaintSegmentPDiag:
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wPDiagDirty], a
 	ret
 
@@ -2054,7 +2055,7 @@ PaintSegmentQ::
 	call PaintTilemapAttrsSmall
 
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wQDirty], a
 	ret
 
@@ -2074,7 +2075,7 @@ PaintSegmentR::
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wRDirty], a
 	ret
 
@@ -2094,7 +2095,7 @@ PaintSegmentRDiag::
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wRDiagDirty], a
 	ret
 
@@ -2203,7 +2204,7 @@ GetRandomYFlipFogAttrsXFlip:
 
 ; todo there is probably a more efficient way to do this
 DirtyFpSegments::
-	ld a, DIRTY
+	ld a, TRUE
 	ld [wADirty], a
 	ld [wBDirty], a
 	ld [wCDirty], a

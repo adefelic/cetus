@@ -200,7 +200,7 @@ InitGame:
 	call InitExploreEventState
 
 	; init screen rendering state
-	ld a, DIRTY
+	ld a, TRUE
 	ld [wIsShadowTilemapDirty], a
 	call DirtyFpSegments
 	call UpdateShadowVram
@@ -241,7 +241,7 @@ CopyShadowsToVram::
 	ld hl, wShadowOam
 	call RunDma
 .clean ; necessary?
-	ld a, CLEAN
+	ld a, FALSE
 	ld [wIsShadowTilemapDirty], a
 	ret
 
@@ -251,7 +251,7 @@ GdmaShadowTilemapToVram:
 	ldh [rHDMA1], a
 	ld a, l
 	ldh [rHDMA2], a
-	ld hl, _SCRN0
+	ld hl, TILEMAP_BACKGROUND
 	ld a, h
 	ldh [rHDMA3], a
 	ld a, l

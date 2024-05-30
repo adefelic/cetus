@@ -1,5 +1,6 @@
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/palette.inc"
+INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 
 SECTION "Palette Update State", WRAM0
@@ -78,6 +79,6 @@ DirtyFpSegmentsAndTilemap::
 
 ; necessary when drawing over background environmenttiles
 DirtyTilemap::
-	ld a, DIRTY
+	ld a, TRUE
 	ld [wIsShadowTilemapDirty], a
 	ret
