@@ -15,7 +15,7 @@ wActiveMap:: dw
 wActiveMapEventLocations:: dw
 wStepsToNextDangerLevel:: db
 wCurrentDangerLevel:: db
-wHasInputBeenProcessedThisFrame::db
+wHasInputBeenProcessedThisFrame:: db
 
 SECTION "Explore Player State", WRAM0
 wPlayerExploreX:: db
@@ -76,23 +76,6 @@ EntryPoint:
 .disableLcd
 	xor a
 	ld [rLCDC], a
-
-.enableInterrupts
-	; arbitrary line, 0-153
-	ld a, 50
-	ldh [rLYC], a
-
-	; set lcd interrupt to be fired when LY == LCY
-	ld a, STATF_LYC
-	ldh [rSTAT], a
-
-	; enable vblank and lcd interrupts
-	ld a, IEF_VBLANK + IEF_STAT
-	ldh [rIE], a
-
-	ei ; Only takes effect after the following instruction
-	xor a
-	ldh [rIF], a ; Clears "accumulated" interrupts
 
 ; todo should make inc files for different tile aggregations?
 ; so i dont have to track where in tile memory to put tiles
@@ -213,9 +196,29 @@ InitGame:
 	ld a, FALSE
 	ld [wFoundSkullFlag], a
 	call InitInventory
-
 	call InitAudio
-	call EnableLcd
+
+	; enable lcd at the next vblank interrupt
+	ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
+	ldh [hLCDC], a
+
+.enableInterrupts
+	; arbitrary line, 0-153
+	ld a, 50
+	ldh [rLYC], a
+
+	; set lcd interrupt to be fired when LY == LCY
+	ld a, STATF_LYC
+	ldh [rSTAT], a
+
+	; enable vblank and lcd interrupts
+	ld a, IEF_VBLANK + IEF_STAT
+	ldh [rIE], a
+
+	ei ; Only takes effect after the following instruction
+	xor a
+	ldh [rIF], a ; Clears "accumulated" interrupts
+
 Main:
 	call ProcessInput
 	call UpdateShadowVram ; processes game state and dirty flags, draws screen to shadow maps
@@ -366,11 +369,6 @@ MemcopySmall::
 	dec b
 	ld a, b
 	jp nz, MemcopySmall
-	ret
-
-EnableLcd:
-	ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
-	ld [rLCDC], a
 	ret
 
 ; @param hl, source address, zero-aligned
