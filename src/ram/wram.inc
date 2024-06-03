@@ -3,15 +3,27 @@ wShadowOam::
 ds sizeof_OAM_ATTRS * OAM_COUNT
 wShadowOamEnd::
 
-SECTION "Shadow BG Tilemap", WRAM0
-wShadowTilemap::
+SECTION "Shadow Background Tilemap", WRAM0
+wShadowBackgroundTilemap::
 ds VISIBLE_TILEMAP_SIZE
-wShadowTilemapEnd::
+wShadowBackgroundTilemapEnd::
 
-SECTION "Shadow BG Tilemap Attrs", WRAM0
-wShadowTilemapAttrs::
+SECTION "Shadow Background Tilemap Attrs", WRAM0
+wShadowBackgroundTilemapAttrs::
 ds VISIBLE_TILEMAP_SIZE
-wShadowTilemapAttrsEnd::
+wShadowBackgroundTilemapAttrsEnd::
+
+; todo maybe rather than shadowing this we can actually update the tilemap
+;   in realish time and then hit the switch to enable window
+SECTION "Shadow Window Tilemap", WRAM0
+wShadowWindowTilemap::
+ds VISIBLE_TILEMAP_SIZE
+wShadowWindowTilemapEnd::
+
+SECTION "Shadow Window Tilemap Attrs", WRAM0
+wShadowWindowTilemapAttrs::
+ds VISIBLE_TILEMAP_SIZE
+wShadowWindowTilemapAttrsEnd::
 
 ; fixme this is space inefficient and will need to be changed
 SECTION "Item Map", WRAM0

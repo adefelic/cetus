@@ -316,7 +316,7 @@ SideCollideHighRamp:
 ; mangles a,c,d,e,h,l
 GetTileMapTileAddrFromPixelCoords:
 	; this assumes tilemaps are the size of the tilemap and not the size of the screen
-	; addr = wShadowTilemap + y/8 * 32 + x/8
+	; addr = wShadowBackgroundTilemap + y/8 * 32 + x/8
 	; y
 	ld h, 0
 	; gotta mask out the bottom bits to simulate dividing by 8 and dropping the remainder,
@@ -338,6 +338,6 @@ GetTileMapTileAddrFromPixelCoords:
 	adc 0
 	ld h, a
 
-	ld de, wShadowTilemap
+	ld de, wShadowBackgroundTilemap
 	add hl, de
 	ret

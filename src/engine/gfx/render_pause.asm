@@ -11,12 +11,12 @@ UpdateShadowTilemapPauseScreen::
 	ld d, a
 	ld a, [wActiveMap+1]
 	ld e, a
-	ld hl, wShadowTilemap
+	ld hl, wShadowBackgroundTilemap
 	ld bc, VISIBLE_TILEMAP_SIZE
 	call Memcopy
 .loadShadowTilemapAttributes
 	ld e, BG_PALETTE_Z0
-	ld hl, wShadowTilemapAttrs
+	ld hl, wShadowBackgroundTilemapAttrs
 	ld bc, VISIBLE_TILEMAP_SIZE
 	call PaintTilemapAttrs ; more like, copySingleByteToRange
 .updateShadowOam:

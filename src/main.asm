@@ -72,6 +72,7 @@ EntryPoint:
 	ldh a, [rLY]
 	cp SCRN_Y
 	jr c, .waitVBlank
+
 .disableLcd
 	xor a
 	ld [rLCDC], a
@@ -226,13 +227,13 @@ CopyShadowsToVram::
 	; select vram bank 0
 	xor a
 	ld [rVBK], a
-	ld hl, wShadowTilemap
+	ld hl, wShadowBackgroundTilemap
 	call GdmaShadowTilemapToVram
 .copyShadowTilemapAttrsIntoVram
 	; select vram bank 1
 	ld a, 1
 	ld [rVBK], a
-	ld hl, wShadowTilemapAttrs
+	ld hl, wShadowBackgroundTilemapAttrs
 	call GdmaShadowTilemapToVram
 	; select vram bank 0.
 	xor a

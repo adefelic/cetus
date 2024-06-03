@@ -9,71 +9,71 @@ SECTION "Dialog Root Modal Paint Routines", ROMX
 PaintModalTopRowDialogRoot::
 .tl_corner
 	ld d, TILE_MODAL_TOP_LEFT_CORNER
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT
 	ld b, 1
 	call PaintTilemapSmall
 	ld e, BG_PALETTE_UI
-	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT
+	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .text
 	ld d, "a"
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 1
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 1
 	ld b, 1
 	call PaintTilemapSmall
 	ld d, "s"
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 2
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 2
 	ld b, 1
 	call PaintTilemapSmall
 	ld d, "k"
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 3
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 3
 	ld b, 1
 	call PaintTilemapSmall
 	ld d, " "
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 4
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 4
 	ld b, 1
 	call PaintTilemapSmall
 	ld d, "a"
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 5
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 5
 	ld b, 1
 	call PaintTilemapSmall
 	ld d, "b"
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 6
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 6
 	ld b, 1
 	call PaintTilemapSmall
 	ld d, "o"
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 7
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 7
 	ld b, 1
 	call PaintTilemapSmall
 	ld d, "u"
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 8
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 8
 	ld b, 1
 	call PaintTilemapSmall
 	ld d, "t"
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 9
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 9
 	ld b, 1
 	call PaintTilemapSmall
 
 	ld e, BG_PALETTE_UI + OAMF_BANK1
-	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + cols 1
+	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + cols 1
 	ld b, 9
 	call PaintTilemapAttrsSmall
 .top_line
 	ld d, TILE_MODAL_HORIZONTAL
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols 10
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 10
 	ld b, 5
 	call PaintTilemapSmall
 	ld e, BG_PALETTE_UI
-	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + cols 10
+	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + cols 10
 	ld b, 5
 	call PaintTilemapAttrsSmall
 .tr_corner
 	ld d, TILE_MODAL_TOP_LEFT_CORNER
-	ld hl, wShadowTilemap + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
 	ld b, 1
 	call PaintTilemapSmall
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
-	ld hl, wShadowTilemapAttrs + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
+	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
 	ld b, 1
 	call PaintTilemapAttrsSmall
 	ret

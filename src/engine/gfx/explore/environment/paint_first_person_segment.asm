@@ -230,94 +230,94 @@ CheckSegmentRDiag::
 ; @param d: the tile index to paint with
 PaintSegmentA::
 .row0
-	ld hl, wShadowTilemap + rows 0 ; dest in VRAM
+	ld hl, wShadowBackgroundTilemap + rows 0 ; dest in VRAM
 	ld b, 3      ; # of bytes (tile indices) remaining.
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 0
+	ld hl, wShadowBackgroundTilemapAttrs + rows 0
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row1
-	ld hl, wShadowTilemap + rows 1
+	ld hl, wShadowBackgroundTilemap + rows 1
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 1
+	ld hl, wShadowBackgroundTilemapAttrs + rows 1
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row2
-	ld hl, wShadowTilemap + rows 2
+	ld hl, wShadowBackgroundTilemap + rows 2
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 2
+	ld hl, wShadowBackgroundTilemapAttrs + rows 2
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row3
-	ld hl, wShadowTilemap + rows 3
+	ld hl, wShadowBackgroundTilemap + rows 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row4
-	ld hl, wShadowTilemap + rows 4
+	ld hl, wShadowBackgroundTilemap + rows 4
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 4
+	ld hl, wShadowBackgroundTilemapAttrs + rows 4
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row5
-	ld hl, wShadowTilemap + rows 5
+	ld hl, wShadowBackgroundTilemap + rows 5
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 5
+	ld hl, wShadowBackgroundTilemapAttrs + rows 5
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row6
-	ld hl, wShadowTilemap + rows 6
+	ld hl, wShadowBackgroundTilemap + rows 6
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 6
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row7
-	ld hl, wShadowTilemap + rows 7
+	ld hl, wShadowBackgroundTilemap + rows 7
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 7
+	ld hl, wShadowBackgroundTilemapAttrs + rows 7
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row8
-	ld hl, wShadowTilemap + rows 8
+	ld hl, wShadowBackgroundTilemap + rows 8
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 8
+	ld hl, wShadowBackgroundTilemapAttrs + rows 8
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row9
-	ld hl, wShadowTilemap + rows 9
+	ld hl, wShadowBackgroundTilemap + rows 9
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 9
+	ld hl, wShadowBackgroundTilemapAttrs + rows 9
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row10
-	ld hl, wShadowTilemap + rows 10
+	ld hl, wShadowBackgroundTilemap + rows 10
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 10
+	ld hl, wShadowBackgroundTilemapAttrs + rows 10
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row11
-	ld hl, wShadowTilemap + rows 11
+	ld hl, wShadowBackgroundTilemap + rows 11
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 11
+	ld hl, wShadowBackgroundTilemapAttrs + rows 11
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row12
-	ld hl, wShadowTilemap + rows 12
+	ld hl, wShadowBackgroundTilemap + rows 12
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 12
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .clean
@@ -327,95 +327,95 @@ PaintSegmentA::
 
 PaintSegmentADistanceFog::
 	.row0
-		ld hl, wShadowTilemap + rows 0 ; dest in VRAM
+		ld hl, wShadowBackgroundTilemap + rows 0 ; dest in VRAM
 		ld d, 3      ; # of bytes (tile indices) remaining.
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 0
+		ld hl, wShadowBackgroundTilemapAttrs + rows 0
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row1
-		ld hl, wShadowTilemap + rows 1
+		ld hl, wShadowBackgroundTilemap + rows 1
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 1
+		ld hl, wShadowBackgroundTilemapAttrs + rows 1
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row2
-		ld hl, wShadowTilemap + rows 2
+		ld hl, wShadowBackgroundTilemap + rows 2
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 2
+		ld hl, wShadowBackgroundTilemapAttrs + rows 2
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row3
-		ld hl, wShadowTilemap + rows 3
+		ld hl, wShadowBackgroundTilemap + rows 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row4
-		ld hl, wShadowTilemap + rows 4
+		ld hl, wShadowBackgroundTilemap + rows 4
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 4
+		ld hl, wShadowBackgroundTilemapAttrs + rows 4
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row5
-		ld hl, wShadowTilemap + rows 5
+		ld hl, wShadowBackgroundTilemap + rows 5
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 5
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row6
-		ld hl, wShadowTilemap + rows 6
+		ld hl, wShadowBackgroundTilemap + rows 6
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 6
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row7
-		ld hl, wShadowTilemap + rows 7
+		ld hl, wShadowBackgroundTilemap + rows 7
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 7
+		ld hl, wShadowBackgroundTilemapAttrs + rows 7
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row8
-		ld hl, wShadowTilemap + rows 8
+		ld hl, wShadowBackgroundTilemap + rows 8
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 8
+		ld hl, wShadowBackgroundTilemapAttrs + rows 8
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row9
-		ld hl, wShadowTilemap + rows 9
+		ld hl, wShadowBackgroundTilemap + rows 9
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 9
+		ld hl, wShadowBackgroundTilemapAttrs + rows 9
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row10
-		ld hl, wShadowTilemap + rows 10
+		ld hl, wShadowBackgroundTilemap + rows 10
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 10
+		ld hl, wShadowBackgroundTilemapAttrs + rows 10
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row11
-		ld hl, wShadowTilemap + rows 11
+		ld hl, wShadowBackgroundTilemap + rows 11
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 11
+		ld hl, wShadowBackgroundTilemapAttrs + rows 11
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row12
-		ld hl, wShadowTilemap + rows 12
+		ld hl, wShadowBackgroundTilemap + rows 12
 		ld d, TILE_DISTANCE_FOG_GROUND
 		ld b, 3
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 12
+		ld hl, wShadowBackgroundTilemapAttrs + rows 12
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.clean
@@ -425,94 +425,94 @@ PaintSegmentADistanceFog::
 
 PaintSegmentB::
 .row0
-	ld hl, wShadowTilemap + rows 0 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 0 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 0 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row1
-	ld hl, wShadowTilemap + rows 1 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 1 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 1 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row2
-	ld hl, wShadowTilemap + rows 2 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 2 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 2 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row3
-	ld hl, wShadowTilemap + rows 3 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 3 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 3 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row4
-	ld hl, wShadowTilemap + rows 4 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 4 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 4 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row5
-	ld hl, wShadowTilemap + rows 5 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 5 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 5 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row6
-	ld hl, wShadowTilemap + rows 6 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 6 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 6 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row7
-	ld hl, wShadowTilemap + rows 7 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 7 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 7 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row8
-	ld hl, wShadowTilemap + rows 8 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 8 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 8 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row9
-	ld hl, wShadowTilemap + rows 9 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 9 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 9 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row10
-	ld hl, wShadowTilemap + rows 10 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 10 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 10 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row11
-	ld hl, wShadowTilemap + rows 11 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 11 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 11 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row12
-	ld hl, wShadowTilemap + rows 12 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 12 + cols 3
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 12 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 3
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .clean
@@ -522,95 +522,95 @@ PaintSegmentB::
 
 PaintSegmentBDistanceFog::
 	.row0
-		ld hl, wShadowTilemap + rows 0 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 0 + cols 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 0 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row1
-		ld hl, wShadowTilemap + rows 1 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 1 + cols 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 1 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row2
-		ld hl, wShadowTilemap + rows 2 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 2 + cols 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 2 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row3
-		ld hl, wShadowTilemap + rows 3 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 3 + cols 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 3 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row4
-		ld hl, wShadowTilemap + rows 4 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 4 + cols 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 4 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row5
-		ld hl, wShadowTilemap + rows 5 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 5 + cols 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 5 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row6
-		ld hl, wShadowTilemap + rows 6 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 6 + cols 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 6 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row7
-		ld hl, wShadowTilemap + rows 7 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 7 + cols 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 7 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row8
-		ld hl, wShadowTilemap + rows 8 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 8 + cols 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 8 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row9
-		ld hl, wShadowTilemap + rows 9 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 9 + cols 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 9 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row10
-		ld hl, wShadowTilemap + rows 10 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 10 + cols 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 10 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row11
-		ld hl, wShadowTilemap + rows 11 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 11 + cols 3
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 11 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row12
-		ld hl, wShadowTilemap + rows 12 + cols 3
+		ld hl, wShadowBackgroundTilemap + rows 12 + cols 3
 		ld d, TILE_DISTANCE_FOG_GROUND
 		ld b, 3
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 12 + cols 3
+		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 3
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.clean
@@ -622,109 +622,109 @@ PaintSegmentBFogBorderRight::
 		call Rand ; we'll use the byte in c
 		ld d, TILE_DISTANCE_FOG_LEFT_WALL
 	.row0
-		ld hl, wShadowTilemap + rows 0 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 0 + cols 5
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 0 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 5
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row1
-		ld hl, wShadowTilemap + rows 1 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 1 + cols 5
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 1 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 5
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row2
-		ld hl, wShadowTilemap + rows 2 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 2 + cols 5
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 2 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 5
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row3
-		ld hl, wShadowTilemap + rows 3 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 3 + cols 5
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 3 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 5
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row4
-		ld hl, wShadowTilemap + rows 4 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 4 + cols 5
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 4 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 5
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row5
-		ld hl, wShadowTilemap + rows 5 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 5 + cols 5
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 5 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 5
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row6
-		ld hl, wShadowTilemap + rows 6 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 6 + cols 5
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 6 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 5
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row7
-		ld hl, wShadowTilemap + rows 7 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 7 + cols 5
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 7 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 5
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.getAnotherRandomByte
 		call Rand ; we'll use the byte in c
 	.row8
-		ld hl, wShadowTilemap + rows 8 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 8 + cols 5
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 8 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 5
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row9
-		ld hl, wShadowTilemap + rows 9 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 9 + cols 5
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 9 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 5
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row10
-		ld hl, wShadowTilemap + rows 10 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 10 + cols 5
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 10 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 5
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row11
-		ld hl, wShadowTilemap + rows 11 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 11 + cols 5
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 11 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 5
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row12
-		ld hl, wShadowTilemap + rows 12 + cols 5
+		ld hl, wShadowBackgroundTilemap + rows 12 + cols 5
 		ld d, TILE_DISTANCE_FOG_LEFT_CORNER
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 12 + cols 5
+		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 5
 		ld b, 1
 		ld e, BG_PALETTE_FOG + OAMF_XFLIP
 		call PaintTilemapAttrsSmall
@@ -735,94 +735,94 @@ PaintSegmentBFogBorderRight::
 
 PaintSegmentC::
 .row0
-	ld hl, wShadowTilemap + rows 0 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 0 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 0 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row1
-	ld hl, wShadowTilemap + rows 1 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 1 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 1 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row2
-	ld hl, wShadowTilemap + rows 2 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 2 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 2 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row3
-	ld hl, wShadowTilemap + rows 3 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 3 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 3 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row4
-	ld hl, wShadowTilemap + rows 4 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 4 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 4 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row5
-	ld hl, wShadowTilemap + rows 5 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 5 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 5 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row6
-	ld hl, wShadowTilemap + rows 6 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 6 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 6 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row7
-	ld hl, wShadowTilemap + rows 7 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 7 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 7 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row8
-	ld hl, wShadowTilemap + rows 8 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 8 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 8 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row9
-	ld hl, wShadowTilemap + rows 9 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 9 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 9 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row10
-	ld hl, wShadowTilemap + rows 10 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 10 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 10 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row11
-	ld hl, wShadowTilemap + rows 11 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 11 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 11 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row12
-	ld hl, wShadowTilemap + rows 12 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 12 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 12 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .clean
@@ -832,95 +832,95 @@ PaintSegmentC::
 
 PaintSegmentCDistanceFog::
 	.row0
-		ld hl, wShadowTilemap + rows 0 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 0 + cols 6
 		ld d, 8
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 0 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 	.row1
-		ld hl, wShadowTilemap + rows 1 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 1 + cols 6
 		ld d, 8
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 1 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 	.row2
-		ld hl, wShadowTilemap + rows 2 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 2 + cols 6
 		ld d, 8
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 2 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 	.row3
-		ld hl, wShadowTilemap + rows 3 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 3 + cols 6
 		ld d, 8
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 3 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 	.row4
-		ld hl, wShadowTilemap + rows 4 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 4 + cols 6
 		ld d, 8
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 4 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 	.row5
-		ld hl, wShadowTilemap + rows 5 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 5 + cols 6
 		ld d, 8
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 5 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 	.row6
-		ld hl, wShadowTilemap + rows 6 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 6 + cols 6
 		ld d, 8
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 6 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 	.row7
-		ld hl, wShadowTilemap + rows 7 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 7 + cols 6
 		ld d, 8
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 7 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 	.row8
-		ld hl, wShadowTilemap + rows 8 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 8 + cols 6
 		ld d, 8
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 8 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 	.row9
-		ld hl, wShadowTilemap + rows 9 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 9 + cols 6
 		ld d, 8
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 9 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 	.row10
-		ld hl, wShadowTilemap + rows 10 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 10 + cols 6
 		ld d, 8
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 10 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 	.row11
-		ld hl, wShadowTilemap + rows 11 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 11 + cols 6
 		ld d, 8
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 11 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 	.row12
-		ld hl, wShadowTilemap + rows 12 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 12 + cols 6
 		ld d, TILE_DISTANCE_FOG_GROUND
 		ld b, 8
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 12 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 6
 		ld b, 8
 		call PaintTilemapAttrsSmall
 
@@ -936,109 +936,109 @@ PaintSegmentCFogBorderLeft::
 		call Rand ; we'll use the byte in c
 		ld d, TILE_DISTANCE_FOG_LEFT_WALL
 	.row0
-		ld hl, wShadowTilemap + rows 0 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 0 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 0 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 6
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row1
-		ld hl, wShadowTilemap + rows 1 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 1 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 1 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 6
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row2
-		ld hl, wShadowTilemap + rows 2 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 2 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 2 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 6
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row3
-		ld hl, wShadowTilemap + rows 3 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 3 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 3 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 6
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row4
-		ld hl, wShadowTilemap + rows 4 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 4 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 4 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 6
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row5
-		ld hl, wShadowTilemap + rows 5 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 5 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 5 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 6
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row6
-		ld hl, wShadowTilemap + rows 6 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 6 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 6 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 6
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row7
-		ld hl, wShadowTilemap + rows 7 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 7 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 7 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 6
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.getAnotherRandomByte
 		call Rand ; we'll use the byte in c
 	.row8
-		ld hl, wShadowTilemap + rows 8 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 8 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 8 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 6
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row9
-		ld hl, wShadowTilemap + rows 9 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 9 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 9 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 6
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row10
-		ld hl, wShadowTilemap + rows 10 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 10 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 10 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 6
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row11
-		ld hl, wShadowTilemap + rows 11 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 11 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 11 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 6
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row12
 		ld d, TILE_DISTANCE_FOG_LEFT_CORNER
-		ld hl, wShadowTilemap + rows 12 + cols 6
+		ld hl, wShadowBackgroundTilemap + rows 12 + cols 6
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 12 + cols 6
+		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 6
 		ld e, BG_PALETTE_FOG
 		ld b, 1
 		call PaintTilemapAttrsSmall
@@ -1052,109 +1052,109 @@ PaintSegmentCFogBorderRight::
 		call Rand ; we'll use the byte in c
 		ld d, TILE_DISTANCE_FOG_LEFT_WALL
 	.row0
-		ld hl, wShadowTilemap + rows 0 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 0 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 0 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 13
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row1
-		ld hl, wShadowTilemap + rows 1 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 1 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 1 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 13
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row2
-		ld hl, wShadowTilemap + rows 2 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 2 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 2 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 13
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row3
-		ld hl, wShadowTilemap + rows 3 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 3 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 3 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 13
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row4
-		ld hl, wShadowTilemap + rows 4 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 4 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 4 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 13
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row5
-		ld hl, wShadowTilemap + rows 5 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 5 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 5 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 13
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row6
-		ld hl, wShadowTilemap + rows 6 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 6 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 6 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 13
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row7
-		ld hl, wShadowTilemap + rows 7 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 7 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 7 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 13
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.getAnotherRandomByte
 		call Rand ; we'll use the byte in c
 	.row8
-		ld hl, wShadowTilemap + rows 8 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 8 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 8 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 13
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row9
-		ld hl, wShadowTilemap + rows 9 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 9 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 9 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 13
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row10
-		ld hl, wShadowTilemap + rows 10 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 10 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 10 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 13
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row11
-		ld hl, wShadowTilemap + rows 11 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 11 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 11 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 13
 		call GetRandomYFlipFogAttrsXFlip
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row12
 		ld d, TILE_DISTANCE_FOG_LEFT_CORNER
-		ld hl, wShadowTilemap + rows 12 + cols 13
+		ld hl, wShadowBackgroundTilemap + rows 12 + cols 13
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 12 + cols 13
+		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 13
 		ld e, BG_PALETTE_FOG + OAMF_XFLIP
 		ld b, 1
 		call PaintTilemapAttrsSmall
@@ -1165,94 +1165,94 @@ PaintSegmentCFogBorderRight::
 
 PaintSegmentD::
 .row0
-	ld hl, wShadowTilemap + rows 0 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 0 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 0 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row1
-	ld hl, wShadowTilemap + rows 1 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 1 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 1 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row2
-	ld hl, wShadowTilemap + rows 2 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 2 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 2 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row3
-	ld hl, wShadowTilemap + rows 3 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 3 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 3 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row4
-	ld hl, wShadowTilemap + rows 4 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 4 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 4 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row5
-	ld hl, wShadowTilemap + rows 5 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 5 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 5 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row6
-	ld hl, wShadowTilemap + rows 6 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 6 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 6 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row7
-	ld hl, wShadowTilemap + rows 7 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 7 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 7 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row8
-	ld hl, wShadowTilemap + rows 8 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 8 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 8 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row9
-	ld hl, wShadowTilemap + rows 9 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 9 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 9 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row10
-	ld hl, wShadowTilemap + rows 10 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 10 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 10 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row11
-	ld hl, wShadowTilemap + rows 11 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 11 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 11 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row12
-	ld hl, wShadowTilemap + rows 12 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 12 + cols 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 12 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .clean
@@ -1262,95 +1262,95 @@ PaintSegmentD::
 
 PaintSegmentDDistanceFog::
 	.row0
-		ld hl, wShadowTilemap + rows 0 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 0 + cols 14
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 0 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row1
-		ld hl, wShadowTilemap + rows 1 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 1 + cols 14
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 1 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row2
-		ld hl, wShadowTilemap + rows 2 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 2 + cols 14
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 2 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row3
-		ld hl, wShadowTilemap + rows 3 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 3 + cols 14
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 3 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row4
-		ld hl, wShadowTilemap + rows 4 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 4 + cols 14
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 4 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row5
-		ld hl, wShadowTilemap + rows 5 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 5 + cols 14
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 5 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row6
-		ld hl, wShadowTilemap + rows 6 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 6 + cols 14
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 6 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row7
-		ld hl, wShadowTilemap + rows 7 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 7 + cols 14
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 7 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row8
-		ld hl, wShadowTilemap + rows 8 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 8 + cols 14
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 8 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row9
-		ld hl, wShadowTilemap + rows 9 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 9 + cols 14
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 9 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row10
-		ld hl, wShadowTilemap + rows 10 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 10 + cols 14
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 10 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row11
-		ld hl, wShadowTilemap + rows 11 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 11 + cols 14
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 11 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row12
-		ld hl, wShadowTilemap + rows 12 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 12 + cols 14
 		ld d, TILE_DISTANCE_FOG_GROUND
 		ld b, 3
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 12 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 14
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.clean
@@ -1362,109 +1362,109 @@ PaintSegmentDFogBorderLeft::
 		call Rand ; we'll use the byte in c
 		ld d, TILE_DISTANCE_FOG_LEFT_WALL
 	.row0
-		ld hl, wShadowTilemap + rows 0 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 0 + cols 14
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 0 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row1
-		ld hl, wShadowTilemap + rows 1 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 1 + cols 14
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 1 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row2
-		ld hl, wShadowTilemap + rows 2 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 2 + cols 14
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 2 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row3
-		ld hl, wShadowTilemap + rows 3 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 3 + cols 14
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 3 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row4
-		ld hl, wShadowTilemap + rows 4 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 4 + cols 14
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 4 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row5
-		ld hl, wShadowTilemap + rows 5 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 5 + cols 14
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 5 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row6
-		ld hl, wShadowTilemap + rows 6 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 6 + cols 14
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 6 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row7
-		ld hl, wShadowTilemap + rows 7 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 7 + cols 14
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 7 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.getAnotherRandomByte
 		call Rand ; we'll use the byte in c
 	.row8
-		ld hl, wShadowTilemap + rows 8 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 8 + cols 14
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 8 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row9
-		ld hl, wShadowTilemap + rows 9 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 9 + cols 14
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 9 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row10
-		ld hl, wShadowTilemap + rows 10 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 10 + cols 14
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 10 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row11
-		ld hl, wShadowTilemap + rows 11 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 11 + cols 14
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 11 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		call PaintTilemapAttrsSmall
 	.row12
-		ld hl, wShadowTilemap + rows 12 + cols 14
+		ld hl, wShadowBackgroundTilemap + rows 12 + cols 14
 		ld d, TILE_DISTANCE_FOG_LEFT_CORNER
 		ld b, 1
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 12 + cols 14
+		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 14
 		call GetRandomYFlipFogAttrs
 		ld b, 1
 		ld e, BG_PALETTE_FOG
@@ -1476,94 +1476,94 @@ PaintSegmentDFogBorderLeft::
 
 PaintSegmentE::
 .row0
-	ld hl, wShadowTilemap + rows 0 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 0 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 0 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row1
-	ld hl, wShadowTilemap + rows 1 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 1 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 1 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row2
-	ld hl, wShadowTilemap + rows 2 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 2 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 2 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row3
-	ld hl, wShadowTilemap + rows 3 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 3 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 3 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row4
-	ld hl, wShadowTilemap + rows 4 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 4 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 4 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row5
-	ld hl, wShadowTilemap + rows 5 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 5 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 5 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row6
-	ld hl, wShadowTilemap + rows 6 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 6 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 6 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row7
-	ld hl, wShadowTilemap + rows 7 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 7 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 7 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row8
-	ld hl, wShadowTilemap + rows 8 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 8 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 8 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row9
-	ld hl, wShadowTilemap + rows 9 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 9 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 9 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row10
-	ld hl, wShadowTilemap + rows 10 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 10 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 10 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row11
-	ld hl, wShadowTilemap + rows 11 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 11 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 11 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row12
-	ld hl, wShadowTilemap + rows 12 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 12 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 12 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .clean
@@ -1573,95 +1573,95 @@ PaintSegmentE::
 
 PaintSegmentEDistanceFog::
 	.row0
-		ld hl, wShadowTilemap + rows 0 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 0 + cols 17
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 0 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row1
-		ld hl, wShadowTilemap + rows 1 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 1 + cols 17
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 1 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row2
-		ld hl, wShadowTilemap + rows 2 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 2 + cols 17
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 2 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row3
-		ld hl, wShadowTilemap + rows 3 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 3 + cols 17
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 3 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row4
-		ld hl, wShadowTilemap + rows 4 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 4 + cols 17
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 4 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row5
-		ld hl, wShadowTilemap + rows 5 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 5 + cols 17
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 5 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row6
-		ld hl, wShadowTilemap + rows 6 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 6 + cols 17
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 6 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row7
-		ld hl, wShadowTilemap + rows 7 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 7 + cols 17
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 7 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row8
-		ld hl, wShadowTilemap + rows 8 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 8 + cols 17
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 8 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row9
-		ld hl, wShadowTilemap + rows 9 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 9 + cols 17
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 9 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row10
-		ld hl, wShadowTilemap + rows 10 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 10 + cols 17
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 10 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row11
-		ld hl, wShadowTilemap + rows 11 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 11 + cols 17
 		ld d, 3
 		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowTilemapAttrs + rows 11 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.row12
-		ld hl, wShadowTilemap + rows 12 + cols 17
+		ld hl, wShadowBackgroundTilemap + rows 12 + cols 17
 		ld d, TILE_DISTANCE_FOG_GROUND
 		ld b, 3
 		call PaintTilemapSmall
-		ld hl, wShadowTilemapAttrs + rows 12 + cols 17
+		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 17
 		ld b, 3
 		call PaintTilemapAttrsSmall
 	.clean
@@ -1672,24 +1672,24 @@ PaintSegmentEDistanceFog::
 
 PaintSegmentK::
 .row13
-	ld hl, wShadowTilemap + rows 13
+	ld hl, wShadowBackgroundTilemap + rows 13
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 13
+	ld hl, wShadowBackgroundTilemapAttrs + rows 13
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row14
-	ld hl, wShadowTilemap + rows 14
+	ld hl, wShadowBackgroundTilemap + rows 14
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 14
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row15
-	ld hl, wShadowTilemap + rows 15
+	ld hl, wShadowBackgroundTilemap + rows 15
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 15
+	ld hl, wShadowBackgroundTilemapAttrs + rows 15
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .clean
@@ -1699,17 +1699,17 @@ PaintSegmentK::
 
 PaintSegmentL::
 .row13
-	ld hl, wShadowTilemap + rows 13 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 13 + cols 3
 	ld b, 2
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 13 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 3
 	ld b, 2
 	call PaintTilemapAttrsSmall
 .row14
-	ld hl, wShadowTilemap + rows 14 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 14 + cols 3
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 14 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 3
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
@@ -1719,24 +1719,24 @@ PaintSegmentL::
 
 PaintSegmentLDiag::
 .row13
-	ld hl, wShadowTilemap + rows 13 + cols 5
+	ld hl, wShadowBackgroundTilemap + rows 13 + cols 5
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 13 + cols 5
+	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 5
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .row14
-	ld hl, wShadowTilemap + rows 14 + cols 4
+	ld hl, wShadowBackgroundTilemap + rows 14 + cols 4
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 14 + cols 4
+	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 4
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .row15
-	ld hl, wShadowTilemap + rows 15 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 15 + cols 3
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 15 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 3
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
@@ -1746,24 +1746,24 @@ PaintSegmentLDiag::
 
 PaintSegmentM::
 .row13
-	ld hl, wShadowTilemap + rows 13 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 13 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 13 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row14
-	ld hl, wShadowTilemap + rows 14 + cols 5
+	ld hl, wShadowBackgroundTilemap + rows 14 + cols 5
 	ld b, 10
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 14 + cols 5
+	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 5
 	ld b, 10
 	call PaintTilemapAttrsSmall
 .row15
-	ld hl, wShadowTilemap + rows 15 + cols 4
+	ld hl, wShadowBackgroundTilemap + rows 15 + cols 4
 	ld b, 12
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 15 + cols 4
+	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 4
 	ld b, 12
 	call PaintTilemapAttrsSmall
 .clean
@@ -1773,24 +1773,24 @@ PaintSegmentM::
 
 PaintSegmentMGround::
 .row13
-	ld hl, wShadowTilemap + rows 13 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 13 + cols 6
 	ld b, 8
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 13 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 6
 	ld b, 8
 	call PaintTilemapAttrsSmall
 .row14
-	ld hl, wShadowTilemap + rows 14 + cols 5
+	ld hl, wShadowBackgroundTilemap + rows 14 + cols 5
 	ld b, 10
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 14 + cols 5
+	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 5
 	ld b, 10
 	call PaintTilemapAttrsSmall
 .row15
-	ld hl, wShadowTilemap + rows 15 + cols 4
+	ld hl, wShadowBackgroundTilemap + rows 15 + cols 4
 	ld b, 12
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 15 + cols 4
+	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 4
 	ld b, 12
 	call PaintTilemapAttrsSmall
 
@@ -1802,7 +1802,7 @@ PaintSegmentMGround::
 	call SingleByteModulo ; result in a
 
 	push af ; stash random column #
-	ld hl, wShadowTilemap + rows 13 + cols 6
+	ld hl, wShadowBackgroundTilemap + rows 13 + cols 6
 	call AddAToHl
 	ld d, TILE_GRASS_FAR
 	ld b, 1
@@ -1815,7 +1815,7 @@ PaintSegmentMGround::
 	ld e, a
 
 	pop af
-	ld hl, wShadowTilemapAttrs + rows 13 + cols 6
+	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 6
 	call AddAToHl
 	ld b, 1
 	call PaintTilemapAttrsSmall
@@ -1827,7 +1827,7 @@ PaintSegmentMGround::
 	call SingleByteModulo ; result in a
 
 	push af ; stash random column #
-	ld hl, wShadowTilemap + rows 14 + cols 5
+	ld hl, wShadowBackgroundTilemap + rows 14 + cols 5
 	call AddAToHl
 	ld d, TILE_GRASS_FAR
 	ld b, 1
@@ -1840,7 +1840,7 @@ PaintSegmentMGround::
 	ld e, a
 
 	pop af
-	ld hl, wShadowTilemapAttrs + rows 14 + cols 5
+	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 5
 	call AddAToHl
 	ld b, 1
 	call PaintTilemapAttrsSmall
@@ -1852,7 +1852,7 @@ PaintSegmentMGround::
 	call SingleByteModulo ; result in a
 
 	push af ; stash random column #
-	ld hl, wShadowTilemap + rows 15 + cols 4
+	ld hl, wShadowBackgroundTilemap + rows 15 + cols 4
 	call AddAToHl
 	ld d, TILE_GRASS_FAR
 	ld b, 1
@@ -1865,7 +1865,7 @@ PaintSegmentMGround::
 	ld e, a
 
 	pop af
-	ld hl, wShadowTilemapAttrs + rows 15 + cols 4
+	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 4
 	call AddAToHl
 	ld b, 1
 	call PaintTilemapAttrsSmall
@@ -1876,17 +1876,17 @@ PaintSegmentMGround::
 
 PaintSegmentN::
 .row13
-	ld hl, wShadowTilemap + rows 13 + cols 15
+	ld hl, wShadowBackgroundTilemap + rows 13 + cols 15
 	ld b, 2
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 13 + cols 15
+	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 15
 	ld b, 2
 	call PaintTilemapAttrsSmall
 .row14
-	ld hl, wShadowTilemap + rows 14 + cols 16
+	ld hl, wShadowBackgroundTilemap + rows 14 + cols 16
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 14 + cols 16
+	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 16
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
@@ -1896,24 +1896,24 @@ PaintSegmentN::
 
 PaintSegmentNDiag::
 .row13
-	ld hl, wShadowTilemap + rows 13 + cols 14
+	ld hl, wShadowBackgroundTilemap + rows 13 + cols 14
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 13 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 14
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .row14
-	ld hl, wShadowTilemap + rows 14 + cols 15
+	ld hl, wShadowBackgroundTilemap + rows 14 + cols 15
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 14 + cols 15
+	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 15
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .row15
-	ld hl, wShadowTilemap + rows 15 + cols 16
+	ld hl, wShadowBackgroundTilemap + rows 15 + cols 16
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 15 + cols 16
+	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 16
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
@@ -1923,24 +1923,24 @@ PaintSegmentNDiag::
 
 PaintSegmentO::
 .row13
-	ld hl, wShadowTilemap + rows 13 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 13 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 13 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row14
-	ld hl, wShadowTilemap + rows 14 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 14 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 14 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .row15
-	ld hl, wShadowTilemap + rows 15 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 15 + cols 17
 	ld b, 3
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 15 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 17
 	ld b, 3
 	call PaintTilemapAttrsSmall
 .clean
@@ -1950,17 +1950,17 @@ PaintSegmentO::
 
 PaintSegmentP::
 .row16
-	ld hl, wShadowTilemap + rows 16
+	ld hl, wShadowBackgroundTilemap + rows 16
 	ld b, 2
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 16
+	ld hl, wShadowBackgroundTilemapAttrs + rows 16
 	ld b, 2
 	call PaintTilemapAttrsSmall
 .row17
-	ld hl, wShadowTilemap + rows 17
+	ld hl, wShadowBackgroundTilemap + rows 17
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 17
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
@@ -1970,17 +1970,17 @@ PaintSegmentP::
 
 PaintSegmentPDiag:
 .row16
-	ld hl, wShadowTilemap + rows 16 + cols 2
+	ld hl, wShadowBackgroundTilemap + rows 16 + cols 2
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 16 + cols 2
+	ld hl, wShadowBackgroundTilemapAttrs + rows 16 + cols 2
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .row17
-	ld hl, wShadowTilemap + rows 17 + cols 1
+	ld hl, wShadowBackgroundTilemap + rows 17 + cols 1
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 17 + cols 1
+	ld hl, wShadowBackgroundTilemapAttrs + rows 17 + cols 1
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
@@ -1990,17 +1990,17 @@ PaintSegmentPDiag:
 
 PaintSegmentQ::
 .row16
-	ld hl, wShadowTilemap + rows 16 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 16 + cols 3
 	ld b, 14
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 16 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 16 + cols 3
 	ld b, 14
 	call PaintTilemapAttrsSmall
 .row17
-	ld hl, wShadowTilemap + rows 17 + cols 2
+	ld hl, wShadowBackgroundTilemap + rows 17 + cols 2
 	ld b, 16
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 17 + cols 2
+	ld hl, wShadowBackgroundTilemapAttrs + rows 17 + cols 2
 	ld b, 16
 	call PaintTilemapAttrsSmall
 .randomGrassRow16
@@ -2011,7 +2011,7 @@ PaintSegmentQ::
 	call SingleByteModulo ; result in a, between
 
 	push af ; stash random column #
-	ld hl, wShadowTilemap + rows 16 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 16 + cols 3
 	call AddAToHl
 	ld d, TILE_GRASS_NEAR
 	ld b, 1
@@ -2024,7 +2024,7 @@ PaintSegmentQ::
 	ld e, a
 
 	pop af
-	ld hl, wShadowTilemapAttrs + rows 16 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 16 + cols 3
 	call AddAToHl
 	ld b, 1
 	call PaintTilemapAttrsSmall
@@ -2036,7 +2036,7 @@ PaintSegmentQ::
 	call SingleByteModulo ; result in a
 
 	push af ; stash random column #
-	ld hl, wShadowTilemap + rows 17 + cols 2
+	ld hl, wShadowBackgroundTilemap + rows 17 + cols 2
 	call AddAToHl
 	ld d, TILE_GRASS_NEAR
 	ld b, 1
@@ -2049,7 +2049,7 @@ PaintSegmentQ::
 	ld e, a
 
 	pop af ; restore random column #
-	ld hl, wShadowTilemapAttrs + rows 17 + cols 2
+	ld hl, wShadowBackgroundTilemapAttrs + rows 17 + cols 2
 	call AddAToHl
 	ld b, 1
 	call PaintTilemapAttrsSmall
@@ -2061,17 +2061,17 @@ PaintSegmentQ::
 
 PaintSegmentR::
 .column18
-	ld hl, wShadowTilemap + rows 16 + cols 18
+	ld hl, wShadowBackgroundTilemap + rows 16 + cols 18
 	ld b, 2
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 16 + cols 18
+	ld hl, wShadowBackgroundTilemapAttrs + rows 16 + cols 18
 	ld b, 2
 	call PaintTilemapAttrsSmall
 .column19
-	ld hl, wShadowTilemap + rows 17 + cols 19
+	ld hl, wShadowBackgroundTilemap + rows 17 + cols 19
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 17 + cols 19
+	ld hl, wShadowBackgroundTilemapAttrs + rows 17 + cols 19
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean
@@ -2081,17 +2081,17 @@ PaintSegmentR::
 
 PaintSegmentRDiag::
 .row16
-	ld hl, wShadowTilemap + rows 16 + cols 17
+	ld hl, wShadowBackgroundTilemap + rows 16 + cols 17
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 16 + cols 17
+	ld hl, wShadowBackgroundTilemapAttrs + rows 16 + cols 17
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .row17
-	ld hl, wShadowTilemap + rows 17 + cols 18
+	ld hl, wShadowBackgroundTilemap + rows 17 + cols 18
 	ld b, 1
 	call PaintTilemapSmall
-	ld hl, wShadowTilemapAttrs + rows 17 + cols 18
+	ld hl, wShadowBackgroundTilemapAttrs + rows 17 + cols 18
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .clean

@@ -10,12 +10,12 @@ UpdateShadowTilemapEncounterScreen::
 ; load hardcoded screen into shadow tilemap
 .loadShadowTilemap
 	ld de, Map1EncounterScreen
-	ld hl, wShadowTilemap
+	ld hl, wShadowBackgroundTilemap
 	ld bc, Map1EncounterScreenEnd - Map1EncounterScreen
 	call Memcopy
 .loadShadowTilemapAttributes
 	ld e, BG_PALETTE_Z0
-	ld hl, wShadowTilemapAttrs
+	ld hl, wShadowBackgroundTilemapAttrs
 	ld bc, VISIBLE_TILEMAP_SIZE
 	call PaintTilemapAttrs
 .updateShadowOam:

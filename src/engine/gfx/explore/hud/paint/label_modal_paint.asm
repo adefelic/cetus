@@ -16,38 +16,38 @@ SECTION "Label Modal Paint Routines", ROMX
 PaintLabelModel::
 .tl_corner
 	ld d, TILE_MODAL_TOP_LEFT_CORNER
-	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT
+	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT
 	ld bc, 1
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
-	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT
+	ld hl, wShadowBackgroundTilemapAttrs + LABEL_MODAL_TOP_LEFT
 	ld bc, 1
 	call PaintTilemapAttrs
 .top
 	ld d, TILE_MODAL_HORIZONTAL
-	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + cols 1
+	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + cols 1
 	ld bc, 10
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
-	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + cols 1
+	ld hl, wShadowBackgroundTilemapAttrs + LABEL_MODAL_TOP_LEFT + cols 1
 	ld bc, 10
 	call PaintTilemapAttrs
 .tr_corner
 	ld d, TILE_MODAL_TOP_LEFT_CORNER
-	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + cols (LABEL_MODAL_WIDTH - 1)
+	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemap
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
-	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + cols (LABEL_MODAL_WIDTH - 1)
+	ld hl, wShadowBackgroundTilemapAttrs + LABEL_MODAL_TOP_LEFT + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemapAttrs
 .left
 	ld d, TILE_MODAL_VERTICAL
-	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + rows 1
+	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + rows 1
 	ld bc, 1
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
-	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 1
+	ld hl, wShadowBackgroundTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 1
 	ld bc, 1
 	call PaintTilemapAttrs
 .text
@@ -55,47 +55,47 @@ PaintLabelModel::
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
-	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + rows 1 + cols 1
+	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + rows 1 + cols 1
 	ld bc, 10
 	call Memcopy
 	ld e, BG_PALETTE_UI + OAMF_BANK1
-	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 1 + cols 1
+	ld hl, wShadowBackgroundTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 1 + cols 1
 	ld bc, 10
 	call PaintTilemapAttrs
 .right
 	ld d, TILE_MODAL_VERTICAL
-	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + rows 1 + cols (LABEL_MODAL_WIDTH - 1)
+	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + rows 1 + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemap
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
-	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 1 + cols (LABEL_MODAL_WIDTH - 1)
+	ld hl, wShadowBackgroundTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 1 + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemapAttrs
 .bl_corner
 	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
-	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + rows 2
+	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + rows 2
 	ld bc, 1
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
-	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 2
+	ld hl, wShadowBackgroundTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 2
 	ld bc, 1
 	call PaintTilemapAttrs
 .bottom
 	ld d, TILE_MODAL_HORIZONTAL
-	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + rows 2 + cols 1
+	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + rows 2 + cols 1
 	ld bc, 10
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
-	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 2 + cols 1
+	ld hl, wShadowBackgroundTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 2 + cols 1
 	ld bc, 10
 	call PaintTilemapAttrs
 .br_corner
 	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
-	ld hl, wShadowTilemap + LABEL_MODAL_TOP_LEFT + rows 2 + cols (LABEL_MODAL_WIDTH - 1)
+	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + rows 2 + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemap
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
-	ld hl, wShadowTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 2 + cols (LABEL_MODAL_WIDTH - 1)
+	ld hl, wShadowBackgroundTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 2 + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemapAttrs
 	ret
