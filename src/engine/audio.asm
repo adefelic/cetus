@@ -32,7 +32,7 @@ InitAudio::
 	ldh [rNR50], a
 
 	; comment out to disable hUGE
-	ld hl, pokemoncenter
+	ld hl, swamp
 	call hUGE_init
 
 	xor a
