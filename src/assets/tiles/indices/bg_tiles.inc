@@ -7,6 +7,11 @@
 ; these tiles are both graphical tiles and the source of truth for the room map itself
 ; todo decouple these? nah the pausemap is a debug feature not a feature feature
 
+; todo this should really just become a single file.
+; nothing i'm doing is dynamic enough to require the complexity.
+; this would also standardize which colors are 0,1,2,3
+; it would make it easier to add new tiles without having to update all of the indices
+
 ; explore-simple
 DEF TILE_MAP_NONE                 EQU $00
 DEF TILE_MAP_L                    EQU $01
@@ -32,11 +37,11 @@ DEF TILE_EXPLORE_DIAG_R           EQU $14
 DEF TILE_EXPLORE_DIAG_L           EQU $15
 DEF TILE_GRASS_NEAR               EQU $16
 DEF TILE_GRASS_FAR                EQU $17
-DEF TILE_MODAL_TOP_LEFT_CORNER    EQU $18
+DEF TILE_MODAL_TL_CORNER          EQU $18
 DEF TILE_MODAL_HORIZONTAL         EQU $19
-DEF TILE_MODAL_BOTTOM_LEFT_CORNER EQU $1A
+DEF TILE_MODAL_BOTTOM_LEFT_CORNER EQU $1A ; todo replace this with TILE_MODAL_TL_CORNER but flipped
 DEF TILE_MODAL_VERTICAL           EQU $1B
-DEF TILE_MODAL_EMPTY              EQU $1C
+DEF TILE_MODAL_EMPTY              EQU $1C ; todo replace this with the T shaped tile
 DEF TILE_ENCOUNTER_BLANK          EQU $1D
 DEF TILE_ENCOUNTER_RAMP_LOW       EQU $1E
 DEF TILE_ENCOUNTER_FLAT           EQU $1F

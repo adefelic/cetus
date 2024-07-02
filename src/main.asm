@@ -273,8 +273,8 @@ UpdateShadowVram::
 	cp SCREEN_EXPLORE
 	jp z, UpdateShadowTilemapExploreScreen
 	cp SCREEN_ENCOUNTER
-	jp z, UpdateShadowTilemapPauseScreen
-	;jp z, UpdateShadowTilemapEncounterScreen
+	;jp z, UpdateShadowTilemapPauseScreen
+	jp z, UpdateShadowTilemapEncounterScreen
 	cp SCREEN_PAUSE
 	jp z, UpdateShadowTilemapPauseScreen
 	; control should not reach here

@@ -17,7 +17,7 @@ UpdateShadowTilemapExploreScreen::
 	call RenderFirstPersonView
 
 ; menus and item sprites are mutually exclusive
-.checkIfShouldRenderExploreMenu
+.checkIfShouldRenderExploreMenu ; the bottom menu
 	ld a, [wInExploreMenu]
 	cp FALSE
 	jp z, .checkIfShouldRenderEvent
@@ -47,7 +47,7 @@ UpdateShadowTilemapExploreScreen::
 .unloadUnusedSprites
 	cp SCREEN_ENCOUNTER
 	jp nz, .updateExploreSprites
-	call PaintEncounterSpritesOffScreen
+	;call PaintEncounterSpritesOffScreen
 ;.initExploreSprites
 	; init maybe not right word.
 	; they should all be initialized (loaded into oam) when the game loads

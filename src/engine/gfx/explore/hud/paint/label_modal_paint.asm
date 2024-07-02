@@ -15,7 +15,7 @@ SECTION "Label Modal Paint Routines", ROMX
 ; @param d: the tile index to paint with
 PaintLabelModel::
 .tl_corner
-	ld d, TILE_MODAL_TOP_LEFT_CORNER
+	ld d, TILE_MODAL_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT
 	ld bc, 1
 	call PaintTilemap
@@ -33,7 +33,7 @@ PaintLabelModel::
 	ld bc, 10
 	call PaintTilemapAttrs
 .tr_corner
-	ld d, TILE_MODAL_TOP_LEFT_CORNER
+	ld d, TILE_MODAL_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + cols (LABEL_MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemap

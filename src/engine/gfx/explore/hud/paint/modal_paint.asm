@@ -9,7 +9,7 @@ SECTION "Modal Paint Routines", ROMX
 
 PaintModalTopRow::
 .tl_corner
-	ld d, TILE_MODAL_TOP_LEFT_CORNER
+	ld d, TILE_MODAL_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT
 	ld bc, 1
 	call PaintTilemap
@@ -27,7 +27,7 @@ PaintModalTopRow::
 	ld bc, MODAL_TEXT_AREA_WIDTH
 	call PaintTilemapAttrs
 .tr_corner
-	ld d, TILE_MODAL_TOP_LEFT_CORNER
+	ld d, TILE_MODAL_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
 	ld bc, 1
 	call PaintTilemap

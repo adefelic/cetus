@@ -8,7 +8,7 @@ INCLUDE "src/assets/tiles/indices/scrib.inc"
 SECTION "Dialog Root Modal Paint Routines", ROMX
 PaintModalTopRowDialogRoot::
 .tl_corner
-	ld d, TILE_MODAL_TOP_LEFT_CORNER
+	ld d, TILE_MODAL_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT
 	ld b, 1
 	call PaintTilemapSmall
@@ -68,7 +68,7 @@ PaintModalTopRowDialogRoot::
 	ld b, 5
 	call PaintTilemapAttrsSmall
 .tr_corner
-	ld d, TILE_MODAL_TOP_LEFT_CORNER
+	ld d, TILE_MODAL_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
 	ld b, 1
 	call PaintTilemapSmall

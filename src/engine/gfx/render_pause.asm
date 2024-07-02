@@ -21,8 +21,8 @@ UpdateShadowTilemapPauseScreen::
 	call PaintTilemapAttrs ; more like, copySingleByteToRange
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]
-	cp SCREEN_ENCOUNTER
-	jp z, PaintEncounterSpritesOffScreen
+	;cp SCREEN_ENCOUNTER
+	;jp z, PaintEncounterSpritesOffScreen
 	cp SCREEN_EXPLORE
 	jp z, PaintExploreSpritesOffScreen
 	ret

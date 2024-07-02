@@ -11,6 +11,7 @@ wDialogTextRowHighlighted:: db ; index from 0 to 3. reads from the bottom 3 bits
 ; todo should probably make them generic / unions. they should all start with a 1)label field
 ; these need to be contiguous in memory
 wMenuItems::
+; the names below are never used
 wMenuItemRendered0: dw
 wMenuItemRendered1: dw
 wMenuItemRendered2: dw

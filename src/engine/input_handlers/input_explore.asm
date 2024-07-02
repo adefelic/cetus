@@ -274,8 +274,8 @@ InitEncounter:
 	ld [wPreviousFrameScreen], a
 	ld a, SCREEN_ENCOUNTER
 	ld [wActiveFrameScreen], a
-	call RollNewDangerLevelSteps
-	jp GenerateEncounter
+	call RollNewDangerLevelSteps ; maybe do this once the encounter is over? it doesn't matter
+	jp BeginEncounter
 
 RollNewDangerLevelSteps: ; set wStepsToNextDangerLevel to a number between 3 and 6 inclusive
 	call Rand ; between 0 and 255
