@@ -54,31 +54,39 @@ combat:
 - attacks do multiple damage types-- 1 physical element and 1 mental
 physical damage types: all do damage to hp
 - maybe have some damage types be mundane and do less numerically, while some are exotic and do more or are less blockable. make everything weak to blaze for example
-	- cut
-	- pierce
-	- crush
-	- drown
-	- sting / envenom / poison
-	- bind
-		- from vines
-	- burn (late game?)
-		- from burning resin
-	- flare / glare / gleam / blaze / blind / obscure
-	- pollute / dirty / sully / begrime
 
-mental damage types: all do damage to mp
-	- stress / anxiety / fear (feeling)
-	- confuse / overwhelm / fog / obscure (cognition)
-	- enrages
+## moves 
+
+### damage types: (all verbs)
+- physical
+	- cut
+	- crush
+	- bind
+- special 
+	- drown
+	- soil
+	- blaze (heat / bright)
+	- sting
+- mental
+	- pressure
+	- confuse / distract
 	- exhaust
-	- distract
+	- lull
+	- menace
+	- calm 
+	- yield
+	- befriend
+	- respect
+		- hell yes
+	- welcome
+		- __name__ CONFUSES __enemy__ . i dont actually like this, it would better to just use the move name
 
 
 	- give moves speeds? like bb bg player speed doesn't make sense because there's only one player. move speed is more interesting
 	- could also do the pokemon thing where you have a large palette of moves but only get to pick 4. probably too boring when there's only one player unit
 	- all this shit can wait 
 
-encounter flow:
+### encounter flow:
 	enemy is revealed
 	coin flip for who goes first, 50/50
 	enemy moves if tails
@@ -90,18 +98,8 @@ encounter flow:
 		if player defeated, defeat screen -> go to last bonfire
 		loop
 
-status moves: ? ignore statuses for now
-rush - puts off balance or scares away
-stance? having an aggressive or defensive posture may change combat
 
-
-stats:
-	- endurance
-	- willpower
-	hp = endurance * 10
-	mp = willpower * 10
-
-
+## player classes
 characters:
 	- characters have
 		- skill progression
@@ -109,19 +107,23 @@ characters:
 		- a resistance sheet (skip for now)
 		- a portrait (skip for now)
 
-
 character list:
 	- scarecrow / effigy
 		- actions:
-			- sway (stress). costs 5% hp
-			- deceive (distract) heals 5% hp
-			- crow peck (stab) costs 5% mp
-			- crow scatter (confuse) costs 10% mp
-			- pole strike (bludgeon) costs 10% hp
-			- lantern eyes (stress, obscure) costs 5% hp
+			- sway. stress x multiple. restores mp
+			- deceive. confuse x multiple
+			- crow peck. stab xx single
+			- crow flock. confuse xx single 
+			- pole strike. crush xx single
+			- spear. cut xxx single
+			- lantern eyes. stress xxx multiple
+			- wisp / ignite. blaze xxx single
 		- passive abilities:
 			"crows appear"
 				- every turn has a chance of crows helping?
+			"sway"
+				- passive weak mp regen
+				- passive weak stress
 		- str/wk:
 			weaknesses:
 				crush
@@ -178,59 +180,119 @@ character list:
 	- rain caller (appropriation? i think this is fine)
 		can make storms happen
 
+### player stats:
+	- endurance
+	- willpower
+	hp = endurance * 10
+	mp = willpower * 10
 
-
+## enemies
 encounters can be non-human beings, the land anthropomorphosed, weather, the past
 encounters can be helpful, but usually aren't
-
-region encounters
 field:
 	- scare crow
-	- knotted grass
-	- vultures
-	- thorns
-	- vines
+		- sway
+		- watch
+	- knotted grass / vines
+		- tangle. * bind multi
+		- trip. xx mud single
+	- vulture / hawk
+		- watch. pressure xx single
+		- harry. confuse xx multi
+		- gouge. cut xxx single
+	- green briars
+		- needle. x cut multi
+		- tangle. * bind multi
+		- trip. xx mud single
 	- snake
-	- walking bones
-		- distress
+		- coil. bind xx single
+		- fangs. sting xxx single
+		- vanish. confuse x multi
+	- old bones
+		- unnerve. pressure x single
+		- grab. bind xxx single
 	- the patriarch (sun)
-		- blaze
+		- glare. blaze xx multi
+		- judge. blaze xxxx single
+	- prairie chicken
+	- Karner Blue Butterfly 
 forest:
-	- web
+	- spider web
+		- tangle. * bind multi
 	- spider
-	- roots
-	- stones
-	- memory of fire / invitation of fire
-		- blaze
-	- sap
-	- rabid dog
-		- cut
-		- gouge
-		- distress
-		- infect
+		- fangs. sting xxx single
+	- grasping roots
+		- tangle. * bind multi
+		- trip. xx mud single
+	- stone cairn
+		- heals mp?
+	- memory of fire
+		- tempt. lull, xx, single
+	- old cedar 
+		- ooze sap. soil xx single
+	- foaming creature
+		- snap
+			- distress, xxx, single
+		- stalk
+			- distress, xx, multi
+		- bite
+			- crush, xxx, single
+	- wood turtle
+	- marsh hawk
 swamp:
 	- flies
-		- frustrate
+		- cloud
 	- still fog
 	- will o wisp
 	- walking bones
 	- rotting creature
 	- heaving bog
 	- spore bat - like the mold that kills bats making them into mold zombies instead of dead
+	- bog turtle
+
 coast:
 	- drifting fog
+		- confuse. 
 	- bleached bones
+		- sea water
 	- beached creature
+		- eject sea water
 	- keen/avid gull 
 	- sea glass
 	- horseshoe crab
 	- dying shark
+	- osprey
 underwater:
 	- seaweed dragon
 	- green crab
 	- old crab
 	- anemone
 	- jellyfish
+	- winter skate
+	- black grouper
+	- greenland shark
+
+
+
+## COMBAT
+
+- option 1: simple combat. player does move, enemy does move, repeat until someone is dead. hp only
+- option 2: complicated combat
+
+
+today's combat thoughts:
+
+- attack speed? this could make using a single character more interesting.
+
+- can you cancel an enemy attack by depleting their poise before they can attack? 
+	or attacking at a faster speed with a harder hitting move?
+	or attacking at the same speed. moves that are aggressive can stagger the enemy to cancel their slower attacks. only some moves stagger
+
+
+
+** okay some resolution **
+i think that the target complexity should be roughly DRAGON QUEST. you choose a character to give you some flavor, some combat skills and spells, and you mostly are trying to burn as little resources as possible so that you can continue your slog.
+
 
 smt combat and eo combat both work because you have a lot of moves to use. maybe there should be some roguelike elements where you "remember" the moves from encounters sometimes. maybe it happens when you are hit by something that is strong against you?
 
@@ -265,5 +327,49 @@ combat system goals
 	- it is risky and exciting to use a resource you might not have, like when you are out of mp and need to spend hp
 	- it feels good to optimize moves
 
+- multitype moves
 
 
+### case study: pokemon
+-  combat incentivizes switching
+	- pp (dungeon crawl longetivity resource) is per pokemon
+		- not the same as mp. you cant use moves (healing) for pp outside of combat like roost
+	- hp (combat resource) is per pokemon
+	- only 4 moves per pokemon
+- pokemon combat is information dense to display well on a small screen
+	- types mean you don't need to display the resistance matrix like in smt
+		- the opposing pokemon's type should be intuitive. if it's not, you have a pokedex
+	- 4 moves per guy means you dont need to scroll and everything is visible at once
+
+
+what are interesting choices in rpgs
+- short term need vs long term benefit. hp vs mp
+- making choices that will minimize harm to your team
+
+how do i make interesting choices. unique class skills are evocative and rad but not interesting enough as gameplay. you just pick rock when you see scissors, or you dont have a rock and pick something else.
+
+how do you create variety in a turn based rpg. dimensions:
+0 dimensions:
+	- 1 move, 1 resistance
+1 dimension:
+	- multiple moves, multiple resistances. different enemies are weak to different moves
+2 dimensions:
+	- multiple party members with different moves / resistances
+	- multiple enemies with different moves / resistances
+
+pokemon is essentially always 1 on 1 with switching
+smt is 4 on 1-4ish with switching
+ff is 4 on 1-4ish without switching
+	- different characters still have different moves and resistances
+	- in ff4 they arent even all that different beyond different specializations
+
+
+- you could gain a party member after certain events? but multiple party members makes it feel less lonely
+- you could get monsters but maybe they are temporary?
+
+## GRAPHICS
+
+
+graphics thoughts
+- maybe first person combat could be overlaid over the background w/ enemy sprites on top and the Window from the bottom
+- maybe walls could be replaced with scribbles + negative space
