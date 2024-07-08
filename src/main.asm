@@ -196,6 +196,7 @@ InitGame:
 	ld a, FALSE
 	ld [wFoundSkullFlag], a
 	call InitInventory
+	call InitPlayerCharacter
 	call InitAudio
 
 	; enable lcd at the next vblank interrupt
@@ -273,7 +274,6 @@ UpdateShadowVram::
 	cp SCREEN_EXPLORE
 	jp z, UpdateShadowTilemapExploreScreen
 	cp SCREEN_ENCOUNTER
-	;jp z, UpdateShadowTilemapPauseScreen
 	jp z, UpdateShadowTilemapEncounterScreen
 	cp SCREEN_PAUSE
 	jp z, UpdateShadowTilemapPauseScreen

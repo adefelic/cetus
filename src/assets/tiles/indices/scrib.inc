@@ -95,6 +95,6 @@ charmap "y",  $59
 charmap "z",  $5A
 charmap "->", $5B
 charmap "|",  $5C
-charmap "\}", $5D
+charmap "/", $5D
 charmap "~",  $5E
 charmap "check",  $5F

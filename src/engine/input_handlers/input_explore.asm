@@ -269,7 +269,6 @@ UpdateDangerLevel:
 	ld a, DANGER_GREY
 	ld [wCurrentDangerLevel], a
 InitEncounter:
-	; todo really this should begin the encounter on the next frame, after the player has moved
 	ld a, [wActiveFrameScreen]
 	ld [wPreviousFrameScreen], a
 	ld a, SCREEN_ENCOUNTER

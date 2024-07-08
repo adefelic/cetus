@@ -36,51 +36,38 @@ HandleInitialState:
 	ld a, [hl]
 	ld hl, wEnemyCurrentHp
 	ld [hl], a
-.cachePlayerState
 
-	; we have player info
-	; we need to draw those things to the screen now
-	; enemy:
-	; 	use enemy id to pull up their max hp, name, and resistance palette
-	;   use cached value (wEnemyCurrentHp) to pull up their current hp
-	; player:
-	;   get wCurrentPlayerHp
-	;   get wCurrentPlayerMp
-	;   get CurrentPlayerMaxHp ; calculated from end?
-	;	get CurrentPlayerMaxMp ; calculated from wil?
-	; 	get moves
-		; each move will have a name, an effect, and a cost. part of a scrolling menu
-	call UpdateScreen
-	ret
+	jp UpdateScreen
 
 HandlePlayerTurnState:
-	call UpdateScreen
-	ret
+	jp UpdateScreen
 
 HandleEnemyTurnState:
-	call UpdateScreen
-	ret
+	jp UpdateScreen
 
 UpdateScreen:
-; load hardcoded screen into shadow tilemap
+	ld a, [wEncounterState]
+	cp ENCOUNTER_STATE_INITIAL
+	jp nz, .loadEncounterHUDIntoShadowTilemap
 .loadShadowTilemapForBlackBackground
-	; okay next up is to set up the stuff that doesn't change on the battle screen: window borders
-	; fixme it is absolutely brutal to be doing this mem copy every frame
 	ld de, Map1EncounterScreen
 	ld hl, wShadowBackgroundTilemap
 	ld bc, Map1EncounterScreenEnd - Map1EncounterScreen
 	call Memcopy
-.loadShadowTilemapForMenus
-	call PaintEncounterMenus
 .loadShadowTilemapAttributes
 	ld e, BG_PALETTE_Z0
 	ld hl, wShadowBackgroundTilemapAttrs
 	ld bc, VISIBLE_TILEMAP_SIZE
 	call PaintTilemapAttrs
+.loadEncounterHUDIntoShadowTilemap
+	;call RenderSkillsMenus
+	call PaintPlayerStatus
+	;call RenderEnemyState
+	;call RenderEnvironment
 .updateShadowOam:
-	;ld a, [wPreviousFrameScreen]
-	;cp SCREEN_ENCOUNTER
-	;jp z, .updateEncounterSprites
+	ld a, [wPreviousFrameScreen]
+	cp SCREEN_ENCOUNTER
+	jp z, .updateEncounterSprites
 .unloadUnusedSprites
 	cp SCREEN_EXPLORE
 	jp nz, .updateEncounterSprites
@@ -90,4 +77,10 @@ UpdateScreen:
 	; this may be unnecessary if all the sprites are already in vram, just have to update coords
 .updateEncounterSprites
 	;call PaintPlayerSprite
+.updateFromInitialState
+	ld a, [wEncounterState]
+	cp ENCOUNTER_STATE_INITIAL
+	ret nz
+	ld a, ENCOUNTER_STATE_PLAYER_TURN
+	ld [wEncounterState], a
 	ret

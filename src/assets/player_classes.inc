@@ -1,4 +1,8 @@
 
+
+DEF MAX_HP EQU 20;
+DEF MAX_MP EQU 18;
+
 ; scarecrow
 ; attack table
 ; key: level, value: attack id

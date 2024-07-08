@@ -59,7 +59,7 @@ RenderExploreItemMenu::
 	ld hl, wInventory
 	call AddAToHl
 	ld a, [hl] ; a now contains wInventory quantity
-	call ConvertBinaryNumberToDecimalNumber ; 10s in d, 1s in e
+	call ConvertBinaryNumberToTwoDigitDecimalNumber ; 10s in d, 1s in e
 	pop hl ; restore wMenuItems position ptr
 	push hl ; stash wMenuItems position ptr
 
