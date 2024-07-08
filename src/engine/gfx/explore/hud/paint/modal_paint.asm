@@ -248,8 +248,8 @@ PaintModalBottomRow::
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .bottom
 	ld d, TILE_MODAL_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 1
@@ -257,8 +257,8 @@ PaintModalBottomRow::
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 1
-	ld bc, MODAL_TEXT_AREA_WIDTH
-	call PaintTilemapAttrs
+	ld b, MODAL_TEXT_AREA_WIDTH
+	call PaintTilemapAttrsSmall
 .br_corner
 	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
@@ -266,8 +266,8 @@ PaintModalBottomRow::
 	call PaintTilemap
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 	ret
 
 PaintModalBottomRowCheckX::
@@ -278,8 +278,8 @@ PaintModalBottomRowCheckX::
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .bottom_line
 	ld d, TILE_MODAL_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 1
@@ -287,8 +287,8 @@ PaintModalBottomRowCheckX::
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 1
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 8
+	call PaintTilemapAttrsSmall
 .text
 	ld d, "b"
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 9
@@ -310,8 +310,8 @@ PaintModalBottomRowCheckX::
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 11
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 
 	ld d, "a"
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 12
@@ -333,8 +333,8 @@ PaintModalBottomRowCheckX::
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 14
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 .br_corner
 	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
@@ -342,6 +342,6 @@ PaintModalBottomRowCheckX::
 	call PaintTilemap
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call PaintTilemapAttrsSmall
 	ret
