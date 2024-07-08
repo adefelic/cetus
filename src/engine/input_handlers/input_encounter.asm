@@ -52,9 +52,4 @@ HandlePressedSelect:
 	ld [wPreviousFrameScreen], a
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
-	jp DirtyTilemap ; this is broken, whatever
-
-DirtyTilemap:
-	ld a, TRUE
-	ld [wIsShadowTilemapDirty], a
-	ret
+	jp DirtyFpSegmentsAndTilemap
