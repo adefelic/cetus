@@ -82,22 +82,11 @@ EntryPoint:
 LoadBgTilesIntoVram:
 .loadExploreAndEncounterTiles
 	; Copy BG tile data into VRAM bank 0
-	ld de, OWTiles
+	ld de, BgBank0Tiles
 	ld hl, _VRAM9000
-	ld bc, OWTilesEnd - OWTiles
+	ld bc, BgBank0TilesEnd - BgBank0Tiles
 	call Memcopy
 
-	ld de, ModalTiles
-	ld bc, ModalTilesEnd - ModalTiles
-	call Memcopy
-
-	ld de, EncounterTiles
-	ld bc, EncounterTilesEnd - EncounterTiles
-	call Memcopy
-
-	ld de, DistanceFogTiles
-	ld bc, DistanceFogTilesEnd - DistanceFogTiles
-	call Memcopy
 .loadFont
 	; Copy BG tile data into VRAM bank 1
 	ld a, 1
@@ -369,6 +358,19 @@ MemcopySmall::
 	dec b
 	ld a, b
 	jp nz, MemcopySmall
+	ret
+
+; copy bytes from one area to another. max 256 bytes
+; @param d: source value
+; @param hl: destination
+; @param b: length
+CopyIncrementing::
+	ld a, d
+	ld [hli], a
+	inc d
+	dec b
+	ld a, b
+	jp nz, CopyIncrementing
 	ret
 
 ; @param hl, source address, zero-aligned

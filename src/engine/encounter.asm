@@ -7,6 +7,8 @@ wEncounterState:: db
 wEnemyAddr:: dw
 wEnemyCurrentHp:: db
 
+wEnemyMaxHp:: db ; this is just caching a value for easier printing
+
 SECTION "Encounter init logic", ROMX
 BeginEncounter::
 .setEncounterState

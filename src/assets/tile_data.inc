@@ -1,6 +1,7 @@
 SECTION "Tile Data", ROMX
 
 ; bg bank 0
+BgBank0Tiles::
 OWTiles::
 INCBIN "build/gfx/explore-simple.2bpp"
 OWTilesEnd::
@@ -13,24 +14,21 @@ EncounterTiles::
 INCBIN "build/gfx/encounter-simple.2bpp"
 EncounterTilesEnd::
 
-; this is the big image version of fog
-FogTiles::
-INCBIN "build/gfx/fog.2bpp"
-FogTilesEnd::
-
-; this is the lightweight one
 DistanceFogTiles::
 INCBIN "build/gfx/distance-fog.2bpp"
 DistanceFogTilesEnd::
 
-; bg bank 1
-ComputerDarkTiles::
-INCBIN "build/gfx/computer-dark.2bpp"
-ComputerDarkTilesEnd::
+EncounterEnvTreesTiles::
+INCBIN "build/gfx/encounter-env-trees.2bpp"
+EncounterEnvTreesTilesEnd::
+BgBank0TilesEnd::
 
+
+; bg bank 1
 ScribTiles::
 INCBIN "build/gfx/scrib.2bpp"
 ScribTilesEnd::
+
 
 ; sprites bank 0
 CompassTiles::

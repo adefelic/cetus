@@ -1,12 +1,12 @@
-INCLUDE "src/macros/character.inc"
+INCLUDE "src/macros/npc.inc"
 
-SECTION "Character Data", ROMX
+SECTION "NPC Data", ROMX
 
-; Character Attack Lists
+; NPC Attack Lists
 VinesAttackList::
 	dw AttackTrip
 
-; Character Reisstance Palettes
+; NPC Reisstance Palettes
 VinesResistancePalette::
 	db RV_NEUTRAL
 	db RV_NEUTRAL
@@ -22,4 +22,4 @@ VinesResistancePalette::
 
 ; field encounters
 FieldEncounters::
-  dstruct Character, Vines, "Vines", VinesResistancePalette, 1, VinesAttackList, 40, 20
+  dstruct NPC, Vines, "Vines", VinesResistancePalette, 1, VinesAttackList, 40, 20

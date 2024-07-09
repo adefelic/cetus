@@ -3,7 +3,7 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/encounter_constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
-INCLUDE "src/macros/character.inc"
+INCLUDE "src/macros/npc.inc"
 
 SECTION "Encounter Screen Renderer", ROMX
 
@@ -30,25 +30,23 @@ HandleInitialState:
 	ld a, h
 	ld [wEnemyAddr+1], a
 
-	; set wEnemyCurrentHp to their max hp
-	ld a, Character_MaxHp
+	; set wEnemyCurrentHp to their max hp. cache values for easier display
+	ld a, NPC_MaxHp
 	call AddAToHl
 	ld a, [hl]
 	ld hl, wEnemyCurrentHp
 	ld [hl], a
-
-	jp UpdateScreen
+	ld hl, wEnemyMaxHp
+	ld [hl], a
+	jp LoadInitialEncounterTiles
 
 HandlePlayerTurnState:
-	jp UpdateScreen
+	jp UpdateEncounterTiles
 
 HandleEnemyTurnState:
-	jp UpdateScreen
+	jp UpdateEncounterTiles
 
-UpdateScreen:
-	ld a, [wEncounterState]
-	cp ENCOUNTER_STATE_INITIAL
-	jp nz, .loadEncounterHUDIntoShadowTilemap
+LoadInitialEncounterTiles:
 .loadShadowTilemapForBlackBackground
 	ld de, Map1EncounterScreen
 	ld hl, wShadowBackgroundTilemap
@@ -59,11 +57,14 @@ UpdateScreen:
 	ld hl, wShadowBackgroundTilemapAttrs
 	ld bc, VISIBLE_TILEMAP_SIZE
 	call PaintTilemapAttrs
+.loadEnvironment
+	call PaintEnvironment
+
+UpdateEncounterTiles:
 .loadEncounterHUDIntoShadowTilemap
 	;call RenderSkillsMenus
 	call PaintPlayerStatus
-	;call RenderEnemyState
-	;call RenderEnvironment
+	call RenderEnemy
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]
 	cp SCREEN_ENCOUNTER
