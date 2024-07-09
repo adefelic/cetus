@@ -1,5 +1,5 @@
 INCLUDE "src/constants/character_constants.inc"
-INCLUDE "src/macros/attack.inc"
+INCLUDE "src/structs/attack.inc"
 
 SECTION "Attack Definitions", ROMX
 

@@ -1,5 +1,5 @@
 INCLUDE "src/constants/constants.inc"
-INCLUDE "src/macros/event.inc"
+INCLUDE "src/structs/event.inc"
 
 SECTION "Warp Event Input Handling", ROMX
 

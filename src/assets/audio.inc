@@ -1,4 +1,4 @@
-INCLUDE "src/macros/audio.inc"
+INCLUDE "src/structs/audio.inc"
 
 SECTION "Audio Data", ROMX
 

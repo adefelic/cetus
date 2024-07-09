@@ -2,7 +2,7 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/item_constants.inc"
-INCLUDE "src/macros/event.inc"
+INCLUDE "src/structs/event.inc"
 INCLUDE "src/lib/hardware.inc"
 
 SECTION "Explore Screen Input Handling", ROMX

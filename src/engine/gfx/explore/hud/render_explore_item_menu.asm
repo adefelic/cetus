@@ -2,7 +2,7 @@ INCLUDE "src/assets/tiles/indices/scrib.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/item_constants.inc"
 INCLUDE "src/constants/gfx_event.inc"
-INCLUDE "src/macros/item.inc"
+INCLUDE "src/structs/item.inc"
 
 SECTION "Item Rendering Scratch", WRAM0
 wItemQuantityNameStringBuffer:: ds BYTES_IN_DIALOG_STRING

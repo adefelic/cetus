@@ -1,5 +1,5 @@
 INCLUDE "src/assets/tiles/indices/scrib.inc"
-INCLUDE "src/macros/item.inc"
+INCLUDE "src/structs/item.inc"
 INCLUDE "src/constants/item_constants.inc"
 
 SECTION "Item Definitions", ROMX

@@ -1,7 +1,7 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/gfx_event.inc"
-INCLUDE "src/macros/event.inc"
+INCLUDE "src/structs/event.inc"
 
 SECTION "Dialog Modal State", WRAM0
 wDialogModalDirty:: db

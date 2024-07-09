@@ -1,4 +1,4 @@
-INCLUDE "src/macros/npc.inc"
+INCLUDE "src/structs/npc.inc"
 
 SECTION "NPC Data", ROMX
 

@@ -3,7 +3,7 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/encounter_constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
-INCLUDE "src/macros/npc.inc"
+INCLUDE "src/structs/npc.inc"
 
 SECTION "Encounter Screen Renderer", ROMX
 
