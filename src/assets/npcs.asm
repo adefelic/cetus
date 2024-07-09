@@ -3,11 +3,11 @@ INCLUDE "src/macros/npc.inc"
 SECTION "NPC Data", ROMX
 
 ; NPC Attack Lists
-VinesAttackList::
+BrambleAttackList::
 	dw AttackTrip
 
 ; NPC Reisstance Palettes
-VinesResistancePalette::
+BrambleResistancePalette::
 	db RV_NEUTRAL
 	db RV_NEUTRAL
 	db RV_NEUTRAL
@@ -22,4 +22,4 @@ VinesResistancePalette::
 
 ; field encounters
 FieldEncounters::
-  dstruct NPC, Vines, "Vines", VinesResistancePalette, 1, VinesAttackList, 40, 20
+  dstruct NPC, NpcBramble, "bramble", NpcBrambleTiles, BrambleResistancePalette, 1, BrambleAttackList, 40, 20

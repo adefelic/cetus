@@ -16,7 +16,12 @@ InitColorPalettes::
 	ld de, ForestBgPaletteSet
 	call SetBgPaletteSet
 	ld de, OwObjPaletteSet
-	jp SetObjPaletteSet
+	jr SetObjPaletteSet
+
+InitTileLoadingEnqueueFlags::
+	ld a, FALSE
+	ld [wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram], a
+	ret
 
 ; @param de: source palette set addr
 EnqueueBgPaletteSetUpdate::
@@ -41,7 +46,6 @@ SetEnqueuedBgPaletteSet::
 	xor a
 	ld [wBgPaletteUpdateAddr], a
 	ld [wBgPaletteUpdateAddr + 1], a
-
 	ret
 
 ; this should only be called on VBlank
@@ -51,7 +55,7 @@ SetBgPaletteSet:
 	ld [rBCPS], a
 	ld hl, rBCPD
 	ld b, PALETTE_SET_SIZE
-	jp CopyColorsToPalette
+	jr CopyColorsToPalette
 
 ; this should only be called on VBlank
 ; @param de: source palette set addr
@@ -60,7 +64,7 @@ SetObjPaletteSet:
 	ld [rOCPS], a
 	ld hl, rOCPD
 	ld b, PALETTE_SET_SIZE
-	jp CopyColorsToPalette
+	jr CopyColorsToPalette
 
 ; @param de: source
 ; @param hl: destination

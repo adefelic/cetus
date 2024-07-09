@@ -119,7 +119,7 @@ PaintNPCStatus::
 	ld a, " "
 	ld [hli], a
 .HpCurrent
-	ld a, [wEnemyCurrentHp]
+	ld a, [wNpcCurrentHp]
 	call ConvertBinaryNumberToThreeDigitDecimalNumber
 	ld a, b ; todo if 0, paint blank
 	add NUMBER_CHARACTER_OFFSET
@@ -134,7 +134,7 @@ PaintNPCStatus::
 	ld a, "/"
 	ld [hli], a
 .HpMax
-	ld a, [wEnemyMaxHp]
+	ld a, [wNpcMaxHp]
 	call ConvertBinaryNumberToThreeDigitDecimalNumber
 	ld a, b ; todo if 0, paint blank
 	add NUMBER_CHARACTER_OFFSET

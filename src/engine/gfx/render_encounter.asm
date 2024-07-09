@@ -22,63 +22,74 @@ UpdateShadowTilemapEncounterScreen::
 HandleInitialState:
 .rollEnemy
 	; todo: get current biome, get current biome enemy table, roll from table
-	ld hl, Vines
+	ld hl, NpcBramble
 .cacheEnemyState
 	; store enemy definition table addr
 	ld a, l
-	ld [wEnemyAddr], a
+	ld [wNpcAddr], a
 	ld a, h
-	ld [wEnemyAddr+1], a
+	ld [wNpcAddr+1], a
 
-	; set wEnemyCurrentHp to their max hp. cache values for easier display
+	push hl
+
+	; set wNpcCurrentHp to their max hp. cache values
 	ld a, NPC_MaxHp
 	call AddAToHl
 	ld a, [hl]
-	ld hl, wEnemyCurrentHp
+	ld hl, wNpcCurrentHp
 	ld [hl], a
-	ld hl, wEnemyMaxHp
+	ld hl, wNpcMaxHp
 	ld [hl], a
-	jp LoadInitialEncounterTiles
+
+	pop hl
+
+	; cache ROM sprite addr
+	ld a, NPC_SpriteAddr
+	call AddAToHl
+	ld a, [hli]
+	ld [wNpcSpriteTilesRomAddr], a
+	ld a, [hl]
+	ld [wNpcSpriteTilesRomAddr + 1], a
+
+	ld a, TRUE
+	ld [wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram], a
+
+	jp LoadInitialEncounterGraphics
 
 HandlePlayerTurnState:
-	jp UpdateEncounterTiles
+	jp UpdateEncounterGraphics
 
 HandleEnemyTurnState:
-	jp UpdateEncounterTiles
+	jp UpdateEncounterGraphics
 
-LoadInitialEncounterTiles:
-.loadShadowTilemapForBlackBackground
+LoadInitialEncounterGraphics:
+.loadBackground
 	ld de, Map1EncounterScreen
 	ld hl, wShadowBackgroundTilemap
 	ld bc, Map1EncounterScreenEnd - Map1EncounterScreen
 	call Memcopy
-.loadShadowTilemapAttributes
 	ld e, BG_PALETTE_Z0
 	ld hl, wShadowBackgroundTilemapAttrs
 	ld bc, VISIBLE_TILEMAP_SIZE
 	call PaintTilemapAttrs
-.loadEnvironment
+.paintEnv
 	call PaintEnvironment
+.paintNpc
+	call RenderNpc
 
-UpdateEncounterTiles:
+UpdateEncounterGraphics:
 .loadEncounterHUDIntoShadowTilemap
 	;call RenderSkillsMenus
 	call PaintPlayerStatus
-	call RenderEnemy
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]
 	cp SCREEN_ENCOUNTER
-	jp z, .updateEncounterSprites
+	jp z, .advanceEncounterState
 .unloadUnusedSprites
 	cp SCREEN_EXPLORE
-	jp nz, .updateEncounterSprites
+	jp nz, .advanceEncounterState
 	call PaintExploreSpritesOffScreen
-;.initEncounterSprites
-	; sprites should all be initialized (loaded into oam) when the game loads
-	; this may be unnecessary if all the sprites are already in vram, just have to update coords
-.updateEncounterSprites
-	;call PaintPlayerSprite
-.updateFromInitialState
+.advanceEncounterState
 	ld a, [wEncounterState]
 	cp ENCOUNTER_STATE_INITIAL
 	ret nz

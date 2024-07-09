@@ -4,10 +4,12 @@ INCLUDE "src/constants/constants.inc"
 
 SECTION "Encounter state", WRAM0
 wEncounterState:: db
-wEnemyAddr:: dw
-wEnemyCurrentHp:: db
+wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram:: db
 
-wEnemyMaxHp:: db ; this is just caching a value for easier printing
+wNpcAddr:: dw
+wNpcCurrentHp:: db
+wNpcMaxHp:: db
+wNpcSpriteTilesRomAddr:: dw
 
 SECTION "Encounter init logic", ROMX
 BeginEncounter::

@@ -115,8 +115,9 @@ LoadObjectTilesIntoVram:
 	ld bc, ItemTilesEnd - ItemTiles
 	call Memcopy
 
-LoadPalettes:
+InitGraphics:
 	call InitColorPalettes
+	call InitTileLoadingEnqueueFlags
 
 ClearOam:
 	xor a
@@ -356,7 +357,6 @@ MemcopySmall::
 	ld [hli], a
 	inc de
 	dec b
-	ld a, b
 	jp nz, MemcopySmall
 	ret
 

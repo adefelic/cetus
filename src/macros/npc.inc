@@ -3,11 +3,13 @@ INCLUDE "src/constants/character_constants.inc"
 
 	struct NPC
 		bytes CHARACTER_NAME_LENGTH, Name
+		words 1, SpriteAddr
+		; todo
+		; words 1, PaletteAddr
 		; offsets into ResistancesAddr are resistance type constants (RT_). values are resistance values (RV_)
 		words 1, ResistancesAddr
 		bytes 1, AttacksCount ; size of attack array
 		words 1, AttacksAddr  ; addr of array of offsets into attack chart
 		bytes 1, MaxHp
 		bytes 1, MaxMp
-		;words 1, SpriteAddr
 	end_struct

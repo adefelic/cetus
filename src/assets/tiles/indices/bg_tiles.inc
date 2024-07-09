@@ -12,6 +12,7 @@
 ; this would also standardize which colors are 0,1,2,3
 ; it would make it easier to add new tiles without having to update all of the indices
 
+; offsets from _VRAM9000
 ; explore-simple
 DEF TILE_MAP_NONE                 EQU $00
 DEF TILE_MAP_L                    EQU $01
@@ -58,3 +59,6 @@ DEF TILE_DISTANCE_FOG_GROUND      EQU $28
 DEF TILES_ENV_BLOCK_LEFT          EQU $29
 DEF TILES_ENV_BLOCK_RIGHT         EQU $42
 DEF TILES_ENV_LINE_WIDTH          EQU $05
+
+; offsets from _VRAM8800
+DEF TILES_ENCOUNTER_NPC EQU $80

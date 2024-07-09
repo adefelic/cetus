@@ -1,6 +1,3 @@
-;DEF TILE_WIDTH EQU 8 ; pixels
-;DEF LEN_2BPP_TILE EQU 2 * TILE_WIDTH ; bytes
-;DEF tiles EQUS "* LEN_2BPP_TILE"
 INCLUDE "src/lib/hardware.inc"
 
 ; screen defs
@@ -18,7 +15,8 @@ DEF TILEMAP_SIZE EQU TILEMAP_WIDTH * TILEMAP_HEIGHT ; bytes
 ; tile defs
 DEF TILE_WIDTH EQU 8 ; pixels
 DEF TILE_HEIGHT EQU 8 ; pixels
-DEF TILE_SIZE EQU 16 ; bytes
+DEF TILE_SIZE EQU TILE_WIDTH * TILE_HEIGHT * 2 / 8 ; 16 bytes
+DEF tiles EQUS "TILE_SIZE *"
 
 ; oam coordinate padding
 DEF OAM_PADDING_Y EQU 16
