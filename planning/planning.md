@@ -139,7 +139,7 @@ character list:
 			- cedar stave
 			- oaken pole
 			- iron fork
-	- reed tender / dirt farmer / grass warden / keeper
+	- reed keeper
 		tool based attacks, vines. plants
 		actions:
 			sow (heal hp, distract)
@@ -147,6 +147,7 @@ character list:
 			sweat (trade hp for mp)
 			douse (drown)
 			tangle (bind)
+			weave
 			graft (trade mp for hp)
 			reap (pierce)
 		weapon progression:
@@ -214,6 +215,7 @@ field:
 	- the patriarch (sun)
 		- glare. blaze xx multi
 		- judge. blaze xxxx single
+		- wither.
 	- prairie chicken
 	- Karner Blue Butterfly 
 forest:
@@ -239,6 +241,8 @@ forest:
 			- crush, xxx, single
 	- wood turtle
 	- marsh hawk
+	- briar puppet / thorn doll (skeleton with briar marionette-ing)
+
 swamp:
 	- flies
 		- cloud
@@ -249,6 +253,7 @@ swamp:
 	- heaving bog
 	- spore bat - like the mold that kills bats making them into mold zombies instead of dead
 	- bog turtle
+	- ritual flame
 
 coast:
 	- drifting fog
@@ -257,11 +262,16 @@ coast:
 		- sea water
 	- beached creature
 		- eject sea water
-	- keen/avid gull 
+	- keen gull 
 	- sea glass
+		- glitter, lull
 	- horseshoe crab
+		- wait
 	- dying shark
+		- gasp
+		- lurch
 	- osprey
+	- crawling turtle
 underwater:
 	- seaweed dragon
 	- green crab
@@ -271,8 +281,19 @@ underwater:
 	- winter skate
 	- black grouper
 	- greenland shark
-
-
+	- stranded meteorite
+beyond:
+	- lost star
+	- wild starlike
+	- wanderer (comet)
+	- starlike abandoned
+	- eye
+	- ovum
+	- void
+	- *
+	- black hole
+	- wave \/\/\/\
+	- particle .
 
 ## COMBAT
 
@@ -369,7 +390,39 @@ ff is 4 on 1-4ish without switching
 
 ## GRAPHICS
 
-
 graphics thoughts
 - maybe first person combat could be overlaid over the background w/ enemy sprites on top and the Window from the bottom
 - maybe walls could be replaced with scribbles + negative space
+
+- move hp/mp and other stats (weather: temperature, humidity, wind, cold fog) should move to the WINDOW at the top of the screen, so you can always see your condition
+
+- leveling up
+	- surgically alter stats? insert totems from the environment?
+	- slowly transforming your body into gold or other material
+		- blood
+		- bones
+		- skin
+		- muscle
+		- 
+- maybe your build changes your blood color
+	- more gold
+		- creation, 
+		- border: chains
+	- more blue
+		- mystery, physics
+		- border: stars
+	- more green
+		- plant
+		- border: vines
+	- more red
+		- animal, beasthood
+		- border: bloody teeth
+	- more black
+		- usage, ephemerality, judgment
+		- border: smoke? creeping dark fog
+
+- blood appears around the screen borders, like call of duty red eye but nice looking instead of dumb
+	- changes as you get more damaged. two stats, body and mind. mind top of screen, body bottom
+	- maybe the border is the thing you put in you reclaiming you. maybe the border gets bigger as you are more hurt
+
+
