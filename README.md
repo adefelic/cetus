@@ -1,3 +1,3 @@
-a first person dungeon crawler map implementation using rgbds
+a first person dungeon crawler for the gameboy color
 
-Computer font from damieng - https://damieng.com/typography/zx-origins/computer/
+written with rgbds
