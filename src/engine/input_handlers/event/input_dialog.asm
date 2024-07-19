@@ -87,7 +87,7 @@ PressedAFromDialogBranch:
 	ld [wDialogBranchFramesIndex], a
 
 	ld a, TRUE
-	ld [wDialogModalDirty], a
+	ld [wBottomMenuDirty], a
 	jp DirtyTilemap
 
 ;; DIALOG_STATE_LABEL handlers

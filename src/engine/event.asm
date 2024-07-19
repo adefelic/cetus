@@ -41,9 +41,9 @@ ResetAllEventState::
 	ld [wDialogBranchFramesCount], a
 
 	; current modal state
-	ld [wMenuItemCount], a
+	ld [wMenuItemsCount], a
 	ld [wDialogTextRowHighlighted], a
-	ld [wDialogRootTextAreaRowsRendered], a
+	ld [wTextRowsRendered], a
 	ld [wDialogBranchesIteratedOver], a
 	ld [wDialogBranchFramesIndex], a
 	ld [wCurrentDialogBranchFrameAddr], a
@@ -55,7 +55,7 @@ SetEventStateDialogLabel::
 	ld [wDialogState], a
 
 	ld a, TRUE
-	ld [wDialogModalDirty], a
+	ld [wBottomMenuDirty], a
 	ret
 
 SetEventStateDialogRoot::
@@ -66,24 +66,24 @@ SetEventStateDialogRoot::
 	ld [wDialogTextRowHighlighted], a
 ResetModalStateAfterHighlightChange::
 	xor a
-	ld [wDialogRootTextAreaRowsRendered], a
-	ld [wMenuItemCount], a
+	ld [wTextRowsRendered], a
+	ld [wMenuItemsCount], a
 	ld [wDialogBranchesIteratedOver], a
 
 	ld a, TRUE
-	ld [wDialogModalDirty], a
+	ld [wBottomMenuDirty], a
 	jp DirtyTilemap
 
 SetEventStateDialogBranch::
 	xor a
 	ld [wDialogBranchFramesIndex], a
-	ld [wDialogRootTextAreaRowsRendered], a
+	ld [wTextRowsRendered], a
 
 	ld a, DIALOG_STATE_BRANCH
 	ld [wDialogState], a
 
 	ld a, TRUE
-	ld [wDialogModalDirty], a
+	ld [wBottomMenuDirty], a
 	ret
 
 ; populate current event state with new events

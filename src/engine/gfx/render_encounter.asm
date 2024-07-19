@@ -79,7 +79,7 @@ LoadInitialEncounterGraphics:
 
 UpdateEncounterGraphics:
 .loadEncounterHUDIntoShadowTilemap
-	;call RenderSkillsMenus
+	call RenderSkillsMenus
 	call PaintPlayerStatus
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]

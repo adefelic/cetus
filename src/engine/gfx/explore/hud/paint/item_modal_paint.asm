@@ -65,11 +65,11 @@ PaintModalTopRowItemMenu::
 .top_line
 	ld d, TILE_MODAL_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 11
-	ld b, 4
+	ld b, 8
 	call PaintTilemapSmall
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + cols 11
-	ld b, 4
+	ld b, 8
 	call PaintTilemapAttrsSmall
 .tr_corner
 	ld d, TILE_MODAL_TL_CORNER

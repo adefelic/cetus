@@ -117,10 +117,10 @@ HandlePressedB:
 	; these two variables reset the highlight state
 	xor a
 	ld [wDialogTextRowHighlighted], a
-	ld [wDialogRootTextAreaRowsRendered], a
+	ld [wTextRowsRendered], a
 
 	ld a, TRUE
-	ld [wDialogModalDirty], a
+	ld [wBottomMenuDirty], a
 	jp DirtyFpSegmentsAndTilemap ; this is to remove the event label if there is one
 
 HandlePressedUp:

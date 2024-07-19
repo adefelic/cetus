@@ -37,6 +37,8 @@ PaintModalTopRow::
 	call PaintTilemapAttrs
 	ret
 
+; todo rename to PaintHighlightableTextRow ?
+; todo does replacing the highlight (color) with a cursor save a palette? i dont think so
 ; this is probably not very efficient
 ; @param hl, addr of 14 byte label to print
 ; @param c, row offset
@@ -95,7 +97,7 @@ PaintModalTextRow::
 	ld b, MODAL_TEXT_AREA_WIDTH
 	call MemcopySmall
 
-	ld a, [wDialogRootTextAreaRowsRendered]
+	ld a, [wTextRowsRendered]
 	call PutTextPaletteInE
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 1 + cols 1
 	; add row offset to hl
@@ -283,56 +285,56 @@ PaintModalBottomRowCheckX::
 .bottom_line
 	ld d, TILE_MODAL_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 1
-	ld bc, 8
+	ld bc, MODAL_WIDTH - 6
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 1
-	ld b, 8
+	ld b, MODAL_WIDTH - 6
 	call PaintTilemapAttrsSmall
 .text
 	ld d, "b"
-	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 9
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 7)
 	ld b, 1
 	call PaintTilemapSmall
 	ld d, "X"
-	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 10
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 6)
 	ld b, 1
 	call PaintTilemapSmall
 	ld e, BG_PALETTE_UI + OAMF_BANK1
-	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 9
+	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 7)
 	ld b, 2
 	call PaintTilemapAttrsSmall
 
 	; "_"
 	ld d, TILE_MODAL_HORIZONTAL
-	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 11
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 5)
 	ld bc, 1
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
-	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 11
+	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 5)
 	ld b, 1
 	call PaintTilemapAttrsSmall
 
 	ld d, "a"
-	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 12
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 4)
 	ld b, 1
 	call PaintTilemapSmall
 	ld d, "check"
-	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 13
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 3)
 	ld b, 1
 	call PaintTilemapSmall
 	ld e, BG_PALETTE_UI + OAMF_BANK1
-	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 12
+	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 4)
 	ld b, 2
 	call PaintTilemapAttrsSmall
 
 	; "_"
 	ld d, TILE_MODAL_HORIZONTAL
-	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 14
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 2)
 	ld bc, 1
 	call PaintTilemap
 	ld e, BG_PALETTE_UI
-	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 14
+	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 2)
 	ld b, 1
 	call PaintTilemapAttrsSmall
 .br_corner

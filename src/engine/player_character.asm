@@ -1,5 +1,7 @@
 INCLUDE "src/assets/player_classes.inc"
 
+DEF PLAYER_ATTACKS_COUNT EQU 3
+
 SECTION "Player Character Attributes", WRAM0
 ;wAttributeEndurance:: db
 ;wAttributeWillpower:: db
@@ -10,8 +12,14 @@ wHpMax:: db
 wHpCurrent:: db
 wMpMax:: db
 wMpCurrent:: db
+wPlayerAttacksCount:: db
 
-; array of extra attacks?
+; collection of addresses of active attacks
+wPlayerAttacks:: ; collection of 4 pointers into the Attacks:: array
+wPlayerAttack1: dw
+wPlayerAttack2: dw
+wPlayerAttack3: dw
+wPlayerAttack4: dw
 
 SECTION "Player Character Functions", ROMX
 
@@ -23,4 +31,25 @@ InitPlayerCharacter::
 	ld a, MAX_MP
 	ld [wMpMax], a
 	ld [wMpCurrent], a
+
+	ld a, PLAYER_ATTACKS_COUNT ; hard code number of available attacks
+	ld [wPlayerAttacksCount], a
+
+.loadAttack1
+	ld a, LOW(AttackSway)
+	ld [wPlayerAttack1], a
+	ld a, HIGH(AttackSway)
+	ld [wPlayerAttack1+1], a
+.loadAttack2
+	ld a, LOW(AttackDeceive)
+	ld [wPlayerAttack2], a
+	ld a, HIGH(AttackDeceive)
+	ld [wPlayerAttack2+1], a
+.loadAttack3
+	ld a, LOW(AttackCrowPeck)
+	ld [wPlayerAttack3], a
+	ld a, HIGH(AttackCrowPeck)
+	ld [wPlayerAttack3+1], a
+.loadAttack4
+	; later
 	ret

@@ -13,14 +13,14 @@ SECTION "Explore Item Menu Renderer", ROMX
 ; todo rendering breaks when the inventory is totally empty
 RenderExploreItemMenu::
 .checkDirty
-	ld a, [wDialogModalDirty]
+	ld a, [wBottomMenuDirty]
 	cp TRUE
 	ret nz
 .renderTopRow
 	call PaintModalTopRowItemMenu
 .checkNeedsToRepopulateMenuItemsList
-	; todo, compare current menu state w previous menu state
-	call PopulateListToRenderInMenu
+	; todo, compare current menu state w previous menu state - i don't know what i meant by this
+	call PopulateMenuItemsFromInventory
 .setStartingMenuItemIndex
 	; todo, compare current menu state w previous menu state
 	; this should maybe be done a level above this.
@@ -29,10 +29,9 @@ RenderExploreItemMenu::
 .setup
 	; have wCurrentMenuItem point to wMenuItems
 	ld hl, wMenuItems ; source
-	ld a, [wMenuItemCount] ; maybe populating the list should set this
 
 	ld a, [wMenuItemTopVisible]
-	ld b, a ; b is the menu item offset that being rendered.
+	ld b, a ; b is the wMenuItems offset that being rendered.
 	ld c, 0 ; row offset, 0-3.
 .renderMenuItemRowsLoop
 	push hl ; stash current wMenuItems position ptr
@@ -98,40 +97,42 @@ RenderExploreItemMenu::
 	inc hl
 	inc hl ; add 2 to point to next wMenuItems entry
 
-	; inc and check
+	; inc c (row being rendered) and check to see if we've written all available rows
 	inc c
 	ld a, c
-	ld [wDialogRootTextAreaRowsRendered], a ; painting uses this
+	ld [wTextRowsRendered], a ; painting uses this
 	cp MODAL_TEXT_AREA_HEIGHT
 	jp z, .renderBottomRow
 
-	ld a, [wMenuItemCount]
+	; check the number of menu items we have available to draw (wMenuItemsCount) against the wMenuItems offset being rendered (b).
+	; if we've drawn the last available item, fill with blank rows
+	ld a, [wMenuItemsCount]
 	inc b
 	cp b
 	jp nz, .renderMenuItemRowsLoop
 .renderBlankRows
-	ld a, [wDialogRootTextAreaRowsRendered]
+	ld a, [wTextRowsRendered]
 .renderBlankRowsLoop
 	cp MODAL_TEXT_AREA_HEIGHT
 	jp z, .renderBottomRow
 	ld c, a
 	call PaintModalEmptyRow ; c is an arg to this
-	ld a, [wDialogRootTextAreaRowsRendered]
+	ld a, [wTextRowsRendered]
 	inc a
-	ld [wDialogRootTextAreaRowsRendered], a
+	ld [wTextRowsRendered], a
 	jp .renderBlankRowsLoop
 .renderBottomRow
 	call PaintModalBottomRowCheckX
 	ld a, FALSE
-	ld [wDialogModalDirty], a
+	ld [wBottomMenuDirty], a
 	ret
 
-; populates wMenuItems::
+; populates wMenuItems:: from the listof item definitions, checking against the inventory to filter out items that are not held
 ; mangles a,b,d,e,h,l
-PopulateListToRenderInMenu:
+PopulateMenuItemsFromInventory:
 .setup
 	xor a
-	ld [wMenuItemCount], a
+	ld [wMenuItemsCount], a
 	; b is the loop counter / current item's offset in Items / current item's offset in wInventory ( -1 )
 	ld b, a
 	ld de, Items ; source, item definitions
@@ -153,10 +154,10 @@ PopulateListToRenderInMenu:
 	ld a, d
 	ld [hli], a ; inc once more to point to next space in wMenuItems
 
-	; inc wMenuItemCount
-	ld a, [wMenuItemCount]
+	; inc wMenuItemsCount
+	ld a, [wMenuItemsCount]
 	inc a
-	ld [wMenuItemCount], a
+	ld [wMenuItemsCount], a
 
 .updateIterator
 	; inc de by sizeof_Item

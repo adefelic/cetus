@@ -93,5 +93,5 @@ CloseExploreMenu:
 	ld a, FALSE
 	ld [wInExploreMenu], a
 	ld a, TRUE
-	ld [wDialogModalDirty], a
+	ld [wBottomMenuDirty], a
 	jp DirtyFpSegmentsAndTilemap
