@@ -156,3 +156,4 @@ PaintNPCStatus::
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_STATUS_HP_LINE
 	ld b, STATUS_LINE_STRING_LEN
 	call PaintTilemapAttrsSmall
+	ret

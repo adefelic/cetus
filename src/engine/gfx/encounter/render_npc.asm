@@ -5,11 +5,7 @@ SECTION "Enemy Rendering", ROMX
 
 DEF NPC_TL EQU rows 4 + cols 9
 
-RenderNpc::
-LoadNpcSpriteTiles:
-	; paint hp bar. placeholder
-	call PaintNPCStatus
-PaintNpcSprite:
+PaintNpcSprite::
 	ld d, TILES_ENCOUNTER_NPC
 	ld hl, wShadowBackgroundTilemap + NPC_TL
 	ld b, NPC_SPRITE_TILE_WIDTH

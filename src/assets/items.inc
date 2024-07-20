@@ -15,3 +15,4 @@ Items::
 	;dstruct Item, Tent, "99x tent"
 	;dstruct Item, Tent, "99x tent"
 
+; urgent note

@@ -9,6 +9,11 @@ SECTION "Encounter Screen Renderer", ROMX
 
 ; rename root function to EvalEncounterState?
 UpdateShadowTilemapEncounterScreen::
+	; state flow:
+	; ENCOUNTER_STATE_INITIAL ->
+	; ENCOUNTER_STATE_PLAYER_TURN -> ENCOUNTER_STATE_PLAYER_ANIMATION -> ENCOUNTER_STATE_PLAYER_END
+	; ENCOUNTER_STATE_ENEMY_TURN -> ENCOUNTER_STATE_ENEMY_ANIMATION -> ENCOUNTER_STATE_ENEMY_END -> loop
+	;
 	ld a, [wEncounterState]
 	cp ENCOUNTER_STATE_INITIAL
 	jp z, HandleInitialState
@@ -75,12 +80,14 @@ LoadInitialEncounterGraphics:
 .paintEnv
 	call PaintEnvironment
 .paintNpc
-	call RenderNpc
+	call PaintNpcSprite
 
 UpdateEncounterGraphics:
 .loadEncounterHUDIntoShadowTilemap
-	call RenderSkillsMenus
+	call PaintNPCStatus
 	call PaintPlayerStatus
+	call RenderSkillsMenus
+
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]
 	cp SCREEN_ENCOUNTER
