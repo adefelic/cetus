@@ -7,6 +7,7 @@ INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 SECTION "Battle Screen Input Handling", ROMX
 
 HandleInputEncounterScreen::
+	; todo: if not player turn, disable input
 HandlePressed:
 ;.checkPressedStart:
 ;	ld a, [wJoypadNewlyPressed]
@@ -15,9 +16,7 @@ HandlePressed:
 .checkPressedSelect:
 	ld a, [wJoypadNewlyPressed]
 	and a, PADF_SELECT
-	ret z
-	;jp z, .checkPressedA
-	call HandlePressedSelect
+	jp nz, HandlePressedSelect
 ;.checkPressedA:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_A
@@ -27,14 +26,14 @@ HandlePressed:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_B
 ;	jp nz, HandlePressedB
-;.checkPressedUp:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_UP
-;	jp nz, HandlePressedUp
-;.checkPressedDown:
-;	ld a, [wJoypadNewlyPressed]
-;	and a, PADF_DOWN
-;	jp nz, HandlePressedDown
+.checkPressedUp:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_UP
+	jp nz, HandlePressedUp
+.checkPressedDown:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_DOWN
+	jp nz, HandlePressedDown
 ;.checkPressedLeft:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_LEFT
@@ -45,7 +44,8 @@ HandlePressed:
 ;	and a, PADF_RIGHT
 ;	jp z, HandleHeld
 ;	call HandlePressedRight
-
+	; bad
+	ret
 
 HandlePressedSelect:
 	ld a, [wActiveFrameScreen]
@@ -53,3 +53,13 @@ HandlePressedSelect:
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
 	jp DirtyFpSegmentsAndTilemap
+
+HandlePressedUp:
+	jp DecrementLineHighlight
+
+HandlePressedDown:
+	jp IncrementLineHighlight
+
+HandlePressedA:
+	; do the attack
+	ret
