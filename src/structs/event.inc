@@ -11,7 +11,7 @@ DEF ROOMEVENT_WARP EQU $01
 	struct RoomEvent
 		bytes 1, EventWalls ; a 4-bit WALLS_ constant. this means that all events must be on the same wall
 		bytes BYTES_IN_DIALOG_LABEL, EventLabelText ; string. this is the text that occurs before entering the event eg "talk?"
-		bytes BYTES_IN_DIALOG_LABEL, EventPromptText ; string. this is the first event frame that precedes the player selecting an option eg "hello there"
+		bytes BYTES_IN_DIALOG_LABEL, EventPromptText ; string. this is the header line of text that goes in the first ui row
 		bytes 1, Type
 		bytes 1, DialogBranchesCount ; unused
 

@@ -51,14 +51,14 @@ RenderDialog::
 
 RenderLabel:
 	; load wRoomEventAddr, add EventLabelText offset, store in wCurrentLabelAddr
-	; this is still used in the PaintLabelModel routine
+	; this is still used in the PaintLabelTopModal routine
 	ld a, [wRoomEventAddr]
 	add RoomEvent_EventLabelText
 	ld [wCurrentLabelAddr], a
 	ld a, [wRoomEventAddr + 1]
 	adc 0
 	ld [wCurrentLabelAddr + 1], a
-	call PaintLabelModel
+	call PaintLabelTopModal
 	ld a, FALSE
 	ld [wBottomMenuDirty], a
 	ret

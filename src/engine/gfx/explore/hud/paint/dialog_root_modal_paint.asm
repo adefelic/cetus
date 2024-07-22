@@ -61,11 +61,11 @@ PaintModalTopRowDialogRoot::
 .top_line
 	ld d, TILE_MODAL_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 10
-	ld b, 5
+	ld b, 9
 	call PaintTilemapSmall
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + cols 10
-	ld b, 5
+	ld b, 9
 	call PaintTilemapAttrsSmall
 .tr_corner
 	ld d, TILE_MODAL_TL_CORNER

@@ -13,7 +13,7 @@ SECTION "Label Modal Paint Routines", ROMX
 ; this is for painting 1 line, 10 character LABELS at the top of the screen
 ; todo make macro for painting both tilemap + attrs
 ; @param d: the tile index to paint with
-PaintLabelModel::
+PaintLabelTopModal::
 .tl_corner
 	ld d, TILE_MODAL_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT
