@@ -9,7 +9,14 @@ SECTION "Battle Screen Input Handling", ROMX
 
 HandleInputEncounterScreen::
 	; todo: if not player turn, disable input
-HandlePressed:
+	ld a, [wEncounterState]
+	cp ENCOUNTER_STATE_PLAYER_TURN
+	jp z, HandleInputPlayerTurn
+	cp ENCOUNTER_STATE_REWARD_SCREEN
+	jp z, HandleInputRewardScreen
+	ret
+
+HandleInputPlayerTurn:
 ;.checkPressedStart:
 ;	ld a, [wJoypadNewlyPressed]
 ;	and a, PADF_START
@@ -45,6 +52,21 @@ HandlePressed:
 ;	jp z, HandleHeld
 ;	call HandlePressedRight
 	; bad
+	ret
+
+HandleInputRewardScreen:
+.checkPressedA:
+	ld a, [wJoypadNewlyPressed]
+	and a, PADF_A
+	jp nz, HandlePressedARewardScreen
+	ret
+
+HandlePressedARewardScreen:
+	ld a, [wActiveFrameScreen]
+	ld [wPreviousFrameScreen], a ; i can't remember what this is used for. also setting this here is bad anyways?
+	ld a, SCREEN_EXPLORE
+	ld [wActiveFrameScreen], a
+	jp DirtyFpSegmentsAndTilemap
 	ret
 
 HandlePressedSelect:
@@ -96,10 +118,11 @@ DoAttack:
 	xor a
 .updateHp
 	ld [wNpcCurrentHp], a
-.advanceEncounterState
-	; go to ENCOUNTER_STATE_PLAYER_END
-	; eventually what would happen here is we would kick off an animation.
-	; when the animation resolved, there would be a check to see if anyone is at zero hp and if the encounter end screen should be entered
+.setPlayerAnimateState
+	xor a
+	ld [wEncounterCurrentAnimationFrame], a
+	ld a, ENCOUNTER_STATE_PLAYER_ANIM
+	ld [wEncounterState], a
 
 	ld a, TRUE
 	ld [wBottomMenuDirty], a

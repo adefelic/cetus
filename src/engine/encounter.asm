@@ -4,6 +4,7 @@ INCLUDE "src/constants/constants.inc"
 
 SECTION "Encounter state", WRAM0
 wEncounterState:: db
+wEncounterCurrentAnimationFrame:: db
 wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram:: db
 
 wNpcAddr:: dw

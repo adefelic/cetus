@@ -7,20 +7,32 @@ INCLUDE "src/structs/npc.inc"
 
 SECTION "Encounter Screen Renderer", ROMX
 
+DEF PLAYER_ANIMATION_FRAMES EQU 10
+
 ; rename root function to EvalEncounterState?
 UpdateShadowTilemapEncounterScreen::
 	; state flow:
 	; ENCOUNTER_STATE_INITIAL ->
-	; ENCOUNTER_STATE_PLAYER_TURN -> ENCOUNTER_STATE_PLAYER_ANIMATION -> ENCOUNTER_STATE_PLAYER_END
-	; ENCOUNTER_STATE_ENEMY_TURN -> ENCOUNTER_STATE_ENEMY_ANIMATION -> ENCOUNTER_STATE_ENEMY_END -> loop
+	; ENCOUNTER_STATE_PLAYER_TURN -> ENCOUNTER_STATE_PLAYER_ANIMATION (todo) -> ENCOUNTER_STATE_PLAYER_END
+	; ENCOUNTER_STATE_ENEMY_TURN -> ENCOUNTER_STATE_ENEMY_ANIMATION (todo) -> ENCOUNTER_STATE_ENEMY_END -> loop
 	;
 	ld a, [wEncounterState]
 	cp ENCOUNTER_STATE_INITIAL
 	jp z, HandleInitialState
 	cp ENCOUNTER_STATE_PLAYER_TURN
 	jp z, HandlePlayerTurnState
+	cp ENCOUNTER_STATE_PLAYER_ANIM
+	jp z, HandlePlayerAnimState
+	cp ENCOUNTER_STATE_PLAYER_END
+	jp z, HandlePlayerEndState
 	cp ENCOUNTER_STATE_ENEMY_TURN
 	jp z, HandleEnemyTurnState
+	cp ENCOUNTER_STATE_ENEMY_ANIM
+	jp z, HandlePlayerAnimState
+	cp ENCOUNTER_STATE_ENEMY_END
+	jp z, HandleEnemyEndState
+	cp ENCOUNTER_STATE_REWARD_SCREEN
+	jp z, HandleRewardScreenState
 	; control should not reach here
 	ret
 
@@ -64,8 +76,47 @@ HandleInitialState:
 HandlePlayerTurnState:
 	jp UpdateEncounterGraphics
 
+HandlePlayerAnimState:
+	ld a, [wEncounterCurrentAnimationFrame]
+	inc a
+	cp PLAYER_ANIMATION_FRAMES
+	jp z, .setPlayerEndState
+.advanceAnimation
+	ld [wEncounterCurrentAnimationFrame], a
+	jp UpdateEncounterGraphics ; todo, UpdatePlayerAnimationGraphics instead
+.setPlayerEndState
+	ld a, ENCOUNTER_STATE_PLAYER_END
+	ld [wEncounterState], a
+	ret
+
+
+HandlePlayerEndState:
+	; check for enemy 0 hp
+	ld a, [wNpcCurrentHp]
+	sub 0
+	jp nz, .setNextTurnState
+.setRewardScreenState
+	ld a, ENCOUNTER_STATE_REWARD_SCREEN
+	ld [wEncounterState], a
+	ret
+.setNextTurnState
+	; todo, set to ENCOUNTER_STATE_ENEMY_TURN instead
+	ld a, ENCOUNTER_STATE_PLAYER_TURN
+	ld [wEncounterState], a
+	ret
+
 HandleEnemyTurnState:
+	; todo check for player 0 hp
 	jp UpdateEncounterGraphics
+
+HandleEnemyAnimState:
+	jp UpdateEncounterGraphics
+
+HandleEnemyEndState:
+	jp UpdateEncounterGraphics
+
+HandleRewardScreenState:
+	jp LoadRewardScreen
 
 LoadInitialEncounterGraphics:
 .loadBackground
@@ -102,4 +153,8 @@ UpdateEncounterGraphics:
 	ret nz
 	ld a, ENCOUNTER_STATE_PLAYER_TURN
 	ld [wEncounterState], a
+	ret
+
+LoadRewardScreen:
+	; todo add a reward screen
 	ret
