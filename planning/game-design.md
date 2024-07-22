@@ -350,6 +350,8 @@ combat system goals
 
 - multitype moves
 
+- items can be giftable? use shiny items on a crow and they will eventually help you. maybe they will do an extra attack for you if you are in their woods
+
 
 ### case study: pokemon
 -  combat incentivizes switching

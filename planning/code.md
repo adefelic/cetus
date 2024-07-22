@@ -1,0 +1,2 @@
+- rename "render" dir and files to "loop" or "synchronous" ?
+- rename "input" dir and files to "interrupt" or "async" ?
