@@ -22,10 +22,8 @@ BgBank0TilesEnd::
 ; npc sprite tiles
 NpcBrambleTiles::
 INCBIN "build/gfx/npc_bramble.2bpp"
-NpcBrambleTilesEnd::
-NpcSkeletonTiles::
-INCBIN "build/gfx/npc_skeleton.2bpp"
-NpcSkeletonTilesEnd::
+NpcOldBonesTiles::
+INCBIN "build/gfx/npc_oldbones.2bpp"
 
 ; bg bank 1
 ScribTiles::

@@ -1,6 +1,7 @@
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
 INCLUDE "src/constants/explore_constants.inc"
+INCLUDE "src/constants/location_constants.inc"
 INCLUDE "src/structs/event.inc"
 
 SECTION "Map Data", ROMX
@@ -125,9 +126,9 @@ TownHall_AskAboutSkull_DialogBranchFrames:
 	dstruct DialogBranchFrame, TownHall_AskAboutSkull_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="i'm not sure", .TextLine1="what you're", .TextLine2="speaking of...", .TextLine3="*cough*"
 
 ; warps
-	dstruct WarpDestination, BackWarp_WarpDestination, 7, 12, ORIENTATION_SOUTH, SwampBgPaletteSet
-	dstruct WarpDestination, SouthSwampFogWarpUp_WarpDestination, 10, 26, ORIENTATION_NORTH, SwampBgPaletteSet
-	dstruct WarpDestination, SouthSwampFogWarpDown_WarpDestination, 10, 27, ORIENTATION_SOUTH, ForestBgPaletteSet
+	dstruct WarpDestination, BackWarp_WarpDestination, 7, 12, ORIENTATION_SOUTH, SwampBgPaletteSet, LOCATION_SWAMP
+	dstruct WarpDestination, SouthSwampFogWarpUp_WarpDestination, 10, 26, ORIENTATION_NORTH, SwampBgPaletteSet, LOCATION_SWAMP
+	dstruct WarpDestination, SouthSwampFogWarpDown_WarpDestination, 10, 27, ORIENTATION_SOUTH, ForestBgPaletteSet, LOCATION_FIELD
 
 ; tile ids for a hard-coded encounter screen
 Map1EncounterScreen::

@@ -3,6 +3,7 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/encounter_constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
+INCLUDE "src/constants/location_constants.inc"
 INCLUDE "src/structs/npc.inc"
 
 SECTION "Encounter Screen Renderer", ROMX
@@ -40,8 +41,16 @@ UpdateShadowTilemapEncounterScreen::
 HandleInitialState:
 .rollEnemy
 	; todo: get current biome, get current biome enemy table, roll from table
-	ld hl, NpcBramble
-.cacheEnemyState
+
+	ld a, [wPlayerLocation]
+	cp LOCATION_FIELD
+	jr z, RollFieldEnemy
+	cp LOCATION_SWAMP
+	jr z, RollSwampEnemy
+	; control should not reach here
+	ret
+
+CacheEnemyState:
 	; store enemy definition table addr
 	ld a, l
 	ld [wNpcAddr], a
@@ -73,6 +82,28 @@ HandleInitialState:
 	ld [wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram], a
 
 	jp LoadInitialEncounterGraphics
+
+; put a FIELD npc addr in hl
+RollFieldEnemy:
+	call Rand
+	; mask out bits that arent used by FIELD_NPCS_COUNT. currently only 1 bit so AND 1
+	AND 1
+	sla a ; * 2 so that it's the random number * sizeof address
+	ld hl, FieldNpcs
+	call AddAToHl
+	call DereferenceHlIntoHl
+	jr CacheEnemyState
+
+; put a SWAMP npc addr in hl
+RollSwampEnemy:
+	call Rand
+	; mask out bits that arent used by SWAMP_NPCS_COUNT. currently only 1 bit so AND 1
+	AND 1
+	sla a ; * 2 so that it's the random number * sizeof address
+	ld hl, SwampNpcs
+	call AddAToHl
+	call DereferenceHlIntoHl
+	jr CacheEnemyState
 
 HandlePlayerTurnState:
 	jp UpdateEncounterGraphics

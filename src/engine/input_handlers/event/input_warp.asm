@@ -28,12 +28,19 @@ DoWarp::
 	ld [wPlayerOrientation], a
 
 	pop hl
+	push hl
 	ld a, WarpDestination_BgPaletteSetAddr
 	call AddAToHl
 	call DereferenceHlIntoHl
 	ld d, h
 	ld e, l
 	call EnqueueBgPaletteSetUpdate
+
+	pop hl
+	ld a, WarpDestination_DestinationLocation
+	call AddAToHl
+	ld a, [hl]
+	ld [wPlayerLocation], a
 
 	ld a, FALSE
 	ld [wIsPlayerFacingWallInteractable], a

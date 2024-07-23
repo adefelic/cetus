@@ -28,6 +28,9 @@ RenderSkillsMenus::
 	ld b, a ; b is the menu item offset that being rendered.
 	ld c, 0 ; row offset, 0-3.
 .renderMenuItemRowsLoop
+
+	; todo. the highlight seems to be resetting after pressing A on the 0th row?
+
 	push hl ; stash current wMenuItems position ptr
 	push bc ; stash b and c iterators
 

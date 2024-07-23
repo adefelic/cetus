@@ -1,5 +1,6 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
+INCLUDE "src/constants/location_constants.inc"
 
 SECTION "Room Attribute Definitions", ROMX
 ; maps tiles data to wall presence data. supports 3 wall types
@@ -43,6 +44,10 @@ SetMap::
 	ld [wActiveMapEventLocations], a
 	ld a, l
 	ld [wActiveMapEventLocations+1], a
+
+	ld a, LOCATION_FIELD
+	ld [wPlayerLocation], a
+
 ; todo replace with LoadItemMap which would dump some sram into wItemMap
 .clearItemMap:
 	ld bc, wItemMapEnd - wItemMap

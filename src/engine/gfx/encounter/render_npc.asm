@@ -30,5 +30,4 @@ PaintNpcSprite::
 	ld hl, wShadowBackgroundTilemap + NPC_TL + rows 4
 	ld b, NPC_SPRITE_TILE_WIDTH
 	call CopyIncrementing
-
 	ret

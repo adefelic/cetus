@@ -17,6 +17,9 @@ wStepsToNextDangerLevel:: db
 wCurrentDangerLevel:: db
 wHasInputBeenProcessedThisFrame:: db
 
+SECTION "General Player State", WRAM0
+wPlayerLocation:: db
+
 SECTION "Explore Player State", WRAM0
 wPlayerExploreX:: db
 wPlayerExploreY:: db
