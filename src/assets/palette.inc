@@ -6,13 +6,13 @@ SECTION "Palette Data", ROMX
 ForestBgPaletteSet::
 	;    unused    ground      wall       unused
 	;    dark,     tan,        green,     grey-brown,
-	RGB  4, 4, 4,  12, 9, 8,  0, 8, 6,   7, 6, 8 ; z = 0, near sides
-	RGB  4, 4, 4,  00,00,00,  1, 9, 6,   8, 6, 8 ; z = 1, near front
-	RGB  4, 4, 4,  14,11, 9,  1,10, 7,   9, 7, 8 ; z = 2, far sides
-	RGB  4, 4, 4,  00,00,00,  1,11, 7,  10, 7, 8 ; z = 3, far front
+	RGB  00,00,00, 12, 9, 8,  0, 8, 6,   7, 6, 8 ; z = 0, near sides
+	RGB  00,00,00, 00,00,00,  1, 9, 6,   8, 6, 8 ; z = 1, near front
+	RGB  00,00,00, 14,11, 9,  1,10, 7,   9, 7, 8 ; z = 2, far sides
+	RGB  00,00,00, 00,00,00,  1,11, 7,  10, 7, 8 ; z = 3, far front
 
 	;    text bg   text       text2?     unused
-	RGB  1, 1, 1,  13,13,13,  2,10, 2,   2, 2,10 ; ui
+	RGB  2, 2, 2,  13,13,13,  2,10, 2,   2, 2,10 ; ui
 	RGB  03,03,03,  2,10, 2,  2, 2,10,   2, 2,10 ; ui2 (highlighted)
 
 	RGB  00,00,00, 20,00,00,  00,20,00,  00,00,20 ; special, for bridge walls maybe? has no depth. unused so far
@@ -22,13 +22,16 @@ ForestBgPaletteSet::
 
 SwampBgPaletteSet::
 	;    unused    ground     wall       unused
-	RGB  4, 4, 4,   4, 4, 4,  5, 5, 8,   0, 0, 0 ; z = 0, near sides
-	RGB  4, 4, 4,  00,00,00,  5, 5, 9,   0, 0, 0 ; z = 1, near front
-	RGB  4, 4, 4,   6, 5, 6,  5, 6,10,   0, 0, 0 ; z = 2, far sides
-	RGB  4, 4, 4,  00,00,00,  5, 6,11,   0, 0, 0 ; z = 3, far front
-	RGB  1, 1, 1,  13,13,13,  2,10, 2,   2, 2,10 ; ui
+	;                                    grey-brown,
+	RGB  00,00,00,  4, 4, 4,  5, 5, 8,   7, 6, 8 ; z = 0, near sides
+	RGB  00,00,00, 00,00,00,  5, 5, 9,   8, 6, 8 ; z = 1, near front
+	RGB  00,00,00,  6, 5, 6,  5, 6,10,   9, 7, 8 ; z = 2, far sides
+	RGB  00,00,00, 00,00,00,  5, 6,11,  10, 7, 8 ; z = 3, far front
+
+	RGB  2, 2, 2,  13,13,13,  2,10, 2,   2, 2,10 ; ui
 	RGB  13,13,13,  2,10, 2,  2, 2,10,   1, 1, 1 ; ui2 (highlighted)
 	RGB  4,12, 8,  13,15,15,  7,14,10,  10,15,12 ; special, for ocean walls? has no depth. unused so far
+
 	;    fog 1     fog 2      ground     wall
 	RGB  11,11,11, 10,10,10,  6, 5, 6,  05,06,12, ; fog
 
