@@ -9,6 +9,7 @@ INCLUDE "src/structs/npc.inc"
 SECTION "Encounter Screen Renderer", ROMX
 
 DEF PLAYER_ANIMATION_FRAMES EQU 10
+DEF ENEMY_ANIMATION_FRAMES EQU 10
 
 ; rename root function to EvalEncounterState?
 UpdateShadowTilemapEncounterScreen::
@@ -38,10 +39,8 @@ UpdateShadowTilemapEncounterScreen::
 	; control should not reach here
 	ret
 
-HandleInitialState:
+InitEnemyNpc:
 .rollEnemy
-	; todo: get current biome, get current biome enemy table, roll from table
-
 	ld a, [wPlayerLocation]
 	cp LOCATION_FIELD
 	jr z, RollFieldEnemy
@@ -49,6 +48,28 @@ HandleInitialState:
 	jr z, RollSwampEnemy
 	; control should not reach here
 	ret
+
+; put a FIELD npc addr in hl
+RollFieldEnemy:
+	call Rand
+	; mask out bits that arent used by FIELD_NPCS_COUNT. currently only 1 bit so AND 1
+	AND 1
+	sla a ; * 2 so that it's the random number * sizeof address
+	ld hl, FieldNpcs
+	call AddAToHl
+	call DereferenceHlIntoHl
+	jr CacheEnemyState
+
+; put a SWAMP npc addr in hl
+RollSwampEnemy:
+	call Rand
+	; mask out bits that arent used by SWAMP_NPCS_COUNT. currently only 1 bit so AND 1
+	AND 1
+	sla a ; * 2 so that it's the random number * sizeof address
+	ld hl, SwampNpcs
+	call AddAToHl
+	call DereferenceHlIntoHl
+	jr CacheEnemyState
 
 CacheEnemyState:
 	; store enemy definition table addr
@@ -80,30 +101,14 @@ CacheEnemyState:
 
 	ld a, TRUE
 	ld [wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram], a
+	ret
 
-	jp LoadInitialEncounterGraphics
-
-; put a FIELD npc addr in hl
-RollFieldEnemy:
-	call Rand
-	; mask out bits that arent used by FIELD_NPCS_COUNT. currently only 1 bit so AND 1
-	AND 1
-	sla a ; * 2 so that it's the random number * sizeof address
-	ld hl, FieldNpcs
-	call AddAToHl
-	call DereferenceHlIntoHl
-	jr CacheEnemyState
-
-; put a SWAMP npc addr in hl
-RollSwampEnemy:
-	call Rand
-	; mask out bits that arent used by SWAMP_NPCS_COUNT. currently only 1 bit so AND 1
-	AND 1
-	sla a ; * 2 so that it's the random number * sizeof address
-	ld hl, SwampNpcs
-	call AddAToHl
-	call DereferenceHlIntoHl
-	jr CacheEnemyState
+HandleInitialState:
+	call InitEnemyNpc
+.setPlayerTurnState
+	ld a, ENCOUNTER_STATE_PLAYER_TURN
+	ld [wEncounterState], a
+	jr LoadInitialEncounterGraphics
 
 HandlePlayerTurnState:
 	jp UpdateEncounterGraphics
@@ -121,7 +126,6 @@ HandlePlayerAnimState:
 	ld [wEncounterState], a
 	ret
 
-
 HandlePlayerEndState:
 	; check for enemy 0 hp
 	ld a, [wNpcCurrentHp]
@@ -138,16 +142,39 @@ HandlePlayerEndState:
 	ret
 
 HandleEnemyTurnState:
-	; todo check for player 0 hp
+.doEnemyTurn
+	; todo
+	; roll an attack from the attack table, do it
+.setAnimState
+	ld a, ENCOUNTER_STATE_ENEMY_ANIM
+	ld [wEncounterState], a
 	jp UpdateEncounterGraphics
 
 HandleEnemyAnimState:
+	ld a, [wEncounterCurrentAnimationFrame]
+	inc a
+	cp ENEMY_ANIMATION_FRAMES
+	jp z, .setEnemyEndState
+.advanceAnimation
+	ld [wEncounterCurrentAnimationFrame], a
+	jp UpdateEncounterGraphics ; todo, UpdateEnemyAnimationGraphics instead
+.setEnemyEndState
+	ld a, ENCOUNTER_STATE_ENEMY_END ; opponent?
+	ld [wEncounterState], a
 	jp UpdateEncounterGraphics
 
 HandleEnemyEndState:
+	; todo check for player 0 hp
+	; set either player turn or failure screen
+	ld a, ENCOUNTER_STATE_PLAYER_TURN
+	ld [wEncounterState], a
 	jp UpdateEncounterGraphics
 
 HandleRewardScreenState:
+	jp LoadRewardScreen
+
+HandleFailureScreenState:
+	; todo design a fail screen and put it here instead
 	jp LoadRewardScreen
 
 LoadInitialEncounterGraphics:
@@ -170,21 +197,14 @@ UpdateEncounterGraphics:
 	call PaintNPCStatus
 	call PaintPlayerStatus
 	call RenderSkillsMenus
-
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]
 	cp SCREEN_ENCOUNTER
-	jp z, .advanceEncounterState
+	ret z
 .unloadUnusedSprites
 	cp SCREEN_EXPLORE
-	jp nz, .advanceEncounterState
-	call PaintExploreSpritesOffScreen
-.advanceEncounterState
-	ld a, [wEncounterState]
-	cp ENCOUNTER_STATE_INITIAL
 	ret nz
-	ld a, ENCOUNTER_STATE_PLAYER_TURN
-	ld [wEncounterState], a
+	call PaintExploreSpritesOffScreen
 	ret
 
 LoadRewardScreen:

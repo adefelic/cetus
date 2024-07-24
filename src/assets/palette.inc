@@ -30,14 +30,15 @@ SwampBgPaletteSet::
 
 	RGB  2, 2, 2,  13,13,13,  2,10, 2,   2, 2,10 ; ui
 	RGB  13,13,13,  2,10, 2,  2, 2,10,   1, 1, 1 ; ui2 (highlighted)
+
 	RGB  4,12, 8,  13,15,15,  7,14,10,  10,15,12 ; special, for ocean walls? has no depth. unused so far
 
-	;    fog 1     fog 2      ground     wall
+	;    fog 1     fog 2      ground    wall
 	RGB  11,11,11, 10,10,10,  6, 5, 6,  05,06,12, ; fog
 
 ; Obj palettes
 OwObjPaletteSet::
-	RGB 0,0,0,  0,27,31,  00,14,24,  31,31,31 ; quartz: clear, lightblue, blue, unused
+	RGB 0,0,0,  0,27,31,  00,14,24,  31,31,31 ; quartz: clear, light blue, blue, unused
 	RGB 0,0,0, 31,25,00,  20,12, 3,  13,09,00 ; lamp: clear, yellow, dark brown, light brown
 	RGB 0,0,0,  1,10, 6,  14, 5, 6,  13,10, 8 ; tent
 	RGB 0,0,0,  0, 8, 6,  13, 4, 5,  12, 9, 8 ; unused
