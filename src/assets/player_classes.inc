@@ -1,6 +1,6 @@
 
 
-DEF MAX_HP EQU 20;
+DEF MAX_HP EQU 60;
 DEF MAX_MP EQU 18;
 
 ; scarecrow

@@ -1,3 +1,6 @@
+IF !DEF(DEF_STRUCTS)
+DEF DEF_STRUCTS EQU 1
+
 ; MIT License
 ;
 ; Copyright (c) 2018-2022 Eldred Habert and contributors
@@ -336,3 +339,5 @@ MACRO dstructs ; nb_structs, struct_type, instance_name
     ENDR
     PURGE STRUCT_ID
 ENDM
+
+ENDC

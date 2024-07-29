@@ -5,6 +5,7 @@ INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/constants/location_constants.inc"
 INCLUDE "src/structs/npc.inc"
+INCLUDE "src/structs/attack.inc"
 
 SECTION "Encounter Screen Renderer", ROMX
 
@@ -31,7 +32,7 @@ UpdateShadowTilemapEncounterScreen::
 	cp ENCOUNTER_STATE_ENEMY_TURN
 	jp z, HandleEnemyTurnState
 	cp ENCOUNTER_STATE_ENEMY_ANIM
-	jp z, HandlePlayerAnimState
+	jp z, HandleEnemyAnimState
 	cp ENCOUNTER_STATE_ENEMY_END
 	jp z, HandleEnemyEndState
 	cp ENCOUNTER_STATE_REWARD_SCREEN
@@ -136,18 +137,21 @@ HandlePlayerEndState:
 	ld [wEncounterState], a
 	ret
 .setNextTurnState
-	; todo, set to ENCOUNTER_STATE_ENEMY_TURN instead
-	ld a, ENCOUNTER_STATE_PLAYER_TURN
+	ld a, ENCOUNTER_STATE_ENEMY_TURN
 	ld [wEncounterState], a
 	ret
 
 HandleEnemyTurnState:
-.doEnemyTurn
-	; todo
-	; roll an attack from the attack table, do it
-.setAnimState
+	call DoEnemySkill
+.setEnemyAnimateState
+	xor a
+	ld [wEncounterCurrentAnimationFrame], a
 	ld a, ENCOUNTER_STATE_ENEMY_ANIM
 	ld [wEncounterState], a
+
+	; not sure if these calls are right
+	call DirtyFpSegmentsAndTilemap
+	; todo: load in "enemy used ___" text
 	jp UpdateEncounterGraphics
 
 HandleEnemyAnimState:
@@ -209,4 +213,36 @@ UpdateEncounterGraphics:
 
 LoadRewardScreen:
 	call PaintRewardScreen
+	ret
+
+DoEnemySkill:
+	ld hl, wNpcAddr
+	call DereferenceHlIntoHl
+	; hl now holds addr of npc
+	ld a, NPC_AttacksAddr
+	call AddAToHl
+	call DereferenceHlIntoHl
+	push hl
+	; hl now holds addr of attack list
+	call Rand
+	AND 3 ; mask out all bits but last 2 for a random # between 1-3
+	pop hl
+	call AddAToHl
+	call DereferenceHlIntoHl
+	; hl now holds addr of attack definition
+
+.subDamageFromHp
+	ld a, Attack_DamageValue
+	call AddAToHl
+	ld a, [hl]
+	ld b, a
+
+	; subtract from player hp
+	ld a, [wHpCurrent]
+	sub b
+	jp nc, .updateHp
+.setZeroHp
+	xor a
+.updateHp
+	ld [wHpCurrent], a
 	ret
