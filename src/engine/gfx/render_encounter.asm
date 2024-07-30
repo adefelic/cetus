@@ -10,10 +10,11 @@ INCLUDE "src/structs/attack.inc"
 SECTION "Encounter Screen Renderer", ROMX
 
 ; todo these aren't paced correctly
-DEF PLAYER_ANIMATION_FRAMES EQU 60 * 3
-DEF ENEMY_ANIMATION_FRAMES EQU 60 * 3
+DEF PLAYER_ANIMATION_FRAMES EQU 60 * 4
+DEF ENEMY_ANIMATION_FRAMES EQU 60 * 4
 
 ; rename root function to EvalEncounterState? UpdateEncounter probably
+; todo add ENCOUNTER_STATE_INITIAL_ANIMATION
 UpdateShadowTilemapEncounterScreen::
 	; state flow:
 	; ENCOUNTER_STATE_INITIAL ->
@@ -141,10 +142,6 @@ HandlePlayerEndState:
 .setNextTurnState
 	ld a, ENCOUNTER_STATE_ENEMY_TURN
 	ld [wEncounterState], a
-
-	; maybe? not sure if we want the bottom screen to say something different here
-	;ld a, TRUE
-	;ld [wBottomMenuDirty], a
 	ret
 
 HandleEnemyTurnState:
@@ -179,8 +176,7 @@ HandleEnemyEndState:
 	; set either player turn or failure screen
 	ld a, ENCOUNTER_STATE_PLAYER_TURN
 	ld [wEncounterState], a
-	ld a, TRUE
-	ld [wBottomMenuDirty], a
+	call ResetSkillMenuState
 	jp UpdateStateIndependentEncounterGraphics
 
 HandleRewardScreenState:

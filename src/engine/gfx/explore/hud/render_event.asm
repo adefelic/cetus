@@ -36,7 +36,8 @@ SECTION "Explore Screen Event Renderer", ROMX
 
 ; overlay event bg tiles, reading from the active event pointers
 RenderDialog::
-	ld a, [wBottomMenuDirty]
+	ld a, [wBottomMenuDirty] ; whoa this is wrong. this would only be a good check if the LABEL state also used the bottom menu.
+	; fixme, make this not re-render the menus if they're up there already. or decouple LABEL from events
 	cp TRUE
 	ret nz
 	ld a, [wDialogState]

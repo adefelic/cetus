@@ -20,11 +20,10 @@ BeginEncounter::
 
 	; this is for rendering the skill menu
 	; these two variables reset the highlight state
-.initSkillMenuState
+ResetSkillMenuState::
 	xor a
 	ld [wDialogTextRowHighlighted], a
 	ld [wTextRowsRendered], a
 	ld a, TRUE
 	ld [wBottomMenuDirty], a
-
-	jp DirtyFpSegmentsAndTilemap ; this is to remove the event label if there is one. maybe unnecessary, copied from item menu
+	ret
