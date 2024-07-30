@@ -11,6 +11,10 @@ wAttackNameStringBuffer:: ds BYTES_IN_ATTACK_STRING
 
 SECTION "Encounter Menu Rendering", ROMX
 
+rEnemyString::  db "enemy             "
+rPlayerString:: db "player            "
+rAttackString:: db "attacking         "
+
 RenderSkillsMenus::
 .checkDirty
 	ld a, [wBottomMenuDirty]
@@ -143,4 +147,60 @@ PopulateMenuItemsFromPlayerAttacks::
 	or b ; addr of 0000 == no attack
 	dec d
 	jp nz, .countLoop
+	ret
+
+RenderEncounterMenuSkillUsed::
+.checkDirty
+	ld a, [wBottomMenuDirty]
+	cp TRUE
+	ret nz
+
+	call PaintBlankTopMenuRow
+
+	ld c, 0
+	ld hl, rPlayerString
+	call PaintModalTextRow
+
+	ld c, 1
+	call PaintModalEmptyRow
+
+	ld c, 2
+	ld hl, rAttackString
+	call PaintModalTextRow
+
+	ld c, 3
+	call PaintModalEmptyRow
+
+	call PaintModalBottomRowCheckX
+
+	ld a, FALSE
+	ld [wBottomMenuDirty], a
+	ret
+
+RenderEncounterMenuEnemySkillUsed::
+.checkDirty
+	ld a, [wBottomMenuDirty]
+	cp TRUE
+	ret nz
+
+	call PaintBlankTopMenuRow
+
+	ld c, 0
+	ld hl, rEnemyString
+	call PaintModalTextRow
+
+	ld c, 1
+	call PaintModalEmptyRow
+
+	ld c, 2
+	ld hl, rAttackString
+	call PaintModalTextRow
+
+	ld c, 3
+	call PaintModalEmptyRow
+
+	call PaintModalBottomRowCheckX
+
+	ld a, FALSE
+	ld [wBottomMenuDirty], a
 	ret

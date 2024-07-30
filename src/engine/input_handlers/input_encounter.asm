@@ -124,8 +124,7 @@ DoAttack:
 	ld a, ENCOUNTER_STATE_PLAYER_ANIM
 	ld [wEncounterState], a
 
-	; todo: load in "enemy used ___" text
-
 	ld a, TRUE
 	ld [wBottomMenuDirty], a
+	call RenderEncounterMenuSkillUsed
 	jp DirtyFpSegmentsAndTilemap

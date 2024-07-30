@@ -9,10 +9,11 @@ INCLUDE "src/structs/attack.inc"
 
 SECTION "Encounter Screen Renderer", ROMX
 
-DEF PLAYER_ANIMATION_FRAMES EQU 10
-DEF ENEMY_ANIMATION_FRAMES EQU 10
+; todo these aren't paced correctly
+DEF PLAYER_ANIMATION_FRAMES EQU 60 * 3
+DEF ENEMY_ANIMATION_FRAMES EQU 60 * 3
 
-; rename root function to EvalEncounterState?
+; rename root function to EvalEncounterState? UpdateEncounter probably
 UpdateShadowTilemapEncounterScreen::
 	; state flow:
 	; ENCOUNTER_STATE_INITIAL ->
@@ -112,7 +113,8 @@ HandleInitialState:
 	jr LoadInitialEncounterGraphics
 
 HandlePlayerTurnState:
-	jp UpdateEncounterGraphics
+	call RenderSkillsMenus
+	jp UpdateStateIndependentEncounterGraphics
 
 HandlePlayerAnimState:
 	ld a, [wEncounterCurrentAnimationFrame]
@@ -121,7 +123,7 @@ HandlePlayerAnimState:
 	jp z, .setPlayerEndState
 .advanceAnimation
 	ld [wEncounterCurrentAnimationFrame], a
-	jp UpdateEncounterGraphics ; todo, UpdatePlayerAnimationGraphics instead
+	jp UpdateStateIndependentEncounterGraphics ; todo, UpdatePlayerAnimationGraphics instead
 .setPlayerEndState
 	ld a, ENCOUNTER_STATE_PLAYER_END
 	ld [wEncounterState], a
@@ -139,6 +141,10 @@ HandlePlayerEndState:
 .setNextTurnState
 	ld a, ENCOUNTER_STATE_ENEMY_TURN
 	ld [wEncounterState], a
+
+	; maybe? not sure if we want the bottom screen to say something different here
+	;ld a, TRUE
+	;ld [wBottomMenuDirty], a
 	ret
 
 HandleEnemyTurnState:
@@ -148,11 +154,10 @@ HandleEnemyTurnState:
 	ld [wEncounterCurrentAnimationFrame], a
 	ld a, ENCOUNTER_STATE_ENEMY_ANIM
 	ld [wEncounterState], a
-
-	; not sure if these calls are right
-	call DirtyFpSegmentsAndTilemap
-	; todo: load in "enemy used ___" text
-	jp UpdateEncounterGraphics
+	ld a, TRUE
+	ld [wBottomMenuDirty], a
+	call RenderEncounterMenuEnemySkillUsed
+	jp UpdateStateIndependentEncounterGraphics
 
 HandleEnemyAnimState:
 	ld a, [wEncounterCurrentAnimationFrame]
@@ -161,18 +166,22 @@ HandleEnemyAnimState:
 	jp z, .setEnemyEndState
 .advanceAnimation
 	ld [wEncounterCurrentAnimationFrame], a
-	jp UpdateEncounterGraphics ; todo, UpdateEnemyAnimationGraphics instead
+	jp UpdateStateIndependentEncounterGraphics
 .setEnemyEndState
-	ld a, ENCOUNTER_STATE_ENEMY_END ; opponent?
+	ld a, ENCOUNTER_STATE_ENEMY_END
 	ld [wEncounterState], a
-	jp UpdateEncounterGraphics
+	ld a, TRUE
+	ld [wBottomMenuDirty], a
+	jp UpdateStateIndependentEncounterGraphics
 
 HandleEnemyEndState:
 	; todo check for player 0 hp
 	; set either player turn or failure screen
 	ld a, ENCOUNTER_STATE_PLAYER_TURN
 	ld [wEncounterState], a
-	jp UpdateEncounterGraphics
+	ld a, TRUE
+	ld [wBottomMenuDirty], a
+	jp UpdateStateIndependentEncounterGraphics
 
 HandleRewardScreenState:
 	jp LoadRewardScreen
@@ -195,12 +204,14 @@ LoadInitialEncounterGraphics:
 	call PaintEnvironment
 .paintNpc
 	call PaintNpcSprite
+;.paintSkillMenu
+; todo maybe the skills menu should have "____ APPEARED"
+;	call RenderEnemyAppeared
 
-UpdateEncounterGraphics:
+UpdateStateIndependentEncounterGraphics:
 .loadEncounterHUDIntoShadowTilemap
 	call PaintNPCStatus
 	call PaintPlayerStatus
-	call RenderSkillsMenus
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]
 	cp SCREEN_ENCOUNTER

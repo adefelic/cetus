@@ -40,7 +40,7 @@ PaintModalTopRow::
 ; todo rename to PaintHighlightableTextRow ?
 ; todo does replacing the highlight (color) with a cursor save a palette? i dont think so
 ; this is probably not very efficient
-; @param hl, addr of 14 byte label to print
+; @param hl, addr of text to print
 ; @param c, row offset
 PaintModalTextRow::
 	push hl ; save addr of 0th byte of text. this will be clobbered by tile destination addrs
