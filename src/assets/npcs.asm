@@ -1,11 +1,12 @@
 INCLUDE "src/structs/npc.inc"
+INCLUDE "src/assets/tiles/indices/scrib.inc"
 
 SECTION "NPC Data", ROMX
 
 ; NPC Attack Lists. out of 4
 GreenBriarsAttackList::
 	dw AttackTrip
-	dw AttackSnare
+	dw AttackHold
 	dw AttackTangle
 	dw AttackTangle
 

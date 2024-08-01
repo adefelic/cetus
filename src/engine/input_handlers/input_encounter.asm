@@ -105,6 +105,13 @@ DoAttack:
 
 .subDamageFromHp
 	pop hl ; restore Attack addr
+
+	; cache def reference (this can go anywhere)
+	ld a, l
+	ld [wCurrentAttack], a
+	ld a, h
+	ld [wCurrentAttack+1], a
+
 	ld a, Attack_DamageValue
 	call AddAToHl
 	ld a, [hl]

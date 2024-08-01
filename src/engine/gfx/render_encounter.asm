@@ -238,6 +238,12 @@ DoEnemySkill:
 	call DereferenceHlIntoHl
 	; hl now holds addr of attack definition
 
+	; cache def reference
+	ld a, l
+	ld [wCurrentAttack], a
+	ld a, h
+	ld [wCurrentAttack+1], a
+
 .subDamageFromHp
 	ld a, Attack_DamageValue
 	call AddAToHl

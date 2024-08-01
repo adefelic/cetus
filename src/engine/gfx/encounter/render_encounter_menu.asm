@@ -2,6 +2,7 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/menu_constants.inc"
 INCLUDE "src/constants/gfx_event.inc"
 INCLUDE "src/structs/attack.inc"
+INCLUDE "src/structs/npc.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
 
 DEF MAX_ATTACKS_IN_MENU EQU 4
@@ -11,9 +12,8 @@ wAttackNameStringBuffer:: ds BYTES_IN_ATTACK_STRING
 
 SECTION "Encounter Menu Rendering", ROMX
 
-rEnemyString::  db "enemy             "
-rPlayerString:: db "player            "
-rAttackString:: db "attacking         "
+rPlayerString:: db "you               "
+rUsedString:: db "used "
 
 RenderSkillsMenus::
 .checkDirty
@@ -61,6 +61,7 @@ RenderSkillsMenus::
 	push hl ; stash wMenuItems position ptr
 
 	; copy decimal characters + item name into wAttackNameStringBuffer
+	call ClearTextRowBuffer
 	ld hl, wAttackNameStringBuffer
 	; 10s place
 	ld a, d
@@ -161,13 +162,17 @@ RenderEncounterMenuSkillUsed::
 	ld hl, rPlayerString
 	call PaintModalTextRow
 
+.textRow1
 	ld c, 1
 	call PaintModalEmptyRow
 
+.textRow2
+	call LoadBufferWithUsedStringAndAttackName
+	ld hl, wAttackNameStringBuffer
 	ld c, 2
-	ld hl, rAttackString
 	call PaintModalTextRow
 
+.textRow3
 	ld c, 3
 	call PaintModalEmptyRow
 
@@ -183,24 +188,76 @@ RenderEncounterMenuEnemySkillUsed::
 	cp TRUE
 	ret nz
 
+.topBorder
 	call PaintBlankTopMenuRow
 
+.textRow0
+.getNpcName
+	ld hl, wNpcAddr
+	call DereferenceHlIntoHl
+	ld a, NPC_Name
+	call AddAToHl
+	call CopyStringIntoBufferWithWhitespace
+.writeNpcName
+	ld hl, wAttackNameStringBuffer
 	ld c, 0
-	ld hl, rEnemyString
 	call PaintModalTextRow
 
+.textRow1
 	ld c, 1
 	call PaintModalEmptyRow
 
+.textRow2
+	call LoadBufferWithUsedStringAndAttackName
+	ld hl, wAttackNameStringBuffer
 	ld c, 2
-	ld hl, rAttackString
 	call PaintModalTextRow
 
+.textRow3
+	; empty line
 	ld c, 3
 	call PaintModalEmptyRow
 
+.bottomBorder
 	call PaintModalBottomRowCheckX
 
 	ld a, FALSE
 	ld [wBottomMenuDirty], a
+	ret
+
+LoadBufferWithUsedStringAndAttackName:
+.writeUsedString
+	ld hl, rUsedString
+	call CopyStringIntoBufferWithWhitespace
+.getAttackName
+	ld hl, wCurrentAttack
+	call DereferenceHlIntoHl
+	ld a, Attack_Name
+	call AddAToHl
+.copy
+	ld d, h
+	ld e, l
+	ld hl, wAttackNameStringBuffer + USED_STRING_LENGTH
+	ld b, BYTES_IN_ATTACK_STRING
+	call MemcopySmall
+	ret
+
+; there is no way to know the length of the string
+CopyStringIntoBufferWithWhitespace:
+	ld d, h
+	ld e, l
+	call ClearTextRowBuffer
+	ld hl, wAttackNameStringBuffer
+	ld b, BYTES_IN_ATTACK_STRING
+	call MemcopySmall
+	ret
+
+ClearTextRowBuffer:
+	ld b, BYTES_IN_ATTACK_STRING + 1
+	ld a, " "
+	ld hl, wAttackNameStringBuffer
+.copy:
+	ld [hli], a
+	dec b
+	jp nz, .copy
 	ret

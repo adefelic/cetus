@@ -1,5 +1,8 @@
 ; scrib tile indices
 
+IF !DEF(DEF_SCRIB_INDICES)
+DEF DEF_SCRIB_INDICES EQU 1
+
 DEF NUMBER_CHARACTER_OFFSET EQU $10
 
 ;NEWCHARMAP "scrib"
@@ -98,3 +101,5 @@ charmap "|",  $5C
 charmap "/", $5D
 charmap "~",  $5E
 charmap "check",  $5F
+
+ENDC

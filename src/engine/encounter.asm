@@ -12,6 +12,8 @@ wNpcCurrentHp:: db
 wNpcMaxHp:: db
 wNpcSpriteTilesRomAddr:: dw
 
+wCurrentAttack:: dw
+
 SECTION "Encounter init logic", ROMX
 BeginEncounter::
 .setEncounterState
