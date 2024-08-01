@@ -232,7 +232,8 @@ DoEnemySkill:
 	push hl
 	; hl now holds addr of attack list
 	call Rand
-	AND 3 ; mask out all bits but last 2 for a random # between 1-3
+	AND %00000011 ; random # 0-3 for a random attack
+	sla a ; go from bytes to words. each attack in the list is an address
 	pop hl
 	call AddAToHl
 	call DereferenceHlIntoHl
