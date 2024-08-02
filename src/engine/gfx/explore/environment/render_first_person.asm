@@ -25,7 +25,7 @@ SECTION "First Person Environment Renderer", ROMX
 	; todo bounds check and skip rooms that are oob
 	; currently this does no bounds checking for rooms with negative coords.
 	;   the whole map starts at 1,1 rather than 0,0 to make it unnecessary
-RenderFirstPersonView::
+RenderExploreEnvironmentWalls::
 	; todo this shouldn't be called here, it should be called whenever the player's location is invalidated
 	call UpdateRoomWallCache
 ProcessRoomCenterNear: ; process rooms closest to farthest w/ dirtying to only draw topmost z segments

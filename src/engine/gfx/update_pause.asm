@@ -5,7 +5,7 @@ INCLUDE "src/constants/palette_constants.inc"
 SECTION "Pause Screen Renderer", ROMX
 
 ; pause screen contains current map
-UpdateShadowTilemapPauseScreen::
+UpdatePauseScreen::
 .loadShadowTilemap
 	ld a, [wActiveMap]
 	ld d, a

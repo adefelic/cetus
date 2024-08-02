@@ -11,10 +11,9 @@ InitExploreEventState::
 ; todo change map stuff to compass directions. trbl is player relative, nesw is absolute
 ; todo rename this to ... draw FP Tilemap?
 ; trbl are all relative to the player's orientation
-UpdateShadowTilemapExploreScreen::
+UpdateExploreScreen::
 .updateShadowBgTilemap
-	; render environment walls
-	call RenderFirstPersonView
+	call RenderExploreEnvironmentWalls
 
 ; menus and item sprites are mutually exclusive
 .checkIfShouldRenderExploreMenu ; the bottom menu

@@ -15,7 +15,7 @@ DEF ENEMY_ANIMATION_FRAMES EQU 60 * 4
 
 ; rename root function to EvalEncounterState? UpdateEncounter probably
 ; todo add ENCOUNTER_STATE_INITIAL_ANIMATION
-UpdateShadowTilemapEncounterScreen::
+UpdateEncounterScreen::
 	; state flow:
 	; ENCOUNTER_STATE_INITIAL ->
 	; ENCOUNTER_STATE_PLAYER_TURN -> ENCOUNTER_STATE_PLAYER_ANIMATION -> ENCOUNTER_STATE_PLAYER_END
@@ -202,7 +202,7 @@ LoadInitialEncounterGraphics:
 	call PaintNpcSprite
 ;.paintSkillMenu
 ; todo maybe the skills menu should have "____ APPEARED"
-;	call RenderEnemyAppeared
+;	call RenderEnemyAppeared ; renderInitialAnimation
 
 UpdateStateIndependentEncounterGraphics:
 .loadEncounterHUDIntoShadowTilemap

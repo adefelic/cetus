@@ -265,11 +265,11 @@ GdmaShadowTilemapToVram:
 UpdateShadowVram::
 	ld a, [wActiveFrameScreen]
 	cp SCREEN_EXPLORE
-	jp z, UpdateShadowTilemapExploreScreen
+	jp z, UpdateExploreScreen
 	cp SCREEN_ENCOUNTER
-	jp z, UpdateShadowTilemapEncounterScreen
+	jp z, UpdateEncounterScreen
 	cp SCREEN_PAUSE
-	jp z, UpdateShadowTilemapPauseScreen
+	jp z, UpdatePauseScreen
 	; control should not reach here
 	ret
 
