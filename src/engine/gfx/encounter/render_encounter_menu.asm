@@ -14,8 +14,9 @@ SECTION "Encounter Menu Rendering", ROMX
 
 rPlayerString:: db "you               "
 rUsedString:: db "used "
+rAppearedString:: db "appeared          "
 
-RenderSkillsMenus::
+RenderEncounterMenuPlayerAttacks::
 .checkDirty
 	ld a, [wBottomMenuDirty]
 	cp TRUE
@@ -32,9 +33,6 @@ RenderSkillsMenus::
 	ld b, a ; b is the menu item offset that being rendered.
 	ld c, 0 ; row offset, 0-3.
 .renderMenuItemRowsLoop
-
-	; todo. the highlight seems to be resetting after pressing A on the 0th row?
-
 	push hl ; stash current wMenuItems position ptr
 	push bc ; stash b and c iterators
 
@@ -150,6 +148,39 @@ PopulateMenuItemsFromPlayerAttacks::
 	jp nz, .countLoop
 	ret
 
+RenderEncounterMenuNpcAppeared::
+.checkDirty
+	ld a, [wBottomMenuDirty]
+	cp TRUE
+	ret nz
+
+	call PaintBlankTopMenuRow
+
+.textRow0
+	call LoadNpcNameString
+	ld hl, wAttackNameStringBuffer
+	ld c, 0
+	call PaintModalTextRow
+
+.textRow1
+	ld c, 1
+	call PaintModalEmptyRow
+
+.textRow2
+	ld hl, rAppearedString
+	ld c, 2
+	call PaintModalTextRow
+
+.textRow3
+	ld c, 3
+	call PaintModalEmptyRow
+
+	call PaintModalBottomRow
+
+	ld a, FALSE
+	ld [wBottomMenuDirty], a
+	ret
+
 RenderEncounterMenuSkillUsed::
 .checkDirty
 	ld a, [wBottomMenuDirty]
@@ -176,7 +207,7 @@ RenderEncounterMenuSkillUsed::
 	ld c, 3
 	call PaintModalEmptyRow
 
-	call PaintModalBottomRowCheckX
+	call PaintModalBottomRow
 
 	ld a, FALSE
 	ld [wBottomMenuDirty], a
@@ -192,12 +223,7 @@ RenderEncounterMenuEnemySkillUsed::
 	call PaintBlankTopMenuRow
 
 .textRow0
-.getNpcName
-	ld hl, wNpcAddr
-	call DereferenceHlIntoHl
-	ld a, NPC_Name
-	call AddAToHl
-	call CopyStringIntoBufferWithWhitespace
+	call LoadNpcNameString
 .writeNpcName
 	ld hl, wAttackNameStringBuffer
 	ld c, 0
@@ -219,7 +245,7 @@ RenderEncounterMenuEnemySkillUsed::
 	call PaintModalEmptyRow
 
 .bottomBorder
-	call PaintModalBottomRowCheckX
+	call PaintModalBottomRow
 
 	ld a, FALSE
 	ld [wBottomMenuDirty], a
@@ -260,4 +286,18 @@ ClearTextRowBuffer:
 	ld [hli], a
 	dec b
 	jp nz, .copy
+	ret
+
+; loads name into wAttackNameStringBuffer
+LoadNpcNameString:
+	ld hl, wNpcAddr
+	call DereferenceHlIntoHl
+	ld a, NPC_Name
+	call AddAToHl
+	call CopyStringIntoBufferWithWhitespace
+	ret
+
+DisableHighlight::
+	ld a, $FF ; goofy hack
+	ld [wDialogTextRowHighlighted], a
 	ret

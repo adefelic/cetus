@@ -8,8 +8,16 @@ LcdHandler:
 	push de
 	push hl
 	call UpdateAudio
+	call AdvanceEncounterAnimation
 	pop hl
 	pop de
 	pop bc
 	pop af
 	reti
+
+AdvanceEncounterAnimation:
+	ld a, [wEncounterCurrentAnimationFrame]
+	dec a
+	ret z
+	ld [wEncounterCurrentAnimationFrame], a
+	ret

@@ -22,9 +22,19 @@ BeginEncounter::
 
 	; this is for rendering the skill menu
 	; these two variables reset the highlight state
-ResetSkillMenuState::
-	xor a
+ResetEncounterMenuStateHighlight::
+	ld a, 0 ; have it highlight the first row being rendered
 	ld [wDialogTextRowHighlighted], a
+	xor a
+	ld [wTextRowsRendered], a
+	ld a, TRUE
+	ld [wBottomMenuDirty], a
+	ret
+
+ResetEncounterMenuStateNoHighlight::
+	ld a, $FF ; disable highlight
+	ld [wDialogTextRowHighlighted], a
+	xor a
 	ld [wTextRowsRendered], a
 	ld a, TRUE
 	ld [wBottomMenuDirty], a

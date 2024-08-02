@@ -5,7 +5,7 @@ SECTION "Enemy Rendering", ROMX
 
 DEF NPC_TL EQU rows 4 + cols 9
 
-PaintNpcSprite::
+PaintNpcPortrait::
 	ld d, TILES_ENCOUNTER_NPC
 	ld hl, wShadowBackgroundTilemap + NPC_TL
 	ld b, NPC_SPRITE_TILE_WIDTH

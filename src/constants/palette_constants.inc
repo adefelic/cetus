@@ -34,8 +34,8 @@ DEF BG_PALETTE_Z1      EQU $01
 DEF BG_PALETTE_Z2      EQU $02
 DEF BG_PALETTE_Z3      EQU $03
 DEF BG_PALETTE_UI      EQU $04 ; ui elements
-DEF BG_PALETTE_UI2     EQU $05 ; ui elements (highlighted)
-DEF BG_PALETTE_SPECIAL EQU $06 ; special wall?
+DEF BG_PALETTE_UI2     EQU $05 ; ui elements (highlighted) ; maybe this can be replaced with a cursor and i can have more space for special palettes
+DEF BG_PALETTE_SPECIAL EQU $06 ; special wall? ; this will end up holding the enemy palette during encounters
 DEF BG_PALETTE_FOG     EQU $07 ; (fog) gate wall
 
 DEF OBJ_PALETTE_QUARTZ EQU $00 

@@ -66,7 +66,6 @@ HandlePressedARewardScreen:
 	ld [wPreviousFrameScreen], a ; i can't remember what this is used for. also setting this here is bad anyways?
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
-
 	jp DirtyFpSegmentsAndTilemap ; fixme this doesn't seem to be making labels come back
 
 HandlePressedSelect:
@@ -126,12 +125,12 @@ DoAttack:
 .updateHp
 	ld [wNpcCurrentHp], a
 .setPlayerAnimateState
-	xor a
+	ld a, PLAYER_ANIMATION_FRAMES
 	ld [wEncounterCurrentAnimationFrame], a
 	ld a, ENCOUNTER_STATE_PLAYER_ANIM
 	ld [wEncounterState], a
-
 	ld a, TRUE
 	ld [wBottomMenuDirty], a
 	call RenderEncounterMenuSkillUsed
-	jp DirtyFpSegmentsAndTilemap
+	ret
+	;jp UpdateStateIndependentEncounterGraphics

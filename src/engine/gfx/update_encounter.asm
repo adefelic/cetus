@@ -9,22 +9,22 @@ INCLUDE "src/structs/attack.inc"
 
 SECTION "Encounter Screen Renderer", ROMX
 
-; todo these aren't paced correctly
-DEF PLAYER_ANIMATION_FRAMES EQU 60 * 4
-DEF ENEMY_ANIMATION_FRAMES EQU 60 * 4
-
-; rename root function to EvalEncounterState? UpdateEncounter probably
-; todo add ENCOUNTER_STATE_INITIAL_ANIMATION
+; todo get rid of end states, just do things at the end of animation
 UpdateEncounterScreen::
 	; state flow:
-	; ENCOUNTER_STATE_INITIAL ->
-	; ENCOUNTER_STATE_PLAYER_TURN -> ENCOUNTER_STATE_PLAYER_ANIMATION -> ENCOUNTER_STATE_PLAYER_END
-	; ENCOUNTER_STATE_ENEMY_TURN -> ENCOUNTER_STATE_ENEMY_ANIMATION -> ENCOUNTER_STATE_ENEMY_END -> loop
-	; once either are at 0 hp in an _END state -> ENCOUNTER_STATE_REWARD_SCREEN
-	;
+	; ENCOUNTER_STATE_INITIAL -> ENCOUNTER_STATE_INITIAL_ANIM -> ENCOUNTER_STATE_INITIAL_END ->
+	;   ENCOUNTER_STATE_PLAYER_TURN -> ENCOUNTER_STATE_PLAYER_ANIMATION -> ENCOUNTER_STATE_PLAYER_END ->
+	; 	ENCOUNTER_STATE_ENEMY_TURN  -> ENCOUNTER_STATE_ENEMY_ANIMATION  -> ENCOUNTER_STATE_ENEMY_END  -> back to ENCOUNTER_STATE_PLAYER_TURN
+	;  enemy at 0 hp in ENCOUNTER_STATE_PLAYER_END state -> ENCOUNTER_STATE_REWARD_SCREEN
+	;  player at 0 hp in ENCOUNTER_STATE_ENEMY_END state -> ENCOUNTER_STATE_FAIL_SCREEN
+
 	ld a, [wEncounterState]
 	cp ENCOUNTER_STATE_INITIAL
 	jp z, HandleInitialState
+	cp ENCOUNTER_STATE_INITIAL_ANIM
+	jp z, HandleInitialAnimState
+	cp ENCOUNTER_STATE_INITIAL_END
+	jp z, HandleInitialEndState
 	cp ENCOUNTER_STATE_PLAYER_TURN
 	jp z, HandlePlayerTurnState
 	cp ENCOUNTER_STATE_PLAYER_ANIM
@@ -39,6 +39,8 @@ UpdateEncounterScreen::
 	jp z, HandleEnemyEndState
 	cp ENCOUNTER_STATE_REWARD_SCREEN
 	jp z, HandleRewardScreenState
+	cp ENCOUNTER_STATE_FAIL_SCREEN
+	jp z, HandleFailScreenState
 	; control should not reach here
 	ret
 
@@ -108,24 +110,58 @@ CacheEnemyState:
 
 HandleInitialState:
 	call InitEnemyNpc
-.setPlayerTurnState
+	ld a, 1
+	ld [wEncounterCurrentAnimationFrame], a
+
+	; load initial graphics
+.loadEncounterBackground
+	ld de, Map1EncounterScreen
+	ld hl, wShadowBackgroundTilemap
+	ld bc, Map1EncounterScreenEnd - Map1EncounterScreen
+	call Memcopy
+	ld e, BG_PALETTE_Z0
+	ld hl, wShadowBackgroundTilemapAttrs
+	ld bc, VISIBLE_TILEMAP_SIZE
+	call PaintTilemapAttrs
+.paintEnvTiles
+	call PaintEnvironment
+.paintNpc
+	call PaintNpcPortrait
+.paintMenu
+	call ResetEncounterMenuStateNoHighlight
+	call RenderEncounterMenuNpcAppeared
+.setAnimState
+	ld a, INITIAL_ANIMATION_FRAMES
+	ld [wEncounterCurrentAnimationFrame], a
+	ld a, ENCOUNTER_STATE_INITIAL_ANIM
+	ld [wEncounterState], a
+	jp UpdateStateIndependentEncounterGraphics
+
+HandleInitialAnimState:
+	ld a, [wEncounterCurrentAnimationFrame]
+	dec a
+	ret nz
+.setEndState
+	ld a, ENCOUNTER_STATE_INITIAL_END
+	ld [wEncounterState], a
+
+HandleInitialEndState:
+	; this state doesn't do anything special yet
+	call ResetEncounterMenuStateHighlight
+	ld [wDialogTextRowHighlighted], a
 	ld a, ENCOUNTER_STATE_PLAYER_TURN
 	ld [wEncounterState], a
-	jr LoadInitialEncounterGraphics
+	jp UpdateStateIndependentEncounterGraphics
 
 HandlePlayerTurnState:
-	call RenderSkillsMenus
+	call RenderEncounterMenuPlayerAttacks
 	jp UpdateStateIndependentEncounterGraphics
 
 HandlePlayerAnimState:
 	ld a, [wEncounterCurrentAnimationFrame]
-	inc a
-	cp PLAYER_ANIMATION_FRAMES
-	jp z, .setPlayerEndState
-.advanceAnimation
-	ld [wEncounterCurrentAnimationFrame], a
-	jp UpdateStateIndependentEncounterGraphics ; todo, UpdatePlayerAnimationGraphics instead
-.setPlayerEndState
+	dec a
+	ret nz
+.setEndState
 	ld a, ENCOUNTER_STATE_PLAYER_END
 	ld [wEncounterState], a
 	ret
@@ -138,16 +174,16 @@ HandlePlayerEndState:
 .setRewardScreenState
 	ld a, ENCOUNTER_STATE_REWARD_SCREEN
 	ld [wEncounterState], a
-	ret
+	jp UpdateStateIndependentEncounterGraphics
 .setNextTurnState
 	ld a, ENCOUNTER_STATE_ENEMY_TURN
 	ld [wEncounterState], a
-	ret
+	jp UpdateStateIndependentEncounterGraphics
 
 HandleEnemyTurnState:
 	call DoEnemySkill
 .setEnemyAnimateState
-	xor a
+	ld a, ENEMY_ANIMATION_FRAMES
 	ld [wEncounterCurrentAnimationFrame], a
 	ld a, ENCOUNTER_STATE_ENEMY_ANIM
 	ld [wEncounterState], a
@@ -158,51 +194,24 @@ HandleEnemyTurnState:
 
 HandleEnemyAnimState:
 	ld a, [wEncounterCurrentAnimationFrame]
-	inc a
-	cp ENEMY_ANIMATION_FRAMES
-	jp z, .setEnemyEndState
-.advanceAnimation
-	ld [wEncounterCurrentAnimationFrame], a
-	jp UpdateStateIndependentEncounterGraphics
-.setEnemyEndState
+	dec a
+	ret nz
+.setEndState
 	ld a, ENCOUNTER_STATE_ENEMY_END
 	ld [wEncounterState], a
-	ld a, TRUE
-	ld [wBottomMenuDirty], a
-	jp UpdateStateIndependentEncounterGraphics
+	ret
 
 HandleEnemyEndState:
+	call ResetEncounterMenuStateHighlight
 	; todo check for player 0 hp
 	; set either player turn or failure screen
 	ld a, ENCOUNTER_STATE_PLAYER_TURN
 	ld [wEncounterState], a
-	call ResetSkillMenuState
 	jp UpdateStateIndependentEncounterGraphics
 
+HandleFailScreenState: ; todo, add a fail state
 HandleRewardScreenState:
 	jp LoadRewardScreen
-
-HandleFailureScreenState:
-	; todo design a fail screen and put it here instead
-	jp LoadRewardScreen
-
-LoadInitialEncounterGraphics:
-.loadBackground
-	ld de, Map1EncounterScreen
-	ld hl, wShadowBackgroundTilemap
-	ld bc, Map1EncounterScreenEnd - Map1EncounterScreen
-	call Memcopy
-	ld e, BG_PALETTE_Z0
-	ld hl, wShadowBackgroundTilemapAttrs
-	ld bc, VISIBLE_TILEMAP_SIZE
-	call PaintTilemapAttrs
-.paintEnv
-	call PaintEnvironment
-.paintNpc
-	call PaintNpcSprite
-;.paintSkillMenu
-; todo maybe the skills menu should have "____ APPEARED"
-;	call RenderEnemyAppeared ; renderInitialAnimation
 
 UpdateStateIndependentEncounterGraphics:
 .loadEncounterHUDIntoShadowTilemap
@@ -219,8 +228,7 @@ UpdateStateIndependentEncounterGraphics:
 	ret
 
 LoadRewardScreen:
-	call PaintRewardScreen
-	ret
+	jp PaintRewardScreen
 
 DoEnemySkill:
 	ld hl, wNpcAddr
