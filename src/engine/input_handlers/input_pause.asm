@@ -43,4 +43,5 @@ HandlePressedStart:
 UnpauseGame:
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
+	call HandleVisibleEvents
 	jp DirtyFpSegmentsAndTilemap

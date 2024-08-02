@@ -66,13 +66,15 @@ HandlePressedARewardScreen:
 	ld [wPreviousFrameScreen], a ; i can't remember what this is used for. also setting this here is bad anyways?
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
-	jp DirtyFpSegmentsAndTilemap ; fixme this doesn't seem to be making labels come back
+	call HandleVisibleEvents
+	jp DirtyFpSegmentsAndTilemap
 
 HandlePressedSelect:
 	ld a, [wActiveFrameScreen]
 	ld [wPreviousFrameScreen], a
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
+	call HandleVisibleEvents
 	jp DirtyFpSegmentsAndTilemap
 
 HandlePressedUp:
