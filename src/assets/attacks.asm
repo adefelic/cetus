@@ -6,6 +6,8 @@ SECTION "Attack Definitions", ROMX
 
 ; todo add "you text" and "them text"
 ; todo add attack types
+; ok here is an idea.
+; there is alternatae text if there's a critical hit
 Attacks::
 	dstruct Attack, AttackSway, "sway", 5, 0, "gently sway.", "gently sways." ; "sways. there is no wind." "sways in the still air"
 	dstruct Attack, AttackDeceive, "deceive", 25, 2, "are uncanny", "are uncanny"

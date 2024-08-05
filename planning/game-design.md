@@ -1,4 +1,31 @@
 new planning doc for short, dark, coastal drpg. roguelike elements, soulslike structure
+	- roguelike because you play in short bursts and it makes experimentation more easy
+
+
+
+- when in doubt, lean on genre convention
+
+
+- inspirations
+	- smt1, strange journey
+		- exploration
+		- feeling of being lost
+	- buriedbornes
+		- roguelike nature
+		- growable, interesting character
+		- non-combat encounters
+		- speed of play
+	- pokemon / dragon quest gbc
+		- lightweight jrpg systems
+		- great menus and legibility
+	- vermis
+		- art direction
+		- feeling of trespass
+	- lotr
+		- nature, mystery, melancholy
+	- dark/demon's souls
+	- 
+
 
 aesthetics:
 - coastal
@@ -55,32 +82,56 @@ combat:
 physical damage types: all do damage to hp
 - maybe have some damage types be mundane and do less numerically, while some are exotic and do more or are less blockable. make everything weak to blaze for example
 
+### death
+
+- when you run out of mp, spells start costing hp
+	- this is good and cool i think
+- if you run out of hp, attacks start hurting your mp
+- mp is ... energy?
+- should there be a mental/physical split
+- possible meters
+	- hp
+		- combat timer / complicator
+	- stress
+		- stress is like an inverse mana bar. it fills up as your "slog" timer
+	- grime / purity / readiness / supplies
+		- how dirty are you, is it a problem. slows down your move speed? also essentially a slog timer
+		- compounding negative effects?
+			- in darkest dungeon, you cant get lost so supplies are a 
+	- breadcrumb items on the map
+		- things that restore health or mp or energy
+		- rocks do nothing
+		- lanterns reduce stress maybe once per exploration, or make you not gain stress?
+		- 
+
+
 ## moves 
 
 ### damage types: (all verbs)
-- physical
-	- cut
-	- crush
-	- bind
-- special 
-	- drown
-	- soil
-	- blaze (heat / bright)
-	- sting
+- wound
+	- cut / lacerate
+	- crush / break
+	- sting / envenom (poison)
+- inhibit 
+	- bind / trap / obstruct (legs? arms?)
+	- drown / cant breathe
+	- soil / encumber / burden
+	- blaze / dazzle (heat / bright)
 - mental
-	- pressure
+	- pressure / stress
 	- confuse / distract
-	- exhaust
-	- lull
-	- menace
-	- calm 
-	- yield
-	- befriend
+	- exhaust / tire
+	- lull / trick
+	- menace / threaten
+	- calm / soothe / appease
+	- yield / submit
+	- befriend / support / protect / advice
 	- respect
 		- hell yes
 	- welcome
-		- __name__ CONFUSES __enemy__ . i dont actually like this, it would better to just use the move name
 
+	- animations
+		- __name__ CONFUSES __enemy__ . i dont actually like this, it would better to just use the move name? but Move Names are goofy. but useful
 
 	- give moves speeds? like bb bg player speed doesn't make sense because there's only one player. move speed is more interesting
 	- could also do the pokemon thing where you have a large palette of moves but only get to pick 4. probably too boring when there's only one player unit
@@ -178,8 +229,16 @@ character list:
 		delusional
 		desperate
 		good gear that rusts over time?
-	- rain caller (appropriation? i think this is fine)
-		can make storms happen
+	- rain caller (appropriation? i think this is fine) / storm witch
+		weather magic
+		actions:
+			- driving rain
+			- wind
+			- thunder (sound)
+			- stillness
+			- calm before the storm
+			- darken skies
+
 
 ### player stats:
 	- endurance
@@ -191,25 +250,33 @@ character list:
 encounters can be non-human beings, the land anthropomorphosed, weather, the past
 encounters can be helpful, but usually aren't
 field:
-	- scare crow
+	- scare crow (blue / )
 		- sway
 		- watch
-	- knotted grass / vines
-		- tangle. * bind multi
+	- knotted grass / vines (green)
+		- entangle. * bind multi
 		- trip. xx mud single
-	- vulture / hawk
+		- snare
+	- marsh hawk (day)
 		- watch. pressure xx single
 		- harry. confuse xx multi
 		- gouge. cut xxx single
-	- green briars
+	- great owl (night)
+		- watch
+		- swoop / graze (high damage)
+	- green briars (more grabbing)
 		- needle. x cut multi
-		- tangle. * bind multi
+		- entangle. * bind multi
 		- trip. xx mud single
+		- grasp
+		- snare
+	- red briars (more cutting)
+		- 
 	- snake
 		- coil. bind xx single
 		- fangs. sting xxx single
 		- vanish. confuse x multi
-	- old bones
+	- old bones (skull + ribs + an arm)
 		- unnerve. pressure x single
 		- grab. bind xxx single
 	- the patriarch (sun)
@@ -217,21 +284,35 @@ field:
 		- judge. blaze xxxx single
 		- wither.
 	- prairie chicken
-	- Karner Blue Butterfly 
+	- blue/red butterfly (Karner Blue Butterfly)
+		- stardust
+		- starlight
+	- sunflower (day) / moonflower (night)
+		- sun ray
+		- moon ray
+	- i want more that arent animals. what are things that can happen
+		- recurring text npcs whose quests are advanced whenever you see them (or give them something?)
+	- plank bridge
+		- break
+	- 
 forest:
 	- spider web
 		- tangle. * bind multi
+		- become spider. ends encounter and becomes spider encounter
 	- spider
 		- fangs. sting xxx single
-	- grasping roots
+	- roots (piled)
 		- tangle. * bind multi
 		- trip. xx mud single
 	- stone cairn
 		- heals mp?
-	- memory of fire
+	- memory of fire (sprite, will o wisp)
 		- tempt. lull, xx, single
+	- ghost of fire (forest fire, the past)
+		-
 	- old cedar 
 		- ooze sap. soil xx single
+		- creak
 	- foaming creature
 		- snap
 			- distress, xxx, single
@@ -240,7 +321,7 @@ forest:
 		- bite
 			- crush, xxx, single
 	- wood turtle
-	- marsh hawk
+	- crow
 	- briar puppet / thorn doll (skeleton with briar marionette-ing)
 
 swamp:
@@ -295,7 +376,7 @@ beyond:
 	- wave \/\/\/\
 	- particle .
 
-## COMBAT
+# COMBAT
 
 - option 1: simple combat. player does move, enemy does move, repeat until someone is dead. hp only
 - option 2: complicated combat
@@ -309,23 +390,65 @@ today's combat thoughts:
 	or attacking at a faster speed with a harder hitting move?
 	or attacking at the same speed. moves that are aggressive can stagger the enemy to cancel their slower attacks. only some moves stagger
 
-
-
 ** okay some resolution **
 i think that the target complexity should be roughly DRAGON QUEST. you choose a character to give you some flavor, some combat skills and spells, and you mostly are trying to burn as little resources as possible so that you can continue your slog.
 
 
 smt combat and eo combat both work because you have a lot of moves to use. maybe there should be some roguelike elements where you "remember" the moves from encounters sometimes. maybe it happens when you are hit by something that is strong against you?
 
-combat menus
-- skill
-	- skill 1
-	- skill 2
-- item
-- leave
 
-- ugh need to find a place to put player hp / mp
-	- should really just copy pokemon or something
+- skills have a combat function and a non combat function
+
+## FAVOR / REPUTATION
+- favor within an individual encounter
+	- "i like you ;)"
+- favor with a certain type of npc
+	- "my people know you"
+- favor with a certain blood
+	- "i see we are of a kind"
+
+this could work kind of like world tendency
+
+combat menus
+- communicate (you give them something. they give you something or they choose they don't like it. what they like is based on species)
+	- use skill
+		- you can teach them your skills to make them like you ...
+			- some enemies have a chance to help you, sometimes they will use a skill you taught them. very cool amirite
+		- you can heal them
+		- you can protect them
+	- give gift (item)
+	- talk (complicated ....)
+		- they leave, or
+		- they say something?
+- defend (wait to see what they do) (could this be functionally the same as leaving?)
+	- they will attack or leave
+
+- assault (begin attacking back and forth)
+	- skills menu. (combat goes back and forth)
+
+
+## CURRENCIES
+
+- hp - health points
+	- when these are drained, you game over.
+	- easy to replenish
+	- split into physical and mental ?
+- mp - supplies. energy for doing things (rename to en? energy)
+	- when these are drained, you are in a pickle
+	- hard to replenish
+- stress, accrued through:
+	- losing too much health (is double jeopardy fun)
+	- using magic (?) (that isnt in your affinity?)
+	- when these are drained, stress attacks begin to deal double to your hp. sort of a timer before your hp depletes very fast? not sure how that will feel
+	- what should be the _feeling_ of dungeon crawling
+		- the game should be more toylike than complicated
+		- 
+
+- blood
+- secrets
+	- gained rarely. secrets are associate with 
+- objects (items)
+
 
 dungeon crawling, in practice
 - hp is like, how am i doing in this fight
@@ -405,23 +528,57 @@ graphics thoughts
 		- bones
 		- skin
 		- muscle
-		- 
-- maybe your build changes your blood color
-	- more gold
-		- creation, 
-		- border: chains
-	- more blue
-		- mystery, physics
-		- border: stars
-	- more green
-		- plant
+	- xp? souls? 
+
+
+# CHARACTER CREATION
+
+- starting gift for sure
+	- if weapons have different skills on them or if i end up making weapons more of a lateral power level that gives moves with speeds ala BBG, weapons you found should become selectable on new characters
+
+## AFFINITIES / IDEALS / COMMUNITIES / ASSOCIATIONS
+- maybe your build changes your blood color, that could be a cool representation. 
+	our thoughts are as biological as our bones. 
+	our subjective reality can be as affecting as objective reality. 
+	pick one or two or three
+	- are these things that i think are cool? are they ways of being? i think i want them to be ways of being
+	- more gold - fundamental - technology
+		- creation from nothing, physics, the universe, the future, gravity. the big picture? that sounds too much like mystery or tools
+		- border: nebula, stars
+		- creation is always moving towards us, blue shifting?
+	- more indigo/violet - obscure - mystery / spirituality / psychedelia
+		- mystery, the deep sea, dreams
+		- border: waves?
+	- more green - collective (?)- plant
+		- gatherer, staying, spreading, growing
 		- border: vines
-	- more red
-		- animal, beasthood
+	- more red - rampant - animal
+		- hunter, beasthood, warmth, fur, moving
 		- border: bloody teeth
-	- more black
-		- usage, ephemerality, judgment
-		- border: smoke? creeping dark fog
+	- more black - dissolute - death
+		- death, the past, ghosts, usage, ephemerality, entropy, judgment
+		- border: solid black? smoke? creeping dark fog
+		- the past is always moving away from us -- red shifting?
+
+	- oppositions
+		- the self (knowledge, muscle) / tools (writing, technology)
+		- hunting / gathering
+		- thinking / feeling
+		- internal (consciousness is here) / external (consciousness is not here)
+		- hiding / aggression / 
+
+	- from games do int/faith, str/dex, and then the "weird" one
+	- i'm not sure if i like plant/animal as a split
+	- i don't think i like biome splits either, like terrestrial/aquatic
+
+
+	- maybe these shouldn't be associated with mechanics. different encounters have different amounts of each stat and their relation to your stats changes how encounters go. kind of like talking in smt?
+		- talkable npcs should do eye flashes like in smt1 to show "intelligence"
+	- maybe there are rewards you get for hitting certain thresholds of each of these "stats", like new moves or secrets or items
+
+	- maybe you have to give something up to be part of a community. you gradually soften 1/5 or 2/5 of encounters? or they give you stats that are better than straight stat boosts. or your own stat boosts begin to become worthless and their stat boosts benefit you in ways that are helpful
+
+
 
 - blood appears around the screen borders, like call of duty red eye but nice looking instead of dumb
 	- changes as you get more damaged. two stats, body and mind. mind top of screen, body bottom
