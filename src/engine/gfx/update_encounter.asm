@@ -127,7 +127,7 @@ HandleInitialState:
 	ld e, BG_PALETTE_Z0
 	ld hl, wShadowBackgroundTilemapAttrs
 	ld bc, VISIBLE_TILEMAP_SIZE
-	call PaintTilemapAttrs
+	call CopyByteInEToRangeLarge
 .paintEnvTiles
 	call PaintEnvironment
 .paintNpc

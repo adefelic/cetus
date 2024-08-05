@@ -18,7 +18,7 @@ UpdatePauseScreen::
 	ld e, BG_PALETTE_Z0
 	ld hl, wShadowBackgroundTilemapAttrs
 	ld bc, VISIBLE_TILEMAP_SIZE
-	call PaintTilemapAttrs ; more like, copySingleByteToRange
+	call CopyByteInEToRangeLarge
 .updateShadowOam:
 	ld a, [wPreviousFrameScreen]
 	;cp SCREEN_ENCOUNTER

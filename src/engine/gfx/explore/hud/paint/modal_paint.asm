@@ -11,30 +11,30 @@ PaintModalTopRow::
 .tl_corner
 	ld d, TILE_MODAL_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call CopyByteInEToRange
 .top
 	ld d, TILE_MODAL_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 1
-	ld bc, MODAL_TEXT_AREA_WIDTH
-	call PaintTilemap
+	ld b, MODAL_TEXT_AREA_WIDTH
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + cols 1
-	ld bc, MODAL_TEXT_AREA_WIDTH
-	call PaintTilemapAttrs
+	ld b, MODAL_TEXT_AREA_WIDTH
+	call CopyByteInEToRange
 .tr_corner
 	ld d, TILE_MODAL_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call CopyByteInEToRange
 	ret
 
 ; todo rename to PaintHighlightableTextRow ?
@@ -68,7 +68,7 @@ PaintModalTextRow::
 	adc 0
 	ld h, a
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 1
@@ -80,7 +80,7 @@ PaintModalTextRow::
 	adc 0
 	ld h, a
 	ld b, 1
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .text
 	; put text addr into de
 	pop hl
@@ -109,7 +109,7 @@ PaintModalTextRow::
 	ld h, a
 
 	ld b, MODAL_TEXT_AREA_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .right
 	ld d, TILE_MODAL_VERTICAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 1 + cols (MODAL_WIDTH - 1)
@@ -121,7 +121,7 @@ PaintModalTextRow::
 	adc 0
 	ld h, a
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 1 + cols (MODAL_WIDTH - 1)
@@ -133,7 +133,7 @@ PaintModalTextRow::
 	adc 0
 	ld h, a
 	ld b, 1
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 	ret
 
 ; @param a, text line #
@@ -175,7 +175,7 @@ PaintModalEmptyRow::
 	ld h, a
 	; paint
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 1
@@ -188,7 +188,7 @@ PaintModalEmptyRow::
 	ld h, a
 
 	ld b, 1
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .emptySpace
 	ld d, $40 ; this is the space character
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 1 + cols 1
@@ -201,7 +201,7 @@ PaintModalEmptyRow::
 	ld h, a
 	; paint tiles
 	ld b, MODAL_TEXT_AREA_WIDTH
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 1 + cols 1
@@ -214,7 +214,7 @@ PaintModalEmptyRow::
 	ld h, a
 	; paint tile attrs
 	ld b, MODAL_TEXT_AREA_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .right
 	ld d, TILE_MODAL_VERTICAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 1 + cols (MODAL_WIDTH - 1)
@@ -227,7 +227,7 @@ PaintModalEmptyRow::
 	ld h, a
 
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 1 + cols (MODAL_WIDTH - 1)
 	; add row offset to hl
@@ -239,111 +239,111 @@ PaintModalEmptyRow::
 	ld h, a
 
 	ld b, 1
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 	ret
 
 PaintModalBottomRow::
 .bl_corner
 	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5
 	ld b, 1
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .bottom
 	ld d, TILE_MODAL_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 1
-	ld bc, MODAL_TEXT_AREA_WIDTH
-	call PaintTilemap
+	ld b, MODAL_TEXT_AREA_WIDTH
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 1
 	ld b, MODAL_TEXT_AREA_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .br_corner
 	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
 	ld b, 1
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 	ret
 
 PaintModalBottomRowCheckX::
 .bl_corner
 	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5
 	ld b, 1
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .bottom_line
 	ld d, TILE_MODAL_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 1
-	ld bc, MODAL_WIDTH - 6
-	call PaintTilemap
+	ld b, MODAL_WIDTH - 6
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 1
 	ld b, MODAL_WIDTH - 6
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .text
 	ld d, "b"
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 7)
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, "X"
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 6)
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 7)
 	ld b, 2
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 
 	; "_"
 	ld d, TILE_MODAL_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 5)
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 5)
 	ld b, 1
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 
 	ld d, "a"
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 4)
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, "check"
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 3)
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 4)
 	ld b, 2
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 
 	; "_"
 	ld d, TILE_MODAL_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 2)
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 2)
 	ld b, 1
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .br_corner
 	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
 	ld b, 1
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 	ret

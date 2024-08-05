@@ -60,7 +60,7 @@ PaintHpStatusLine:
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowBackgroundTilemapAttrs + PLAYER_STATUS_HP_LINE
 	ld b, STATUS_LINE_STRING_LEN
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 
 PaintMpStatusLine:
 	ld hl, wStatusStringBuffer
@@ -107,7 +107,7 @@ PaintMpStatusLine:
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowBackgroundTilemapAttrs + PLAYER_STATUS_MP_LINE
 	ld b, STATUS_LINE_STRING_LEN
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 	ret
 
 PaintNPCStatus::
@@ -155,5 +155,5 @@ PaintNPCStatus::
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_STATUS_HP_LINE
 	ld b, STATUS_LINE_STRING_LEN
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 	ret

@@ -16,7 +16,7 @@ PaintNpcPortrait::
 	ld e, BG_PALETTE_ENEMY
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_TL
 	ld b, NPC_SPRITE_TILE_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 
 .row1
 	ld d, TILES_ENCOUNTER_NPC + NPC_SPRITE_TILE_WIDTH
@@ -27,7 +27,7 @@ PaintNpcPortrait::
 	ld e, BG_PALETTE_ENEMY
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_TL + rows 1
 	ld b, NPC_SPRITE_TILE_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 
 .row2
 	ld d, TILES_ENCOUNTER_NPC + NPC_SPRITE_TILE_WIDTH * 2
@@ -38,7 +38,7 @@ PaintNpcPortrait::
 	ld e, BG_PALETTE_ENEMY
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_TL + rows 2
 	ld b, NPC_SPRITE_TILE_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 
 .row3
 	ld d, TILES_ENCOUNTER_NPC + NPC_SPRITE_TILE_WIDTH * 3
@@ -49,7 +49,7 @@ PaintNpcPortrait::
 	ld e, BG_PALETTE_ENEMY
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_TL + rows 3
 	ld b, NPC_SPRITE_TILE_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 
 .row4
 	ld d, TILES_ENCOUNTER_NPC + NPC_SPRITE_TILE_WIDTH * 4
@@ -60,5 +60,5 @@ PaintNpcPortrait::
 	ld e, BG_PALETTE_ENEMY
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_TL + rows 4
 	ld b, NPC_SPRITE_TILE_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 	ret

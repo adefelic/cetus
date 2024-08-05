@@ -14,94 +14,94 @@ PaintRewardScreen::
 	ld d, TILE_MODAL_EMPTY
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT
 	ld b, REWARD_SCREEN_WIDTH
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + REWARD_SCREEN_TOP_LEFT
 	ld b, REWARD_SCREEN_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .blank_row1
 	ld d, TILE_MODAL_EMPTY
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 1
 	ld b, REWARD_SCREEN_WIDTH
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + REWARD_SCREEN_TOP_LEFT + rows 1
 	ld b, REWARD_SCREEN_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .text
 	ld d, " "
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2
 	ld b, 2
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, "y"
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2 + cols 2
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, "o"
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2 + cols 3
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, "u"
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2 + cols 4
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, " "
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2 + cols 5
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, "d"
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2 + cols 6
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, "i"
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2 + cols 7
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, "d"
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2 + cols 8
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, " "
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2 + cols 9
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, "i"
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2 + cols 10
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, "t"
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2 + cols 11
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, "!"
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2 + cols 12
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, " "
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 2 + cols 13
 	ld b, 5
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowBackgroundTilemapAttrs + REWARD_SCREEN_TOP_LEFT + rows 2
 	ld b, REWARD_SCREEN_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .blank_row2
 	ld d, TILE_MODAL_EMPTY
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 3
 	ld b, REWARD_SCREEN_WIDTH
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + REWARD_SCREEN_TOP_LEFT + rows 3
 	ld b, REWARD_SCREEN_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .blank_row3
 	ld d, TILE_MODAL_EMPTY
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 4
 	ld b, REWARD_SCREEN_WIDTH
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + REWARD_SCREEN_TOP_LEFT + rows 4
 	ld b, REWARD_SCREEN_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 	ret

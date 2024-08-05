@@ -337,45 +337,6 @@ endr
 .knownret
 	ret
 
-; copy bytes from one area to another
-; @param de: source
-; @param hl: destination
-; @param bc: length
-Memcopy::
-	ld a, [de]
-	ld [hli], a
-	inc de
-	dec bc
-	ld a, b
-	or c
-	jp nz, Memcopy
-	ret
-
-; copy bytes from one area to another. max 256 bytes
-; @param de: source
-; @param hl: destination
-; @param b: length
-MemcopySmall::
-	ld a, [de]
-	ld [hli], a
-	inc de
-	dec b
-	jp nz, MemcopySmall
-	ret
-
-; copy bytes from one area to another. max 256 bytes
-; @param d: source value
-; @param hl: destination
-; @param b: length
-CopyIncrementing::
-	ld a, d
-	ld [hli], a
-	inc d
-	dec b
-	ld a, b
-	jp nz, CopyIncrementing
-	ret
-
 ; @param hl, source address, zero-aligned
 RunDma:
     ld a, HIGH(hl)

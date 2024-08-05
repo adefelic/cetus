@@ -11,27 +11,27 @@ PaintBlankTopMenuRow::
 	ld d, TILE_MODAL_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT
 	ld b, 1
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .top
 	ld d, TILE_MODAL_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 1
 	ld b, MODAL_TEXT_AREA_WIDTH
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + cols 1
 	ld b, MODAL_TEXT_AREA_WIDTH
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 .tr_corner
 	ld d, TILE_MODAL_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
 	ld b, 1
-	call PaintTilemapAttrsSmall
+	call CopyByteInEToRange
 	ret

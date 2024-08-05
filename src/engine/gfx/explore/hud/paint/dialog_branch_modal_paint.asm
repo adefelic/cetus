@@ -11,62 +11,41 @@ PaintModalBottomRowDialogBranch::
 .bl_corner
 	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call CopyByteInEToRange
 .bottom_line
 	ld d, TILE_MODAL_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 1
-	ld bc, 8
-	call PaintTilemap
+	ld b, 15
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 1
-	ld bc, 8
-	call PaintTilemapAttrs
+	ld b, 15
+	call CopyByteInEToRange
 .text
-
-	; "_"
-	ld d, TILE_MODAL_HORIZONTAL
-	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 9
-	ld bc, 3
-	call PaintTilemap
-	ld e, BG_PALETTE_UI
-	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 9
-	ld bc, 3
-	call PaintTilemapAttrs
-
 	ld d, "a"
-	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 12
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 4)
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld d, "->"
-	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 13
+	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 3)
 	ld b, 1
-	call PaintTilemapSmall
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI + OAMF_BANK1
-	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 12
+	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 4)
 	ld b, 2
-	call PaintTilemapAttrsSmall
-
-	; "_"
-	ld d, TILE_MODAL_HORIZONTAL
-	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 14
-	ld bc, 1
-	call PaintTilemap
-	ld e, BG_PALETTE_UI
-	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols 14
-	ld bc, 1
-	call PaintTilemapAttrs
+	call CopyByteInEToRange
 .br_corner
 	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
-	ld bc, 1
-	call PaintTilemap
+	ld b, 1
+	call CopyByteInDToRange
 	ld e, BG_PALETTE_UI + OAMF_XFLIP
 	ld hl, wShadowBackgroundTilemapAttrs + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
-	ld bc, 1
-	call PaintTilemapAttrs
+	ld b, 1
+	call CopyByteInEToRange
 	ret
