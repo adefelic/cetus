@@ -44,8 +44,7 @@ UpdateEncounterScreen::
 	; control should not reach here
 	ret
 
-InitEnemyNpc:
-.rollEnemy
+RollEnemyNpc:
 	ld a, [wPlayerLocation]
 	cp LOCATION_FIELD
 	jr z, RollFieldEnemy
@@ -95,6 +94,7 @@ CacheEnemyState:
 	ld [hl], a
 
 	pop hl
+	push hl
 
 	; cache ROM sprite addr
 	ld a, NPC_SpriteAddr
@@ -104,16 +104,21 @@ CacheEnemyState:
 	ld a, [hl]
 	ld [wNpcSpriteTilesRomAddr + 1], a
 
+	pop hl
+
+	ld a, NPC_PaletteAddr
+	call AddAToHl
+	call DereferenceHlIntoHl
+	call EnqueueEnemyBgPaletteUpdate
+
 	ld a, TRUE
 	ld [wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram], a
 	ret
 
 HandleInitialState:
-	call InitEnemyNpc
+	call RollEnemyNpc
 	ld a, 1
 	ld [wEncounterCurrentAnimationFrame], a
-
-	; load initial graphics
 .loadEncounterBackground
 	ld de, Map1EncounterScreen
 	ld hl, wShadowBackgroundTilemap

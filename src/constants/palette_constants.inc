@@ -1,3 +1,6 @@
+IF !DEF(DEF_PALETTES_CONSTANTS)
+DEF DEF_PALETTES_CONSTANTS EQU 1
+
 ; palette macros
 MACRO assert_valid_rgb
 	rept _NARG
@@ -21,7 +24,7 @@ DEF palblue  EQUS "(1 << 10) *"
 ; palette defs
 DEF NUM_PAL_COLORS EQU 4
 DEF NUM_PAL_IN_SET EQU 8
-DEF PAL_COLOR_SIZE EQU 2 ; bytes
+DEF PAL_COLOR_SIZE EQU 2 ; bytes. 5 bits per color channel (R G B)
 DEF PALETTE_SIZE EQU NUM_PAL_COLORS * PAL_COLOR_SIZE ; bytes
 DEF PALETTE_SET_SIZE EQU PALETTE_SIZE * NUM_PAL_IN_SET ; bytes
 
@@ -36,6 +39,7 @@ DEF BG_PALETTE_Z3      EQU $03
 DEF BG_PALETTE_UI      EQU $04 ; ui elements
 DEF BG_PALETTE_UI2     EQU $05 ; ui elements (highlighted) ; maybe this can be replaced with a cursor and i can have more space for special palettes
 DEF BG_PALETTE_SPECIAL EQU $06 ; special wall? ; this will end up holding the enemy palette during encounters
+DEF BG_PALETTE_ENEMY   EQU BG_PALETTE_SPECIAL
 DEF BG_PALETTE_FOG     EQU $07 ; (fog) gate wall
 
 DEF OBJ_PALETTE_QUARTZ EQU $00 
@@ -46,3 +50,5 @@ DEF OBJ_PALETTE_E      EQU $04 ; unused
 DEF OBJ_PALETTE_DANGER EQU $05
 DEF OBJ_PALETTE_PLAYER EQU $06 ; used in encounter so ... deprecated
 DEF OBJ_PALETTE_H      EQU $07 ; unused
+
+ENDC ;DEF_PALETTES_CONSTANTS

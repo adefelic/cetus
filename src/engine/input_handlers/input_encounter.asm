@@ -62,11 +62,17 @@ HandleInputRewardScreen:
 	ret
 
 HandlePressedARewardScreen:
+	; reload explore screen
 	ld a, [wActiveFrameScreen]
 	ld [wPreviousFrameScreen], a ; i can't remember what this is used for. also setting this here is bad anyways?
 	ld a, SCREEN_EXPLORE
 	ld [wActiveFrameScreen], a
+
 	call HandleVisibleEvents
+
+	; todo reload bg palette 6 to map default(special/enemy)
+	; requires storing map palette addr, or map struct
+
 	jp DirtyFpSegmentsAndTilemap
 
 HandlePressedSelect:

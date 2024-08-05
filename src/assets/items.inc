@@ -15,4 +15,5 @@ Items::
 	;dstruct Item, Tent, "99x tent"
 	;dstruct Item, Tent, "99x tent"
 
+; hand-written note
 ; urgent note

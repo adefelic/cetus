@@ -15,7 +15,9 @@ ForestBgPaletteSet::
 	RGB  2, 2, 2,  13,13,13,  2,10, 2,   2, 2,10 ; ui
 	RGB  03,03,03,  2,10, 2,  2, 2,10,   2, 2,10 ; ui2 (highlighted)
 
-	RGB  00,00,00, 20,00,00,  00,20,00,  00,00,20 ; special, for bridge walls maybe? has no depth. unused so far
+	; explore: special, for bridge walls maybe? has no depth. unused so far
+	; encounter: enemy portrait palette
+	RGB  00,00,00, 20,00,00,  00,20,00,  00,00,20
 
 	;    fog 1     fog 2      ground     wall
 	RGB  15,15,15, 14,14,14,  14,11,09,  01,12,07 ; fog
@@ -47,3 +49,10 @@ OwObjPaletteSet::
 	RGB 0,0,0, 10,10,12,   6, 6, 8,   2, 2, 4 ; player
 	RGB 0,0,0,  0, 0, 0,   0, 0, 0,   0, 0, 0 ; unused
 	RGB 0,0,0,  0, 0, 0,   0, 0, 0,   0, 0, 0 ; unused
+
+
+; Enemy/NPC Palettes
+NPCGreenBriarsPalette::
+	RGB  31,00,00, 00,31,00, 00,00,31, 31,31,31
+NPCOldBonesPalette::
+	RGB  10,00,00, 00,10,00, 00,00,10, 10,10,10

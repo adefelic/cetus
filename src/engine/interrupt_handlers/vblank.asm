@@ -17,6 +17,7 @@ VBlankHandler:
 	push de
 	push hl
 	call SetEnqueuedBgPaletteSet
+	call SetEnqueuedEnemyBgPalette ; todo would it make more sense to consolidate all palette updates? this overwrites palette 6
 	call CopyEnqueuedNpcSpriteTilesIntoVram
 	call CopyShadowsToVram
 	call GetKeys

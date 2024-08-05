@@ -1,5 +1,5 @@
-INCLUDE "src/structs/npc.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
+INCLUDE "src/structs/npc.inc"
 
 SECTION "NPC Data", ROMX
 
@@ -16,9 +16,9 @@ OldBonesAttackList::
 	dw AttackRake
 	dw AttackHold
 
-; NPC Resistance Palettes
-BrambleResistancePalette::
-OldBonesResistancePalette::
+; NPC Resistance Tables
+BrambleResistanceTable::
+OldBonesResistanceTable::
 	db RV_NEUTRAL
 	db RV_NEUTRAL
 	db RV_NEUTRAL
@@ -32,5 +32,5 @@ OldBonesResistancePalette::
 	db RV_NEUTRAL
 
 NPCs:
-  dstruct NPC, NpcGreenBriars, "green briars", NpcBrambleTiles, BrambleResistancePalette, GreenBriarsAttackList, 40, 20
-  dstruct NPC, NpcOldBones, "old bones", NpcOldBonesTiles, OldBonesResistancePalette, OldBonesAttackList, 20, 30
+  dstruct NPC, NpcGreenBriars, "green briars", NpcBrambleTiles, NPCGreenBriarsPalette, BrambleResistanceTable, GreenBriarsAttackList, 40, 20
+  dstruct NPC, NpcOldBones, "old bones", NpcOldBonesTiles, NPCOldBonesPalette, OldBonesResistanceTable, OldBonesAttackList, 20, 30

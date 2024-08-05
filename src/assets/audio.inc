@@ -1,6 +1,5 @@
 INCLUDE "src/structs/audio.inc"
 
-SECTION "Audio Data", ROMX
 
 DEF NR50_LEFT_SPEAKER_VOLUME_MAX  EQU %01110000
 DEF NR50_RIGHT_SPEAKER_VOLUME_MAX EQU %00000111
@@ -37,6 +36,8 @@ DEF AUD_CMD_SIZE    EQU 4
 DEF NOTE     EQU $00
 DEF END      EQU $01
 DEF LOOP     EQU $02 ; nyi
+
+SECTION "Audio Data", ROMX
 
 ; ack this still makes a popping noise. is the channel being switched off and on?
 RestSound:: ; channel 4
