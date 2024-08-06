@@ -7,13 +7,15 @@ SECTION "Enemy Rendering", ROMX
 DEF NPC_TL EQU rows 4 + cols 9
 
 PaintNpcPortrait::
+.loadPalette
+	ld a, [wCurrentNpcPalette]
+	ld e, a
 .row0
 	ld d, TILES_ENCOUNTER_NPC
 	ld hl, wShadowBackgroundTilemap + NPC_TL
 	ld b, NPC_SPRITE_TILE_WIDTH
 	call CopyIncrementing
 
-	ld e, BG_PALETTE_ENEMY
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_TL
 	ld b, NPC_SPRITE_TILE_WIDTH
 	call CopyByteInEToRange
@@ -24,7 +26,6 @@ PaintNpcPortrait::
 	ld b, NPC_SPRITE_TILE_WIDTH
 	call CopyIncrementing
 
-	ld e, BG_PALETTE_ENEMY
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_TL + rows 1
 	ld b, NPC_SPRITE_TILE_WIDTH
 	call CopyByteInEToRange
@@ -35,7 +36,6 @@ PaintNpcPortrait::
 	ld b, NPC_SPRITE_TILE_WIDTH
 	call CopyIncrementing
 
-	ld e, BG_PALETTE_ENEMY
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_TL + rows 2
 	ld b, NPC_SPRITE_TILE_WIDTH
 	call CopyByteInEToRange
@@ -46,7 +46,6 @@ PaintNpcPortrait::
 	ld b, NPC_SPRITE_TILE_WIDTH
 	call CopyIncrementing
 
-	ld e, BG_PALETTE_ENEMY
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_TL + rows 3
 	ld b, NPC_SPRITE_TILE_WIDTH
 	call CopyByteInEToRange
@@ -57,7 +56,6 @@ PaintNpcPortrait::
 	ld b, NPC_SPRITE_TILE_WIDTH
 	call CopyIncrementing
 
-	ld e, BG_PALETTE_ENEMY
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_TL + rows 4
 	ld b, NPC_SPRITE_TILE_WIDTH
 	call CopyByteInEToRange

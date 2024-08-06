@@ -16,8 +16,8 @@ LcdHandler:
 	reti
 
 AdvanceEncounterAnimation:
-	ld a, [wEncounterCurrentAnimationFrame]
+	ld a, [wAnimationFramesRemaining]
 	dec a
 	ret z
-	ld [wEncounterCurrentAnimationFrame], a
+	ld [wAnimationFramesRemaining], a
 	ret

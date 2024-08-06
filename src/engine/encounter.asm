@@ -4,7 +4,8 @@ INCLUDE "src/constants/constants.inc"
 
 SECTION "Encounter state", WRAM0
 wEncounterState:: db
-wEncounterCurrentAnimationFrame:: db
+
+; this flag could be put in the same place as palette enqueuing, for consistancy
 wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram:: db
 
 wNpcAddr:: dw
@@ -13,6 +14,15 @@ wNpcMaxHp:: db
 wNpcSpriteTilesRomAddr:: dw
 
 wCurrentAttack:: dw
+
+wCurrentNpcPalette:: db
+wNextAnimationKeyFrame:: dw
+; for caching contents of key frame
+wNextAnimationKeyFrameFrameNumber:: dw
+wNextAnimationKeyFramePalette:: dw
+; for caching contents of animation
+wAnimationKeyFramesRemaining:: db
+wAnimationFramesRemaining:: db
 
 SECTION "Encounter init logic", ROMX
 BeginEncounter::

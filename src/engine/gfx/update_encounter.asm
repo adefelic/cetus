@@ -6,6 +6,7 @@ INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/constants/location_constants.inc"
 INCLUDE "src/structs/npc.inc"
 INCLUDE "src/structs/attack.inc"
+INCLUDE "src/structs/palette_animation.inc"
 
 SECTION "Encounter Screen Renderer", ROMX
 
@@ -118,7 +119,9 @@ CacheEnemyState:
 HandleInitialState:
 	call RollEnemyNpc
 	ld a, 1
-	ld [wEncounterCurrentAnimationFrame], a
+	ld [wAnimationFramesRemaining], a
+	ld a, BG_PALETTE_ENEMY
+	ld [wCurrentNpcPalette], a
 .loadEncounterBackground
 	ld de, Map1EncounterScreen
 	ld hl, wShadowBackgroundTilemap
@@ -137,13 +140,13 @@ HandleInitialState:
 	call RenderEncounterMenuNpcAppeared
 .setAnimState
 	ld a, INITIAL_ANIMATION_FRAMES
-	ld [wEncounterCurrentAnimationFrame], a
+	ld [wAnimationFramesRemaining], a
 	ld a, ENCOUNTER_STATE_INITIAL_ANIM
 	ld [wEncounterState], a
 	jp UpdateStateIndependentEncounterGraphics
 
 HandleInitialAnimState:
-	ld a, [wEncounterCurrentAnimationFrame]
+	ld a, [wAnimationFramesRemaining]
 	dec a
 	ret nz
 .setEndState
@@ -163,10 +166,54 @@ HandlePlayerTurnState:
 	jp UpdateStateIndependentEncounterGraphics
 
 HandlePlayerAnimState:
-	ld a, [wEncounterCurrentAnimationFrame]
+	ld a, [wAnimationFramesRemaining] ; this is decremented in the lcd interrupt handler
 	dec a
+	jp z, .setEndState
+.checkNextKeyFrame
+	ld a, [wAnimationKeyFramesRemaining]
+	sub 0
+	jp z, .continue
+
+	; look at the next key frame to see if it matches the current frame #
+	ld a, [wNextAnimationKeyFrameFrameNumber]
+	ld b, a
+	ld a, [wAnimationFramesRemaining]
+	cp b
+	jp nz, .continue
+.applyNewKeyFrame
+	ld a, [wNextAnimationKeyFramePalette]
+	ld [wCurrentNpcPalette], a
+.parseNextKeyFrame
+	; inc wNextAnimationKeyFrame pointer
+	ld a, [wNextAnimationKeyFrame]
+	ld l, a
+	ld a, [wNextAnimationKeyFrame+1]
+	ld h, a
+	ld a, sizeof_PaletteAnimationKeyFrame
+	call AddAToHl
+	ld a, l
+	ld [wNextAnimationKeyFrame], a
+	ld a, h
+	ld [wNextAnimationKeyFrame+1], a
+	; cache contents of next keyframe object
+	ld a, [hli]
+	ld [wNextAnimationKeyFrameFrameNumber], a
+	ld a, [hl]
+	ld [wNextAnimationKeyFramePalette], a
+
+	ld a, [wAnimationKeyFramesRemaining]
+	dec a
+	ld [wAnimationKeyFramesRemaining], a
+.continue
+	call PaintNpcPortrait
+	ld a, [wAnimationFramesRemaining]
+	sub 0
 	ret nz
 .setEndState
+	; reset palette
+	ld a, BG_PALETTE_ENEMY
+	ld [wCurrentNpcPalette], a
+	call PaintNpcPortrait
 	ld a, ENCOUNTER_STATE_PLAYER_END
 	ld [wEncounterState], a
 	ret
@@ -189,7 +236,7 @@ HandleEnemyTurnState:
 	call DoEnemySkill
 .setEnemyAnimateState
 	ld a, ENEMY_ANIMATION_FRAMES
-	ld [wEncounterCurrentAnimationFrame], a
+	ld [wAnimationFramesRemaining], a
 	ld a, ENCOUNTER_STATE_ENEMY_ANIM
 	ld [wEncounterState], a
 	ld a, TRUE
@@ -198,7 +245,7 @@ HandleEnemyTurnState:
 	jp UpdateStateIndependentEncounterGraphics
 
 HandleEnemyAnimState:
-	ld a, [wEncounterCurrentAnimationFrame]
+	ld a, [wAnimationFramesRemaining]
 	dec a
 	ret nz
 .setEndState

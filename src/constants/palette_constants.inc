@@ -41,6 +41,7 @@ DEF BG_PALETTE_UI2     EQU $05 ; ui elements (highlighted) ; maybe this can be r
 DEF BG_PALETTE_SPECIAL EQU $06 ; special wall? ; this will end up holding the enemy palette during encounters
 DEF BG_PALETTE_ENEMY   EQU BG_PALETTE_SPECIAL
 DEF BG_PALETTE_FOG     EQU $07 ; (fog) gate wall
+DEF BG_PALETTE_ENEMY_DAMAGE EQU BG_PALETTE_FOG
 
 DEF OBJ_PALETTE_QUARTZ EQU $00 
 DEF OBJ_PALETTE_LAMP   EQU $01
