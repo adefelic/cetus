@@ -1,6 +1,6 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
-INCLUDE "src/constants/explore_constants.inc"
+INCLUDE "src/constants/event_constants.inc"
 INCLUDE "src/assets/tiles/indices/object_tiles.inc"
 
 SECTION "Explore Screen Renderer", ROMX

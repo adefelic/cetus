@@ -1,39 +1,13 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/location_constants.inc"
-
-SECTION "Room Attribute Definitions", ROMX
-; maps tiles data to wall presence data. supports 3 wall types
-; these require the same ordering as the map room tiles in explore-simple for the pausemap to work (is that true?)
-; 00 00 00 00 = wall definition, in n e s w order.
-; 00 = open, 01 = wallA, 10 = wallB, 11 = wallC
-; todo rename to room definition? wall sets?
-; todo make a macro to define rooms with wall types
-
-RoomWallAttributes::
-	db %00000000 ; 0,  ROOM_NONE
-	db %00000001 ; 1,  ROOM_L
-	db %00000100 ; 2,  ROOM_B
-	db %00000101 ; 3,  ROOM_BL
-	db %00010000 ; 4,  ROOM_R
-	db %00010001 ; 5,  ROOM_RL
-	db %00010100 ; 6,  ROOM_RB
-	db %00010101 ; 7,  ROOM_RBL
-	db %01000000 ; 8,  ROOM_T
-	db %01000001 ; 9,  ROOM_TL
-	db %01000100 ; 10, ROOM_TB
-	db %01000101 ; 11, ROOM_TBL
-	db %01010000 ; 12, ROOM_TR
-	db %01010001 ; 13, ROOM_TRL
-	db %01010100 ; 14, ROOM_TRB
-	db %01010100 ; 15, ROOM_TRBL
-RoomWallAttributesEnd:
+INCLUDE "src/constants/room_constants.inc"
 
 SECTION "Map / Room Parsing", ROMX
 
 ; todo make this more than the one hardcoded map
 SetMap::
-	ld hl, Map1Tiles
+	ld hl, Map1Walls
 	ld a, h
 	ld [wActiveMap], a
 	ld a, l
@@ -61,60 +35,22 @@ SetMap::
 	jp nz, .loop
 	ret
 
-; @param hl, address of map room representing current tile
+; @param hl, Room addr
 ; @return a, wall type
 GetTopWallWrtPlayer::
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
-	jp z, GetNorthWallTypeFromRoomAttrAddr
+	jp z, GetNorthWallTypeFromRoomAddr
 	cp a, ORIENTATION_EAST
-	jp z, GetEastWallTypeFromRoomAttrAddr
+	jp z, GetEastWallTypeFromRoomAddr
 	cp a, ORIENTATION_SOUTH
-	jp z, GetSouthWallTypeFromRoomAttrAddr
-	jp GetWestWallTypeFromRoomAttrAddr
+	jp z, GetSouthWallTypeFromRoomAddr
+	jp GetWestWallTypeFromRoomAddr
 
-; deprecated?
-
-;; @param hl, address of map room representing current tile
-;; @return a, wall type
-;GetRightWallWrtPlayer::
-;	ld a, [wPlayerOrientation]
-;	cp a, ORIENTATION_NORTH
-;	jp z, GetEastWallTypeFromRoomAttrAddr
-;	cp a, ORIENTATION_EAST
-;	jp z, GetSouthWallTypeFromRoomAttrAddr
-;	cp a, ORIENTATION_SOUTH
-;	jp z, GetWestWallTypeFromRoomAttrAddr
-;	jp GetNorthWallTypeFromRoomAttrAddr
-
-;; @param hl, address of map room representing current tile
-;; @return a, wall type
-;GetBottomWallWrtPlayer::
-;	ld a, [wPlayerOrientation]
-;	cp a, ORIENTATION_NORTH
-;	jp z, GetSouthWallTypeFromRoomAttrAddr
-;	cp a, ORIENTATION_EAST
-;	jp z, GetWestWallTypeFromRoomAttrAddr
-;	cp a, ORIENTATION_SOUTH
-;	jp z, GetNorthWallTypeFromRoomAttrAddr
-;	jp GetEastWallTypeFromRoomAttrAddr
-
-;; @param hl, address of map room representing current tile
-;; @return a, wall type
-;GetLeftWallWrtPlayer::
-;	ld a, [wPlayerOrientation]
-;	cp a, ORIENTATION_NORTH
-;	jp z, GetWestWallTypeFromRoomAttrAddr
-;	cp a, ORIENTATION_EAST
-;	jp z, GetNorthWallTypeFromRoomAttrAddr
-;	cp a, ORIENTATION_SOUTH
-;	jp z, GetEastWallTypeFromRoomAttrAddr
-;	jp GetSouthWallTypeFromRoomAttrAddr
-
-; @param hl, address of room attrs representing current tile
+; @param hl, room addr
 ; @return a, wall type
-GetTopWallTypeFromRoomAttrAddr::
-GetNorthWallTypeFromRoomAttrAddr::
+GetTopWallTypeFromRoomAddr::
+GetNorthWallTypeFromRoomAddr::
 	ld a, [hl]
 	and a, ROOM_MASK_NORTH_WALL
 rept 6
@@ -122,10 +58,10 @@ rept 6
 endr
 	ret
 
-; @param hl, address of room attrs representing current tile
+; @param hl, room addr
 ; @return a, wall type
-GetRightWallTypeFromRoomAttrAddr::
-GetEastWallTypeFromRoomAttrAddr::
+GetRightWallTypeFromRoomAddr::
+GetEastWallTypeFromRoomAddr::
 	ld a, [hl]
 	and a, ROOM_MASK_EAST_WALL
 rept 4
@@ -133,10 +69,10 @@ rept 4
 endr
 	ret
 
-; @param hl, address of room attrs representing current tile
+; @param hl, room addr
 ; @return a, wall type
-GetBottomWallTypeFromRoomAttrAddr::
-GetSouthWallTypeFromRoomAttrAddr::
+GetBottomWallTypeFromRoomAddr::
+GetSouthWallTypeFromRoomAddr::
 	ld a, [hl]
 	and a, ROOM_MASK_SOUTH_WALL
 rept 2
@@ -144,10 +80,10 @@ rept 2
 endr
 	ret
 
-; @param hl, address of room attrs representing current tile
+; @param hl, room addr
 ; @return a, wall type
-GetLeftWallTypeFromRoomAttrAddr::
-GetWestWallTypeFromRoomAttrAddr::
+GetLeftWallTypeFromRoomAddr::
+GetWestWallTypeFromRoomAddr::
 	ld a, [hl]
 	and a, ROOM_MASK_WEST_WALL
 	ret
@@ -405,25 +341,18 @@ GetRoomAddrFromCoords:
 	add hl, bc
 	ret
 
+
+; this is the only plce where the code reads from the active map, Map1
+; it translates between a room's map room constant (TILE_MAP_RL) and its room wall attribute constant (%00010001). each is one byte
 ; Map1 + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: room X coord
 ; @param e: room Y coord
 ; @return hl: address of room tile's RoomWallAttributes
-GetRoomWallAttributesFromRoomCoords::
+GetRoomAddrFromRoomCoords::
 .getActiveMapRoomAddr
 	ld a, [wActiveMap]
 	ld b, a
 	ld a, [wActiveMap+1]
 	ld c, a
 	call GetRoomAddrFromCoords
-.getRoomWallAttributesAddrFromMapRoomAddr:
-	ld a, [hl] ; get tile data index from tilemap. each is one byte in size so no need to multiply by entry size
-	ld hl, RoomWallAttributes
-	; add to lsb
-	add a, l; get addr of correct tile attrs
-	ld l, a
-	; add to msb
-	ld a, h
-	adc a, 0 ; in case of overflow
-	ld h, a
 	ret

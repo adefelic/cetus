@@ -1,5 +1,6 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
+INCLUDE "src/constants/event_constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/item_constants.inc"
 INCLUDE "src/structs/event.inc"
@@ -89,7 +90,7 @@ HandlePressedB:
 	; check closest player facing wall. if it exists, the player isn't picking up an item, they are opening the item menu
 .checkForWall
 	call GetRoomCoordsCenterNearWRTPlayer
-	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
+	call GetRoomAddrFromRoomCoords
 	call GetTopWallWrtPlayer
 	cp WALL_TYPE_NONE
 	jp nz, .openExploreMenu ; double negative >_< if there is a wall, then there isn't an item, so open explore menu
@@ -136,7 +137,7 @@ HandlePressedUp:
 	ld d, a
 	ld a, [wPlayerExploreY]
 	ld e, a
-	call GetRoomWallAttributesFromRoomCoords ; put related RoomWallAttributes addr in hl
+	call GetRoomAddrFromRoomCoords ; put room addr in hl
 AdvanceIfNoCollisions:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
@@ -146,7 +147,7 @@ AdvanceIfNoCollisions:
 	cp a, ORIENTATION_SOUTH
 	jp z, .facingSouth
 .facingWest
-	call GetWestWallTypeFromRoomAttrAddr
+	call GetWestWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp nz, .doNotAdvance
 	ld a, [wPlayerExploreX]
@@ -154,7 +155,7 @@ AdvanceIfNoCollisions:
 	ld [wPlayerExploreX], a
 	jp .finishAdvance
 .facingNorth
-	call GetNorthWallTypeFromRoomAttrAddr
+	call GetNorthWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp nz, .doNotAdvance
 	ld a, [wPlayerExploreY]
@@ -162,7 +163,7 @@ AdvanceIfNoCollisions:
 	ld [wPlayerExploreY], a
 	jp .finishAdvance
 .facingEast
-	call GetEastWallTypeFromRoomAttrAddr
+	call GetEastWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp nz, .doNotAdvance
 	ld a, [wPlayerExploreX]
@@ -170,7 +171,7 @@ AdvanceIfNoCollisions:
 	ld [wPlayerExploreX], a
 	jp .finishAdvance
 .facingSouth
-	call GetSouthWallTypeFromRoomAttrAddr
+	call GetSouthWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp nz, .doNotAdvance
 	ld a, [wPlayerExploreY]

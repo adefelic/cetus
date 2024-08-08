@@ -6,12 +6,12 @@ INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 SECTION "First Person View Room Cache", WRAM0
 ; this is a cache of 1 byte RoomWallAttributes objects representing the rooms currently within the player's view
 ; this is useful when rendering
-wRoomAttributesFarLeft:: db
-wRoomAttributesFarCenter:: db
-wRoomAttributesFarRight:: db
-wRoomAttributesNearLeft:: db
-wRoomAttributesNearCenter:: db
-wRoomAttributesNearRight:: db
+wRoomFarLeft:: db
+wRoomFarCenter:: db
+wRoomFarRight:: db
+wRoomNearLeft:: db
+wRoomNearCenter:: db
+wRoomNearRight:: db
 
 SECTION "First Person Environment Renderer", ROMX
 
@@ -28,13 +28,19 @@ SECTION "First Person Environment Renderer", ROMX
 RenderExploreEnvironmentWalls::
 	; todo this shouldn't be called here, it should be called whenever the player's location is invalidated
 	call UpdateRoomWallCache
-ProcessRoomCenterNear: ; process rooms closest to farthest w/ dirtying to only draw topmost z segments
+	; process rooms closest to farthest w/ dirtying to only draw topmost z segments
+ProcessRoomCenterNear:
 .checkLeftWall:
-	ld hl, wRoomAttributesNearCenter
-	call GetLeftWallTypeFromRoomAttrAddr
+	ld hl, wRoomNearCenter
+	call GetLeftWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .checkTopWall
-.paintLeftWall
+	cp a, WALL_TYPE_A
+	jp z, .paintLeftWallTypeA
+	cp a, WALL_TYPE_B
+	jp z, .paintLeftWallTypeB
+	; control should not reach here
+.paintLeftWallTypeA
 	; okay instead we can say ... load that wall's panel index
 	ld e, BG_PALETTE_Z0
 	ld d, TILE_EXPLORE_WALL_SIDE
@@ -43,9 +49,13 @@ ProcessRoomCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	call CheckSegmentP
 	ld d, TILE_EXPLORE_DIAG_L
 	call CheckSegmentPDiag
+	jp .checkTopWall
+.paintLeftWallTypeB
+	; todo
+	jp .checkTopWall
 .checkTopWall
-	ld hl, wRoomAttributesNearCenter
-	call GetTopWallTypeFromRoomAttrAddr
+	ld hl, wRoomNearCenter
+	call GetTopWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .checkRightWall
 .paintTopWall
@@ -60,8 +70,8 @@ ProcessRoomCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 	call CheckSegmentN
 	call CheckSegmentNDiag
 .checkRightWall
-	ld hl, wRoomAttributesNearCenter
-	call GetRightWallTypeFromRoomAttrAddr
+	ld hl, wRoomNearCenter
+	call GetRightWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGround
 .paintRightWall
@@ -79,8 +89,8 @@ ProcessRoomCenterNear: ; process rooms closest to farthest w/ dirtying to only d
 
 ProcessRoomLeftNear:
 .checkTopWall
-	ld hl, wRoomAttributesNearLeft
-	call GetTopWallTypeFromRoomAttrAddr
+	ld hl, wRoomNearLeft
+	call GetTopWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGround
 .paintTopWall
@@ -96,8 +106,8 @@ ProcessRoomLeftNear:
 
 ProcessRoomRightNear:
 .checkTopWall
-	ld hl, wRoomAttributesNearRight
-	call GetTopWallTypeFromRoomAttrAddr
+	ld hl, wRoomNearRight
+	call GetTopWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGround
 .paintTopWall
@@ -113,8 +123,8 @@ ProcessRoomRightNear:
 
 ProcessRoomCenterFar:
 .checkLeftWall
-	ld hl, wRoomAttributesFarCenter
-	call GetLeftWallTypeFromRoomAttrAddr
+	ld hl, wRoomFarCenter
+	call GetLeftWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintLeftGround ; paint ground if no left wall
 .paintLeftWall
@@ -131,8 +141,8 @@ ProcessRoomCenterFar:
 	call CheckSegmentL
 	call CheckSegmentLDiag
 .checkTopWall
-	ld hl, wRoomAttributesFarCenter
-	call GetTopWallTypeFromRoomAttrAddr
+	ld hl, wRoomFarCenter
+	call GetTopWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance
 .paintTopWall
@@ -144,8 +154,8 @@ ProcessRoomCenterFar:
 	ld e, BG_PALETTE_FOG
 	call CheckSegmentCDistanceFog
 .checkRightWall
-	ld hl, wRoomAttributesFarCenter
-	call GetRightWallTypeFromRoomAttrAddr
+	ld hl, wRoomFarCenter
+	call GetRightWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintRightGround ; paint ground if no right wall
 .paintRightWall
@@ -168,8 +178,8 @@ ProcessRoomCenterFar:
 
 ProcessRoomLeftFar:
 .checkTopWall
-	ld hl, wRoomAttributesFarLeft
-	call GetTopWallTypeFromRoomAttrAddr
+	ld hl, wRoomFarLeft
+	call GetTopWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance
 .paintTopWall
@@ -191,8 +201,8 @@ ProcessRoomLeftFar:
 
 ProcessRoomRightFar:
 .checkTopWall
-	ld hl, wRoomAttributesFarRight
-	call GetTopWallTypeFromRoomAttrAddr
+	ld hl, wRoomFarRight
+	call GetTopWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance
 .paintTopWall
@@ -219,39 +229,39 @@ UpdateRoomWallCache:
 .getRooms
 	; far left
 	call GetRoomCoordsLeftFarWRTPlayer
-	call GetRoomWallAttributesFromRoomCoords
+	call GetRoomAddrFromRoomCoords
 	ld a, [hl]
-	ld [wRoomAttributesFarLeft], a
+	ld [wRoomFarLeft], a
 
 	; far center
 	call GetRoomCoordsCenterFarWRTPlayer
-	call GetRoomWallAttributesFromRoomCoords
+	call GetRoomAddrFromRoomCoords
 	ld a, [hl]
-	ld [wRoomAttributesFarCenter], a
+	ld [wRoomFarCenter], a
 
 	; far right
 	call GetRoomCoordsRightFarWRTPlayer
-	call GetRoomWallAttributesFromRoomCoords
+	call GetRoomAddrFromRoomCoords
 	ld a, [hl]
-	ld [wRoomAttributesFarRight], a
+	ld [wRoomFarRight], a
 
 	; near left
 	call GetRoomCoordsLeftNearWRTPlayer
-	call GetRoomWallAttributesFromRoomCoords
+	call GetRoomAddrFromRoomCoords
 	ld a, [hl]
-	ld [wRoomAttributesNearLeft], a
+	ld [wRoomNearLeft], a
 
 	; near center
 	call GetRoomCoordsCenterNearWRTPlayer
-	call GetRoomWallAttributesFromRoomCoords
+	call GetRoomAddrFromRoomCoords
 	ld a, [hl]
-	ld [wRoomAttributesNearCenter], a
+	ld [wRoomNearCenter], a
 
 	; near right
 	call GetRoomCoordsRightNearWRTPlayer
-	call GetRoomWallAttributesFromRoomCoords
+	call GetRoomAddrFromRoomCoords
 	ld a, [hl]
-	ld [wRoomAttributesNearRight], a
+	ld [wRoomNearRight], a
 .rotateBitsToMatchPlayerOrientation
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_WEST
@@ -263,81 +273,81 @@ UpdateRoomWallCache:
 	ret
 
 RotateRoomCacheRightTwice:
-	ld hl, wRoomAttributesFarLeft
+	ld hl, wRoomFarLeft
 rept 2
 	rrc [hl]
 endr
-	ld hl, wRoomAttributesFarCenter
+	ld hl, wRoomFarCenter
 rept 2
 	rrc [hl]
 endr
-	ld hl, wRoomAttributesFarRight
+	ld hl, wRoomFarRight
 rept 2
 	rrc [hl]
 endr
-	ld hl, wRoomAttributesNearLeft
+	ld hl, wRoomNearLeft
 rept 2
 	rrc [hl]
 endr
-	ld hl, wRoomAttributesNearCenter
+	ld hl, wRoomNearCenter
 rept 2
 	rrc [hl]
 endr
-	ld hl, wRoomAttributesNearRight
+	ld hl, wRoomNearRight
 rept 2
 	rrc [hl]
 endr
 	ret
 
 RotateRoomCacheRightFourTimes:
-	ld hl, wRoomAttributesFarLeft
+	ld hl, wRoomFarLeft
 rept 4
 	rrc [hl]
 endr
-	ld hl, wRoomAttributesFarCenter
+	ld hl, wRoomFarCenter
 rept 4
 	rrc [hl]
 endr
-	ld hl, wRoomAttributesFarRight
+	ld hl, wRoomFarRight
 rept 4
 	rrc [hl]
 endr
-	ld hl, wRoomAttributesNearLeft
+	ld hl, wRoomNearLeft
 rept 4
 	rrc [hl]
 endr
-	ld hl, wRoomAttributesNearCenter
+	ld hl, wRoomNearCenter
 rept 4
 	rrc [hl]
 endr
-	ld hl, wRoomAttributesNearRight
+	ld hl, wRoomNearRight
 rept 4
 	rrc [hl]
 endr
 	ret
 
 RotateRoomCacheLeftTwice:
-	ld hl, wRoomAttributesFarLeft
+	ld hl, wRoomFarLeft
 rept 2
 	rlc [hl]
 endr
-	ld hl, wRoomAttributesFarCenter
+	ld hl, wRoomFarCenter
 rept 2
 	rlc [hl]
 endr
-	ld hl, wRoomAttributesFarRight
+	ld hl, wRoomFarRight
 rept 2
 	rlc [hl]
 endr
-	ld hl, wRoomAttributesNearLeft
+	ld hl, wRoomNearLeft
 rept 2
 	rlc [hl]
 endr
-	ld hl, wRoomAttributesNearCenter
+	ld hl, wRoomNearCenter
 rept 2
 	rlc [hl]
 endr
-	ld hl, wRoomAttributesNearRight
+	ld hl, wRoomNearRight
 rept 2
 	rlc [hl]
 endr

@@ -1,5 +1,6 @@
-INCLUDE "src/assets/map_data.inc"
 INCLUDE "src/constants/constants.inc"
+INCLUDE "src/constants/event_constants.inc"
+INCLUDE "src/structs/event.inc"
 
 SECTION "Event Struct Storage", WRAM0
 ; current RoomEvent struct state

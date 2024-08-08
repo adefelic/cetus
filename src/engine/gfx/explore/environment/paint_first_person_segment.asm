@@ -65,8 +65,8 @@ CheckSegmentBDistanceFog::
 	call PaintSegmentBDistanceFog
 
 	; B will draw right border if far-center has top wall
-	ld hl, wRoomAttributesFarCenter
-	call GetTopWallTypeFromRoomAttrAddr
+	ld hl, wRoomFarCenter
+	call GetTopWallTypeFromRoomAddr
 	call nz, PaintSegmentBFogBorderRight
 	ret
 
@@ -84,20 +84,20 @@ CheckSegmentCDistanceFog::
 	call PaintSegmentCDistanceFog
 
 	; C will draw left border if far-center has a left wall or far-left has a top wall
-	ld hl, wRoomAttributesFarCenter
-	call GetLeftWallTypeFromRoomAttrAddr
+	ld hl, wRoomFarCenter
+	call GetLeftWallTypeFromRoomAddr
 	ld b, a
-	ld hl, wRoomAttributesFarLeft
-	call GetTopWallTypeFromRoomAttrAddr
+	ld hl, wRoomFarLeft
+	call GetTopWallTypeFromRoomAddr
 	or b
 	call nz, PaintSegmentCFogBorderLeft
 
 	; C will draw left border if far-center has a right wall or far-right has a top wall
-	ld hl, wRoomAttributesFarCenter
-	call GetRightWallTypeFromRoomAttrAddr
+	ld hl, wRoomFarCenter
+	call GetRightWallTypeFromRoomAddr
 	ld b, a
-	ld hl, wRoomAttributesFarRight
-	call GetTopWallTypeFromRoomAttrAddr
+	ld hl, wRoomFarRight
+	call GetTopWallTypeFromRoomAddr
 	or b
 	call nz, PaintSegmentCFogBorderRight
 	ret
@@ -123,8 +123,8 @@ CheckSegmentDDistanceFog::
 	call PaintSegmentDDistanceFog
 
 	; D will draw left border if far-center has top wall
-	ld hl, wRoomAttributesFarCenter
-	call GetTopWallTypeFromRoomAttrAddr
+	ld hl, wRoomFarCenter
+	call GetTopWallTypeFromRoomAddr
 	call nz, PaintSegmentDFogBorderLeft
 	ret
 
@@ -230,8 +230,8 @@ CheckSegmentRDiag::
 ; @param d: the tile index to paint with
 PaintSegmentA::
 .row0
-	ld hl, wShadowBackgroundTilemap + rows 0 ; dest in VRAM
-	ld b, 3      ; # of bytes (tile indices) remaining.
+	ld hl, wShadowBackgroundTilemap + rows 0
+	ld b, 3
 	call CopyByteInDToRange
 	ld hl, wShadowBackgroundTilemapAttrs + rows 0
 	ld b, 3

@@ -15,6 +15,8 @@ wShadowBackgroundTilemapAttrsEnd::
 
 ; todo maybe rather than shadowing this we can actually update the tilemap
 ;   in realish time and then hit the switch to enable window
+; also so far the window is only ever 6 rows tall so we only need 6 rows of it instead of 18. that saves 384 bytes.
+;   can probably do the same thing for attributes, so 700 something bytes
 SECTION "Shadow Window Tilemap", WRAM0
 wShadowWindowTilemap::
 ds VISIBLE_TILEMAP_SIZE
