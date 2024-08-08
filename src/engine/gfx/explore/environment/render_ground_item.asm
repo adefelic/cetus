@@ -1,10 +1,10 @@
-INCLUDE "src/constants/constants.inc"
-INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/tiles/indices/object_tiles.inc"
-INCLUDE "src/constants/item_constants.inc"
+INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
-INCLUDE "src/constants/explore_constants.inc"
+INCLUDE "src/constants/item_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
+INCLUDE "src/constants/room_constants.inc"
+INCLUDE "src/lib/hardware.inc"
 
 DEF QUARTZ_TOP_LEFT_X EQU TILE_WIDTH * $09 + OAM_PADDING_X
 DEF QUARTZ_TOP_LEFT_Y EQU TILE_HEIGHT * $0E + OAM_PADDING_Y

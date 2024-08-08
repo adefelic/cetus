@@ -31,7 +31,6 @@ wCurrentMenuItem:: dw ; points to the menu item (wMenuItemRendered) being presen
 
 SECTION "Explore Screen Event Renderer", ROMX
 
-
 ; todo the label should be rendered as a result of there being an interactable available, not as a first step of dialog. pls decouple
 
 ; overlay event bg tiles, reading from the active event pointers

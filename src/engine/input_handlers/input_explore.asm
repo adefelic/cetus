@@ -3,6 +3,7 @@ INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/event_constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/item_constants.inc"
+INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/structs/event.inc"
 INCLUDE "src/lib/hardware.inc"
 

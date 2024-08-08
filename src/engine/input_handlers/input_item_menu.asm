@@ -1,6 +1,6 @@
 INCLUDE "src/assets/items.inc"
 INCLUDE "src/constants/constants.inc"
-INCLUDE "src/constants/explore_constants.inc"
+INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/lib/hardware.inc"
 
 SECTION "Item Placement Scratch", WRAM0
