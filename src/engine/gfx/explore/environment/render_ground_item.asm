@@ -16,7 +16,7 @@ SECTION "Ground Item Paint Routines", ROMX
 RenderGroundItemCenterFar::
 .checkForWall
 	call GetRoomCoordsCenterNearWRTPlayer
-	call GetRoomAddrFromRoomCoords
+	call GetCurrentMapWallsRoomAddrFromRoomCoords
 	call GetTopWallWrtPlayer
 	cp WALL_TYPE_NONE
 	jp nz, PaintNone

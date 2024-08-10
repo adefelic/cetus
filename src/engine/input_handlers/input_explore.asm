@@ -91,7 +91,7 @@ HandlePressedB:
 	; check closest player facing wall. if it exists, the player isn't picking up an item, they are opening the item menu
 .checkForWall
 	call GetRoomCoordsCenterNearWRTPlayer
-	call GetRoomAddrFromRoomCoords
+	call GetCurrentMapWallsRoomAddrFromRoomCoords
 	call GetTopWallWrtPlayer
 	cp WALL_TYPE_NONE
 	jp nz, .openExploreMenu ; double negative >_< if there is a wall, then there isn't an item, so open explore menu
@@ -138,7 +138,7 @@ HandlePressedUp:
 	ld d, a
 	ld a, [wPlayerExploreY]
 	ld e, a
-	call GetRoomAddrFromRoomCoords ; put room addr in hl
+	call GetCurrentMapWallsRoomAddrFromRoomCoords ; put room addr in hl
 AdvanceIfNoCollisions:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH

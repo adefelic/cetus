@@ -230,37 +230,37 @@ UpdateRoomWallCache:
 .getRooms
 	; far left
 	call GetRoomCoordsLeftFarWRTPlayer
-	call GetRoomAddrFromRoomCoords
+	call GetCurrentMapWallsRoomAddrFromRoomCoords
 	ld a, [hl]
 	ld [wRoomFarLeft], a
 
 	; far center
 	call GetRoomCoordsCenterFarWRTPlayer
-	call GetRoomAddrFromRoomCoords
+	call GetCurrentMapWallsRoomAddrFromRoomCoords
 	ld a, [hl]
 	ld [wRoomFarCenter], a
 
 	; far right
 	call GetRoomCoordsRightFarWRTPlayer
-	call GetRoomAddrFromRoomCoords
+	call GetCurrentMapWallsRoomAddrFromRoomCoords
 	ld a, [hl]
 	ld [wRoomFarRight], a
 
 	; near left
 	call GetRoomCoordsLeftNearWRTPlayer
-	call GetRoomAddrFromRoomCoords
+	call GetCurrentMapWallsRoomAddrFromRoomCoords
 	ld a, [hl]
 	ld [wRoomNearLeft], a
 
 	; near center
 	call GetRoomCoordsCenterNearWRTPlayer
-	call GetRoomAddrFromRoomCoords
+	call GetCurrentMapWallsRoomAddrFromRoomCoords
 	ld a, [hl]
 	ld [wRoomNearCenter], a
 
 	; near right
 	call GetRoomCoordsRightNearWRTPlayer
-	call GetRoomAddrFromRoomCoords
+	call GetCurrentMapWallsRoomAddrFromRoomCoords
 	ld a, [hl]
 	ld [wRoomNearRight], a
 .rotateBitsToMatchPlayerOrientation

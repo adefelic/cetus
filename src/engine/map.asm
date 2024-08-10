@@ -2,28 +2,60 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/location_constants.inc"
 INCLUDE "src/constants/room_constants.inc"
+INCLUDE "src/structs/map.inc"
 
 SECTION "Map / Room Parsing", ROMX
 
-; todo make this more than the one hardcoded map
-SetMap::
-	ld hl, Map1Walls
-	ld a, h
-	ld [wActiveMap], a
+; @param hl, addr of map struct def
+LoadMapInHl::
 	ld a, l
-	ld [wActiveMap+1], a
-
-	ld hl, Map1EventLocations
+	ld [wCurrentMap], a
 	ld a, h
-	ld [wActiveMapEventLocations], a
-	ld a, l
-	ld [wActiveMapEventLocations+1], a
+	ld [wCurrentMap+1], a
 
-	ld a, LOCATION_FIELD
+	; long term todo, optimize map struct to let this use hli instead of stack verbs
+	push hl ; stash map struct location
+	ld a, Map_WallMapAddr
+	call AddAToHl
+	call DereferenceHlIntoHl
+	ld a, l
+	ld [wCurrentMapWalls], a
+	ld a, h
+	ld [wCurrentMapWalls+1], a
+
+	pop hl
+	push hl
+	ld a, Map_EventMapAddr
+	call AddAToHl
+	call DereferenceHlIntoHl
+	ld a, l
+	ld [wCurrentMapEvents], a
+	ld a, h
+	ld [wCurrentMapEvents+1], a
+	pop hl
+	ret
+
+LoadPlayerIntoMap::
+	ld hl, wCurrentMap
+	call DereferenceHlIntoHl
+	ld a, Map_StartingOrientation
+	call AddAToHl
+
+	; the struct contains orientation, x, y, and location bytes in order so we can inc through with hli
+
+	ld a, [hli]
+	ld [wPlayerOrientation], a
+	ld a, [hli]
+	ld [wPlayerExploreX], a
+	ld a, [hli]
+	ld [wPlayerExploreY], a
+	ld a, [hli]
 	ld [wPlayerLocation], a
 
+	ret
+
 ; todo replace with LoadItemMap which would dump some sram into wItemMap
-.clearItemMap:
+ClearItemMap::
 	ld bc, wItemMapEnd - wItemMap
 	ld hl, wItemMap
 .loop:
@@ -307,10 +339,10 @@ GetEventRoomAddrFromPlayerCoords::
 	ld d, a
 	ld a, [wPlayerExploreY]
 	ld e, a
-	ld a, [wActiveMapEventLocations]
-	ld b, a
-	ld a, [wActiveMapEventLocations+1]
-	ld c, a
+	ld a, [wCurrentMapEvents]
+	ld l, a
+	ld a, [wCurrentMapEvents+1]
+	ld h, a
 	jp GetRoomAddrFromCoords
 
 ; item map addr + wPlayerExploreX + wPlayerExploreY*32
@@ -318,15 +350,17 @@ GetEventRoomAddrFromPlayerCoords::
 ; @param e: room Y coord
 ; @return hl: item map room address of tile
 GetActiveItemMapRoomAddrFromCoords::
-	ld bc, wItemMap
+	ld hl, wItemMap
 	jp GetRoomAddrFromCoords
 
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: player X coord
 ; @param e: player Y coord
-; @param bc: map addr
+; @param hl: map addr
 ; @return hl: tile address of player occupied tile of Map1 (this need to change)
 GetRoomAddrFromCoords:
+	ld b, h
+	ld c, l
 	ld l, e
 	ld h, 0
 	; shift left 5 times to multiply by 32
@@ -342,17 +376,15 @@ GetRoomAddrFromCoords:
 	ret
 
 
-; this is the only plce where the code reads from the active map, Map1
-; it translates between a room's map room constant (TILE_MAP_RL) and its room wall attribute constant (%00010001). each is one byte
+
 ; Map1 + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: room X coord
 ; @param e: room Y coord
 ; @return hl: address of room tile's RoomWallAttributes
-GetRoomAddrFromRoomCoords::
-.getActiveMapRoomAddr
-	ld a, [wActiveMap]
-	ld b, a
-	ld a, [wActiveMap+1]
-	ld c, a
+GetCurrentMapWallsRoomAddrFromRoomCoords::
+	ld a, [wCurrentMapWalls]
+	ld l, a
+	ld a, [wCurrentMapWalls+1]
+	ld h, a
 	call GetRoomAddrFromCoords
 	ret

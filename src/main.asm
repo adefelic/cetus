@@ -11,28 +11,18 @@ wIsRandSeeded:: db
 SECTION "Game State", WRAM0
 wActiveFrameScreen:: db
 wPreviousFrameScreen:: db
-wActiveMap:: dw
-wActiveMapEventLocations:: dw
+wCurrentMap:: dw
+wCurrentMapWalls:: dw
+wCurrentMapEvents:: dw
 wStepsToNextDangerLevel:: db
 wCurrentDangerLevel:: db
 wHasInputBeenProcessedThisFrame:: db
 
-SECTION "General Player State", WRAM0
-wPlayerLocation:: db
-
-SECTION "Explore Player State", WRAM0
+SECTION "Player Map State", WRAM0
 wPlayerExploreX:: db
 wPlayerExploreY:: db
 wPlayerOrientation:: db
-
-SECTION "Encounter Player State", WRAM0
-; coords of top left pixel of sprite
-wPlayerEncounterX:: db
-wPlayerEncounterY:: db
-wPlayerDirection:: db
-wJumpsRemaining:: db
-wIsJumping:: db
-wJumpFramesRemaining:: db
+wPlayerLocation:: db
 
 SECTION "Screen Variables", WRAM0
 wIsShadowTilemapDirty:: db
@@ -145,25 +135,25 @@ ClearShadowOam:
 	jp nz, .loop
 
 InitGame:
-	call SetMap
+	; clear item map
+	call ClearItemMap ; currently this is hardcoded to be the area of Map1 * 1 byte (1024 bytes). that's a lot of ram and a lot of sram.
+	; the goal is for this to be playable on real hardware but it's fine for it to be a bit optimal on an emulator with infinite rom, sram, etc
+
+	; load map
+	ld hl, Map1
+	call LoadMapInHl
 
 	; init input
 	xor a
 	ld [wJoypadDown], a
-	ld [wJoypadNewlyReleased], a
 	ld [wJoypadNewlyReleased], a
 
 	ld a, FALSE
 	ld [wHasInputBeenProcessedThisFrame], a
 	ld [wIsRandSeeded], a
 
-	; init player state
-	ld a, 1
-	ld [wPlayerExploreX], a
-	ld a, 29
-	ld [wPlayerExploreY], a
-	ld a, ORIENTATION_EAST
-	ld [wPlayerOrientation], a
+	; init player state with map defaults
+	call LoadPlayerIntoMap
 	call InitDangerLevel
 
 	; init game screen state

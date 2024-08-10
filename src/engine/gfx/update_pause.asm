@@ -5,11 +5,13 @@ INCLUDE "src/constants/palette_constants.inc"
 SECTION "Pause Screen Renderer", ROMX
 
 ; pause screen contains current map
+; actually it is broken now, but that is okay
+; this should be replaced with a paper doll screen
 UpdatePauseScreen::
 .loadShadowTilemap
-	ld a, [wActiveMap]
+	ld a, [wCurrentMapWalls]
 	ld d, a
-	ld a, [wActiveMap+1]
+	ld a, [wCurrentMapWalls+1]
 	ld e, a
 	ld hl, wShadowBackgroundTilemap
 	ld bc, VISIBLE_TILEMAP_SIZE

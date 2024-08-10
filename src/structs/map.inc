@@ -1,23 +1,41 @@
-; unused
+INCLUDE "src/lib/structs.inc"
 
-; really it's 30 by 30 because buffer rooms
-;DEF MAP_HEIGHT EQU 32 ; rooms
-;DEF MAP_WIDTH  EQU 32 ; rooms
+	struct Map
+		bytes 1, Height ; in rooms ; 32 or 30 ... 32
+		bytes 1, Width  ; in rooms
+		bytes 1, StartingOrientation
+		bytes 1, StartingX
+		bytes 1, StartingY
+		bytes 1, StartingLocation
 
-;DEF WALL_ROOM_SIZE EQU 1 ; bytes
-;DEF EVENT_ROOM_SIZE EQU 1 ; bytes
+		words 1, WallMapAddr
+		words 1, EventMapAddr
+	end_struct
 
-;DEF WALL_MAP_SIZE EQU MAP_HEIGHT * MAP_WIDTH * WALL_ROOM_SIZE ; bytes
-;DEF EVENT_MAP_SIZE EQU MAP_HEIGHT * MAP_WIDTH * EVENT_ROOM_SIZE ; bytes
+	;struct Room
+	;	bytes WALL_ROOM_SIZE, WallData
+	;end_struct
 
-;MACRO map
-;	db \1                 ; initial player coords
-;	db \2                 ; initial player orientation
-;	ds WALL_MAP_SIZE, \3  ; wall map
-;	ds EVENT_MAP_SIZE, \4 ; event map
-;	db \5                 ; sizeof event_triggers
-;	ds \5, \6             ; event triggers
-;	db \7                 ; sizeof encounters
-;	ds \7, \8             ; encounters
-;ENDM
+	; it might be better to make room definition a macro that a struct
+	; like ... ROOM 0,1,0,2,1 for N,E,S,W,F
+	; this is going to be very hard to interpret at a glance regardless
 
+	; why am i looking into this at all? because the current map entry format (using TILE_MAP_ constants) won't scale easily to having multiple wall types.
+	; this won't either though, entry will be a big pain in the butt regardless
+	; hmm ...
+	; example macros
+
+	;MACRO assert_valid_rgb
+	;	rept _NARG
+	;		assert 0 <= (\1) && (\1) <= 31, "RGB channel must be 0-31"
+	;		shift
+	;	endr
+	;ENDM
+
+	;MACRO RGB
+	;	rept _NARG / 3
+	;		assert_valid_rgb \1, \2, \3
+	;		dw palred (\1) + palgreen (\2) + palblue (\3)
+	;		shift 3
+	;	endr
+	;ENDM
