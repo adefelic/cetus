@@ -254,6 +254,7 @@ RenderEncounterMenuEnemySkillUsed::
 LoadBufferWithUsedStringAndAttackName:
 .writeUsedString
 	ld hl, rUsedString
+	ld b, USED_STRING_LENGTH
 	call CopyStringIntoBufferWithWhitespace
 .getAttackName
 	ld hl, wCurrentAttack
@@ -265,26 +266,24 @@ LoadBufferWithUsedStringAndAttackName:
 	ld e, l
 	ld hl, wAttackNameStringBuffer + USED_STRING_LENGTH
 	ld b, BYTES_IN_ATTACK_STRING
-	call MemcopySmall
-	ret
+	jp MemcopySmall
 
 ; there is no way to know the length of the string
+; @param b, length to copy
 CopyStringIntoBufferWithWhitespace:
 	ld d, h
 	ld e, l
 	call ClearTextRowBuffer
 	ld hl, wAttackNameStringBuffer
-	ld b, BYTES_IN_ATTACK_STRING
-	call MemcopySmall
-	ret
+	jp MemcopySmall
 
 ClearTextRowBuffer:
-	ld b, BYTES_IN_ATTACK_STRING + 1
+	ld c, BYTES_IN_ATTACK_STRING
 	ld a, " "
 	ld hl, wAttackNameStringBuffer
 .copy:
 	ld [hli], a
-	dec b
+	dec c
 	jp nz, .copy
 	ret
 
@@ -294,6 +293,7 @@ LoadNpcNameString:
 	call DereferenceHlIntoHl
 	ld a, NPC_Name
 	call AddAToHl
+	ld b, CHARACTER_NAME_LENGTH
 	call CopyStringIntoBufferWithWhitespace
 	ret
 
