@@ -294,8 +294,7 @@ LoadNpcNameString:
 	ld a, NPC_Name
 	call AddAToHl
 	ld b, CHARACTER_NAME_LENGTH
-	call CopyStringIntoBufferWithWhitespace
-	ret
+	jr CopyStringIntoBufferWithWhitespace
 
 DisableHighlight::
 	ld a, $FF ; goofy hack

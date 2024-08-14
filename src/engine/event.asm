@@ -149,7 +149,7 @@ HandleNewDialogRoomEvent:
 	ld [wDialogBranchesCount], a
 	ret
 
-; thhis function is the same as the first half of HandleNewDialogRoomEvent
+; this function is the same as the first half of HandleNewDialogRoomEvent
 HandleNewDialogWarpEvent:
 	pop hl
 	; store DialogBranchesAddr

@@ -1,6 +1,6 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
-INCLUDE "src/constants/location_constants.inc"
+INCLUDE "src/constants/locale_constants.inc"
 INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/structs/map.inc"
 
@@ -50,8 +50,7 @@ LoadPlayerIntoMap::
 	ld a, [hli]
 	ld [wPlayerExploreY], a
 	ld a, [hli]
-	ld [wPlayerLocation], a
-
+	ld [wCurrentLocale], a ; todo make this parse a new locale instead. update map struct to use locale
 	ret
 
 ; todo replace with LoadItemMap which would dump some sram into wItemMap
@@ -343,7 +342,7 @@ GetEventRoomAddrFromPlayerCoords::
 	ld l, a
 	ld a, [wCurrentMapEvents+1]
 	ld h, a
-	jp GetRoomAddrFromCoords
+	jr GetRoomAddrFromCoords
 
 ; item map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: room X coord
@@ -351,7 +350,7 @@ GetEventRoomAddrFromPlayerCoords::
 ; @return hl: item map room address of tile
 GetActiveItemMapRoomAddrFromCoords::
 	ld hl, wItemMap
-	jp GetRoomAddrFromCoords
+	jr GetRoomAddrFromCoords
 
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: player X coord
@@ -375,8 +374,6 @@ GetRoomAddrFromCoords:
 	add hl, bc
 	ret
 
-
-
 ; Map1 + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: room X coord
 ; @param e: room Y coord
@@ -386,5 +383,4 @@ GetCurrentMapWallsRoomAddrFromRoomCoords::
 	ld l, a
 	ld a, [wCurrentMapWalls+1]
 	ld h, a
-	call GetRoomAddrFromCoords
-	ret
+	jr GetRoomAddrFromCoords

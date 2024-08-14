@@ -32,7 +32,7 @@ InitAudio::
 	ldh [rNR50], a
 
 	; comment out to disable hUGE
-	ld hl, swamp
+	ld hl, MusicSwamp
 	call hUGE_init
 
 	xor a

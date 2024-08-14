@@ -1,6 +1,6 @@
 SECTION "Tile Data", ROMX, ALIGN[8]
 
-; bg bank 0
+;;; bg bank 0
 BgBank0Tiles::
 OWTiles::
 INCBIN "build/gfx/explore-simple.2bpp"
@@ -19,18 +19,22 @@ INCBIN "build/gfx/encounter-env-trees.2bpp"
 EncounterEnvTreesTilesEnd::
 BgBank0TilesEnd::
 
-; npc sprite tiles
+;;; bg bank 1
+ScribTiles::
+INCBIN "build/gfx/scrib.2bpp"
+ScribTilesEnd::
+
+;;; bg/obj bank 0
 NpcBrambleTiles::
 INCBIN "build/gfx/npc_bramble.2bpp"
 NpcOldBonesTiles::
 INCBIN "build/gfx/npc_oldbones.2bpp"
 
-; bg bank 1
-ScribTiles::
-INCBIN "build/gfx/scrib.2bpp"
-ScribTilesEnd::
+;;; bg/obj bank 1
+FieldWallBTiles::
+INCBIN "build/gfx/field_door_tiles.2bpp"
 
-; sprites bank 0
+;;; obj bank 0
 CompassTiles::
 INCBIN "build/gfx/compass.2bpp"
 CompassTilesEnd::

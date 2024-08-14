@@ -2,7 +2,7 @@ INCLUDE "src/lib/hUGEDriver/hUGE.inc"
 
 SECTION "swamp Song Data", ROMX
 
-swamp::
+MusicSwamp::
 db 18
 dw order_cnt
 dw order1, order2, order3, order4

@@ -13,4 +13,3 @@ EncounterDamagePaletteAnimationFrames::
 	dstruct PaletteAnimationKeyFrame, EncounterDamageKeyFrame1, 39, BG_PALETTE_ENEMY
 	dstruct PaletteAnimationKeyFrame, EncounterDamageKeyFrame2, 19, BG_PALETTE_ENEMY_DAMAGE
 	dstruct PaletteAnimationKeyFrame, EncounterDamageKeyFrame3,  0, BG_PALETTE_ENEMY
-

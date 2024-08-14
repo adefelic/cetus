@@ -42,6 +42,5 @@ DEF ROOMEVENT_WARP EQU $01
 		bytes 1, DestinationX
 		bytes 1, DestinationY
 		bytes 1, DestinationOrientation
-		words 1, BgPaletteSetAddr
-		bytes 1, DestinationLocation ; sets the wPlayerLocation to this constant. used when rolling enemies
+		words 1, DestinationLocale
 	end_struct

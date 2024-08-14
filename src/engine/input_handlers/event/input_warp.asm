@@ -1,9 +1,10 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/structs/event.inc"
+INCLUDE "src/structs/locale.inc"
 
 SECTION "Warp Event Input Handling", ROMX
 
-; this is inefficient and can be improved once the WarpDestination struct design has settled
+; this is inefficient and can be improved once the WarpDestination and Locale struct designs have settled
 DoWarp::
 	ld hl, wWarpDestinationAddr
 	call DereferenceHlIntoHl
@@ -28,20 +29,49 @@ DoWarp::
 	ld [wPlayerOrientation], a
 
 	pop hl
-	push hl
-	ld a, WarpDestination_BgPaletteSetAddr
+	; make hl point to the Locale now instead of the WarpDestination
+	ld a, WarpDestination_DestinationLocale
 	call AddAToHl
+	call DereferenceHlIntoHl
+	push hl ; contains addr of Locale
+
+; @param hl, addr of Locale
+LoadLocale:
+.loadPaletteSet
+	ld a, Locale_BgPaletteSetAddr
+	call AddAToHl ; contains addr of Locale_BgPaletteSetAddr
 	call DereferenceHlIntoHl
 	ld d, h
 	ld e, l
 	call EnqueueBgPaletteSetUpdate
-
 	pop hl
-	ld a, WarpDestination_DestinationLocation
-	call AddAToHl
-	ld a, [hl]
-	ld [wPlayerLocation], a
+	push hl
 
-	ld a, FALSE
-	ld [wIsPlayerFacingWallInteractable], a
+.loadEncountersTable
+	ld a, Locale_EncountersTableAddr
+	call AddAToHl
+	ld a, [hli]
+	ld [wCurrentEncounterTable], a
+	ld a, [hl]
+	ld [wCurrentEncounterTable+1], a
+	pop hl
+	push hl
+
+.loadMusic
+	ld a, Locale_MusicAddr
+	call AddAToHl
+	ld a, [hli]
+	ld [wCurrentMusicTrack], a
+	ld a, [hl]
+	ld [wCurrentMusicTrack+1], a
+	pop hl
+
+.loadSpecialWallTiles
+	ld a, Locale_WallTilesAddr
+	call AddAToHl
+	ld a, [hli]
+	ld [wCurrentWallTilesAddr], a
+	ld a, [hl]
+	ld [wCurrentWallTilesAddr+1], a
+
 	jp DirtyFpSegmentsAndTilemap

@@ -3,7 +3,7 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/encounter_constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
-INCLUDE "src/constants/location_constants.inc"
+INCLUDE "src/constants/locale_constants.inc"
 INCLUDE "src/structs/npc.inc"
 INCLUDE "src/structs/attack.inc"
 INCLUDE "src/structs/palette_animation.inc"
@@ -45,11 +45,12 @@ UpdateEncounterScreen::
 	; control should not reach here
 	ret
 
+; todo make this load from wCurrentEncounterTable
 RollEnemyNpc:
-	ld a, [wPlayerLocation]
-	cp LOCATION_FIELD
+	ld a, [wCurrentLocale]
+	cp LOCALE_FIELD
 	jr z, RollFieldEnemy
-	cp LOCATION_SWAMP
+	cp LOCALE_SWAMP
 	jr z, RollSwampEnemy
 	; control should not reach here
 	ret

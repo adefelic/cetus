@@ -1,5 +1,5 @@
-DEF LOCATION_FIELD EQU 0;
-DEF LOCATION_SWAMP EQU 1;
+DEF LOCALE_FIELD EQU 0;
+DEF LOCALE_SWAMP EQU 1;
 
 ; is it better to hardcode everything so that music and enemy encounters are tied directly to Location, or should it be overrideable
 ; arg decisions

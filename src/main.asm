@@ -11,23 +11,27 @@ wIsRandSeeded:: db
 SECTION "Game State", WRAM0
 wActiveFrameScreen:: db
 wPreviousFrameScreen:: db
-wCurrentMap:: dw
-wCurrentMapWalls:: dw
-wCurrentMapEvents:: dw
-wStepsToNextDangerLevel:: db
-wCurrentDangerLevel:: db
 wHasInputBeenProcessedThisFrame:: db
 
-SECTION "Player Map State", WRAM0
 wPlayerExploreX:: db
 wPlayerExploreY:: db
 wPlayerOrientation:: db
-wPlayerLocation:: db
+wCurrentMap:: dw
+wCurrentMapWalls:: dw
+wCurrentMapEvents:: dw
+wCurrentEncounterTable:: dw
+wCurrentWallTilesAddr:: dw
+wCurrentLocale:: db
+wCurrentMusicTrack:: dw
 
-SECTION "Screen Variables", WRAM0
+SECTION "Explore State", WRAM0
+wStepsToNextDangerLevel:: db
+wCurrentDangerLevel:: db
+
+SECTION "Screen State", WRAM0
 wIsShadowTilemapDirty:: db
 
-SECTION "Input Variables", WRAM0
+SECTION "Input State", WRAM0
 wPreviousFrameKeys: db
 wCurrentFrameKeys: db
 wJoypadDown:: db
