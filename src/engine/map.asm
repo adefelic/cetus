@@ -1,6 +1,5 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
-INCLUDE "src/constants/locale_constants.inc"
 INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/structs/map.inc"
 
@@ -15,6 +14,7 @@ LoadMapInHl::
 
 	; long term todo, optimize map struct to let this use hli instead of stack verbs
 	push hl ; stash map struct location
+
 	ld a, Map_WallMapAddr
 	call AddAToHl
 	call DereferenceHlIntoHl
@@ -25,6 +25,7 @@ LoadMapInHl::
 
 	pop hl
 	push hl
+
 	ld a, Map_EventMapAddr
 	call AddAToHl
 	call DereferenceHlIntoHl
@@ -32,25 +33,26 @@ LoadMapInHl::
 	ld [wCurrentMapEvents], a
 	ld a, h
 	ld [wCurrentMapEvents+1], a
-	pop hl
-	ret
 
-LoadPlayerIntoMap::
-	ld hl, wCurrentMap
+	pop hl
+	push hl
+
+	ld a, Map_StartingLocale
+	call AddAToHl
 	call DereferenceHlIntoHl
+	call LoadLocale
+
+	pop hl
+
+	; the struct contains orientation, x, y bytes in order so we can inc through with hli
 	ld a, Map_StartingOrientation
 	call AddAToHl
-
-	; the struct contains orientation, x, y, and location bytes in order so we can inc through with hli
-
 	ld a, [hli]
 	ld [wPlayerOrientation], a
 	ld a, [hli]
 	ld [wPlayerExploreX], a
 	ld a, [hli]
 	ld [wPlayerExploreY], a
-	ld a, [hli]
-	ld [wCurrentLocale], a ; todo make this parse a new locale instead. update map struct to use locale
 	ret
 
 ; todo replace with LoadItemMap which would dump some sram into wItemMap

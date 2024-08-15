@@ -33,11 +33,11 @@ DoWarp::
 	ld a, WarpDestination_DestinationLocale
 	call AddAToHl
 	call DereferenceHlIntoHl
-	push hl ; contains addr of Locale
 
 ; @param hl, addr of Locale
-LoadLocale:
+LoadLocale::
 .loadPaletteSet
+	push hl ; contains addr of Locale
 	ld a, Locale_BgPaletteSetAddr
 	call AddAToHl ; contains addr of Locale_BgPaletteSetAddr
 	call DereferenceHlIntoHl

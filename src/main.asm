@@ -157,7 +157,6 @@ InitGame:
 	ld [wIsRandSeeded], a
 
 	; init player state with map defaults
-	call LoadPlayerIntoMap
 	call InitDangerLevel
 
 	; init game screen state

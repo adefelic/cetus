@@ -3,10 +3,11 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/encounter_constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
-INCLUDE "src/constants/locale_constants.inc"
 INCLUDE "src/structs/npc.inc"
 INCLUDE "src/structs/attack.inc"
 INCLUDE "src/structs/palette_animation.inc"
+
+DEF NPC_COUNT_2_EXPONENT EQU 1
 
 SECTION "Encounter Screen Renderer", ROMX
 
@@ -47,32 +48,14 @@ UpdateEncounterScreen::
 
 ; todo make this load from wCurrentEncounterTable
 RollEnemyNpc:
-	ld a, [wCurrentLocale]
-	cp LOCALE_FIELD
-	jr z, RollFieldEnemy
-	cp LOCALE_SWAMP
-	jr z, RollSwampEnemy
-	; control should not reach here
-	ret
-
-; put a FIELD npc addr in hl
-RollFieldEnemy:
 	call Rand
 	; mask out bits that arent used by FIELD_NPCS_COUNT. currently only 1 bit so AND 1
-	AND 1
+	AND NPC_COUNT_2_EXPONENT
 	sla a ; * 2 so that it's the random number * sizeof address
-	ld hl, FieldNpcs
-	call AddAToHl
+	ld d, a
+	ld hl, wCurrentEncounterTable
 	call DereferenceHlIntoHl
-	jr CacheEnemyState
-
-; put a SWAMP npc addr in hl
-RollSwampEnemy:
-	call Rand
-	; mask out bits that arent used by SWAMP_NPCS_COUNT. currently only 1 bit so AND 1
-	AND 1
-	sla a ; * 2 so that it's the random number * sizeof address
-	ld hl, SwampNpcs
+	ld a, d
 	call AddAToHl
 	call DereferenceHlIntoHl
 	jr CacheEnemyState

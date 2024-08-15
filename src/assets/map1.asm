@@ -1,7 +1,6 @@
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
 INCLUDE "src/constants/explore_constants.inc"
-INCLUDE "src/constants/locale_constants.inc"
 INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/structs/event.inc"
 INCLUDE "src/structs/map.inc"
@@ -11,10 +10,9 @@ DEF MAP1_ROOM_WIDTH  EQU 32 ; not yet used
 DEF MAP1_STARTING_ORIENTATION EQU ORIENTATION_EAST
 DEF MAP1_STARTING_X EQU 1
 DEF MAP1_STARTING_Y EQU 29
-DEF MAP1_STARTING_LOCALE EQU LOCALE_FIELD
 
 SECTION "Map1 Data", ROMX
-	dstruct Map, Map1, MAP1_ROOM_HEIGHT, MAP1_ROOM_WIDTH, MAP1_STARTING_ORIENTATION, MAP1_STARTING_X, MAP1_STARTING_Y, MAP1_STARTING_LOCALE, WallMap, EventMap
+	dstruct Map, Map1, MAP1_ROOM_HEIGHT, MAP1_ROOM_WIDTH, MAP1_STARTING_ORIENTATION, MAP1_STARTING_X, MAP1_STARTING_Y, FieldLocale, WallMap, EventMap
 
 ; this is a collision map + a wall graphics map
 WallMap: ; 32 x 32

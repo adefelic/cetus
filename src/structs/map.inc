@@ -6,7 +6,7 @@ INCLUDE "src/lib/structs.inc"
 		bytes 1, StartingOrientation
 		bytes 1, StartingX
 		bytes 1, StartingY
-		bytes 1, StartingLocale
+		words 1, StartingLocale
 
 		words 1, WallMapAddr
 		words 1, EventMapAddr
