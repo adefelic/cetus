@@ -33,8 +33,8 @@ DoWarp::
 	ld a, WarpDestination_DestinationLocale
 	call AddAToHl
 	call DereferenceHlIntoHl
-
-	; todo call LoadLocale, then jp DirtyFpSegmentsAndTilemap
+	call LoadLocale
+	jp DirtyFpSegmentsAndTilemap
 
 ; @param hl, addr of Locale
 LoadLocale::
@@ -81,6 +81,4 @@ LoadLocale::
 
 	ld a, TRUE
 	ld [wDoesBgWallTileDataNeedToBeCopiedIntoVram], a
-
-	; necessary?
-	jp DirtyFpSegmentsAndTilemap
+	ret

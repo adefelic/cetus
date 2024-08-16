@@ -20,7 +20,7 @@ VBlankHandler:
 	call SetEnqueuedEnemyBgPalette ; todo would it make more sense to consolidate all palette updates? this overwrites palette 6
 	call CopyBgWallTilesIntoVram
 	call CopyNpcSpriteTilesIntoVram
-	call CopyShadowsToVram
+	call CopyShadowsToTilemapVram
 	call GetKeys
 	pop hl
 	pop de
@@ -51,6 +51,12 @@ CopyNpcSpriteTilesIntoVram:
 
 	ld a, FALSE
 	ld [wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram], a
+
+	ld bc, NPC_SPRITE_TILES_SIZE * 2 + 4
+.waitforDmaToFinish: ; necessary?
+    dec bc
+    jr nz, .waitforDmaToFinish
+
 	ret
 
 CopyBgWallTilesIntoVram:
@@ -58,9 +64,6 @@ CopyBgWallTilesIntoVram:
 	and a
 	ret nz
 .gdmaTileData:
-	;ld hl, wCurrentWallTilesAddr
-	;call DereferenceHlIntoHl
-
 	; source
 	ld a, [wCurrentWallTilesAddr + 1]
 	ldh [rHDMA1], a
@@ -79,11 +82,70 @@ CopyBgWallTilesIntoVram:
 	ld [rVBK], a
 	ld a, HDMA5F_MODE_GP + (WALL_TILES_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1) (64 tiles = 1024 bytes total ... / 16 = 64, minus 1 = 63 blocks)
 	ld [rHDMA5], a ; begin dma transfer
-	; set bank 0
-	ld a, 0
-	ld [rVBK], a
 
 	ld a, FALSE
 	ld [wDoesBgWallTileDataNeedToBeCopiedIntoVram], a
+
+	ld bc, WALL_TILES_SIZE * 2 + 4
+.waitforDmaToFinish: ; necessary?
+    dec bc
+    jr nz, .waitforDmaToFinish
+	; set bank 0
+	xor a
+	ld [rVBK], a
 	ret
 
+
+; dma copy shadow ram to VRAM
+CopyShadowsToTilemapVram::
+.copyShadowTilemapIntoVram
+	; select vram bank 0
+	xor a
+	ld [rVBK], a
+	ld hl, wShadowBackgroundTilemap
+	call GdmaShadowTilemapToVram
+.copyShadowTilemapAttrsIntoVram
+	; select vram bank 1
+	ld a, 1
+	ld [rVBK], a
+	ld hl, wShadowBackgroundTilemapAttrs
+	call GdmaShadowTilemapToVram
+	; select vram bank 0.
+	xor a
+	ld [rVBK], a
+.copyShadowOamIntoOam
+	ld hl, wShadowOam
+	call RunDma
+.clean ; necessary?
+	ld a, FALSE
+	ld [wIsShadowTilemapDirty], a
+	ret
+
+; @param hl, src shadow tilemap to copy
+GdmaShadowTilemapToVram:
+	ld a, h
+	ldh [rHDMA1], a
+	ld a, l
+	ldh [rHDMA2], a
+	ld hl, TILEMAP_BACKGROUND
+	ld a, h
+	ldh [rHDMA3], a
+	ld a, l
+	ldh [rHDMA4], a
+	ld a, HDMA5F_MODE_GP + (VISIBLE_TILEMAP_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1) (63 bytes, $10 * 4)
+	ld [rHDMA5], a ; begin dma transfer
+	ld bc, VISIBLE_TILEMAP_SIZE * 2 + 4
+.waitforDmaToFinish: ; necessary?
+    dec bc
+    jr nz, .waitforDmaToFinish
+    ret
+
+; @param hl, source address, zero-aligned
+RunDma:
+    ld a, HIGH(hl)
+    ldh [$FF46], a  ; start DMA transfer (starts right after instruction)
+    ld a, 40        ; delay for a total of 4×40 = 160 cycles
+.wait
+    dec a           ; 1 cycle
+    jr nz, .wait    ; 3 cycles
+    ret

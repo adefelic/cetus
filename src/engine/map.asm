@@ -5,6 +5,8 @@ INCLUDE "src/structs/map.inc"
 
 SECTION "Map / Room Parsing", ROMX
 
+; todo split into map loading and map utils
+
 ; @param hl, addr of map struct def
 LoadMapInHl::
 	ld a, l

@@ -144,10 +144,6 @@ InitGame:
 	call ClearItemMap ; currently this is hardcoded to be the area of Map1 * 1 byte (1024 bytes). that's a lot of ram and a lot of sram.
 	; the goal is for this to be playable on real hardware but it's fine for it to be a bit optimal on an emulator with infinite rom, sram, etc
 
-	; load map
-	ld hl, Map1
-	call LoadMapInHl
-
 	; init input
 	xor a
 	ld [wJoypadDown], a
@@ -169,12 +165,6 @@ InitGame:
 	; init explore state
 	call InitExploreMenuState
 	call InitExploreEventState
-
-	; init screen rendering state
-	ld a, TRUE
-	ld [wIsShadowTilemapDirty], a
-	call DirtyFpSegments
-	call UpdateShadowVram
 
 	; todo move this to sram code
 	; init event flags
@@ -207,54 +197,20 @@ InitGame:
 	xor a
 	ldh [rIF], a ; Clears "accumulated" interrupts
 
+	; load map
+	ld hl, Map1
+	call LoadMapInHl
+
+	; init screen rendering state
+	ld a, TRUE
+	ld [wIsShadowTilemapDirty], a
+	call DirtyFpSegments
+	call UpdateShadowVram
+
 Main:
 	call ProcessInput
 	call UpdateShadowVram ; processes game state and dirty flags, draws screen to shadow maps
 	jr Main
-
-; dma copy shadow ram to VRAM
-CopyShadowsToVram::
-.copyShadowTilemapIntoVram
-	; select vram bank 0
-	xor a
-	ld [rVBK], a
-	ld hl, wShadowBackgroundTilemap
-	call GdmaShadowTilemapToVram
-.copyShadowTilemapAttrsIntoVram
-	; select vram bank 1
-	ld a, 1
-	ld [rVBK], a
-	ld hl, wShadowBackgroundTilemapAttrs
-	call GdmaShadowTilemapToVram
-	; select vram bank 0.
-	xor a
-	ld [rVBK], a
-.copyShadowOamIntoOam
-	ld hl, wShadowOam
-	call RunDma
-.clean ; necessary?
-	ld a, FALSE
-	ld [wIsShadowTilemapDirty], a
-	ret
-
-; @param hl, src shadow tilemap to copy
-GdmaShadowTilemapToVram:
-	ld a, h
-	ldh [rHDMA1], a
-	ld a, l
-	ldh [rHDMA2], a
-	ld hl, TILEMAP_BACKGROUND
-	ld a, h
-	ldh [rHDMA3], a
-	ld a, l
-	ldh [rHDMA4], a
-	ld a, HDMA5F_MODE_GP + (VISIBLE_TILEMAP_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1) (63 bytes, $10 * 4)
-	ld [rHDMA5], a ; begin dma transfer
-	ld bc, VISIBLE_TILEMAP_SIZE * 2 + 4
-.waitforDmaToFinish: ; necessary?
-    dec bc
-    jr nz, .waitforDmaToFinish
-    ret
 
 UpdateShadowVram::
 	ld a, [wActiveFrameScreen]
@@ -330,13 +286,3 @@ endr
 	or a, $F0 ; mask out top nibble
 .knownret
 	ret
-
-; @param hl, source address, zero-aligned
-RunDma:
-    ld a, HIGH(hl)
-    ldh [$FF46], a  ; start DMA transfer (starts right after instruction)
-    ld a, 40        ; delay for a total of 4×40 = 160 cycles
-.wait
-    dec a           ; 1 cycle
-    jr nz, .wait    ; 3 cycles
-    ret
