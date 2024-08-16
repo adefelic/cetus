@@ -1,0 +1,129 @@
+## enemies
+encounters can be non-human beings, the land anthropomorphosed, weather, the past
+encounters can be helpful, but usually aren't
+field:
+	- scare crow (artifice, safety)
+		- sway
+		- watch
+	- knotted grass / vines (nature)
+		- entangle. * bind multi
+		- trip. xx mud single
+		- snare
+	- marsh hawk (day) (action)
+		- watch. pressure xx single
+		- harry. confuse xx multi
+		- gouge. cut xxx single
+	- great owl (night) (action, caution)
+		- watch
+		- swoop / graze (high damage)
+	- green briars (more grabbing) (nature, safety)
+		- needle. x cut multi
+		- entangle. * bind multi
+		- trip. xx mud single
+		- grasp
+		- snare
+	- red briars (more cutting) (nature)
+		- 
+	- snake
+		- coil. bind xx single
+		- fangs. sting xxx single
+		- vanish. confuse x multi
+	- old bones (skull + ribs + an arm)
+		- unnerve. pressure x single
+		- grab. bind xxx single
+	- the patriarch (sun)
+		- glare. blaze xx multi
+		- judge. blaze xxxx single
+		- wither.
+	- prairie chicken
+	- blue/red butterfly (Karner Blue Butterfly)
+		- stardust
+		- starlight
+	- sunflower (day) / moonflower (night)
+		- sun ray
+		- moon ray
+	- i want more that arent animals. what are things that can happen
+		- recurring text npcs whose quests are advanced whenever you see them (or give them something?)
+	- plank bridge
+		- break
+	- 
+forest:
+	- spider web
+		- tangle. * bind multi
+		- become spider. ends encounter and becomes spider encounter
+	- spider
+		- fangs. sting xxx single
+	- roots (piled)
+		- tangle. * bind multi
+		- trip. xx mud single
+	- stone cairn
+		- heals mp?
+	- memory of fire (sprite, will o wisp)
+		- tempt. lull, xx, single
+	- ghost of fire (forest fire, the past)
+		-
+	- old cedar 
+		- ooze sap. soil xx single
+		- creak
+	- foaming creature
+		- snap
+			- distress, xxx, single
+		- stalk
+			- distress, xx, multi
+		- bite
+			- crush, xxx, single
+	- wood turtle
+	- crow
+	- briar puppet / thorn doll (skeleton with briar marionette-ing)
+
+swamp:
+	- flies
+		- cloud
+	- still fog
+	- will o wisp
+	- walking bones
+	- rotting creature
+	- heaving bog
+	- spore bat - like the mold that kills bats making them into mold zombies instead of dead
+	- bog turtle
+	- ritual flame
+
+coast:
+	- drifting fog
+		- confuse. 
+	- bleached bones
+		- sea water
+	- beached creature
+		- eject sea water
+	- keen gull 
+	- sea glass
+		- glitter, lull
+	- horseshoe crab
+		- wait
+	- dying shark
+		- gasp
+		- lurch
+	- osprey
+	- crawling turtle
+underwater:
+	- seaweed dragon
+	- green crab
+	- old crab
+	- anemone
+	- jellyfish
+	- winter skate
+	- black grouper
+	- greenland shark
+	- stranded meteorite
+beyond:
+	- lost star
+	- wild starlike
+	- wanderer (comet)
+	- starlike abandoned
+	- eye
+	- ovum
+	- void
+	- *
+	- black hole
+	- wave \/\/\/\
+	- particle .

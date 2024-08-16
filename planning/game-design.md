@@ -24,8 +24,12 @@ new planning doc for short, dark, coastal drpg. roguelike elements, soulslike st
 	- lotr
 		- nature, mystery, melancholy
 	- dark/demon's souls
-	- 
-
+	- wc3
+		- hero units have simple stats and simple inventories / equipment that modify those stats
+		- simple active abilities
+		- maybe you should have two characters in this to make moves interesting
+			- it would be brutal to be down a guy
+				- make it so you can always lend strength out of combat or something
 
 aesthetics:
 - coastal
@@ -41,6 +45,54 @@ aesthetics:
 	- you can do destruction but also nothing ever changes really? 
 	  the world is big and imposing and cannot be changed by an individual
 - sinking, but also never changing
+
+- what are stories / ideas / mechanics that line up with being lost, slowly pushing ahead
+- life is not a straight line to the end. it requires doubling back to places and people from the past. it requires changing yourself
+	- returning to old zones
+	- returning to old encounters
+	- returning to old npcs
+	- returning to old homes/wells
+
+- what are the PLAYER DIMENSIONS
+	- the natural world | artifice
+	- changing yourself to be more like the world | changing the world to be more like yourself
+		- sometimes the world will push you to be like it when you shouldn't be and vice versa
+		- sometimes the world is scary. sometimes the self is wrong. break habits rather than doubling down
+			- sometimes you put down torches to make the world more comfortable
+			- sometimes those torches make it so that you cannot see certain things
+			- the torches have to come from somewhere ... are they made of dead things that you stole?
+
+- more abstract stats / types. what verbs go with these?
+	- nature   (plants)
+		- spreading, creating. robust. dense, networked
+		- fungal? rhizomatic?
+	- artifice (tools)
+		- binding, subtracting. direct, simple, individually powerful. scientific
+		- 
+	- safety   (structures)
+		- slow, cautious. home building. defending
+		- the tower-builders
+	- action   (animal)
+		- fast. violent. courageous, heroic. risk taking. wandering
+	- wonder   (mystery)
+		- mysterious, emotional. involves death. "vibes-based"
+	- maybe these can be the abstract ideas, but each should be put into the world as a creature faction.
+
+- being in a dead seeming place
+- being in a place that is not actually dead
+	- ideas
+		- should i change or should i not change
+			- i think this is a great idea. maybe a game that incentivises anti-builds? picking some of a lot of things
+			- staying different from the environment. strength from within. doubling down
+			- becoming one with the environment. strength from the outside. change
+		- continuing to build strengths or shoring up weaknesses?
+			- not sure if this is interesting
+		- should i push on and risk (act) or should i heal and be cautious (wait)
+			- cautious: you gain strength from resting. it does not last
+				- you find strength and newness in consistency
+			- risky: you gain momentum from not resting, but it can come crashing down
+				- you find strength in newness
+		- 
 
 
 rules:
@@ -104,6 +156,28 @@ physical damage types: all do damage to hp
 		- lanterns reduce stress maybe once per exploration, or make you not gain stress?
 		- 
 
+# COMBAT
+
+- option 1: simple combat. player does move, enemy does move, repeat until someone is dead. hp only
+- option 2: complicated combat
+
+
+today's combat thoughts:
+
+- attack speed? this could make using a single character more interesting.
+
+- can you cancel an enemy attack by depleting their poise before they can attack? 
+	or attacking at a faster speed with a harder hitting move?
+	or attacking at the same speed. moves that are aggressive can stagger the enemy to cancel their slower attacks. only some moves stagger
+
+** okay some resolution **
+i think that the target complexity should be roughly DRAGON QUEST. you choose a character to give you some flavor, some combat skills and spells, and you mostly are trying to burn as little resources as possible so that you can continue your slog.
+
+
+smt combat and eo combat both work because you have a lot of moves to use. maybe there should be some roguelike elements where you "remember" the moves from encounters sometimes. maybe it happens when you are hit by something that is strong against you?
+
+
+- skills have a combat function and a non combat function
 
 ## moves 
 
@@ -136,6 +210,21 @@ physical damage types: all do damage to hp
 	- give moves speeds? like bb bg player speed doesn't make sense because there's only one player. move speed is more interesting
 	- could also do the pokemon thing where you have a large palette of moves but only get to pick 4. probably too boring when there's only one player unit
 	- all this shit can wait 
+
+
+	- what do other games do with moved
+		- pokemon has maybe half damage moves, half temporary stat change moves
+		- smt has half damage moves, half stat chage moves, instant death, and also it's all split across hitting single/many/random
+
+		- ok so i can add
+			- stat buff moves (single, multi)
+			- stat debuff moves (single, multi)
+			- status inflicting moves
+			- status recovery moves
+			- stat recovery moves
+			- resource recovery moves
+			- charge moves
+			- 
 
 ### encounter flow:
 	enemy is revealed
@@ -246,158 +335,6 @@ character list:
 	hp = endurance * 10
 	mp = willpower * 10
 
-## enemies
-encounters can be non-human beings, the land anthropomorphosed, weather, the past
-encounters can be helpful, but usually aren't
-field:
-	- scare crow (blue / )
-		- sway
-		- watch
-	- knotted grass / vines (green)
-		- entangle. * bind multi
-		- trip. xx mud single
-		- snare
-	- marsh hawk (day)
-		- watch. pressure xx single
-		- harry. confuse xx multi
-		- gouge. cut xxx single
-	- great owl (night)
-		- watch
-		- swoop / graze (high damage)
-	- green briars (more grabbing)
-		- needle. x cut multi
-		- entangle. * bind multi
-		- trip. xx mud single
-		- grasp
-		- snare
-	- red briars (more cutting)
-		- 
-	- snake
-		- coil. bind xx single
-		- fangs. sting xxx single
-		- vanish. confuse x multi
-	- old bones (skull + ribs + an arm)
-		- unnerve. pressure x single
-		- grab. bind xxx single
-	- the patriarch (sun)
-		- glare. blaze xx multi
-		- judge. blaze xxxx single
-		- wither.
-	- prairie chicken
-	- blue/red butterfly (Karner Blue Butterfly)
-		- stardust
-		- starlight
-	- sunflower (day) / moonflower (night)
-		- sun ray
-		- moon ray
-	- i want more that arent animals. what are things that can happen
-		- recurring text npcs whose quests are advanced whenever you see them (or give them something?)
-	- plank bridge
-		- break
-	- 
-forest:
-	- spider web
-		- tangle. * bind multi
-		- become spider. ends encounter and becomes spider encounter
-	- spider
-		- fangs. sting xxx single
-	- roots (piled)
-		- tangle. * bind multi
-		- trip. xx mud single
-	- stone cairn
-		- heals mp?
-	- memory of fire (sprite, will o wisp)
-		- tempt. lull, xx, single
-	- ghost of fire (forest fire, the past)
-		-
-	- old cedar 
-		- ooze sap. soil xx single
-		- creak
-	- foaming creature
-		- snap
-			- distress, xxx, single
-		- stalk
-			- distress, xx, multi
-		- bite
-			- crush, xxx, single
-	- wood turtle
-	- crow
-	- briar puppet / thorn doll (skeleton with briar marionette-ing)
-
-swamp:
-	- flies
-		- cloud
-	- still fog
-	- will o wisp
-	- walking bones
-	- rotting creature
-	- heaving bog
-	- spore bat - like the mold that kills bats making them into mold zombies instead of dead
-	- bog turtle
-	- ritual flame
-
-coast:
-	- drifting fog
-		- confuse. 
-	- bleached bones
-		- sea water
-	- beached creature
-		- eject sea water
-	- keen gull 
-	- sea glass
-		- glitter, lull
-	- horseshoe crab
-		- wait
-	- dying shark
-		- gasp
-		- lurch
-	- osprey
-	- crawling turtle
-underwater:
-	- seaweed dragon
-	- green crab
-	- old crab
-	- anemone
-	- jellyfish
-	- winter skate
-	- black grouper
-	- greenland shark
-	- stranded meteorite
-beyond:
-	- lost star
-	- wild starlike
-	- wanderer (comet)
-	- starlike abandoned
-	- eye
-	- ovum
-	- void
-	- *
-	- black hole
-	- wave \/\/\/\
-	- particle .
-
-# COMBAT
-
-- option 1: simple combat. player does move, enemy does move, repeat until someone is dead. hp only
-- option 2: complicated combat
-
-
-today's combat thoughts:
-
-- attack speed? this could make using a single character more interesting.
-
-- can you cancel an enemy attack by depleting their poise before they can attack? 
-	or attacking at a faster speed with a harder hitting move?
-	or attacking at the same speed. moves that are aggressive can stagger the enemy to cancel their slower attacks. only some moves stagger
-
-** okay some resolution **
-i think that the target complexity should be roughly DRAGON QUEST. you choose a character to give you some flavor, some combat skills and spells, and you mostly are trying to burn as little resources as possible so that you can continue your slog.
-
-
-smt combat and eo combat both work because you have a lot of moves to use. maybe there should be some roguelike elements where you "remember" the moves from encounters sometimes. maybe it happens when you are hit by something that is strong against you?
-
-
-- skills have a combat function and a non combat function
 
 ## FAVOR / REPUTATION
 - favor within an individual encounter
@@ -417,7 +354,7 @@ combat menus
 		- you can heal them
 		- you can protect them
 	- give gift (item)
-	- talk (complicated ....)
+	- talk (complicated ....) (communicate) ("you make contact")
 		- they leave, or
 		- they say something?
 - defend (wait to see what they do) (could this be functionally the same as leaving?)
@@ -565,7 +502,7 @@ graphics thoughts
 		- hunting / gathering
 		- thinking / feeling
 		- internal (consciousness is here) / external (consciousness is not here)
-		- hiding / aggression / 
+		- hiding / aggression
 
 	- from games do int/faith, str/dex, and then the "weird" one
 	- i'm not sure if i like plant/animal as a split
@@ -578,10 +515,14 @@ graphics thoughts
 
 	- maybe you have to give something up to be part of a community. you gradually soften 1/5 or 2/5 of encounters? or they give you stats that are better than straight stat boosts. or your own stat boosts begin to become worthless and their stat boosts benefit you in ways that are helpful
 
-
-
 - blood appears around the screen borders, like call of duty red eye but nice looking instead of dumb
 	- changes as you get more damaged. two stats, body and mind. mind top of screen, body bottom
 	- maybe the border is the thing you put in you reclaiming you. maybe the border gets bigger as you are more hurt
+
+- cool abilities
+	- sub arms: 1-2 more arms that you can equip weapons with. makes your attacks use both weapons for damage? or just gives more options
+	- feeding(rally): if you hit an enemy after taking damage in the same round, you regain half of the damage you take
+	- herbivore: you regain health for hitting a plant
+	- 
 
 
