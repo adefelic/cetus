@@ -2,6 +2,7 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/structs/map.inc"
+INCLUDE "src/structs/locale.inc"
 
 SECTION "Map / Room Parsing", ROMX
 
@@ -57,18 +58,53 @@ LoadMapInHl::
 	ld [wPlayerExploreY], a
 	ret
 
-; todo replace with LoadItemMap which would dump some sram into wItemMap
-ClearItemMap::
-	ld bc, wItemMapEnd - wItemMap
-	ld hl, wItemMap
-.loop:
-	xor a
-	ld [hli], a
-	dec bc
-	ld a, b
-	or c
-	jp nz, .loop
+; @param hl, addr of Locale
+LoadLocale::
+.loadPaletteSet
+	push hl ; contains addr of Locale
+	ld a, Locale_BgPaletteSetAddr
+	call AddAToHl ; contains addr of Locale_BgPaletteSetAddr
+	call DereferenceHlIntoHl
+	ld d, h
+	ld e, l
+	call EnqueueBgPaletteSetUpdate
+	pop hl
+	push hl
+
+.loadEncountersTable
+	ld a, Locale_EncountersTableAddr
+	call AddAToHl
+	ld a, [hli]
+	ld [wCurrentEncounterTable], a
+	ld a, [hl]
+	ld [wCurrentEncounterTable+1], a
+	pop hl
+	push hl
+
+.loadMusic
+	ld a, Locale_MusicAddr
+	call AddAToHl
+	ld a, [hli]
+	ld [wCurrentMusicTrack], a
+	ld a, [hl]
+	ld [wCurrentMusicTrack+1], a
+
+	call LoadCurrentMusic
+
+	pop hl
+
+.loadSpecialWallTiles
+	ld a, Locale_WallTilesAddr
+	call AddAToHl
+	ld a, [hli]
+	ld [wCurrentWallTilesAddr], a
+	ld a, [hl]
+	ld [wCurrentWallTilesAddr+1], a
+
+	ld a, TRUE
+	ld [wDoesBgWallTileDataNeedToBeCopiedIntoVram], a
 	ret
+
 
 ; @param hl, Room addr
 ; @return a, wall type
@@ -348,20 +384,12 @@ GetEventRoomAddrFromPlayerCoords::
 	ld h, a
 	jr GetRoomAddrFromCoords
 
-; item map addr + wPlayerExploreX + wPlayerExploreY*32
-; @param d: room X coord
-; @param e: room Y coord
-; @return hl: item map room address of tile
-GetActiveItemMapRoomAddrFromCoords::
-	ld hl, wItemMap
-	jr GetRoomAddrFromCoords
-
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: player X coord
 ; @param e: player Y coord
 ; @param hl: map addr
 ; @return hl: tile address of player occupied tile of Map1 (this need to change)
-GetRoomAddrFromCoords:
+GetRoomAddrFromCoords::
 	ld b, h
 	ld c, l
 	ld l, e

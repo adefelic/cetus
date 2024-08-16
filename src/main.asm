@@ -61,10 +61,9 @@ EntryPoint:
 	di
 
 	; from gb-starter-kit
-	;; Kill sound
-	;xor a
-	;ldh [rNR52], a
-	; i wonder if this will get rid of the boot pop
+	; Kill sound to get rid of boot pop
+	xor a
+	ldh [rNR52], a
 
 .waitVBlank:
 	ldh a, [rLY]
@@ -197,6 +196,7 @@ InitGame:
 	xor a
 	ldh [rIF], a ; Clears "accumulated" interrupts
 
+.loadMap
 	; load map
 	ld hl, Map1
 	call LoadMapInHl
@@ -206,7 +206,6 @@ InitGame:
 	ld [wIsShadowTilemapDirty], a
 	call DirtyFpSegments
 	call UpdateShadowVram
-
 Main:
 	call ProcessInput
 	call UpdateShadowVram ; processes game state and dirty flags, draws screen to shadow maps
