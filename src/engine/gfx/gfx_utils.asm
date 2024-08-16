@@ -19,9 +19,10 @@ InitColorPalettes::
 	ld de, OwObjPaletteSet
 	jr SetObjPaletteSet
 
-InitTileLoadingEnqueueFlags::
+InitTileLoadingFlags::
 	ld a, FALSE
 	ld [wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram], a
+	ld [wDoesBgWallTileDataNeedToBeCopiedIntoVram], a
 	ret
 
 ; @param de: source palette set addr

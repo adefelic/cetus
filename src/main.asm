@@ -21,6 +21,7 @@ wCurrentMapWalls:: dw
 wCurrentMapEvents:: dw
 wCurrentEncounterTable:: dw
 wCurrentWallTilesAddr:: dw
+wCurrentWallTilesEndAddr:: dw
 wCurrentLocale:: db
 wCurrentMusicTrack:: dw
 
@@ -80,7 +81,7 @@ LoadBgTilesIntoVram:
 .loadExploreAndEncounterTiles
 	; Copy BG tile data into VRAM bank 0
 	ld de, BgBank0Tiles
-	ld hl, _VRAM9000
+	ld hl, VRAM_BG_BLOCK
 	ld bc, BgBank0TilesEnd - BgBank0Tiles
 	call Memcopy
 
@@ -89,7 +90,7 @@ LoadBgTilesIntoVram:
 	ld a, 1
 	ld [rVBK], a
 	ld de, ScribTiles
-	ld hl, _VRAM9000
+	ld hl, VRAM_BG_BLOCK
 	ld bc, ScribTilesEnd - ScribTiles
 	call Memcopy
 	; back to VRAM bank 0
@@ -100,7 +101,7 @@ LoadObjectTilesIntoVram:
 .loadHudSprites
 	; copy into sprite tile area, bank 0
 	ld de, CompassTiles
-	ld hl, _VRAM8000
+	ld hl, VRAM_OBJ_BLOCK
 	ld bc, DangerIndicatorTilesEnd - CompassTiles
 	call Memcopy
 .loadPlayerEncounterSprite
@@ -114,7 +115,7 @@ LoadObjectTilesIntoVram:
 
 InitGraphics:
 	call InitColorPalettes
-	call InitTileLoadingEnqueueFlags
+	call InitTileLoadingFlags
 
 ClearOam:
 	xor a

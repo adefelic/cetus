@@ -34,6 +34,8 @@ DoWarp::
 	call AddAToHl
 	call DereferenceHlIntoHl
 
+	; todo call LoadLocale, then jp DirtyFpSegmentsAndTilemap
+
 ; @param hl, addr of Locale
 LoadLocale::
 .loadPaletteSet
@@ -77,4 +79,8 @@ LoadLocale::
 	ld a, [hl]
 	ld [wCurrentWallTilesAddr+1], a
 
+	ld a, TRUE
+	ld [wDoesBgWallTileDataNeedToBeCopiedIntoVram], a
+
+	; necessary?
 	jp DirtyFpSegmentsAndTilemap
