@@ -228,1488 +228,391 @@ CheckSegmentRDiag::
 	ret
 
 ; @param d: the tile index to paint with
+; @param e: the attribute byte to paint with
 PaintSegmentA::
-.row0
-	ld hl, wShadowBackgroundTilemap + rows 0
-	ld b, 3
+DEF SEGMENT_WIDTH = 3
+FOR N, 13
+	ld hl, wShadowBackgroundTilemap + rows N
+	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 0
-	ld b, 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows N
+	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
-.row1
-	ld hl, wShadowBackgroundTilemap + rows 1
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 1
-	ld b, 3
-	call CopyByteInEToRange
-.row2
-	ld hl, wShadowBackgroundTilemap + rows 2
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 2
-	ld b, 3
-	call CopyByteInEToRange
-.row3
-	ld hl, wShadowBackgroundTilemap + rows 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 3
-	ld b, 3
-	call CopyByteInEToRange
-.row4
-	ld hl, wShadowBackgroundTilemap + rows 4
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 4
-	ld b, 3
-	call CopyByteInEToRange
-.row5
-	ld hl, wShadowBackgroundTilemap + rows 5
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 5
-	ld b, 3
-	call CopyByteInEToRange
-.row6
-	ld hl, wShadowBackgroundTilemap + rows 6
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 6
-	ld b, 3
-	call CopyByteInEToRange
-.row7
-	ld hl, wShadowBackgroundTilemap + rows 7
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 7
-	ld b, 3
-	call CopyByteInEToRange
-.row8
-	ld hl, wShadowBackgroundTilemap + rows 8
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 8
-	ld b, 3
-	call CopyByteInEToRange
-.row9
-	ld hl, wShadowBackgroundTilemap + rows 9
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 9
-	ld b, 3
-	call CopyByteInEToRange
-.row10
-	ld hl, wShadowBackgroundTilemap + rows 10
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 10
-	ld b, 3
-	call CopyByteInEToRange
-.row11
-	ld hl, wShadowBackgroundTilemap + rows 11
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 11
-	ld b, 3
-	call CopyByteInEToRange
-.row12
-	ld hl, wShadowBackgroundTilemap + rows 12
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12
-	ld b, 3
-	call CopyByteInEToRange
+ENDR
 .clean
 	ld a, FALSE
 	ld [wADirty], a
 	ret
 
 PaintSegmentADistanceFog::
-	.row0
-		ld hl, wShadowBackgroundTilemap + rows 0 ; dest in VRAM
-		ld d, 3      ; # of bytes (tile indices) remaining.
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 0
-		ld b, 3
-		call CopyByteInEToRange
-	.row1
-		ld hl, wShadowBackgroundTilemap + rows 1
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 1
-		ld b, 3
-		call CopyByteInEToRange
-	.row2
-		ld hl, wShadowBackgroundTilemap + rows 2
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 2
-		ld b, 3
-		call CopyByteInEToRange
-	.row3
-		ld hl, wShadowBackgroundTilemap + rows 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row4
-		ld hl, wShadowBackgroundTilemap + rows 4
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 4
-		ld b, 3
-		call CopyByteInEToRange
-	.row5
-		ld hl, wShadowBackgroundTilemap + rows 5
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 5
-		ld b, 3
-		call CopyByteInEToRange
-	.row6
-		ld hl, wShadowBackgroundTilemap + rows 6
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 6
-		ld b, 3
-		call CopyByteInEToRange
-	.row7
-		ld hl, wShadowBackgroundTilemap + rows 7
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 7
-		ld b, 3
-		call CopyByteInEToRange
-	.row8
-		ld hl, wShadowBackgroundTilemap + rows 8
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 8
-		ld b, 3
-		call CopyByteInEToRange
-	.row9
-		ld hl, wShadowBackgroundTilemap + rows 9
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 9
-		ld b, 3
-		call CopyByteInEToRange
-	.row10
-		ld hl, wShadowBackgroundTilemap + rows 10
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 10
-		ld b, 3
-		call CopyByteInEToRange
-	.row11
-		ld hl, wShadowBackgroundTilemap + rows 11
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 11
-		ld b, 3
-		call CopyByteInEToRange
-	.row12
-		ld hl, wShadowBackgroundTilemap + rows 12
-		ld d, TILE_DISTANCE_FOG_GROUND
-		ld b, 3
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 12
-		ld b, 3
-		call CopyByteInEToRange
-	.clean
-		ld a, FALSE
-		ld [wADirty], a
-		ret
+DEF SEGMENT_WIDTH = 3
+FOR N, 12
+	ld hl, wShadowBackgroundTilemap + rows N
+	ld d, SEGMENT_WIDTH
+	call PaintFogTilemapWithRandomFogTile
+	ld hl, wShadowBackgroundTilemapAttrs + rows N
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.row12
+	ld hl, wShadowBackgroundTilemap + rows 12
+	ld d, TILE_DISTANCE_FOG_GROUND
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+.clean
+	ld a, FALSE
+	ld [wADirty], a
+	ret
 
 PaintSegmentB::
-.row0
-	ld hl, wShadowBackgroundTilemap + rows 0 + cols 3
-	ld b, 3
+DEF SEGMENT_WIDTH = 3
+DEF LEFTMOST_COLUMN = 3
+FOR N, 13
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 3
-	ld b, 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
-.row1
-	ld hl, wShadowBackgroundTilemap + rows 1 + cols 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 3
-	ld b, 3
-	call CopyByteInEToRange
-.row2
-	ld hl, wShadowBackgroundTilemap + rows 2 + cols 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 3
-	ld b, 3
-	call CopyByteInEToRange
-.row3
-	ld hl, wShadowBackgroundTilemap + rows 3 + cols 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 3
-	ld b, 3
-	call CopyByteInEToRange
-.row4
-	ld hl, wShadowBackgroundTilemap + rows 4 + cols 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 3
-	ld b, 3
-	call CopyByteInEToRange
-.row5
-	ld hl, wShadowBackgroundTilemap + rows 5 + cols 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 3
-	ld b, 3
-	call CopyByteInEToRange
-.row6
-	ld hl, wShadowBackgroundTilemap + rows 6 + cols 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 3
-	ld b, 3
-	call CopyByteInEToRange
-.row7
-	ld hl, wShadowBackgroundTilemap + rows 7 + cols 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 3
-	ld b, 3
-	call CopyByteInEToRange
-.row8
-	ld hl, wShadowBackgroundTilemap + rows 8 + cols 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 3
-	ld b, 3
-	call CopyByteInEToRange
-.row9
-	ld hl, wShadowBackgroundTilemap + rows 9 + cols 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 3
-	ld b, 3
-	call CopyByteInEToRange
-.row10
-	ld hl, wShadowBackgroundTilemap + rows 10 + cols 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 3
-	ld b, 3
-	call CopyByteInEToRange
-.row11
-	ld hl, wShadowBackgroundTilemap + rows 11 + cols 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 3
-	ld b, 3
-	call CopyByteInEToRange
-.row12
-	ld hl, wShadowBackgroundTilemap + rows 12 + cols 3
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 3
-	ld b, 3
-	call CopyByteInEToRange
+ENDR
 .clean
 	ld a, FALSE
 	ld [wBDirty], a
 	ret
 
 PaintSegmentBDistanceFog::
-	.row0
-		ld hl, wShadowBackgroundTilemap + rows 0 + cols 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row1
-		ld hl, wShadowBackgroundTilemap + rows 1 + cols 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row2
-		ld hl, wShadowBackgroundTilemap + rows 2 + cols 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row3
-		ld hl, wShadowBackgroundTilemap + rows 3 + cols 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row4
-		ld hl, wShadowBackgroundTilemap + rows 4 + cols 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row5
-		ld hl, wShadowBackgroundTilemap + rows 5 + cols 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row6
-		ld hl, wShadowBackgroundTilemap + rows 6 + cols 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row7
-		ld hl, wShadowBackgroundTilemap + rows 7 + cols 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row8
-		ld hl, wShadowBackgroundTilemap + rows 8 + cols 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row9
-		ld hl, wShadowBackgroundTilemap + rows 9 + cols 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row10
-		ld hl, wShadowBackgroundTilemap + rows 10 + cols 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row11
-		ld hl, wShadowBackgroundTilemap + rows 11 + cols 3
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.row12
-		ld hl, wShadowBackgroundTilemap + rows 12 + cols 3
-		ld d, TILE_DISTANCE_FOG_GROUND
-		ld b, 3
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 3
-		ld b, 3
-		call CopyByteInEToRange
-	.clean
-		ld a, FALSE
-		ld [wBDirty], a
-		ret
+DEF SEGMENT_WIDTH = 3
+DEF LEFTMOST_COLUMN = 3
+FOR N, 12
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld d, SEGMENT_WIDTH
+	call PaintFogTilemapWithRandomFogTile
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.row12
+	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
+	ld d, TILE_DISTANCE_FOG_GROUND
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+.clean
+	ld a, FALSE
+	ld [wBDirty], a
+	ret
 
 PaintSegmentBFogBorderRight::
-		call Rand ; we'll use the byte in c
-		ld d, TILE_DISTANCE_FOG_LEFT_WALL
-	.row0
-		ld hl, wShadowBackgroundTilemap + rows 0 + cols 5
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 5
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row1
-		ld hl, wShadowBackgroundTilemap + rows 1 + cols 5
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 5
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row2
-		ld hl, wShadowBackgroundTilemap + rows 2 + cols 5
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 5
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row3
-		ld hl, wShadowBackgroundTilemap + rows 3 + cols 5
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 5
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row4
-		ld hl, wShadowBackgroundTilemap + rows 4 + cols 5
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 5
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row5
-		ld hl, wShadowBackgroundTilemap + rows 5 + cols 5
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 5
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row6
-		ld hl, wShadowBackgroundTilemap + rows 6 + cols 5
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 5
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row7
-		ld hl, wShadowBackgroundTilemap + rows 7 + cols 5
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 5
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.getAnotherRandomByte
-		call Rand ; we'll use the byte in c
-	.row8
-		ld hl, wShadowBackgroundTilemap + rows 8 + cols 5
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 5
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row9
-		ld hl, wShadowBackgroundTilemap + rows 9 + cols 5
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 5
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row10
-		ld hl, wShadowBackgroundTilemap + rows 10 + cols 5
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 5
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row11
-		ld hl, wShadowBackgroundTilemap + rows 11 + cols 5
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 5
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row12
-		ld hl, wShadowBackgroundTilemap + rows 12 + cols 5
-		ld d, TILE_DISTANCE_FOG_LEFT_CORNER
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 5
-		ld b, 1
-		ld e, BG_PALETTE_FOG + OAMF_XFLIP
-		call CopyByteInEToRange
-	.clean
-		ld a, FALSE
-		ld [wBDirty], a
-		ret
+	call Rand ; we'll use the byte in c
+	ld d, TILE_DISTANCE_FOG_LEFT_WALL
+	DEF SEGMENT_WIDTH = 1
+	DEF LEFTMOST_COLUMN = 5
+FOR N, 8
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	call GetRandomYFlipFogAttrsXFlip
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.getAnotherRandomByte
+	call Rand ; we'll use the byte in c
+FOR N, 8, 12
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	call GetRandomYFlipFogAttrsXFlip
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.row12
+	ld hl, wShadowBackgroundTilemap + rows 12 + cols 5
+	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
+	ld b, 1
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 5
+	ld b, 1
+	ld e, BG_PALETTE_FOG + OAMF_XFLIP
+	call CopyByteInEToRange
+.clean
+	ld a, FALSE
+	ld [wBDirty], a
+	ret
 
 PaintSegmentC::
-.row0
-	ld hl, wShadowBackgroundTilemap + rows 0 + cols 6
-	ld b, 8
+DEF SEGMENT_WIDTH = 8
+DEF LEFTMOST_COLUMN = 6
+FOR N, 13
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 6
-	ld b, 8
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
-.row1
-	ld hl, wShadowBackgroundTilemap + rows 1 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
-.row2
-	ld hl, wShadowBackgroundTilemap + rows 2 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
-.row3
-	ld hl, wShadowBackgroundTilemap + rows 3 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
-.row4
-	ld hl, wShadowBackgroundTilemap + rows 4 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
-.row5
-	ld hl, wShadowBackgroundTilemap + rows 5 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
-.row6
-	ld hl, wShadowBackgroundTilemap + rows 6 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
-.row7
-	ld hl, wShadowBackgroundTilemap + rows 7 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
-.row8
-	ld hl, wShadowBackgroundTilemap + rows 8 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
-.row9
-	ld hl, wShadowBackgroundTilemap + rows 9 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
-.row10
-	ld hl, wShadowBackgroundTilemap + rows 10 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
-.row11
-	ld hl, wShadowBackgroundTilemap + rows 11 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
-.row12
-	ld hl, wShadowBackgroundTilemap + rows 12 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
+ENDR
 .clean
 	ld a, FALSE
 	ld [wCDirty], a
 	ret
 
 PaintSegmentCDistanceFog::
-	.row0
-		ld hl, wShadowBackgroundTilemap + rows 0 + cols 6
-		ld d, 8
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-	.row1
-		ld hl, wShadowBackgroundTilemap + rows 1 + cols 6
-		ld d, 8
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-	.row2
-		ld hl, wShadowBackgroundTilemap + rows 2 + cols 6
-		ld d, 8
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-	.row3
-		ld hl, wShadowBackgroundTilemap + rows 3 + cols 6
-		ld d, 8
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-	.row4
-		ld hl, wShadowBackgroundTilemap + rows 4 + cols 6
-		ld d, 8
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-	.row5
-		ld hl, wShadowBackgroundTilemap + rows 5 + cols 6
-		ld d, 8
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-	.row6
-		ld hl, wShadowBackgroundTilemap + rows 6 + cols 6
-		ld d, 8
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-	.row7
-		ld hl, wShadowBackgroundTilemap + rows 7 + cols 6
-		ld d, 8
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-	.row8
-		ld hl, wShadowBackgroundTilemap + rows 8 + cols 6
-		ld d, 8
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-	.row9
-		ld hl, wShadowBackgroundTilemap + rows 9 + cols 6
-		ld d, 8
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-	.row10
-		ld hl, wShadowBackgroundTilemap + rows 10 + cols 6
-		ld d, 8
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-	.row11
-		ld hl, wShadowBackgroundTilemap + rows 11 + cols 6
-		ld d, 8
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-	.row12
-		ld hl, wShadowBackgroundTilemap + rows 12 + cols 6
-		ld d, TILE_DISTANCE_FOG_GROUND
-		ld b, 8
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 6
-		ld b, 8
-		call CopyByteInEToRange
-
-		; the area we need to paint is 8 * 12
-		; we can add one of those bits to TILE_DISTANCE_FOG_A to get pick a random tile
-		; it would be nice to also randomize the x flip and y flip attributes, that's 3 bits per tile
-	.clean
-		ld a, FALSE
-		ld [wCDirty], a
-		ret
+DEF SEGMENT_WIDTH = 8
+DEF LEFTMOST_COLUMN = 6
+FOR N, 12
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld d, SEGMENT_WIDTH
+	call PaintFogTilemapWithRandomFogTile
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.row12
+	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
+	ld d, TILE_DISTANCE_FOG_GROUND
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+.clean
+	ld a, FALSE
+	ld [wCDirty], a
+	ret
 
 PaintSegmentCFogBorderLeft::
-		call Rand ; we'll use the byte in c
-		ld d, TILE_DISTANCE_FOG_LEFT_WALL
-	.row0
-		ld hl, wShadowBackgroundTilemap + rows 0 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 6
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row1
-		ld hl, wShadowBackgroundTilemap + rows 1 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 6
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row2
-		ld hl, wShadowBackgroundTilemap + rows 2 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 6
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row3
-		ld hl, wShadowBackgroundTilemap + rows 3 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 6
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row4
-		ld hl, wShadowBackgroundTilemap + rows 4 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 6
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row5
-		ld hl, wShadowBackgroundTilemap + rows 5 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 6
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row6
-		ld hl, wShadowBackgroundTilemap + rows 6 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 6
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row7
-		ld hl, wShadowBackgroundTilemap + rows 7 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 6
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.getAnotherRandomByte
-		call Rand ; we'll use the byte in c
-	.row8
-		ld hl, wShadowBackgroundTilemap + rows 8 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 6
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row9
-		ld hl, wShadowBackgroundTilemap + rows 9 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 6
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row10
-		ld hl, wShadowBackgroundTilemap + rows 10 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 6
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row11
-		ld hl, wShadowBackgroundTilemap + rows 11 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 6
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row12
-		ld d, TILE_DISTANCE_FOG_LEFT_CORNER
-		ld hl, wShadowBackgroundTilemap + rows 12 + cols 6
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 6
-		ld e, BG_PALETTE_FOG
-		ld b, 1
-		call CopyByteInEToRange
-	.clean
-		ld a, FALSE
-		ld [wCDirty], a
-		ret
-
+DEF SEGMENT_WIDTH = 1
+DEF LEFTMOST_COLUMN = 6
+	call Rand ; we'll use the byte in c
+	ld d, TILE_DISTANCE_FOG_LEFT_WALL
+FOR N, 8
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	call GetRandomYFlipFogAttrs
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.getAnotherRandomByte
+	call Rand ; we'll use the byte in c
+FOR N, 8, 12
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	call GetRandomYFlipFogAttrs
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.row12
+	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
+	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
+	ld e, BG_PALETTE_FOG
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+.clean
+	ld a, FALSE
+	ld [wCDirty], a
+	ret
 
 PaintSegmentCFogBorderRight::
-		call Rand ; we'll use the byte in c
-		ld d, TILE_DISTANCE_FOG_LEFT_WALL
-	.row0
-		ld hl, wShadowBackgroundTilemap + rows 0 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 13
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row1
-		ld hl, wShadowBackgroundTilemap + rows 1 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 13
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row2
-		ld hl, wShadowBackgroundTilemap + rows 2 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 13
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row3
-		ld hl, wShadowBackgroundTilemap + rows 3 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 13
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row4
-		ld hl, wShadowBackgroundTilemap + rows 4 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 13
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row5
-		ld hl, wShadowBackgroundTilemap + rows 5 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 13
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row6
-		ld hl, wShadowBackgroundTilemap + rows 6 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 13
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row7
-		ld hl, wShadowBackgroundTilemap + rows 7 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 13
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.getAnotherRandomByte
-		call Rand ; we'll use the byte in c
-	.row8
-		ld hl, wShadowBackgroundTilemap + rows 8 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 13
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row9
-		ld hl, wShadowBackgroundTilemap + rows 9 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 13
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row10
-		ld hl, wShadowBackgroundTilemap + rows 10 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 13
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row11
-		ld hl, wShadowBackgroundTilemap + rows 11 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 13
-		call GetRandomYFlipFogAttrsXFlip
-		ld b, 1
-		call CopyByteInEToRange
-	.row12
-		ld d, TILE_DISTANCE_FOG_LEFT_CORNER
-		ld hl, wShadowBackgroundTilemap + rows 12 + cols 13
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 13
-		ld e, BG_PALETTE_FOG + OAMF_XFLIP
-		ld b, 1
-		call CopyByteInEToRange
-	.clean
-		ld a, FALSE
-		ld [wCDirty], a
-		ret
+DEF SEGMENT_WIDTH = 1
+DEF LEFTMOST_COLUMN = 13
+	call Rand ; we'll use the byte in c
+	ld d, TILE_DISTANCE_FOG_LEFT_WALL
+FOR N, 8
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	call GetRandomYFlipFogAttrsXFlip
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.getAnotherRandomByte
+	call Rand ; we'll use the byte in c
+FOR N, 8, 12
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	call GetRandomYFlipFogAttrsXFlip
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.row12
+	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
+	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
+	ld e, BG_PALETTE_FOG + OAMF_XFLIP
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+.clean
+	ld a, FALSE
+	ld [wCDirty], a
+	ret
 
 PaintSegmentD::
-.row0
-	ld hl, wShadowBackgroundTilemap + rows 0 + cols 14
-	ld b, 3
+DEF SEGMENT_WIDTH = 3
+DEF LEFTMOST_COLUMN = 14
+FOR N, 13
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 14
-	ld b, 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
-.row1
-	ld hl, wShadowBackgroundTilemap + rows 1 + cols 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 14
-	ld b, 3
-	call CopyByteInEToRange
-.row2
-	ld hl, wShadowBackgroundTilemap + rows 2 + cols 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 14
-	ld b, 3
-	call CopyByteInEToRange
-.row3
-	ld hl, wShadowBackgroundTilemap + rows 3 + cols 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 14
-	ld b, 3
-	call CopyByteInEToRange
-.row4
-	ld hl, wShadowBackgroundTilemap + rows 4 + cols 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 14
-	ld b, 3
-	call CopyByteInEToRange
-.row5
-	ld hl, wShadowBackgroundTilemap + rows 5 + cols 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 14
-	ld b, 3
-	call CopyByteInEToRange
-.row6
-	ld hl, wShadowBackgroundTilemap + rows 6 + cols 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 14
-	ld b, 3
-	call CopyByteInEToRange
-.row7
-	ld hl, wShadowBackgroundTilemap + rows 7 + cols 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 14
-	ld b, 3
-	call CopyByteInEToRange
-.row8
-	ld hl, wShadowBackgroundTilemap + rows 8 + cols 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 14
-	ld b, 3
-	call CopyByteInEToRange
-.row9
-	ld hl, wShadowBackgroundTilemap + rows 9 + cols 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 14
-	ld b, 3
-	call CopyByteInEToRange
-.row10
-	ld hl, wShadowBackgroundTilemap + rows 10 + cols 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 14
-	ld b, 3
-	call CopyByteInEToRange
-.row11
-	ld hl, wShadowBackgroundTilemap + rows 11 + cols 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 14
-	ld b, 3
-	call CopyByteInEToRange
-.row12
-	ld hl, wShadowBackgroundTilemap + rows 12 + cols 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 14
-	ld b, 3
-	call CopyByteInEToRange
+ENDR
 .clean
 	ld a, FALSE
 	ld [wDDirty], a
 	ret
 
 PaintSegmentDDistanceFog::
-	.row0
-		ld hl, wShadowBackgroundTilemap + rows 0 + cols 14
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.row1
-		ld hl, wShadowBackgroundTilemap + rows 1 + cols 14
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.row2
-		ld hl, wShadowBackgroundTilemap + rows 2 + cols 14
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.row3
-		ld hl, wShadowBackgroundTilemap + rows 3 + cols 14
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.row4
-		ld hl, wShadowBackgroundTilemap + rows 4 + cols 14
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.row5
-		ld hl, wShadowBackgroundTilemap + rows 5 + cols 14
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.row6
-		ld hl, wShadowBackgroundTilemap + rows 6 + cols 14
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.row7
-		ld hl, wShadowBackgroundTilemap + rows 7 + cols 14
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.row8
-		ld hl, wShadowBackgroundTilemap + rows 8 + cols 14
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.row9
-		ld hl, wShadowBackgroundTilemap + rows 9 + cols 14
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.row10
-		ld hl, wShadowBackgroundTilemap + rows 10 + cols 14
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.row11
-		ld hl, wShadowBackgroundTilemap + rows 11 + cols 14
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.row12
-		ld hl, wShadowBackgroundTilemap + rows 12 + cols 14
-		ld d, TILE_DISTANCE_FOG_GROUND
-		ld b, 3
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 14
-		ld b, 3
-		call CopyByteInEToRange
-	.clean
-		ld a, FALSE
-		ld [wDDirty], a
-		ret
+DEF SEGMENT_WIDTH = 3
+DEF LEFTMOST_COLUMN = 14
+FOR N, 12
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld d, SEGMENT_WIDTH
+	call PaintFogTilemapWithRandomFogTile
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.row12
+	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
+	ld d, TILE_DISTANCE_FOG_GROUND
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+.clean
+	ld a, FALSE
+	ld [wDDirty], a
+	ret
 
 PaintSegmentDFogBorderLeft::
-		call Rand ; we'll use the byte in c
-		ld d, TILE_DISTANCE_FOG_LEFT_WALL
-	.row0
-		ld hl, wShadowBackgroundTilemap + rows 0 + cols 14
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row1
-		ld hl, wShadowBackgroundTilemap + rows 1 + cols 14
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row2
-		ld hl, wShadowBackgroundTilemap + rows 2 + cols 14
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row3
-		ld hl, wShadowBackgroundTilemap + rows 3 + cols 14
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row4
-		ld hl, wShadowBackgroundTilemap + rows 4 + cols 14
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row5
-		ld hl, wShadowBackgroundTilemap + rows 5 + cols 14
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row6
-		ld hl, wShadowBackgroundTilemap + rows 6 + cols 14
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row7
-		ld hl, wShadowBackgroundTilemap + rows 7 + cols 14
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.getAnotherRandomByte
-		call Rand ; we'll use the byte in c
-	.row8
-		ld hl, wShadowBackgroundTilemap + rows 8 + cols 14
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row9
-		ld hl, wShadowBackgroundTilemap + rows 9 + cols 14
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row10
-		ld hl, wShadowBackgroundTilemap + rows 10 + cols 14
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row11
-		ld hl, wShadowBackgroundTilemap + rows 11 + cols 14
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		call CopyByteInEToRange
-	.row12
-		ld hl, wShadowBackgroundTilemap + rows 12 + cols 14
-		ld d, TILE_DISTANCE_FOG_LEFT_CORNER
-		ld b, 1
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 14
-		call GetRandomYFlipFogAttrs
-		ld b, 1
-		ld e, BG_PALETTE_FOG
-		call CopyByteInEToRange
-	.clean
-		ld a, FALSE
-		ld [wDDirty], a
-		ret
+DEF SEGMENT_WIDTH = 1
+DEF LEFTMOST_COLUMN = 14
+	call Rand ; we'll use the byte in c
+	ld d, TILE_DISTANCE_FOG_LEFT_WALL
+FOR N, 8
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	call GetRandomYFlipFogAttrs
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.getAnotherRandomByte
+	call Rand ; we'll use the byte in c
+FOR N, 8, 12
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	call GetRandomYFlipFogAttrs
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.row12
+	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
+	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
+	call GetRandomYFlipFogAttrs
+	ld b, SEGMENT_WIDTH
+	ld e, BG_PALETTE_FOG
+	call CopyByteInEToRange
+.clean
+	ld a, FALSE
+	ld [wDDirty], a
+	ret
 
 PaintSegmentE::
-.row0
-	ld hl, wShadowBackgroundTilemap + rows 0 + cols 17
-	ld b, 3
+DEF SEGMENT_WIDTH = 3
+DEF LEFTMOST_COLUMN = 17
+FOR N, 13
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 17
-	ld b, 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
-.row1
-	ld hl, wShadowBackgroundTilemap + rows 1 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
-.row2
-	ld hl, wShadowBackgroundTilemap + rows 2 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
-.row3
-	ld hl, wShadowBackgroundTilemap + rows 3 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
-.row4
-	ld hl, wShadowBackgroundTilemap + rows 4 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
-.row5
-	ld hl, wShadowBackgroundTilemap + rows 5 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
-.row6
-	ld hl, wShadowBackgroundTilemap + rows 6 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
-.row7
-	ld hl, wShadowBackgroundTilemap + rows 7 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
-.row8
-	ld hl, wShadowBackgroundTilemap + rows 8 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
-.row9
-	ld hl, wShadowBackgroundTilemap + rows 9 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
-.row10
-	ld hl, wShadowBackgroundTilemap + rows 10 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
-.row11
-	ld hl, wShadowBackgroundTilemap + rows 11 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
-.row12
-	ld hl, wShadowBackgroundTilemap + rows 12 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
+ENDR
 .clean
 	ld a, FALSE
 	ld [wEDirty], a
 	ret
 
 PaintSegmentEDistanceFog::
-	.row0
-		ld hl, wShadowBackgroundTilemap + rows 0 + cols 17
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 0 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.row1
-		ld hl, wShadowBackgroundTilemap + rows 1 + cols 17
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 1 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.row2
-		ld hl, wShadowBackgroundTilemap + rows 2 + cols 17
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 2 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.row3
-		ld hl, wShadowBackgroundTilemap + rows 3 + cols 17
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 3 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.row4
-		ld hl, wShadowBackgroundTilemap + rows 4 + cols 17
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 4 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.row5
-		ld hl, wShadowBackgroundTilemap + rows 5 + cols 17
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 5 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.row6
-		ld hl, wShadowBackgroundTilemap + rows 6 + cols 17
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 6 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.row7
-		ld hl, wShadowBackgroundTilemap + rows 7 + cols 17
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 7 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.row8
-		ld hl, wShadowBackgroundTilemap + rows 8 + cols 17
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 8 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.row9
-		ld hl, wShadowBackgroundTilemap + rows 9 + cols 17
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 9 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.row10
-		ld hl, wShadowBackgroundTilemap + rows 10 + cols 17
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 10 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.row11
-		ld hl, wShadowBackgroundTilemap + rows 11 + cols 17
-		ld d, 3
-		call PaintFogTilemapWithRandomFogTile
-		ld hl, wShadowBackgroundTilemapAttrs + rows 11 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.row12
-		ld hl, wShadowBackgroundTilemap + rows 12 + cols 17
-		ld d, TILE_DISTANCE_FOG_GROUND
-		ld b, 3
-		call CopyByteInDToRange
-		ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 17
-		ld b, 3
-		call CopyByteInEToRange
-	.clean
-		ld a, FALSE
-		ld [wEDirty], a
-		ret
-
+DEF SEGMENT_WIDTH = 3
+DEF LEFTMOST_COLUMN = 17
+FOR N, 12
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld d, SEGMENT_WIDTH
+	call PaintFogTilemapWithRandomFogTile
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDR
+.row12
+	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
+	ld d, TILE_DISTANCE_FOG_GROUND
+	ld b, SEGMENT_WIDTH
+	call CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+.clean
+	ld a, FALSE
+	ld [wEDirty], a
+	ret
 
 PaintSegmentK::
-.row13
-	ld hl, wShadowBackgroundTilemap + rows 13
-	ld b, 3
+DEF SEGMENT_WIDTH = 3
+FOR N, 13, 16
+	ld hl, wShadowBackgroundTilemap + rows N
+	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 13
-	ld b, 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows N
+	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
-.row14
-	ld hl, wShadowBackgroundTilemap + rows 14
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 14
-	ld b, 3
-	call CopyByteInEToRange
-.row15
-	ld hl, wShadowBackgroundTilemap + rows 15
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 15
-	ld b, 3
-	call CopyByteInEToRange
+ENDR
 .clean
 	ld a, FALSE
 	ld [wKDirty], a
 	ret
 
 PaintSegmentL::
+DEF LEFTMOST_COLUMN = 3
 .row13
-	ld hl, wShadowBackgroundTilemap + rows 13 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 13 + cols LEFTMOST_COLUMN
 	ld b, 2
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols LEFTMOST_COLUMN
 	ld b, 2
 	call CopyByteInEToRange
 .row14
-	ld hl, wShadowBackgroundTilemap + rows 14 + cols 3
+	ld hl, wShadowBackgroundTilemap + rows 14 + cols LEFTMOST_COLUMN
 	ld b, 1
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols LEFTMOST_COLUMN
 	ld b, 1
 	call CopyByteInEToRange
 .clean
@@ -1718,26 +621,27 @@ PaintSegmentL::
 	ret
 
 PaintSegmentLDiag::
+DEF SEGMENT_WIDTH = 1
 .row13
 	ld hl, wShadowBackgroundTilemap + rows 13 + cols 5
-	ld b, 1
+	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
 	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 5
-	ld b, 1
+	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
 .row14
 	ld hl, wShadowBackgroundTilemap + rows 14 + cols 4
-	ld b, 1
+	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
 	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 4
-	ld b, 1
+	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
 .row15
 	ld hl, wShadowBackgroundTilemap + rows 15 + cols 3
-	ld b, 1
+	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
 	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 3
-	ld b, 1
+	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
 .clean
 	ld a, FALSE
@@ -1922,27 +826,16 @@ PaintSegmentNDiag::
 	ret
 
 PaintSegmentO::
-.row13
-	ld hl, wShadowBackgroundTilemap + rows 13 + cols 17
-	ld b, 3
+DEF SEGMENT_WIDTH = 3
+DEF LEFTMOST_COLUMN = 17
+FOR N, 13, 16
+	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 17
-	ld b, 3
+	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
-.row14
-	ld hl, wShadowBackgroundTilemap + rows 14 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
-.row15
-	ld hl, wShadowBackgroundTilemap + rows 15 + cols 17
-	ld b, 3
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 17
-	ld b, 3
-	call CopyByteInEToRange
+ENDR
 .clean
 	ld a, FALSE
 	ld [wODirty], a
