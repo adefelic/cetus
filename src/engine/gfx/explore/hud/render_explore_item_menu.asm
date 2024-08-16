@@ -6,7 +6,7 @@ INCLUDE "src/structs/item.inc"
 
 SECTION "Item Rendering Scratch", WRAM0
 wItemQuantityNameStringBuffer:: ds BYTES_IN_DIALOG_STRING
-wCurrentItemAddr:: dw
+wCurrentMenuItemObjectAddr:: dw ; in this case, the Item that is being referred to
 
 SECTION "Explore Item Menu Renderer", ROMX
 
@@ -37,7 +37,7 @@ RenderExploreItemMenu::
 	push hl ; stash current wMenuItems position ptr
 	push bc ; stash b and c iterators
 
-	; dereference wMenuItems position ptr to get Item addr in hl and wCurrentItemAddr
+	; dereference wMenuItems position ptr to get Item addr in hl and wCurrentMenuItemObjectAddr
 	ld a, [hli]
 	ld b, a
 	ld a, [hl]
@@ -45,11 +45,11 @@ RenderExploreItemMenu::
 
 	ld a, b
 	ld l, a
-	ld [wCurrentItemAddr], a
+	ld [wCurrentMenuItemObjectAddr], a
 
 	ld a, c
 	ld h, a
-	ld [wCurrentItemAddr + 1], a
+	ld [wCurrentMenuItemObjectAddr + 1], a
 
 	;;; get item quantity and convert to decimal
 	ld a, Item_InventoryOffset
@@ -74,9 +74,9 @@ RenderExploreItemMenu::
 	ld [hli], a
 
 	; skip "99x" characters
-	ld a, [wCurrentItemAddr]
+	ld a, [wCurrentMenuItemObjectAddr]
 	ld e, a
-	ld a, [wCurrentItemAddr + 1]
+	ld a, [wCurrentMenuItemObjectAddr + 1]
 	ld d, a
 	inc de
 	inc de

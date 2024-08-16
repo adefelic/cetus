@@ -22,6 +22,9 @@ RenderEncounterMenuPlayerAttacks::
 	cp TRUE
 	ret nz
 .prep
+	; this is hardcoding to the menu to start at 0
+	xor a
+	ld [wMenuItemTopVisible], a
 	call PopulateMenuItemsFromPlayerAttacks
 .renderTopRow
 	call PaintBlankTopMenuRow
@@ -36,7 +39,7 @@ RenderEncounterMenuPlayerAttacks::
 	push hl ; stash current wMenuItems position ptr
 	push bc ; stash b and c iterators
 
-	; dereference wMenuItems position ptr to get Attack addr in hl and wCurrentItemAddr ; rename to wCurrentMenuItemObject ?
+	; dereference wMenuItems position ptr to get Attack addr in hl and wCurrentMenuItemObjectAddr
 	ld a, [hli]
 	ld b, a
 	ld a, [hl]
@@ -44,11 +47,11 @@ RenderEncounterMenuPlayerAttacks::
 
 	ld a, b
 	ld l, a
-	ld [wCurrentItemAddr], a
+	ld [wCurrentMenuItemObjectAddr], a
 
 	ld a, c
 	ld h, a
-	ld [wCurrentItemAddr + 1], a
+	ld [wCurrentMenuItemObjectAddr + 1], a
 
 	;;; get mp cost and convert to decimal
 	ld a, Attack_MpCost
@@ -76,11 +79,11 @@ RenderEncounterMenuPlayerAttacks::
 	ld a, " "
 	ld [hli], a
 
-	ld a, [wCurrentItemAddr]
+	ld a, [wCurrentMenuItemObjectAddr]
 	ld e, a
-	ld a, [wCurrentItemAddr + 1]
+	ld a, [wCurrentMenuItemObjectAddr + 1]
 	ld d, a
-	; it's cool to pass wCurrentItemAddr in de because its zeroth element is the name string that needs to be passed
+	; it's cool to pass wCurrentMenuItemObjectAddr in de because its zeroth element is the name string that needs to be passed
 	ld a, BYTES_IN_ATTACK_STRING - 3
 	ld b, a
 	call MemcopySmall
@@ -92,20 +95,19 @@ RenderEncounterMenuPlayerAttacks::
 .updateIterators
 	pop bc ; restore iterators
 
-	pop hl ; restore item def ptr and inc hl by sizeof_Item
+	pop hl ; restore item def ptr
 	inc hl
 	inc hl ; add 2 to point to next wMenuItems entry
 
-	; inc and check
 	inc c ; inc current row offset
 	ld a, c
-	ld [wTextRowsRendered], a ; painting uses this
-	cp MODAL_TEXT_AREA_HEIGHT ; check to see if the visible menu is filled
-	jp z, .renderBottomRow
+	ld [wTextRowsRendered], a ; painting uses this variable
+	cp MODAL_TEXT_AREA_HEIGHT ; check to see if there is still space for more menu items
+	jp z, .renderBottomRow ; quit out if not
 
 	ld a, [wMenuItemsCount]
-	inc b ; inc menu offset
-	cp b ; check to see if the
+	inc b ; inc menu item offset
+	cp b ; check to see if we've rendered all possible menu items in wMenuItems
 	jp nz, .renderMenuItemRowsLoop
 .renderBlankRows
 	ld a, [wTextRowsRendered]
@@ -127,7 +129,7 @@ RenderEncounterMenuPlayerAttacks::
 
 ; populates wMenuItems with pointers to Attacks
 ; populates wMenuItemsCount
-PopulateMenuItemsFromPlayerAttacks::
+PopulateMenuItemsFromPlayerAttacks:
 	ld de, wPlayerAttacks ; source
 	ld hl, wMenuItems ; dest
 	ld b, 8 ; 4 pointers
