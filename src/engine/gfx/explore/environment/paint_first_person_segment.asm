@@ -35,28 +35,24 @@ wRDiagDirty: db
 SECTION "Segment Paint Routines", ROMX
 
 ; todo combine/dedup routines that paint similar shapes
-; todo use macros to make this way smaller
 
 CheckSegmentA::
 	ld a, [wADirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentA
-	ret
+	jp PaintSegmentA
 
 CheckSegmentB::
 	ld a, [wBDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentB
-	ret
+	jp PaintSegmentB
 
 CheckSegmentADistanceFog::
 	ld a, [wADirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentADistanceFog
-	ret
+	jp PaintSegmentADistanceFog
 
 CheckSegmentBDistanceFog::
 	ld a, [wBDirty]
@@ -74,8 +70,7 @@ CheckSegmentC::
 	ld a, [wCDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentC
-	ret
+	jp PaintSegmentC
 
 CheckSegmentCDistanceFog::
 	ld a, [wCDirty]
@@ -106,15 +101,13 @@ CheckSegmentD::
 	ld a, [wDDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentD
-	ret
+	jp PaintSegmentD
 
 CheckSegmentE::
 	ld a, [wEDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentE
-	ret
+	jp PaintSegmentE
 
 CheckSegmentDDistanceFog::
 	ld a, [wDDirty]
@@ -132,100 +125,86 @@ CheckSegmentEDistanceFog::
 	ld a, [wEDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentEDistanceFog
-	ret
+	jp PaintSegmentEDistanceFog
 
 CheckSegmentK::
 	ld a, [wKDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentK
-	ret
+	jp PaintSegmentK
 
 CheckSegmentL::
 	ld a, [wLDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentL
-	ret
+	jp PaintSegmentL
 
 CheckSegmentLDiag::
 	ld a, [wLDiagDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentLDiag
-	ret
+	jp PaintSegmentLDiag
 
 CheckSegmentM::
 	ld a, [wMDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentM
-	ret
+	jp PaintSegmentM
 
 CheckSegmentMGround::
 	ld a, [wMDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentMGround
-	ret
+	jp PaintSegmentMGround
 
 CheckSegmentN::
 	ld a, [wNDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentN
-	ret
+	jp PaintSegmentN
 
 CheckSegmentNDiag::
 	ld a, [wNDiagDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentNDiag
-	ret
+	jp PaintSegmentNDiag
 
 CheckSegmentO::
 	ld a, [wODirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentO
-	ret
+	jp PaintSegmentO
 
 CheckSegmentP::
 	ld a, [wPDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentP
-	ret
+	jp PaintSegmentP
 
 CheckSegmentPDiag::
 	ld a, [wPDiagDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentPDiag
-	ret
+	jp PaintSegmentPDiag
 
 ; todo, dirty this every time probably
 CheckSegmentQGround::
 	ld a, [wQDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentQ
-	ret
+	jp PaintSegmentQ
 
 CheckSegmentR::
 	ld a, [wRDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentR
-	ret
+	jp PaintSegmentR
 
 CheckSegmentRDiag::
 	ld a, [wRDiagDirty]
 	cp a, TRUE
 	ret nz
-	call PaintSegmentRDiag
-	ret
+	jp PaintSegmentRDiag
 
 ; @param d: the tile index to paint with
 ; @param e: the attribute byte to paint with
