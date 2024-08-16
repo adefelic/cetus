@@ -64,6 +64,9 @@ LoadLocale::
 	ld [wCurrentMusicTrack], a
 	ld a, [hl]
 	ld [wCurrentMusicTrack+1], a
+
+	call LoadCurrentMusic
+
 	pop hl
 
 .loadSpecialWallTiles

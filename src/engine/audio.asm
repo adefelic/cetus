@@ -35,6 +35,7 @@ InitAudio::
 	ld hl, MusicSwamp
 	call hUGE_init
 
+	; this is from my old sound effect stuff and not hUGE
 	xor a
 	ld [wCh4NoteDurationRemaining], a
 	ld [wCh4CurrentAudCmd], a
@@ -44,6 +45,12 @@ InitAudio::
 	ld a, FALSE
 	ld [wIsCh4SoundLoaded], a
 	ld [wIsCh4SfxActive], a
+	ret
+
+LoadCurrentMusic::
+	ld hl, wCurrentMusicTrack
+	call DereferenceHlIntoHl
+	call hUGE_init
 	ret
 
 PlayFootstepSfx::
