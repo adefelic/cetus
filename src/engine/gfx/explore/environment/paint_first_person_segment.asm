@@ -206,32 +206,42 @@ CheckSegmentRDiag::
 	ret nz
 	jp PaintSegmentRDiag
 
-; @param d: the tile index to paint with
-; @param e: the attribute byte to paint with
-PaintSegmentA::
-DEF SEGMENT_WIDTH = 3
-FOR N, 13
-	ld hl, wShadowBackgroundTilemap + rows N
+MACRO paint_rectangular_segment
+	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
 	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
 	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
+ENDM
+
+MACRO paint_rectangular_segment_fog
+	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
+	ld d, SEGMENT_WIDTH
+	call PaintFogTilemapWithRandomFogTile
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
+	ld b, SEGMENT_WIDTH
+	call CopyByteInEToRange
+ENDM
+
+; @param d: the tile index to paint with
+; @param e: the attribute byte to paint with
+PaintSegmentA:
+DEF SEGMENT_WIDTH = 3
+DEF LEFTMOST_COLUMN = 0
+FOR ROWS, 13
+	paint_rectangular_segment
 ENDR
 .clean
 	ld a, FALSE
 	ld [wADirty], a
 	ret
 
-PaintSegmentADistanceFog::
+PaintSegmentADistanceFog:
 DEF SEGMENT_WIDTH = 3
-FOR N, 12
-	ld hl, wShadowBackgroundTilemap + rows N
-	ld d, SEGMENT_WIDTH
-	call PaintFogTilemapWithRandomFogTile
-	ld hl, wShadowBackgroundTilemapAttrs + rows N
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+DEF LEFTMOST_COLUMN = 0
+FOR ROWS, 12
+	paint_rectangular_segment_fog
 ENDR
 .row12
 	ld hl, wShadowBackgroundTilemap + rows 12
@@ -246,32 +256,22 @@ ENDR
 	ld [wADirty], a
 	ret
 
-PaintSegmentB::
+PaintSegmentB:
 DEF SEGMENT_WIDTH = 3
 DEF LEFTMOST_COLUMN = 3
-FOR N, 13
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+FOR ROWS, 13
+	paint_rectangular_segment
 ENDR
 .clean
 	ld a, FALSE
 	ld [wBDirty], a
 	ret
 
-PaintSegmentBDistanceFog::
+PaintSegmentBDistanceFog:
 DEF SEGMENT_WIDTH = 3
 DEF LEFTMOST_COLUMN = 3
-FOR N, 12
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
-	ld d, SEGMENT_WIDTH
-	call PaintFogTilemapWithRandomFogTile
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+FOR ROWS, 12
+	paint_rectangular_segment_fog
 ENDR
 .row12
 	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
@@ -286,27 +286,27 @@ ENDR
 	ld [wBDirty], a
 	ret
 
-PaintSegmentBFogBorderRight::
+PaintSegmentBFogBorderRight:
 	call Rand ; we'll use the byte in c
 	ld d, TILE_DISTANCE_FOG_LEFT_WALL
 	DEF SEGMENT_WIDTH = 1
 	DEF LEFTMOST_COLUMN = 5
-FOR N, 8
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+FOR ROWS, 8
+	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
 	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
 	call GetRandomYFlipFogAttrsXFlip
 	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
 ENDR
 .getAnotherRandomByte
 	call Rand ; we'll use the byte in c
-FOR N, 8, 12
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+FOR ROWS, 8, 12
+	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
 	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
 	call GetRandomYFlipFogAttrsXFlip
 	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
@@ -325,32 +325,22 @@ ENDR
 	ld [wBDirty], a
 	ret
 
-PaintSegmentC::
+PaintSegmentC:
 DEF SEGMENT_WIDTH = 8
 DEF LEFTMOST_COLUMN = 6
-FOR N, 13
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+FOR ROWS, 13
+	paint_rectangular_segment
 ENDR
 .clean
 	ld a, FALSE
 	ld [wCDirty], a
 	ret
 
-PaintSegmentCDistanceFog::
+PaintSegmentCDistanceFog:
 DEF SEGMENT_WIDTH = 8
 DEF LEFTMOST_COLUMN = 6
-FOR N, 12
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
-	ld d, SEGMENT_WIDTH
-	call PaintFogTilemapWithRandomFogTile
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+FOR ROWS, 12
+	paint_rectangular_segment_fog
 ENDR
 .row12
 	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
@@ -365,27 +355,27 @@ ENDR
 	ld [wCDirty], a
 	ret
 
-PaintSegmentCFogBorderLeft::
+PaintSegmentCFogBorderLeft:
 DEF SEGMENT_WIDTH = 1
 DEF LEFTMOST_COLUMN = 6
 	call Rand ; we'll use the byte in c
 	ld d, TILE_DISTANCE_FOG_LEFT_WALL
-FOR N, 8
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+FOR ROWS, 8
+	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
 	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
 	call GetRandomYFlipFogAttrs
 	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
 ENDR
 .getAnotherRandomByte
 	call Rand ; we'll use the byte in c
-FOR N, 8, 12
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+FOR ROWS, 8, 12
+	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
 	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
 	call GetRandomYFlipFogAttrs
 	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
@@ -404,27 +394,27 @@ ENDR
 	ld [wCDirty], a
 	ret
 
-PaintSegmentCFogBorderRight::
+PaintSegmentCFogBorderRight:
 DEF SEGMENT_WIDTH = 1
 DEF LEFTMOST_COLUMN = 13
 	call Rand ; we'll use the byte in c
 	ld d, TILE_DISTANCE_FOG_LEFT_WALL
-FOR N, 8
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+FOR ROWS, 8
+	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
 	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
 	call GetRandomYFlipFogAttrsXFlip
 	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
 ENDR
 .getAnotherRandomByte
 	call Rand ; we'll use the byte in c
-FOR N, 8, 12
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+FOR ROWS, 8, 12
+	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
 	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
 	call GetRandomYFlipFogAttrsXFlip
 	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
@@ -443,32 +433,22 @@ ENDR
 	ld [wCDirty], a
 	ret
 
-PaintSegmentD::
+PaintSegmentD:
 DEF SEGMENT_WIDTH = 3
 DEF LEFTMOST_COLUMN = 14
-FOR N, 13
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+FOR ROWS, 13
+	paint_rectangular_segment
 ENDR
 .clean
 	ld a, FALSE
 	ld [wDDirty], a
 	ret
 
-PaintSegmentDDistanceFog::
+PaintSegmentDDistanceFog:
 DEF SEGMENT_WIDTH = 3
 DEF LEFTMOST_COLUMN = 14
-FOR N, 12
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
-	ld d, SEGMENT_WIDTH
-	call PaintFogTilemapWithRandomFogTile
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+FOR ROWS, 12
+	paint_rectangular_segment_fog
 ENDR
 .row12
 	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
@@ -483,27 +463,27 @@ ENDR
 	ld [wDDirty], a
 	ret
 
-PaintSegmentDFogBorderLeft::
+PaintSegmentDFogBorderLeft:
 DEF SEGMENT_WIDTH = 1
 DEF LEFTMOST_COLUMN = 14
 	call Rand ; we'll use the byte in c
 	ld d, TILE_DISTANCE_FOG_LEFT_WALL
-FOR N, 8
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+FOR ROWS, 8
+	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
 	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
 	call GetRandomYFlipFogAttrs
 	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
 ENDR
 .getAnotherRandomByte
 	call Rand ; we'll use the byte in c
-FOR N, 8, 12
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
+FOR ROWS, 8, 12
+	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
 	ld b, SEGMENT_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
 	call GetRandomYFlipFogAttrs
 	ld b, SEGMENT_WIDTH
 	call CopyByteInEToRange
@@ -523,32 +503,22 @@ ENDR
 	ld [wDDirty], a
 	ret
 
-PaintSegmentE::
+PaintSegmentE:
 DEF SEGMENT_WIDTH = 3
 DEF LEFTMOST_COLUMN = 17
-FOR N, 13
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+FOR ROWS, 13
+	paint_rectangular_segment
 ENDR
 .clean
 	ld a, FALSE
 	ld [wEDirty], a
 	ret
 
-PaintSegmentEDistanceFog::
+PaintSegmentEDistanceFog:
 DEF SEGMENT_WIDTH = 3
 DEF LEFTMOST_COLUMN = 17
-FOR N, 12
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
-	ld d, SEGMENT_WIDTH
-	call PaintFogTilemapWithRandomFogTile
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+FOR ROWS, 12
+	paint_rectangular_segment_fog
 ENDR
 .row12
 	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
@@ -563,22 +533,18 @@ ENDR
 	ld [wEDirty], a
 	ret
 
-PaintSegmentK::
+PaintSegmentK:
 DEF SEGMENT_WIDTH = 3
-FOR N, 13, 16
-	ld hl, wShadowBackgroundTilemap + rows N
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+DEF LEFTMOST_COLUMN = 0
+FOR ROWS, 13, 16
+	paint_rectangular_segment
 ENDR
 .clean
 	ld a, FALSE
 	ld [wKDirty], a
 	ret
 
-PaintSegmentL::
+PaintSegmentL:
 DEF LEFTMOST_COLUMN = 3
 .row13
 	ld hl, wShadowBackgroundTilemap + rows 13 + cols LEFTMOST_COLUMN
@@ -599,7 +565,7 @@ DEF LEFTMOST_COLUMN = 3
 	ld [wLDirty], a
 	ret
 
-PaintSegmentLDiag::
+PaintSegmentLDiag:
 DEF SEGMENT_WIDTH = 1
 .row13
 	ld hl, wShadowBackgroundTilemap + rows 13 + cols 5
@@ -627,7 +593,7 @@ DEF SEGMENT_WIDTH = 1
 	ld [wLDiagDirty], a
 	ret
 
-PaintSegmentM::
+PaintSegmentM:
 .row13
 	ld hl, wShadowBackgroundTilemap + rows 13 + cols 6
 	ld b, 8
@@ -654,7 +620,7 @@ PaintSegmentM::
 	ld [wMDirty], a
 	ret
 
-PaintSegmentMGround::
+PaintSegmentMGround:
 .row13
 	ld hl, wShadowBackgroundTilemap + rows 13 + cols 6
 	ld b, 8
@@ -757,7 +723,7 @@ PaintSegmentMGround::
 	ld [wMDirty], a
 	ret
 
-PaintSegmentN::
+PaintSegmentN:
 .row13
 	ld hl, wShadowBackgroundTilemap + rows 13 + cols 15
 	ld b, 2
@@ -777,7 +743,7 @@ PaintSegmentN::
 	ld [wNDirty], a
 	ret
 
-PaintSegmentNDiag::
+PaintSegmentNDiag:
 .row13
 	ld hl, wShadowBackgroundTilemap + rows 13 + cols 14
 	ld b, 1
@@ -804,23 +770,18 @@ PaintSegmentNDiag::
 	ld [wNDiagDirty], a
 	ret
 
-PaintSegmentO::
+PaintSegmentO:
 DEF SEGMENT_WIDTH = 3
 DEF LEFTMOST_COLUMN = 17
-FOR N, 13, 16
-	ld hl, wShadowBackgroundTilemap + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows N + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+FOR ROWS, 13, 16
+	paint_rectangular_segment
 ENDR
 .clean
 	ld a, FALSE
 	ld [wODirty], a
 	ret
 
-PaintSegmentP::
+PaintSegmentP:
 .row16
 	ld hl, wShadowBackgroundTilemap + rows 16
 	ld b, 2
@@ -860,7 +821,7 @@ PaintSegmentPDiag:
 	ld [wPDiagDirty], a
 	ret
 
-PaintSegmentQ::
+PaintSegmentQ:
 .row16
 	ld hl, wShadowBackgroundTilemap + rows 16 + cols 3
 	ld b, 14
@@ -931,7 +892,7 @@ PaintSegmentQ::
 	ld [wQDirty], a
 	ret
 
-PaintSegmentR::
+PaintSegmentR:
 .column18
 	ld hl, wShadowBackgroundTilemap + rows 16 + cols 18
 	ld b, 2
@@ -951,7 +912,7 @@ PaintSegmentR::
 	ld [wRDirty], a
 	ret
 
-PaintSegmentRDiag::
+PaintSegmentRDiag:
 .row16
 	ld hl, wShadowBackgroundTilemap + rows 16 + cols 17
 	ld b, 1
