@@ -32,10 +32,21 @@ DEF PALETTE_SET_SIZE EQU PALETTE_SIZE * NUM_PAL_IN_SET ; bytes
 ; palette offsets
 ; todo: currently only colors 1 and 2 are used for rendering walls and floor. 0 and 3 are unused
 ; one of those should become a fog color
-DEF BG_PALETTE_Z0      EQU $00
-DEF BG_PALETTE_Z1      EQU $01
-DEF BG_PALETTE_Z2      EQU $02
-DEF BG_PALETTE_Z3      EQU $03
+DEF BG_PALETTE_Z0          EQU $00
+DEF BG_PALETTE_SIDE_NEAR   EQU BG_PALETTE_Z0
+DEF BG_PALETTE_GROUND_NEAR EQU BG_PALETTE_Z0
+
+DEF BG_PALETTE_Z1         EQU $01
+DEF BG_PALETTE_FRONT_NEAR EQU BG_PALETTE_Z1
+
+DEF BG_PALETTE_Z2         EQU $02
+DEF BG_PALETTE_SIDE_FAR   EQU BG_PALETTE_Z2
+DEF BG_PALETTE_GROUND_FAR EQU BG_PALETTE_Z2
+
+
+DEF BG_PALETTE_Z3        EQU $03
+DEF BG_PALETTE_FRONT_FAR EQU BG_PALETTE_Z3
+
 DEF BG_PALETTE_UI      EQU $04 ; ui elements
 DEF BG_PALETTE_UI2     EQU $05 ; ui elements (highlighted) ; maybe this can be replaced with a cursor and i can have more space for special palettes
 DEF BG_PALETTE_SPECIAL EQU $06 ; special wall? ; this will end up holding the enemy palette during encounters

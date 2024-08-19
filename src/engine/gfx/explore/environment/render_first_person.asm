@@ -28,8 +28,10 @@ SECTION "First Person Environment Renderer", ROMX
 	;   the whole map starts at 1,1 rather than 0,0 to make it unnecessary
 RenderExploreEnvironmentWalls::
 	; todo this shouldn't be called here, it should be called whenever the player's location is invalidated
+	;    so moves or rotations
 	call UpdateRoomWallCache
-	; process rooms closest to farthest w/ dirtying to only draw topmost z segments
+
+; process rooms closest to farthest w/ dirtying to only draw topmost z segments
 ProcessRoomCenterNear:
 .checkLeftWall:
 	ld hl, wRoomNearCenter
@@ -41,10 +43,10 @@ ProcessRoomCenterNear:
 	cp a, WALL_TYPE_B
 	jp z, .paintLeftWallTypeB
 	; control should not reach here
-.paintLeftWallTypeA ; side near
-	; okay instead we can say ... load that wall's panel index
-	ld e, BG_PALETTE_Z0
-	ld d, TILE_EXPLORE_WALL_SIDE
+
+.paintLeftWallTypeA
+	ld e, BG_PALETTE_SIDE_NEAR
+	ld d, TILE_EXPLORE_WALL
 	call PaintSegmentA
 	call PaintSegmentK
 	call PaintSegmentP
@@ -66,8 +68,8 @@ ProcessRoomCenterNear:
 	cp a, WALL_TYPE_NONE
 	jp z, .checkRightWall
 .paintTopWall
-	ld e, BG_PALETTE_Z1
-	ld d, TILE_EXPLORE_WALL_SIDE
+	ld e, BG_PALETTE_FRONT_NEAR
+	ld d, TILE_EXPLORE_WALL
 	call PaintSegmentB
 	call PaintSegmentC
 	call PaintSegmentD
@@ -82,15 +84,15 @@ ProcessRoomCenterNear:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGround
 .paintRightWall
-	ld e, BG_PALETTE_Z0
-	ld d, TILE_EXPLORE_WALL_SIDE
+	ld e, BG_PALETTE_SIDE_NEAR
+	ld d, TILE_EXPLORE_WALL
 	call PaintSegmentE
 	call PaintSegmentO
 	call PaintSegmentR
 	ld d, TILE_EXPLORE_DIAG_R
 	call PaintSegmentRDiag
 .paintGround
-	ld e, BG_PALETTE_Z0
+	ld e, BG_PALETTE_GROUND_NEAR
 	ld d, TILE_EXPLORE_GROUND ; todo on all ground paints, flip (shuffle could be cool) ground every step
 	call PaintSegmentQGround
 
@@ -101,12 +103,12 @@ ProcessRoomLeftNear:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGround
 .paintTopWall
-	ld e, BG_PALETTE_Z1
-	ld d, TILE_EXPLORE_WALL_SIDE
+	ld e, BG_PALETTE_FRONT_NEAR
+	ld d, TILE_EXPLORE_WALL
 	call PaintSegmentA
 	call PaintSegmentK
 .paintGround
-	ld e, BG_PALETTE_Z0
+	ld e, BG_PALETTE_GROUND_NEAR
 	ld d, TILE_EXPLORE_GROUND
 	call PaintSegmentP
 	call PaintSegmentPDiag
@@ -118,12 +120,12 @@ ProcessRoomRightNear:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGround
 .paintTopWall
-	ld e, BG_PALETTE_Z1
-	ld d, TILE_EXPLORE_WALL_SIDE
+	ld e, BG_PALETTE_FRONT_NEAR
+	ld d, TILE_EXPLORE_WALL
 	call PaintSegmentE
 	call PaintSegmentO
 .paintGround
-	ld e, BG_PALETTE_Z0
+	ld e, BG_PALETTE_GROUND_NEAR
 	ld d, TILE_EXPLORE_GROUND
 	call PaintSegmentR
 	call PaintSegmentRDiag
@@ -135,15 +137,15 @@ ProcessRoomCenterFar:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintLeftGround ; paint ground if no left wall
 .paintLeftWall
-	ld e, BG_PALETTE_Z2
-	ld d, TILE_EXPLORE_WALL_SIDE
+	ld e, BG_PALETTE_SIDE_FAR
+	ld d, TILE_EXPLORE_WALL
 	call PaintSegmentB
 	call PaintSegmentL
 	ld d, TILE_EXPLORE_DIAG_L
 	call PaintSegmentLDiag
 	jp .checkTopWall
 .paintLeftGround
-	ld e, BG_PALETTE_Z2
+	ld e, BG_PALETTE_GROUND_FAR
 	ld d, TILE_EXPLORE_GROUND
 	call PaintSegmentL
 	call PaintSegmentLDiag
@@ -153,8 +155,8 @@ ProcessRoomCenterFar:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance
 .paintTopWall
-	ld d, TILE_EXPLORE_WALL_SIDE
-	ld e, BG_PALETTE_Z3
+	ld d, TILE_EXPLORE_WALL
+	ld e, BG_PALETTE_FRONT_FAR
 	call PaintSegmentC
 	jp .checkRightWall
 .paintDistance
@@ -166,20 +168,20 @@ ProcessRoomCenterFar:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintRightGround ; paint ground if no right wall
 .paintRightWall
-	ld e, BG_PALETTE_Z2
-	ld d, TILE_EXPLORE_WALL_SIDE
+	ld e, BG_PALETTE_SIDE_FAR
+	ld d, TILE_EXPLORE_WALL
 	call PaintSegmentD
 	call PaintSegmentN
 	ld d, TILE_EXPLORE_DIAG_R
 	call PaintSegmentNDiag
 	jp .paintCenterGround
 .paintRightGround
-	ld e, BG_PALETTE_Z2
+	ld e, BG_PALETTE_GROUND_FAR
 	ld d, TILE_EXPLORE_GROUND
 	call PaintSegmentN
 	call PaintSegmentNDiag
 .paintCenterGround
-	ld e, BG_PALETTE_Z2
+	ld e, BG_PALETTE_GROUND_FAR
 	ld d, TILE_EXPLORE_GROUND
 	call PaintSegmentMGround
 
@@ -190,8 +192,8 @@ ProcessRoomLeftFar:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance
 .paintTopWall
-	ld e, BG_PALETTE_Z3
-	ld d, TILE_EXPLORE_WALL_SIDE
+	ld e, BG_PALETTE_FRONT_FAR
+	ld d, TILE_EXPLORE_WALL
 	call PaintSegmentA
 	call PaintSegmentB
 	jp .paintGround
@@ -200,7 +202,7 @@ ProcessRoomLeftFar:
 	call PaintSegmentADistanceFog
 	call PaintSegmentBDistanceFog
 .paintGround
-	ld e, BG_PALETTE_Z2
+	ld e, BG_PALETTE_GROUND_FAR
 	ld d, TILE_EXPLORE_GROUND
 	call PaintSegmentK
 	call PaintSegmentL
@@ -213,8 +215,8 @@ ProcessRoomRightFar:
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistance
 .paintTopWall
-	ld e, BG_PALETTE_Z3
-	ld d, TILE_EXPLORE_WALL_SIDE
+	ld e, BG_PALETTE_FRONT_FAR
+	ld d, TILE_EXPLORE_WALL
 	call PaintSegmentD
 	call PaintSegmentE
 	jp .paintGround
@@ -223,7 +225,7 @@ ProcessRoomRightFar:
 	call PaintSegmentDDistanceFog
 	call PaintSegmentEDistanceFog
 .paintGround
-	ld e, BG_PALETTE_Z2
+	ld e, BG_PALETTE_GROUND_FAR
 	ld d, TILE_EXPLORE_GROUND
 	call PaintSegmentO
 	call PaintSegmentN
