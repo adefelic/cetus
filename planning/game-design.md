@@ -2,6 +2,17 @@ new planning doc for short, dark, coastal drpg. roguelike elements, soulslike st
 	- roguelike because you play in short bursts and it makes experimentation more easy
 
 
+## THE FUN
+- it is fun to be surprised by newness
+	- it is fun to want to get to the next place to see what happens
+	- it is fun to keep running into the same characters in unexpected
+	- it is fun to want to see more kinds of enemy
+- it is fun to decorate
+	- decorating makes the game easier and is the best way to make progress
+	- it is fun to have enemies comment on decoration
+
+
+
 
 - when in doubt, lean on genre convention
 
@@ -228,6 +239,14 @@ smt combat and eo combat both work because you have a lot of moves to use. maybe
 
 ### encounter flow:
 	enemy is revealed
+	- check for conversation trigger
+		- if yes, enter conversation
+			- if positive
+				- chance they heal you
+				- go to reward screen
+			- if negative, go to combat screen
+		- if no, it makes a sound (text) (greeting)
+			- either an initiation of combat or "they stare, silent" or something like that
 	coin flip for who goes first, 50/50
 	enemy moves if tails
 	then go into turn cycles -- 
@@ -237,6 +256,22 @@ smt combat and eo combat both work because you have a lot of moves to use. maybe
 		enemy move
 		if player defeated, defeat screen -> go to last bonfire
 		loop
+
+- conversation
+	- enemy comments on an item on this map ... zone? (there isn't a great distinction here. zone / locale / location)
+	- vibes
+		- tower
+			- "ho there!" "that's the spirit" 
+			- "you must be the one leaving these "
+		- forest
+			- "we see you"
+		- deep
+		- dead
+			- "you see us. it is little but it is something"
+			- "we only wish to be remembered"
+			- "what happened?"
+	"we see you" ""
+
 
 
 ## player classes
