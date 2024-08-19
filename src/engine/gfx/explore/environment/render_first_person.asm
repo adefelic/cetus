@@ -41,18 +41,24 @@ ProcessRoomCenterNear:
 	cp a, WALL_TYPE_B
 	jp z, .paintLeftWallTypeB
 	; control should not reach here
-.paintLeftWallTypeA
+.paintLeftWallTypeA ; side near
 	; okay instead we can say ... load that wall's panel index
 	ld e, BG_PALETTE_Z0
 	ld d, TILE_EXPLORE_WALL_SIDE
-	call CheckSegmentA
-	call CheckSegmentK
-	call CheckSegmentP
+	call PaintSegmentA
+	call PaintSegmentK
+	call PaintSegmentP
 	ld d, TILE_EXPLORE_DIAG_L
-	call CheckSegmentPDiag
+	call PaintSegmentPDiag
 	jp .checkTopWall
 .paintLeftWallTypeB
 	; todo
+	; hmm how will this work, if specials walls are different per-locale
+	; get locale -> call CurrentLocaleSpecialWallBSideNear ??? would each locale come with ... 8 custom function pointers? :(
+	; maybe the paint functions should all be the same, at least initially?
+	;   this will be impossible without very simplified paint functions
+	; for the time being, i'll just add the one wall type and all locales can use it
+
 	jp .checkTopWall
 .checkTopWall
 	ld hl, wRoomNearCenter
@@ -62,14 +68,14 @@ ProcessRoomCenterNear:
 .paintTopWall
 	ld e, BG_PALETTE_Z1
 	ld d, TILE_EXPLORE_WALL_SIDE
-	call CheckSegmentB
-	call CheckSegmentC
-	call CheckSegmentD
-	call CheckSegmentL
-	call CheckSegmentLDiag
-	call CheckSegmentM
-	call CheckSegmentN
-	call CheckSegmentNDiag
+	call PaintSegmentB
+	call PaintSegmentC
+	call PaintSegmentD
+	call PaintSegmentL
+	call PaintSegmentLDiag
+	call PaintSegmentM
+	call PaintSegmentN
+	call PaintSegmentNDiag
 .checkRightWall
 	ld hl, wRoomNearCenter
 	call GetRightWallTypeFromRoomAddr
@@ -78,15 +84,15 @@ ProcessRoomCenterNear:
 .paintRightWall
 	ld e, BG_PALETTE_Z0
 	ld d, TILE_EXPLORE_WALL_SIDE
-	call CheckSegmentE
-	call CheckSegmentO
-	call CheckSegmentR
+	call PaintSegmentE
+	call PaintSegmentO
+	call PaintSegmentR
 	ld d, TILE_EXPLORE_DIAG_R
-	call CheckSegmentRDiag
+	call PaintSegmentRDiag
 .paintGround
 	ld e, BG_PALETTE_Z0
 	ld d, TILE_EXPLORE_GROUND ; todo on all ground paints, flip (shuffle could be cool) ground every step
-	call CheckSegmentQGround
+	call PaintSegmentQGround
 
 ProcessRoomLeftNear:
 .checkTopWall
@@ -97,13 +103,13 @@ ProcessRoomLeftNear:
 .paintTopWall
 	ld e, BG_PALETTE_Z1
 	ld d, TILE_EXPLORE_WALL_SIDE
-	call CheckSegmentA
-	call CheckSegmentK
+	call PaintSegmentA
+	call PaintSegmentK
 .paintGround
 	ld e, BG_PALETTE_Z0
 	ld d, TILE_EXPLORE_GROUND
-	call CheckSegmentP
-	call CheckSegmentPDiag
+	call PaintSegmentP
+	call PaintSegmentPDiag
 
 ProcessRoomRightNear:
 .checkTopWall
@@ -114,13 +120,13 @@ ProcessRoomRightNear:
 .paintTopWall
 	ld e, BG_PALETTE_Z1
 	ld d, TILE_EXPLORE_WALL_SIDE
-	call CheckSegmentE
-	call CheckSegmentO
+	call PaintSegmentE
+	call PaintSegmentO
 .paintGround
 	ld e, BG_PALETTE_Z0
 	ld d, TILE_EXPLORE_GROUND
-	call CheckSegmentR
-	call CheckSegmentRDiag
+	call PaintSegmentR
+	call PaintSegmentRDiag
 
 ProcessRoomCenterFar:
 .checkLeftWall
@@ -131,16 +137,16 @@ ProcessRoomCenterFar:
 .paintLeftWall
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_WALL_SIDE
-	call CheckSegmentB
-	call CheckSegmentL
+	call PaintSegmentB
+	call PaintSegmentL
 	ld d, TILE_EXPLORE_DIAG_L
-	call CheckSegmentLDiag
+	call PaintSegmentLDiag
 	jp .checkTopWall
 .paintLeftGround
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_GROUND
-	call CheckSegmentL
-	call CheckSegmentLDiag
+	call PaintSegmentL
+	call PaintSegmentLDiag
 .checkTopWall
 	ld hl, wRoomFarCenter
 	call GetTopWallTypeFromRoomAddr
@@ -149,11 +155,11 @@ ProcessRoomCenterFar:
 .paintTopWall
 	ld d, TILE_EXPLORE_WALL_SIDE
 	ld e, BG_PALETTE_Z3
-	call CheckSegmentC
+	call PaintSegmentC
 	jp .checkRightWall
 .paintDistance
 	ld e, BG_PALETTE_FOG
-	call CheckSegmentCDistanceFog
+	call PaintSegmentCDistanceFog
 .checkRightWall
 	ld hl, wRoomFarCenter
 	call GetRightWallTypeFromRoomAddr
@@ -162,20 +168,20 @@ ProcessRoomCenterFar:
 .paintRightWall
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_WALL_SIDE
-	call CheckSegmentD
-	call CheckSegmentN
+	call PaintSegmentD
+	call PaintSegmentN
 	ld d, TILE_EXPLORE_DIAG_R
-	call CheckSegmentNDiag
+	call PaintSegmentNDiag
 	jp .paintCenterGround
 .paintRightGround
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_GROUND
-	call CheckSegmentN
-	call CheckSegmentNDiag
+	call PaintSegmentN
+	call PaintSegmentNDiag
 .paintCenterGround
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_GROUND
-	call CheckSegmentMGround
+	call PaintSegmentMGround
 
 ProcessRoomLeftFar:
 .checkTopWall
@@ -186,19 +192,19 @@ ProcessRoomLeftFar:
 .paintTopWall
 	ld e, BG_PALETTE_Z3
 	ld d, TILE_EXPLORE_WALL_SIDE
-	call CheckSegmentA
-	call CheckSegmentB
+	call PaintSegmentA
+	call PaintSegmentB
 	jp .paintGround
 .paintDistance
 	ld e, BG_PALETTE_FOG
-	call CheckSegmentADistanceFog
-	call CheckSegmentBDistanceFog
+	call PaintSegmentADistanceFog
+	call PaintSegmentBDistanceFog
 .paintGround
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_GROUND
-	call CheckSegmentK
-	call CheckSegmentL
-	call CheckSegmentLDiag
+	call PaintSegmentK
+	call PaintSegmentL
+	call PaintSegmentLDiag
 
 ProcessRoomRightFar:
 .checkTopWall
@@ -209,19 +215,19 @@ ProcessRoomRightFar:
 .paintTopWall
 	ld e, BG_PALETTE_Z3
 	ld d, TILE_EXPLORE_WALL_SIDE
-	call CheckSegmentD
-	call CheckSegmentE
+	call PaintSegmentD
+	call PaintSegmentE
 	jp .paintGround
 .paintDistance
 	ld e, BG_PALETTE_FOG
-	call CheckSegmentDDistanceFog
-	call CheckSegmentEDistanceFog
+	call PaintSegmentDDistanceFog
+	call PaintSegmentEDistanceFog
 .paintGround
 	ld e, BG_PALETTE_Z2
 	ld d, TILE_EXPLORE_GROUND
-	call CheckSegmentO
-	call CheckSegmentN
-	call CheckSegmentNDiag
+	call PaintSegmentO
+	call PaintSegmentN
+	call PaintSegmentNDiag
 .finish
 	ret
 

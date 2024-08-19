@@ -34,253 +34,94 @@ wRDiagDirty: db
 
 SECTION "Segment Paint Routines", ROMX
 
-; todo combine/dedup routines that paint similar shapes
-
-CheckSegmentA::
-	ld a, [wADirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentA
-
-CheckSegmentB::
-	ld a, [wBDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentB
-
-CheckSegmentADistanceFog::
-	ld a, [wADirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentADistanceFog
-
-CheckSegmentBDistanceFog::
-	ld a, [wBDirty]
-	cp a, TRUE
-	ret nz
-	call PaintSegmentBDistanceFog
-
-	; B will draw right border if far-center has top wall
-	ld hl, wRoomFarCenter
-	call GetTopWallTypeFromRoomAddr
-	call nz, PaintSegmentBFogBorderRight
-	ret
-
-CheckSegmentC::
-	ld a, [wCDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentC
-
-CheckSegmentCDistanceFog::
-	ld a, [wCDirty]
-	cp a, TRUE
-	ret nz
-	call PaintSegmentCDistanceFog
-
-	; C will draw left border if far-center has a left wall or far-left has a top wall
-	ld hl, wRoomFarCenter
-	call GetLeftWallTypeFromRoomAddr
-	ld b, a
-	ld hl, wRoomFarLeft
-	call GetTopWallTypeFromRoomAddr
-	or b
-	call nz, PaintSegmentCFogBorderLeft
-
-	; C will draw left border if far-center has a right wall or far-right has a top wall
-	ld hl, wRoomFarCenter
-	call GetRightWallTypeFromRoomAddr
-	ld b, a
-	ld hl, wRoomFarRight
-	call GetTopWallTypeFromRoomAddr
-	or b
-	call nz, PaintSegmentCFogBorderRight
-	ret
-
-CheckSegmentD::
-	ld a, [wDDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentD
-
-CheckSegmentE::
-	ld a, [wEDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentE
-
-CheckSegmentDDistanceFog::
-	ld a, [wDDirty]
-	cp a, TRUE
-	ret nz
-	call PaintSegmentDDistanceFog
-
-	; D will draw left border if far-center has top wall
-	ld hl, wRoomFarCenter
-	call GetTopWallTypeFromRoomAddr
-	call nz, PaintSegmentDFogBorderLeft
-	ret
-
-CheckSegmentEDistanceFog::
-	ld a, [wEDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentEDistanceFog
-
-CheckSegmentK::
-	ld a, [wKDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentK
-
-CheckSegmentL::
-	ld a, [wLDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentL
-
-CheckSegmentLDiag::
-	ld a, [wLDiagDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentLDiag
-
-CheckSegmentM::
-	ld a, [wMDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentM
-
-CheckSegmentMGround::
-	ld a, [wMDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentMGround
-
-CheckSegmentN::
-	ld a, [wNDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentN
-
-CheckSegmentNDiag::
-	ld a, [wNDiagDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentNDiag
-
-CheckSegmentO::
-	ld a, [wODirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentO
-
-CheckSegmentP::
-	ld a, [wPDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentP
-
-CheckSegmentPDiag::
-	ld a, [wPDiagDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentPDiag
-
-; todo, dirty this every time probably
-CheckSegmentQGround::
-	ld a, [wQDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentQ
-
-CheckSegmentR::
-	ld a, [wRDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentR
-
-CheckSegmentRDiag::
-	ld a, [wRDiagDirty]
-	cp a, TRUE
-	ret nz
-	jp PaintSegmentRDiag
-
-MACRO paint_rectangular_segment
+MACRO paint_row_single_tile
 	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
+	ld b, ROW_WIDTH
 	call CopyByteInDToRange
 	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
+	ld b, ROW_WIDTH
 	call CopyByteInEToRange
 ENDM
 
-MACRO paint_rectangular_segment_fog
+MACRO paint_row_random_fog_tiles
 	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
-	ld d, SEGMENT_WIDTH
-	call PaintFogTilemapWithRandomFogTile
+	ld d, ROW_WIDTH
+	call CopyRandomFogTilesToTilemapRow
 	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
+	ld b, ROW_WIDTH
 	call CopyByteInEToRange
 ENDM
 
 ; @param d: the tile index to paint with
 ; @param e: the attribute byte to paint with
-PaintSegmentA:
-DEF SEGMENT_WIDTH = 3
-DEF LEFTMOST_COLUMN = 0
-FOR ROWS, 13
-	paint_rectangular_segment
-ENDR
+PaintSegmentA::
+	ld a, [wADirty]
+	cp a, TRUE
+	ret nz
+.paintRepeatingRows
+	DEF ROW_WIDTH = 3
+	DEF LEFTMOST_COLUMN = 0
+	FOR ROWS, 13
+		paint_row_single_tile
+	ENDR
 .clean
 	ld a, FALSE
 	ld [wADirty], a
 	ret
 
-PaintSegmentADistanceFog:
-DEF SEGMENT_WIDTH = 3
-DEF LEFTMOST_COLUMN = 0
-FOR ROWS, 12
-	paint_rectangular_segment_fog
-ENDR
+PaintSegmentADistanceFog::
+	ld a, [wADirty]
+	cp a, TRUE
+	ret nz
+.paintRepeatingRows
+	DEF ROW_WIDTH = 3
+	DEF LEFTMOST_COLUMN = 0
+	FOR ROWS, 12
+		paint_row_random_fog_tiles
+	ENDR
 .row12
-	ld hl, wShadowBackgroundTilemap + rows 12
+	DEF ROWS = 12
 	ld d, TILE_DISTANCE_FOG_GROUND
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wADirty], a
 	ret
 
-PaintSegmentB:
-DEF SEGMENT_WIDTH = 3
-DEF LEFTMOST_COLUMN = 3
-FOR ROWS, 13
-	paint_rectangular_segment
-ENDR
+PaintSegmentB::
+	ld a, [wBDirty]
+	cp a, TRUE
+	ret nz
+.paintRepeatingRows
+	DEF ROW_WIDTH = 3
+	DEF LEFTMOST_COLUMN = 3
+	FOR ROWS, 13
+		paint_row_single_tile
+	ENDR
 .clean
 	ld a, FALSE
 	ld [wBDirty], a
 	ret
 
-PaintSegmentBDistanceFog:
-DEF SEGMENT_WIDTH = 3
-DEF LEFTMOST_COLUMN = 3
-FOR ROWS, 12
-	paint_rectangular_segment_fog
-ENDR
+PaintSegmentBDistanceFog::
+	ld a, [wBDirty]
+	cp a, TRUE
+	ret nz
+.paintRepeatingRows
+	DEF ROW_WIDTH = 3
+	DEF LEFTMOST_COLUMN = 3
+	FOR ROWS, 12
+		paint_row_random_fog_tiles
+	ENDR
 .row12
-	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
+	DEF ROWS = 12
 	ld d, TILE_DISTANCE_FOG_GROUND
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+	paint_row_single_tile
+.maybeDrawRightFogBorder
+	; B will draw right border if far-center has top wall
+	ld hl, wRoomFarCenter
+	call GetTopWallTypeFromRoomAddr
+	call nz, PaintSegmentBFogBorderRight
 .clean
 	ld a, FALSE
 	ld [wBDirty], a
@@ -289,360 +130,334 @@ ENDR
 PaintSegmentBFogBorderRight:
 	call Rand ; we'll use the byte in c
 	ld d, TILE_DISTANCE_FOG_LEFT_WALL
-	DEF SEGMENT_WIDTH = 1
+.paintRepeatingRows
+	DEF ROW_WIDTH = 1
 	DEF LEFTMOST_COLUMN = 5
-FOR ROWS, 8
-	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
-	call GetRandomYFlipFogAttrsXFlip
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
-ENDR
+	FOR ROWS, 8
+		call GetRandomYFlipFogAttrsXFlip
+		paint_row_single_tile
+	ENDR
 .getAnotherRandomByte
 	call Rand ; we'll use the byte in c
-FOR ROWS, 8, 12
-	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
-	call GetRandomYFlipFogAttrsXFlip
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
-ENDR
+.paintMoreRepeatingRows
+	FOR ROWS, 8, 12
+		call GetRandomYFlipFogAttrsXFlip
+		paint_row_single_tile
+	ENDR
 .row12
-	ld hl, wShadowBackgroundTilemap + rows 12 + cols 5
+	DEF ROWS = 12
 	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
-	ld b, 1
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols 5
-	ld b, 1
 	ld e, BG_PALETTE_FOG + OAMF_XFLIP
-	call CopyByteInEToRange
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wBDirty], a
 	ret
 
-PaintSegmentC:
-DEF SEGMENT_WIDTH = 8
-DEF LEFTMOST_COLUMN = 6
-FOR ROWS, 13
-	paint_rectangular_segment
-ENDR
+PaintSegmentC::
+	ld a, [wCDirty]
+	cp a, TRUE
+	ret nz
+.paintRepeatingRows
+	DEF ROW_WIDTH = 8
+	DEF LEFTMOST_COLUMN = 6
+	FOR ROWS, 13
+		paint_row_single_tile
+	ENDR
 .clean
 	ld a, FALSE
 	ld [wCDirty], a
 	ret
 
-PaintSegmentCDistanceFog:
-DEF SEGMENT_WIDTH = 8
-DEF LEFTMOST_COLUMN = 6
-FOR ROWS, 12
-	paint_rectangular_segment_fog
-ENDR
+PaintSegmentCDistanceFog::
+	ld a, [wCDirty]
+	cp a, TRUE
+	ret nz
+.paintRepeatingRows
+	DEF ROW_WIDTH = 8
+	DEF LEFTMOST_COLUMN = 6
+	FOR ROWS, 12
+		paint_row_random_fog_tiles
+	ENDR
 .row12
-	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
+	DEF ROWS = 12
 	ld d, TILE_DISTANCE_FOG_GROUND
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+	paint_row_single_tile
+.maybeDrawLeftFogBorder
+	; C will draw left border if far-center has a left wall or far-left has a top wall
+	ld hl, wRoomFarCenter
+	call GetLeftWallTypeFromRoomAddr
+	ld b, a
+	ld hl, wRoomFarLeft
+	call GetTopWallTypeFromRoomAddr
+	or b
+	call nz, PaintSegmentCFogBorderLeft
+.maybeDrawRightFogBorder
+	; C will draw left border if far-center has a right wall or far-right has a top wall
+	ld hl, wRoomFarCenter
+	call GetRightWallTypeFromRoomAddr
+	ld b, a
+	ld hl, wRoomFarRight
+	call GetTopWallTypeFromRoomAddr
+	or b
+	call nz, PaintSegmentCFogBorderRight
 .clean
 	ld a, FALSE
 	ld [wCDirty], a
 	ret
 
 PaintSegmentCFogBorderLeft:
-DEF SEGMENT_WIDTH = 1
-DEF LEFTMOST_COLUMN = 6
 	call Rand ; we'll use the byte in c
 	ld d, TILE_DISTANCE_FOG_LEFT_WALL
-FOR ROWS, 8
-	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
-	call GetRandomYFlipFogAttrs
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
-ENDR
+.paintRepeatingRows
+	DEF ROW_WIDTH = 1
+	DEF LEFTMOST_COLUMN = 6
+	FOR ROWS, 8
+		call GetRandomYFlipFogAttrs
+		paint_row_single_tile
+	ENDR
 .getAnotherRandomByte
 	call Rand ; we'll use the byte in c
-FOR ROWS, 8, 12
-	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
-	call GetRandomYFlipFogAttrs
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
-ENDR
+.paintMoreRepeatingRows
+	FOR ROWS, 8, 12
+		call GetRandomYFlipFogAttrs
+		paint_row_single_tile
+	ENDR
 .row12
+	DEF ROWS = 12
 	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
-	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
 	ld e, BG_PALETTE_FOG
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wCDirty], a
 	ret
 
 PaintSegmentCFogBorderRight:
-DEF SEGMENT_WIDTH = 1
-DEF LEFTMOST_COLUMN = 13
 	call Rand ; we'll use the byte in c
 	ld d, TILE_DISTANCE_FOG_LEFT_WALL
-FOR ROWS, 8
-	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
-	call GetRandomYFlipFogAttrsXFlip
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
-ENDR
+.paintRepeatingRows
+	DEF ROW_WIDTH = 1
+	DEF LEFTMOST_COLUMN = 13
+	FOR ROWS, 8
+		call GetRandomYFlipFogAttrsXFlip
+		paint_row_single_tile
+	ENDR
 .getAnotherRandomByte
 	call Rand ; we'll use the byte in c
-FOR ROWS, 8, 12
-	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
-	call GetRandomYFlipFogAttrsXFlip
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
-ENDR
+.paintMoreRepeatingRows
+	FOR ROWS, 8, 12
+		call GetRandomYFlipFogAttrsXFlip
+		paint_row_single_tile
+	ENDR
 .row12
+	DEF ROWS = 12
 	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
-	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
 	ld e, BG_PALETTE_FOG + OAMF_XFLIP
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wCDirty], a
 	ret
 
-PaintSegmentD:
-DEF SEGMENT_WIDTH = 3
-DEF LEFTMOST_COLUMN = 14
-FOR ROWS, 13
-	paint_rectangular_segment
-ENDR
+PaintSegmentD::
+	ld a, [wDDirty]
+	cp a, TRUE
+	ret nz
+.paintRepeatingRows
+	DEF ROW_WIDTH = 3
+	DEF LEFTMOST_COLUMN = 14
+	FOR ROWS, 13
+		paint_row_single_tile
+	ENDR
 .clean
 	ld a, FALSE
 	ld [wDDirty], a
 	ret
 
-PaintSegmentDDistanceFog:
-DEF SEGMENT_WIDTH = 3
-DEF LEFTMOST_COLUMN = 14
-FOR ROWS, 12
-	paint_rectangular_segment_fog
-ENDR
+PaintSegmentDDistanceFog::
+	ld a, [wDDirty]
+	cp a, TRUE
+	ret nz
+.paintRepeatingRows
+	DEF ROW_WIDTH = 3
+	DEF LEFTMOST_COLUMN = 14
+	FOR ROWS, 12
+		paint_row_random_fog_tiles
+	ENDR
 .row12
-	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
+	DEF ROWS = 12
 	ld d, TILE_DISTANCE_FOG_GROUND
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+	paint_row_single_tile
+.maybeDrawLeftFogBorder
+	; D will draw left border if far-center has top wall
+	ld hl, wRoomFarCenter
+	call GetTopWallTypeFromRoomAddr
+	call nz, PaintSegmentDFogBorderLeft
 .clean
 	ld a, FALSE
 	ld [wDDirty], a
 	ret
 
 PaintSegmentDFogBorderLeft:
-DEF SEGMENT_WIDTH = 1
-DEF LEFTMOST_COLUMN = 14
 	call Rand ; we'll use the byte in c
 	ld d, TILE_DISTANCE_FOG_LEFT_WALL
-FOR ROWS, 8
-	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
-	call GetRandomYFlipFogAttrs
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
-ENDR
+.paintRepeatingRows
+	DEF ROW_WIDTH = 1
+	DEF LEFTMOST_COLUMN = 14
+	FOR ROWS, 8
+		call GetRandomYFlipFogAttrs
+		paint_row_single_tile
+	ENDR
 .getAnotherRandomByte
 	call Rand ; we'll use the byte in c
-FOR ROWS, 8, 12
-	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
-	call GetRandomYFlipFogAttrs
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
-ENDR
+.paintMoreRepeatingRows
+	FOR ROWS, 8, 12
+		call GetRandomYFlipFogAttrs
+		paint_row_single_tile
+	ENDR
 .row12
-	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
+	DEF ROWS = 12
 	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
-	call GetRandomYFlipFogAttrs
-	ld b, SEGMENT_WIDTH
 	ld e, BG_PALETTE_FOG
-	call CopyByteInEToRange
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wDDirty], a
 	ret
 
-PaintSegmentE:
-DEF SEGMENT_WIDTH = 3
-DEF LEFTMOST_COLUMN = 17
-FOR ROWS, 13
-	paint_rectangular_segment
-ENDR
+PaintSegmentE::
+	ld a, [wEDirty]
+	cp a, TRUE
+	ret nz
+.paintRepeatingRows
+	DEF ROW_WIDTH = 3
+	DEF LEFTMOST_COLUMN = 17
+	FOR ROWS, 13
+		paint_row_single_tile
+	ENDR
 .clean
 	ld a, FALSE
 	ld [wEDirty], a
 	ret
 
-PaintSegmentEDistanceFog:
-DEF SEGMENT_WIDTH = 3
-DEF LEFTMOST_COLUMN = 17
-FOR ROWS, 12
-	paint_rectangular_segment_fog
-ENDR
+PaintSegmentEDistanceFog::
+	ld a, [wEDirty]
+	cp a, TRUE
+	ret nz
+.paintRepeatingRows
+	DEF ROW_WIDTH = 3
+	DEF LEFTMOST_COLUMN = 17
+	FOR ROWS, 12
+		paint_row_random_fog_tiles
+	ENDR
 .row12
-	ld hl, wShadowBackgroundTilemap + rows 12 + cols LEFTMOST_COLUMN
+	DEF ROWS = 12
 	ld d, TILE_DISTANCE_FOG_GROUND
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 12 + cols LEFTMOST_COLUMN
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wEDirty], a
 	ret
 
-PaintSegmentK:
-DEF SEGMENT_WIDTH = 3
-DEF LEFTMOST_COLUMN = 0
-FOR ROWS, 13, 16
-	paint_rectangular_segment
-ENDR
+PaintSegmentK::
+	ld a, [wKDirty]
+	cp a, TRUE
+	ret nz
+.paintRepeatingRows
+	DEF ROW_WIDTH = 3
+	DEF LEFTMOST_COLUMN = 0
+	FOR ROWS, 13, 16
+		paint_row_single_tile
+	ENDR
 .clean
 	ld a, FALSE
 	ld [wKDirty], a
 	ret
 
-PaintSegmentL:
-DEF LEFTMOST_COLUMN = 3
+PaintSegmentL::
+	ld a, [wLDirty]
+	cp a, TRUE
+	ret nz
+	DEF LEFTMOST_COLUMN = 3
 .row13
-	ld hl, wShadowBackgroundTilemap + rows 13 + cols LEFTMOST_COLUMN
-	ld b, 2
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols LEFTMOST_COLUMN
-	ld b, 2
-	call CopyByteInEToRange
+	DEF ROWS = 13
+	DEF ROW_WIDTH = 2
+	paint_row_single_tile
 .row14
-	ld hl, wShadowBackgroundTilemap + rows 14 + cols LEFTMOST_COLUMN
-	ld b, 1
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols LEFTMOST_COLUMN
-	ld b, 1
-	call CopyByteInEToRange
+	DEF ROWS = 14
+	DEF ROW_WIDTH = 1
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wLDirty], a
 	ret
 
-PaintSegmentLDiag:
-DEF SEGMENT_WIDTH = 1
+PaintSegmentLDiag::
+	ld a, [wLDiagDirty]
+	cp a, TRUE
+	ret nz
+	DEF ROW_WIDTH = 1
 .row13
-	ld hl, wShadowBackgroundTilemap + rows 13 + cols 5
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 5
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+	DEF ROWS = 13
+	DEF LEFTMOST_COLUMN = 5
+	paint_row_single_tile
 .row14
-	ld hl, wShadowBackgroundTilemap + rows 14 + cols 4
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 4
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+	DEF ROWS = 14
+	DEF LEFTMOST_COLUMN = 4
+	paint_row_single_tile
 .row15
-	ld hl, wShadowBackgroundTilemap + rows 15 + cols 3
-	ld b, SEGMENT_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 3
-	ld b, SEGMENT_WIDTH
-	call CopyByteInEToRange
+	DEF ROWS = 15
+	DEF LEFTMOST_COLUMN = 3
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wLDiagDirty], a
 	ret
 
-PaintSegmentM:
+PaintSegmentM::
+	ld a, [wMDirty]
+	cp a, TRUE
+	ret nz
 .row13
-	ld hl, wShadowBackgroundTilemap + rows 13 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
+	DEF ROWS = 13
+	DEF LEFTMOST_COLUMN = 6
+	DEF ROW_WIDTH = 8
+	paint_row_single_tile
 .row14
-	ld hl, wShadowBackgroundTilemap + rows 14 + cols 5
-	ld b, 10
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 5
-	ld b, 10
-	call CopyByteInEToRange
+	DEF ROWS = 14
+	DEF LEFTMOST_COLUMN = 5
+	DEF ROW_WIDTH = 10
+	paint_row_single_tile
 .row15
-	ld hl, wShadowBackgroundTilemap + rows 15 + cols 4
-	ld b, 12
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 4
-	ld b, 12
-	call CopyByteInEToRange
+	DEF ROWS = 15
+	DEF LEFTMOST_COLUMN = 4
+	DEF ROW_WIDTH = 12
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wMDirty], a
 	ret
 
-PaintSegmentMGround:
+PaintSegmentMGround::
+	ld a, [wMDirty]
+	cp a, TRUE
+	ret nz
 .row13
-	ld hl, wShadowBackgroundTilemap + rows 13 + cols 6
-	ld b, 8
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 6
-	ld b, 8
-	call CopyByteInEToRange
+	DEF ROWS = 13
+	DEF LEFTMOST_COLUMN = 6
+	DEF ROW_WIDTH = 8
+	paint_row_single_tile
 .row14
-	ld hl, wShadowBackgroundTilemap + rows 14 + cols 5
-	ld b, 10
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 5
-	ld b, 10
-	call CopyByteInEToRange
+	DEF ROWS = 14
+	DEF LEFTMOST_COLUMN = 5
+	DEF ROW_WIDTH = 10
+	paint_row_single_tile
 .row15
-	ld hl, wShadowBackgroundTilemap + rows 15 + cols 4
-	ld b, 12
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 4
-	ld b, 12
-	call CopyByteInEToRange
-
+	DEF ROWS = 15
+	DEF LEFTMOST_COLUMN = 4
+	DEF ROW_WIDTH = 12
+	paint_row_single_tile
 .randomGrassRow13
 	; randomly generate a tile locations that will be grass
 	ld d, 8
@@ -723,119 +538,114 @@ PaintSegmentMGround:
 	ld [wMDirty], a
 	ret
 
-PaintSegmentN:
+PaintSegmentN::
+	ld a, [wNDirty]
+	cp a, TRUE
+	ret nz
 .row13
-	ld hl, wShadowBackgroundTilemap + rows 13 + cols 15
-	ld b, 2
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 15
-	ld b, 2
-	call CopyByteInEToRange
+	DEF ROWS = 13
+	DEF LEFTMOST_COLUMN = 15
+	DEF ROW_WIDTH = 2
+	paint_row_single_tile
 .row14
-	ld hl, wShadowBackgroundTilemap + rows 14 + cols 16
-	ld b, 1
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 16
-	ld b, 1
-	call CopyByteInEToRange
+	DEF ROWS = 14
+	DEF LEFTMOST_COLUMN = 16
+	DEF ROW_WIDTH = 1
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wNDirty], a
 	ret
 
-PaintSegmentNDiag:
+PaintSegmentNDiag::
+	ld a, [wNDiagDirty]
+	cp a, TRUE
+	ret nz
+
+	DEF ROW_WIDTH = 1
 .row13
-	ld hl, wShadowBackgroundTilemap + rows 13 + cols 14
-	ld b, 1
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 14
-	ld b, 1
-	call CopyByteInEToRange
+	DEF ROWS = 13
+	DEF LEFTMOST_COLUMN = 14
+	paint_row_single_tile
 .row14
-	ld hl, wShadowBackgroundTilemap + rows 14 + cols 15
-	ld b, 1
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 15
-	ld b, 1
-	call CopyByteInEToRange
+	DEF ROWS = 14
+	DEF LEFTMOST_COLUMN = 15
+	paint_row_single_tile
 .row15
-	ld hl, wShadowBackgroundTilemap + rows 15 + cols 16
-	ld b, 1
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 16
-	ld b, 1
-	call CopyByteInEToRange
+	DEF ROWS = 15
+	DEF LEFTMOST_COLUMN = 16
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wNDiagDirty], a
 	ret
 
-PaintSegmentO:
-DEF SEGMENT_WIDTH = 3
-DEF LEFTMOST_COLUMN = 17
-FOR ROWS, 13, 16
-	paint_rectangular_segment
-ENDR
+PaintSegmentO::
+	ld a, [wODirty]
+	cp a, TRUE
+	ret nz
+.paintRepeatingRows
+	DEF ROW_WIDTH = 3
+	DEF LEFTMOST_COLUMN = 17
+	FOR ROWS, 13, 16
+		paint_row_single_tile
+	ENDR
 .clean
 	ld a, FALSE
 	ld [wODirty], a
 	ret
 
-PaintSegmentP:
+PaintSegmentP::
+	ld a, [wPDirty]
+	cp a, TRUE
+	ret nz
+
+	DEF LEFTMOST_COLUMN = 0
 .row16
-	ld hl, wShadowBackgroundTilemap + rows 16
-	ld b, 2
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 16
-	ld b, 2
-	call CopyByteInEToRange
+	DEF ROWS = 16
+	DEF ROW_WIDTH = 2
+	paint_row_single_tile
 .row17
-	ld hl, wShadowBackgroundTilemap + rows 17
-	ld b, 1
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 17
-	ld b, 1
-	call CopyByteInEToRange
+	DEF ROWS = 17
+	DEF ROW_WIDTH = 1
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wPDirty], a
 	ret
 
-PaintSegmentPDiag:
+PaintSegmentPDiag::
+	ld a, [wPDiagDirty]
+	cp a, TRUE
+	ret nz
+	DEF ROW_WIDTH = 1
 .row16
-	ld hl, wShadowBackgroundTilemap + rows 16 + cols 2
-	ld b, 1
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 16 + cols 2
-	ld b, 1
-	call CopyByteInEToRange
+	DEF ROWS = 16
+	DEF LEFTMOST_COLUMN = 2
+	paint_row_single_tile
 .row17
-	ld hl, wShadowBackgroundTilemap + rows 17 + cols 1
-	ld b, 1
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 17 + cols 1
-	ld b, 1
-	call CopyByteInEToRange
+	DEF ROWS = 17
+	DEF LEFTMOST_COLUMN = 1
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wPDiagDirty], a
 	ret
 
-PaintSegmentQ:
+PaintSegmentQGround::
+	ld a, [wQDirty]
+	cp a, TRUE
+	ret nz
 .row16
-	ld hl, wShadowBackgroundTilemap + rows 16 + cols 3
-	ld b, 14
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 16 + cols 3
-	ld b, 14
-	call CopyByteInEToRange
+	DEF ROWS = 16
+	DEF LEFTMOST_COLUMN = 3
+	DEF ROW_WIDTH = 14
+	paint_row_single_tile
 .row17
-	ld hl, wShadowBackgroundTilemap + rows 17 + cols 2
-	ld b, 16
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 17 + cols 2
-	ld b, 16
-	call CopyByteInEToRange
+	DEF ROWS = 17
+	DEF LEFTMOST_COLUMN = 2
+	DEF ROW_WIDTH = 16
+	paint_row_single_tile
 .randomGrassRow16
 	; randomly generate a tile locations that will be grass
 	ld d, 14
@@ -892,41 +702,38 @@ PaintSegmentQ:
 	ld [wQDirty], a
 	ret
 
-PaintSegmentR:
+PaintSegmentR::
+	ld a, [wRDirty]
+	cp a, TRUE
+	ret nz
 .column18
-	ld hl, wShadowBackgroundTilemap + rows 16 + cols 18
-	ld b, 2
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 16 + cols 18
-	ld b, 2
-	call CopyByteInEToRange
+	DEF ROWS = 16
+	DEF LEFTMOST_COLUMN = 18
+	DEF ROW_WIDTH = 2
+	paint_row_single_tile
 .column19
-	ld hl, wShadowBackgroundTilemap + rows 17 + cols 19
-	ld b, 1
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 17 + cols 19
-	ld b, 1
-	call CopyByteInEToRange
+	DEF ROWS = 17
+	DEF LEFTMOST_COLUMN = 19
+	DEF ROW_WIDTH = 1
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wRDirty], a
 	ret
 
-PaintSegmentRDiag:
+PaintSegmentRDiag::
+	ld a, [wRDiagDirty]
+	cp a, TRUE
+	ret nz
+	DEF ROW_WIDTH = 1
 .row16
-	ld hl, wShadowBackgroundTilemap + rows 16 + cols 17
-	ld b, 1
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 16 + cols 17
-	ld b, 1
-	call CopyByteInEToRange
+	DEF ROWS = 16
+	DEF LEFTMOST_COLUMN = 17
+	paint_row_single_tile
 .row17
-	ld hl, wShadowBackgroundTilemap + rows 17 + cols 18
-	ld b, 1
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows 17 + cols 18
-	ld b, 1
-	call CopyByteInEToRange
+	DEF ROWS = 17
+	DEF LEFTMOST_COLUMN = 18
+	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wRDiagDirty], a
@@ -935,7 +742,7 @@ PaintSegmentRDiag:
 ; @param d: counter, must be <= 8
 ; @param hl: destination
 ; trashes abchl
-PaintFogTilemapWithRandomFogTile:
+CopyRandomFogTilesToTilemapRow:
 	push hl
 	call Rand ; rand in c
 	pop hl
