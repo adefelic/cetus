@@ -35,25 +35,26 @@ wRDiagDirty: db
 SECTION "Segment Paint Routines", ROMX
 
 MACRO paint_row_single_tile
-	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
+	ld hl, wShadowBackgroundTilemap + rows ROW + cols LEFTMOST_COLUMN
 	ld b, ROW_WIDTH
 	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROW + cols LEFTMOST_COLUMN
 	ld b, ROW_WIDTH
 	call CopyByteInEToRange
 ENDM
 
 MACRO paint_row_random_fog_tiles
-	ld hl, wShadowBackgroundTilemap + rows ROWS + cols LEFTMOST_COLUMN
+	ld hl, wShadowBackgroundTilemap + rows ROW + cols LEFTMOST_COLUMN
 	ld d, ROW_WIDTH
 	call CopyRandomFogTilesToTilemapRow
-	ld hl, wShadowBackgroundTilemapAttrs + rows ROWS + cols LEFTMOST_COLUMN
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROW + cols LEFTMOST_COLUMN
 	ld b, ROW_WIDTH
 	call CopyByteInEToRange
 ENDM
 
 ; @param d: the tile index to paint with
 ; @param e: the attribute byte to paint with
+; segment a: (0, 0) to (2, 12)
 PaintSegmentA::
 	ld a, [wADirty]
 	cp a, TRUE
@@ -61,7 +62,7 @@ PaintSegmentA::
 .paintRepeatingRows
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 0
-	FOR ROWS, 13
+	FOR ROW, 13
 		paint_row_single_tile
 	ENDR
 .clean
@@ -76,11 +77,11 @@ PaintSegmentADistanceFog::
 .paintRepeatingRows
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 0
-	FOR ROWS, 12
+	FOR ROW, 12
 		paint_row_random_fog_tiles
 	ENDR
 .row12
-	DEF ROWS = 12
+	DEF ROW = 12
 	ld d, TILE_DISTANCE_FOG_GROUND
 	paint_row_single_tile
 .clean
@@ -95,7 +96,7 @@ PaintSegmentB::
 .paintRepeatingRows
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 3
-	FOR ROWS, 13
+	FOR ROW, 13
 		paint_row_single_tile
 	ENDR
 .clean
@@ -110,11 +111,11 @@ PaintSegmentBDistanceFog::
 .paintRepeatingRows
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 3
-	FOR ROWS, 12
+	FOR ROW, 12
 		paint_row_random_fog_tiles
 	ENDR
 .row12
-	DEF ROWS = 12
+	DEF ROW = 12
 	ld d, TILE_DISTANCE_FOG_GROUND
 	paint_row_single_tile
 .maybeDrawRightFogBorder
@@ -133,19 +134,19 @@ PaintSegmentBFogBorderRight:
 .paintRepeatingRows
 	DEF ROW_WIDTH = 1
 	DEF LEFTMOST_COLUMN = 5
-	FOR ROWS, 8
+	FOR ROW, 8
 		call GetRandomYFlipFogAttrsXFlip
 		paint_row_single_tile
 	ENDR
 .getAnotherRandomByte
 	call Rand ; we'll use the byte in c
 .paintMoreRepeatingRows
-	FOR ROWS, 8, 12
+	FOR ROW, 8, 12
 		call GetRandomYFlipFogAttrsXFlip
 		paint_row_single_tile
 	ENDR
 .row12
-	DEF ROWS = 12
+	DEF ROW = 12
 	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
 	ld e, BG_PALETTE_FOG + OAMF_XFLIP
 	paint_row_single_tile
@@ -161,7 +162,7 @@ PaintSegmentC::
 .paintRepeatingRows
 	DEF ROW_WIDTH = 8
 	DEF LEFTMOST_COLUMN = 6
-	FOR ROWS, 13
+	FOR ROW, 13
 		paint_row_single_tile
 	ENDR
 .clean
@@ -176,11 +177,11 @@ PaintSegmentCDistanceFog::
 .paintRepeatingRows
 	DEF ROW_WIDTH = 8
 	DEF LEFTMOST_COLUMN = 6
-	FOR ROWS, 12
+	FOR ROW, 12
 		paint_row_random_fog_tiles
 	ENDR
 .row12
-	DEF ROWS = 12
+	DEF ROW = 12
 	ld d, TILE_DISTANCE_FOG_GROUND
 	paint_row_single_tile
 .maybeDrawLeftFogBorder
@@ -212,19 +213,19 @@ PaintSegmentCFogBorderLeft:
 .paintRepeatingRows
 	DEF ROW_WIDTH = 1
 	DEF LEFTMOST_COLUMN = 6
-	FOR ROWS, 8
+	FOR ROW, 8
 		call GetRandomYFlipFogAttrs
 		paint_row_single_tile
 	ENDR
 .getAnotherRandomByte
 	call Rand ; we'll use the byte in c
 .paintMoreRepeatingRows
-	FOR ROWS, 8, 12
+	FOR ROW, 8, 12
 		call GetRandomYFlipFogAttrs
 		paint_row_single_tile
 	ENDR
 .row12
-	DEF ROWS = 12
+	DEF ROW = 12
 	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
 	ld e, BG_PALETTE_FOG
 	paint_row_single_tile
@@ -239,19 +240,19 @@ PaintSegmentCFogBorderRight:
 .paintRepeatingRows
 	DEF ROW_WIDTH = 1
 	DEF LEFTMOST_COLUMN = 13
-	FOR ROWS, 8
+	FOR ROW, 8
 		call GetRandomYFlipFogAttrsXFlip
 		paint_row_single_tile
 	ENDR
 .getAnotherRandomByte
 	call Rand ; we'll use the byte in c
 .paintMoreRepeatingRows
-	FOR ROWS, 8, 12
+	FOR ROW, 8, 12
 		call GetRandomYFlipFogAttrsXFlip
 		paint_row_single_tile
 	ENDR
 .row12
-	DEF ROWS = 12
+	DEF ROW = 12
 	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
 	ld e, BG_PALETTE_FOG + OAMF_XFLIP
 	paint_row_single_tile
@@ -267,7 +268,7 @@ PaintSegmentD::
 .paintRepeatingRows
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 14
-	FOR ROWS, 13
+	FOR ROW, 13
 		paint_row_single_tile
 	ENDR
 .clean
@@ -282,11 +283,11 @@ PaintSegmentDDistanceFog::
 .paintRepeatingRows
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 14
-	FOR ROWS, 12
+	FOR ROW, 12
 		paint_row_random_fog_tiles
 	ENDR
 .row12
-	DEF ROWS = 12
+	DEF ROW = 12
 	ld d, TILE_DISTANCE_FOG_GROUND
 	paint_row_single_tile
 .maybeDrawLeftFogBorder
@@ -305,19 +306,19 @@ PaintSegmentDFogBorderLeft:
 .paintRepeatingRows
 	DEF ROW_WIDTH = 1
 	DEF LEFTMOST_COLUMN = 14
-	FOR ROWS, 8
+	FOR ROW, 8
 		call GetRandomYFlipFogAttrs
 		paint_row_single_tile
 	ENDR
 .getAnotherRandomByte
 	call Rand ; we'll use the byte in c
 .paintMoreRepeatingRows
-	FOR ROWS, 8, 12
+	FOR ROW, 8, 12
 		call GetRandomYFlipFogAttrs
 		paint_row_single_tile
 	ENDR
 .row12
-	DEF ROWS = 12
+	DEF ROW = 12
 	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
 	ld e, BG_PALETTE_FOG
 	paint_row_single_tile
@@ -333,7 +334,7 @@ PaintSegmentE::
 .paintRepeatingRows
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 17
-	FOR ROWS, 13
+	FOR ROW, 13
 		paint_row_single_tile
 	ENDR
 .clean
@@ -348,11 +349,11 @@ PaintSegmentEDistanceFog::
 .paintRepeatingRows
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 17
-	FOR ROWS, 12
+	FOR ROW, 12
 		paint_row_random_fog_tiles
 	ENDR
 .row12
-	DEF ROWS = 12
+	DEF ROW = 12
 	ld d, TILE_DISTANCE_FOG_GROUND
 	paint_row_single_tile
 .clean
@@ -367,7 +368,7 @@ PaintSegmentK::
 .paintRepeatingRows
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 0
-	FOR ROWS, 13, 16
+	FOR ROW, 13, 16
 		paint_row_single_tile
 	ENDR
 .clean
@@ -381,11 +382,11 @@ PaintSegmentL::
 	ret nz
 	DEF LEFTMOST_COLUMN = 3
 .row13
-	DEF ROWS = 13
+	DEF ROW = 13
 	DEF ROW_WIDTH = 2
 	paint_row_single_tile
 .row14
-	DEF ROWS = 14
+	DEF ROW = 14
 	DEF ROW_WIDTH = 1
 	paint_row_single_tile
 .clean
@@ -399,15 +400,15 @@ PaintSegmentLDiag::
 	ret nz
 	DEF ROW_WIDTH = 1
 .row13
-	DEF ROWS = 13
+	DEF ROW = 13
 	DEF LEFTMOST_COLUMN = 5
 	paint_row_single_tile
 .row14
-	DEF ROWS = 14
+	DEF ROW = 14
 	DEF LEFTMOST_COLUMN = 4
 	paint_row_single_tile
 .row15
-	DEF ROWS = 15
+	DEF ROW = 15
 	DEF LEFTMOST_COLUMN = 3
 	paint_row_single_tile
 .clean
@@ -420,17 +421,17 @@ PaintSegmentM::
 	cp a, TRUE
 	ret nz
 .row13
-	DEF ROWS = 13
+	DEF ROW = 13
 	DEF LEFTMOST_COLUMN = 6
 	DEF ROW_WIDTH = 8
 	paint_row_single_tile
 .row14
-	DEF ROWS = 14
+	DEF ROW = 14
 	DEF LEFTMOST_COLUMN = 5
 	DEF ROW_WIDTH = 10
 	paint_row_single_tile
 .row15
-	DEF ROWS = 15
+	DEF ROW = 15
 	DEF LEFTMOST_COLUMN = 4
 	DEF ROW_WIDTH = 12
 	paint_row_single_tile
@@ -444,17 +445,17 @@ PaintSegmentMGround::
 	cp a, TRUE
 	ret nz
 .row13
-	DEF ROWS = 13
+	DEF ROW = 13
 	DEF LEFTMOST_COLUMN = 6
 	DEF ROW_WIDTH = 8
 	paint_row_single_tile
 .row14
-	DEF ROWS = 14
+	DEF ROW = 14
 	DEF LEFTMOST_COLUMN = 5
 	DEF ROW_WIDTH = 10
 	paint_row_single_tile
 .row15
-	DEF ROWS = 15
+	DEF ROW = 15
 	DEF LEFTMOST_COLUMN = 4
 	DEF ROW_WIDTH = 12
 	paint_row_single_tile
@@ -543,12 +544,12 @@ PaintSegmentN::
 	cp a, TRUE
 	ret nz
 .row13
-	DEF ROWS = 13
+	DEF ROW = 13
 	DEF LEFTMOST_COLUMN = 15
 	DEF ROW_WIDTH = 2
 	paint_row_single_tile
 .row14
-	DEF ROWS = 14
+	DEF ROW = 14
 	DEF LEFTMOST_COLUMN = 16
 	DEF ROW_WIDTH = 1
 	paint_row_single_tile
@@ -564,15 +565,15 @@ PaintSegmentNDiag::
 
 	DEF ROW_WIDTH = 1
 .row13
-	DEF ROWS = 13
+	DEF ROW = 13
 	DEF LEFTMOST_COLUMN = 14
 	paint_row_single_tile
 .row14
-	DEF ROWS = 14
+	DEF ROW = 14
 	DEF LEFTMOST_COLUMN = 15
 	paint_row_single_tile
 .row15
-	DEF ROWS = 15
+	DEF ROW = 15
 	DEF LEFTMOST_COLUMN = 16
 	paint_row_single_tile
 .clean
@@ -587,7 +588,7 @@ PaintSegmentO::
 .paintRepeatingRows
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 17
-	FOR ROWS, 13, 16
+	FOR ROW, 13, 16
 		paint_row_single_tile
 	ENDR
 .clean
@@ -602,11 +603,11 @@ PaintSegmentP::
 
 	DEF LEFTMOST_COLUMN = 0
 .row16
-	DEF ROWS = 16
+	DEF ROW = 16
 	DEF ROW_WIDTH = 2
 	paint_row_single_tile
 .row17
-	DEF ROWS = 17
+	DEF ROW = 17
 	DEF ROW_WIDTH = 1
 	paint_row_single_tile
 .clean
@@ -620,11 +621,11 @@ PaintSegmentPDiag::
 	ret nz
 	DEF ROW_WIDTH = 1
 .row16
-	DEF ROWS = 16
+	DEF ROW = 16
 	DEF LEFTMOST_COLUMN = 2
 	paint_row_single_tile
 .row17
-	DEF ROWS = 17
+	DEF ROW = 17
 	DEF LEFTMOST_COLUMN = 1
 	paint_row_single_tile
 .clean
@@ -637,12 +638,12 @@ PaintSegmentQGround::
 	cp a, TRUE
 	ret nz
 .row16
-	DEF ROWS = 16
+	DEF ROW = 16
 	DEF LEFTMOST_COLUMN = 3
 	DEF ROW_WIDTH = 14
 	paint_row_single_tile
 .row17
-	DEF ROWS = 17
+	DEF ROW = 17
 	DEF LEFTMOST_COLUMN = 2
 	DEF ROW_WIDTH = 16
 	paint_row_single_tile
@@ -707,12 +708,12 @@ PaintSegmentR::
 	cp a, TRUE
 	ret nz
 .column18
-	DEF ROWS = 16
+	DEF ROW = 16
 	DEF LEFTMOST_COLUMN = 18
 	DEF ROW_WIDTH = 2
 	paint_row_single_tile
 .column19
-	DEF ROWS = 17
+	DEF ROW = 17
 	DEF LEFTMOST_COLUMN = 19
 	DEF ROW_WIDTH = 1
 	paint_row_single_tile
@@ -727,16 +728,118 @@ PaintSegmentRDiag::
 	ret nz
 	DEF ROW_WIDTH = 1
 .row16
-	DEF ROWS = 16
+	DEF ROW = 16
 	DEF LEFTMOST_COLUMN = 17
 	paint_row_single_tile
 .row17
-	DEF ROWS = 17
+	DEF ROW = 17
 	DEF LEFTMOST_COLUMN = 18
 	paint_row_single_tile
 .clean
 	ld a, FALSE
 	ld [wRDiagDirty], a
+	ret
+
+PaintWallLeftSideNearTypeB::
+	ld e, BG_PALETTE_SIDE_NEAR + OAMF_BANK1
+.segmentA
+	ld a, [wADirty]
+	cp a, TRUE
+	ret nz
+.paintA
+	; blank space above door
+	ld d, TILE_FIELD_WALL_B_BLANK
+	; this block paints the whole segment. some gets overwritten with door tiles after
+	DEF ROW_WIDTH = 3
+	DEF LEFTMOST_COLUMN = 0
+	FOR ROW, 13
+		paint_row_single_tile
+	ENDR
+
+	; door top corner
+	ld d, TILE_FIELD_WALL_B_SIDE_NEAR_T
+	DEF ROW_WIDTH = 1
+	DEF LEFTMOST_COLUMN = 0
+	DEF ROW = 6
+	paint_row_single_tile
+
+	ld d, TILE_FIELD_WALL_B_BLANK
+	DEF ROW_WIDTH = 2
+	DEF LEFTMOST_COLUMN = 0
+	FOR ROW, 7, 13
+		paint_row_single_tile
+	ENDR
+
+	ld d, TILE_FIELD_WALL_B_SIDE_NEAR_DOOR
+	DEF ROW_WIDTH = 1
+	DEF LEFTMOST_COLUMN = 0
+	FOR ROW, 7, 13
+		paint_row_single_tile
+	ENDR
+.cleanA
+	ld a, FALSE
+	ld [wADirty], a
+
+.segmentK
+	; segment k
+	ld a, [wKDirty]
+	cp a, TRUE
+	ret nz
+.paintK
+	ld d, TILE_FIELD_WALL_B_SIDE_NEAR_DOOR
+	DEF ROW_WIDTH = 1
+	DEF LEFTMOST_COLUMN = 0
+	FOR ROW, 13, 16
+		paint_row_single_tile
+	ENDR
+	ld d, TILE_FIELD_WALL_B_BLANK
+	DEF ROW_WIDTH = 2
+	DEF LEFTMOST_COLUMN = 1
+	FOR ROW, 13, 16
+		paint_row_single_tile
+	ENDR
+.cleanK
+	ld a, FALSE
+	ld [wKDirty], a
+
+.segmentP
+	ld a, [wPDirty]
+	cp a, TRUE
+	ret nz
+.paintP
+	ld d, TILE_FIELD_WALL_B_SIDE_NEAR_DOOR
+	DEF LEFTMOST_COLUMN = 0
+	DEF ROW_WIDTH = 1
+	FOR ROW, 16, 18
+		paint_row_single_tile
+	ENDR
+
+	ld d, TILE_FIELD_WALL_B_BLANK
+	DEF LEFTMOST_COLUMN = 1
+	DEF ROW = 16
+	DEF ROW_WIDTH = 1
+	paint_row_single_tile
+.cleanP
+	ld a, FALSE
+	ld [wPDirty], a
+
+.segmentPDiag
+	; p diag
+	ld a, [wPDiagDirty]
+	cp a, TRUE
+	ret nz
+.paintPDiag
+	ld d, TILE_FIELD_WALL_B_SIDE_FAR_DIAG
+	DEF ROW_WIDTH = 1
+	DEF ROW = 16
+	DEF LEFTMOST_COLUMN = 2
+	paint_row_single_tile
+	DEF ROW = 17
+	DEF LEFTMOST_COLUMN = 1
+	paint_row_single_tile
+.cleanPDiag
+	ld a, FALSE
+	ld [wPDiagDirty], a
 	ret
 
 ; @param d: counter, must be <= 8

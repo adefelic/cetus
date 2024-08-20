@@ -28,7 +28,6 @@ DEF PAL_COLOR_SIZE EQU 2 ; bytes. 5 bits per color channel (R G B)
 DEF PALETTE_SIZE EQU NUM_PAL_COLORS * PAL_COLOR_SIZE ; bytes
 DEF PALETTE_SET_SIZE EQU PALETTE_SIZE * NUM_PAL_IN_SET ; bytes
 
-
 ; palette offsets
 ; todo: currently only colors 1 and 2 are used for rendering walls and floor. 0 and 3 are unused
 ; one of those should become a fog color

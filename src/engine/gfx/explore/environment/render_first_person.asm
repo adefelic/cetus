@@ -54,15 +54,12 @@ ProcessRoomCenterNear:
 	call PaintSegmentPDiag
 	jp .checkTopWall
 .paintWallLeftSideNearTypeB
-	; todo
 	; hmm how will this work, if specials walls are different per-locale
-	; get locale -> call CurrentLocaleSpecialWallBSideNear ??? would each locale come with ... 8 custom function pointers? :(
+	; get locale -> call CurrentLocaleSpecialWallBSideNear ??? would each locale come with ... a table of 6 custom function pointers per custom wall type? :(
 	; maybe the paint functions should all be the same, at least initially?
 	;   this will be impossible without very simplified paint functions
 	; for the time being, i'll just add the one wall type and all locales can use it
-
-
-	jp .checkTopWall
+	call PaintWallLeftSideNearTypeB
 .checkTopWall
 	ld hl, wRoomNearCenter
 	call GetTopWallTypeFromRoomAddr
