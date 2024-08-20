@@ -39,59 +39,36 @@ ProcessRoomCenterNear:
 	cp a, WALL_TYPE_NONE
 	jp z, .checkTopWall
 	cp a, WALL_TYPE_A
-	jp z, .paintWallLeftSideNearTypeA
+	call z, PaintWallLeftSideNearTypeA
 	cp a, WALL_TYPE_B
-	jp z, .paintWallLeftSideNearTypeB
-	; control should not reach here
-
-.paintWallLeftSideNearTypeA
-	ld e, BG_PALETTE_SIDE_NEAR
-	ld d, TILE_EXPLORE_WALL
-	call PaintSegmentA
-	call PaintSegmentK
-	call PaintSegmentP
-	ld d, TILE_EXPLORE_DIAG_L
-	call PaintSegmentPDiag
-	jp .checkTopWall
-.paintWallLeftSideNearTypeB
-	; hmm how will this work, if specials walls are different per-locale
-	; get locale -> call CurrentLocaleSpecialWallBSideNear ??? would each locale come with ... a table of 6 custom function pointers per custom wall type? :(
-	; maybe the paint functions should all be the same, at least initially?
-	;   this will be impossible without very simplified paint functions
-	; for the time being, i'll just add the one wall type and all locales can use it
-	call PaintWallLeftSideNearTypeB
+	call z, PaintWallLeftSideNearTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallLeftSideNearTypeC
 .checkTopWall
 	ld hl, wRoomNearCenter
 	call GetTopWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .checkRightWall
-.paintWallCenterFrontNearTypeA
-	ld e, BG_PALETTE_FRONT_NEAR
-	ld d, TILE_EXPLORE_WALL
-	call PaintSegmentB
-	call PaintSegmentC
-	call PaintSegmentD
-	call PaintSegmentL
-	call PaintSegmentLDiag
-	call PaintSegmentM
-	call PaintSegmentN
-	call PaintSegmentNDiag
+	cp a, WALL_TYPE_A
+	call z, PaintWallCenterFrontNearTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallCenterFrontNearTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallCenterFrontNearTypeC
 .checkRightWall
 	ld hl, wRoomNearCenter
 	call GetRightWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGroundCenterNear
-.paintWallRightSideNearTypeA
-	ld e, BG_PALETTE_SIDE_NEAR
-	ld d, TILE_EXPLORE_WALL
-	call PaintSegmentE
-	call PaintSegmentO
-	call PaintSegmentR
-	ld d, TILE_EXPLORE_DIAG_R
-	call PaintSegmentRDiag
+	cp a, WALL_TYPE_A
+	call z, PaintWallRightSideNearTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallRightSideNearTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallRightSideNearTypeC
 .paintGroundCenterNear
 	ld e, BG_PALETTE_GROUND_NEAR
-	ld d, TILE_EXPLORE_GROUND ; todo on all ground paints, flip (shuffle could be cool) ground every step
+	ld d, TILE_EXPLORE_GROUND
 	call PaintSegmentQGround
 
 ProcessRoomLeftNear:
@@ -100,11 +77,12 @@ ProcessRoomLeftNear:
 	call GetTopWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGroundLeftNear
-.paintWallLeftFrontNearTypeA
-	ld e, BG_PALETTE_FRONT_NEAR
-	ld d, TILE_EXPLORE_WALL
-	call PaintSegmentA
-	call PaintSegmentK
+	cp a, WALL_TYPE_A
+	call z, PaintWallLeftFrontNearTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallLeftFrontNearTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallLeftFrontNearTypeC
 .paintGroundLeftNear
 	ld e, BG_PALETTE_GROUND_NEAR
 	ld d, TILE_EXPLORE_GROUND
@@ -117,11 +95,12 @@ ProcessRoomRightNear:
 	call GetTopWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGroundRightNear
-.paintWallRightFrontNearTypeA
-	ld e, BG_PALETTE_FRONT_NEAR
-	ld d, TILE_EXPLORE_WALL
-	call PaintSegmentE
-	call PaintSegmentO
+	cp a, WALL_TYPE_A
+	call z, PaintWallRightFrontNearTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallRightFrontNearTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallRightFrontNearTypeC
 .paintGroundRightNear
 	ld e, BG_PALETTE_GROUND_NEAR
 	ld d, TILE_EXPLORE_GROUND
@@ -133,14 +112,13 @@ ProcessRoomCenterFar:
 	ld hl, wRoomFarCenter
 	call GetLeftWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
-	jp z, .paintGroundLeftFar ; paint ground if no left wall
-.paintWallLeftSideFarTypeA
-	ld e, BG_PALETTE_SIDE_FAR
-	ld d, TILE_EXPLORE_WALL
-	call PaintSegmentB
-	call PaintSegmentL
-	ld d, TILE_EXPLORE_DIAG_L
-	call PaintSegmentLDiag
+	jp z, .paintGroundLeftFar
+	cp a, WALL_TYPE_A
+	call z, PaintWallLeftSideFarTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallLeftSideFarTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallLeftSideFarTypeC
 	jp .checkTopWall
 .paintGroundLeftFar
 	ld e, BG_PALETTE_GROUND_FAR
@@ -153,10 +131,12 @@ ProcessRoomCenterFar:
 	call GetTopWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistanceFog
-.paintWallCenterFrontFarTypeA
-	ld d, TILE_EXPLORE_WALL
-	ld e, BG_PALETTE_FRONT_FAR
-	call PaintSegmentC
+	cp a, WALL_TYPE_A
+	call z, PaintWallCenterFrontFarTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallCenterFrontFarTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallCenterFrontFarTypeC
 	jp .checkRightWall
 .paintDistanceFog
 	ld e, BG_PALETTE_FOG
@@ -167,13 +147,12 @@ ProcessRoomCenterFar:
 	call GetRightWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintGroundRightFar
-.paintWallRightSideFarTypeA
-	ld e, BG_PALETTE_SIDE_FAR
-	ld d, TILE_EXPLORE_WALL
-	call PaintSegmentD
-	call PaintSegmentN
-	ld d, TILE_EXPLORE_DIAG_R
-	call PaintSegmentNDiag
+	cp a, WALL_TYPE_A
+	call z, PaintWallRightSideFarTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallRightSideFarTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallRightSideFarTypeC
 	jp .paintGroundCenterFar
 .paintGroundRightFar
 	ld e, BG_PALETTE_GROUND_FAR
@@ -192,11 +171,12 @@ ProcessRoomLeftFar:
 	call GetTopWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistanceFog
-.paintWallLeftFrontFarTypeA
-	ld e, BG_PALETTE_FRONT_FAR
-	ld d, TILE_EXPLORE_WALL
-	call PaintSegmentA
-	call PaintSegmentB
+	cp a, WALL_TYPE_A
+	call z, PaintWallLeftFrontFarTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallLeftFrontFarTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallLeftFrontFarTypeC
 	jp .paintGroundLeftFar
 .paintDistanceFog
 	ld e, BG_PALETTE_FOG
@@ -215,11 +195,12 @@ ProcessRoomRightFar:
 	call GetTopWallTypeFromRoomAddr
 	cp a, WALL_TYPE_NONE
 	jp z, .paintDistanceFog
-.paintWallRightFrontFarTypeA
-	ld e, BG_PALETTE_FRONT_FAR
-	ld d, TILE_EXPLORE_WALL
-	call PaintSegmentD
-	call PaintSegmentE
+	cp a, WALL_TYPE_A
+	call z, PaintWallRightFrontFarTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallRightFrontFarTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallRightFrontFarTypeC
 	jp .paintGroundRightFar
 .paintDistanceFog
 	ld e, BG_PALETTE_FOG

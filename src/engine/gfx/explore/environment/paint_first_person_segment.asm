@@ -741,6 +741,12 @@ PaintSegmentRDiag::
 	ret
 
 PaintWallLeftSideNearTypeB::
+	; hmm how will this work, if specials walls are different per-locale
+	; get locale -> call CurrentLocaleSpecialWallBSideNear ??? would each locale come with ... a table of 6 custom function pointers per custom wall type? :(
+	; maybe the paint functions should all be the same, at least initially?
+	;   this will be impossible without very simplified paint functions
+	; for the time being, i'll just add the one wall type and all locales can use it
+
 	ld e, BG_PALETTE_SIDE_NEAR + OAMF_BANK1
 .segmentA
 	ld a, [wADirty]
