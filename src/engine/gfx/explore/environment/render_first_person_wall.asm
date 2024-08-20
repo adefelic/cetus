@@ -39,7 +39,6 @@ PaintWallLeftFrontNearTypeC::
 	ret
 
 PaintWallCenterFrontNearTypeA::
-PaintWallCenterFrontNearTypeB::
 PaintWallCenterFrontNearTypeC::
 	ld e, BG_PALETTE_FRONT_NEAR
 	ld d, TILE_EXPLORE_WALL
