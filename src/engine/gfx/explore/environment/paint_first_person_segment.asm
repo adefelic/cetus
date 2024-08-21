@@ -748,106 +748,47 @@ PaintWallLeftSideNearTypeB::
 	; for the time being, i'll just add the one wall type and all locales can use it
 
 	ld e, BG_PALETTE_SIDE_NEAR + OAMF_BANK1
-.segmentA
-	ld a, [wADirty]
-	cp a, TRUE
-	ret nz
-.paintA
-	; blank space above door
+
+	; top part of wall
 	ld d, TILE_FIELD_WALL_B_WALL
-	; this block paints the whole segment. some gets overwritten with door tiles after
-	DEF ROW_WIDTH = 3
-	DEF LEFTMOST_COLUMN = 0
-	FOR ROW, MIDDLE_SEGMENTS_TOP
+	DEF ROW_WIDTH = SEGMENT_A_WIDTH
+	DEF LEFTMOST_COLUMN = SEGMENT_A_LEFT
+	FOR ROW, 6
 		paint_row_single_tile
 	ENDR
 
-	; door top corner
-	ld d, TILE_FIELD_WALL_B_SIDE_NEAR_T
+	; door
+	ld d, TILE_FIELD_WALL_B_DOOR
 	DEF ROW_WIDTH = 1
-	DEF LEFTMOST_COLUMN = 0
-	DEF ROW = 6
-	paint_row_single_tile
+	DEF LEFTMOST_COLUMN = SEGMENT_A_LEFT
+	FOR ROW, 6, SCREEN_BOTTOM
+		paint_row_single_tile
+	ENDR
 
+	; wall right of door
 	ld d, TILE_FIELD_WALL_B_WALL
 	DEF ROW_WIDTH = 2
-	DEF LEFTMOST_COLUMN = 0
-	FOR ROW, 7, MIDDLE_SEGMENTS_TOP
+	DEF LEFTMOST_COLUMN = SEGMENT_A_LEFT + 1
+	FOR ROW, 6, SCREEN_BOTTOM - 2
 		paint_row_single_tile
 	ENDR
-
-	ld d, TILE_FIELD_WALL_B_SIDE_NEAR_DOOR
 	DEF ROW_WIDTH = 1
-	DEF LEFTMOST_COLUMN = 0
-	FOR ROW, 7, MIDDLE_SEGMENTS_TOP
-		paint_row_single_tile
-	ENDR
-.cleanA
+	DEF LEFTMOST_COLUMN = SEGMENT_A_LEFT + 1
+	DEF ROW = SCREEN_BOTTOM - 2
+	paint_row_single_tile
+
+	; diagonal. overwrites some of "wall right of door"
+	ld d, TILE_FIELD_WALL_B_SIDE_FAR_DIAG
+	call PaintSegmentPDiag
+
+.cleanFlags
 	ld a, FALSE
 	ld [wADirty], a
-
-.segmentK
-	; segment k
-	ld a, [wKDirty]
-	cp a, TRUE
-	ret nz
-.paintK
-	ld d, TILE_FIELD_WALL_B_SIDE_NEAR_DOOR
-	DEF ROW_WIDTH = 1
-	DEF LEFTMOST_COLUMN = 0
-	FOR ROW, MIDDLE_SEGMENTS_TOP, BOTTOM_SEGMENTS_TOP
-		paint_row_single_tile
-	ENDR
-	ld d, TILE_FIELD_WALL_B_WALL
-	DEF ROW_WIDTH = 2
-	DEF LEFTMOST_COLUMN = 1
-	FOR ROW, MIDDLE_SEGMENTS_TOP, BOTTOM_SEGMENTS_TOP
-		paint_row_single_tile
-	ENDR
-.cleanK
 	ld a, FALSE
 	ld [wKDirty], a
-
-.segmentP
-	ld a, [wPDirty]
-	cp a, TRUE
-	ret nz
-.paintP
-	ld d, TILE_FIELD_WALL_B_SIDE_NEAR_DOOR
-	DEF LEFTMOST_COLUMN = 0
-	DEF ROW_WIDTH = 1
-	FOR ROW, BOTTOM_SEGMENTS_TOP, BOTTOM_SEGMENTS_TOP + BOTTOM_ROW_SEGMENT_HEIGHT
-		paint_row_single_tile
-	ENDR
-
-	ld d, TILE_FIELD_WALL_B_WALL
-	DEF LEFTMOST_COLUMN = 1
-	DEF ROW = BOTTOM_SEGMENTS_TOP
-	DEF ROW_WIDTH = 1
-	paint_row_single_tile
-.cleanP
 	ld a, FALSE
 	ld [wPDirty], a
-
-.segmentPDiag
-	; p diag
-	ld a, [wPDiagDirty]
-	cp a, TRUE
-	ret nz
-.paintPDiag
-	ld d, TILE_FIELD_WALL_B_SIDE_FAR_DIAG
-	DEF ROW_WIDTH = 1
-	DEF ROW = BOTTOM_SEGMENTS_TOP
-	DEF LEFTMOST_COLUMN = 2
-	paint_row_single_tile
-	DEF ROW = BOTTOM_SEGMENTS_TOP + 1
-	DEF LEFTMOST_COLUMN = 1
-	paint_row_single_tile
-.cleanPDiag
-	ld a, FALSE
-	ld [wPDiagDirty], a
 	ret
-
 
 ; this could be made more efficient by unpacking segments b and d
 ; but i think it'll cause flickering with labels
