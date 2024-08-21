@@ -10,10 +10,10 @@ ForestBgPaletteSet::
 	;    unused    ground     walls     unused
 	; encounter: unused (todo, pick one for environment)
 	;    dark,     tan,        green,     grey-brown,
-	RGB  00,00,00, 12, 9, 8,  0, 8, 6,   7, 6, 8 ; z = 0, near sides
-	RGB  00,00,00, 00,00,00,  1, 9, 6,   8, 6, 8 ; z = 1, near front
-	RGB  00,00,00, 14,11, 9,  1,10, 7,   9, 7, 8 ; z = 2, far sides
-	RGB  00,00,00, 00,00,00,  1,11, 7,  10, 7, 8 ; z = 3, far front
+	RGB  04,04,00, 12, 9, 8,  0, 8, 6,   7, 6, 8 ; z0, near sides
+	RGB  04,04,00, 22,22,22,  1, 9, 6,   8, 6, 8 ; z1, near front
+	RGB  04,04,00, 14,11, 9,  1,10, 7,   9, 7, 8 ; z2, far sides
+	RGB  04,04,00, 11,11,11,  1,11, 7,  10, 7, 8 ; z3, far front
 
 	; palettes 4 & 5
 	; explore & encounter:
@@ -34,10 +34,10 @@ ForestBgPaletteSet::
 
 SwampBgPaletteSet::
 	;                                    grey-brown,
-	RGB  00,00,00,  4, 4, 4,  5, 5, 8,   7, 6, 8 ; z = 0, near sides
-	RGB  00,00,00, 00,00,00,  5, 5, 9,   8, 6, 8 ; z = 1, near front
-	RGB  00,00,00,  6, 5, 6,  5, 6,10,   9, 7, 8 ; z = 2, far sides
-	RGB  00,00,00, 00,00,00,  5, 6,11,  10, 7, 8 ; z = 3, far front
+	RGB  00,00,00,  4, 4, 4,  5, 5, 8,   7, 6, 8 ; z0, near sides
+	RGB  00,00,00, 00,00,00,  5, 5, 9,   8, 6, 8 ; z1, near front
+	RGB  00,00,00,  6, 5, 6,  5, 6,10,   9, 7, 8 ; z2, far sides
+	RGB  00,00,00, 00,00,00,  5, 6,11,  10, 7, 8 ; z3, far front
 
 	RGB  2, 2, 2,  13,13,13,  2,10, 2,   2, 2,10 ; ui
 	RGB  13,13,13,  2,10, 2,  2, 2,10,   1, 1, 1 ; ui2 (highlighted)

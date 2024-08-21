@@ -848,46 +848,65 @@ PaintWallLeftSideNearTypeB::
 	ld [wPDiagDirty], a
 	ret
 
+
+; this could be made more efficient by unpacking segments b and d
+; but i think it'll cause flickering with labels
 PaintWallCenterFrontNearTypeB::
+	ld d, TILE_FIELD_WALL_B_WALL
 	ld e, BG_PALETTE_FRONT_NEAR + OAMF_BANK1
-	ld d, TILE_EXPLORE_WALL
+.segmentB
+	call PaintSegmentB
+.segmentD
+	call PaintSegmentD
+.segmentC
+	ld a, [wCDirty]
+	cp a, TRUE
+	ret nz
 
 	ld d, TILE_FIELD_WALL_B_WALL
-	call PaintSegmentB
-	call PaintSegmentD
-
-
-
-	call PaintSegmentC
-	DEF ROW_WIDTH = 8
-	DEF LEFTMOST_COLUMN = 6
-	FOR ROW, 13
+	DEF ROW_WIDTH = SEGMENT_C_WIDTH
+	DEF LEFTMOST_COLUMN = SEGMENT_C_LEFT
+	FOR ROW, TOP_SEGMENTS_TOP, TOP_SEGMENTS_TOP + 6
 		paint_row_single_tile
 	ENDR
 
-	call PaintSegmentL
-	call PaintSegmentLDiag
-	call PaintSegmentM
-	call PaintSegmentN
-	call PaintSegmentNDiag
+	ld d, TILE_FIELD_WALL_B_DOOR
+	DEF ROW_WIDTH = 8
+	DEF LEFTMOST_COLUMN = SEGMENT_C_LEFT
+	FOR ROW, TOP_SEGMENTS_TOP + 6, MIDDLE_SEGMENTS_TOP
+		paint_row_single_tile
+	ENDR
+	ld a, FALSE
+	ld [wCDirty], a
 
-	; front near, rows of 6
-;DEF TILE_FIELD_WALL_B_FRONT_NEAR_TLL EQU $88
-;DEF TILE_FIELD_WALL_B_FRONT_NEAR_TL  EQU $89
-;DEF TILE_FIELD_WALL_B_FRONT_NEAR_TM  EQU $8A
-; TM
-; TL x-flipped
-; TLL x-flipped
-
-; TILE_FIELD_WALL_B_FRONT_FAR_SIDE
-; blank-door
-; blank-door
-; blank-door
-; blank-door
-; TILE_FIELD_WALL_B_FRONT_FAR_SIDE x-flipped
-
-; the above row 7 times total
-
+.segmentL_LDiag_MLeft
+	ld d, TILE_FIELD_WALL_B_WALL
+	DEF ROW_WIDTH = SEGMENT_B_WIDTH
+	DEF LEFTMOST_COLUMN = SEGMENT_B_LEFT
+	FOR ROW, MIDDLE_SEGMENTS_TOP, BOTTOM_SEGMENTS_TOP
+		paint_row_single_tile
+	ENDR
+.segmentMMiddle
+	ld d, TILE_FIELD_WALL_B_DOOR
+	DEF ROW_WIDTH = SEGMENT_C_WIDTH
+	DEF LEFTMOST_COLUMN = SEGMENT_C_LEFT
+	FOR ROW, MIDDLE_SEGMENTS_TOP, BOTTOM_SEGMENTS_TOP
+		paint_row_single_tile
+	ENDR
+.segmentMMiddle_NDiag_N
+	ld d, TILE_FIELD_WALL_B_WALL
+	DEF ROW_WIDTH = SEGMENT_D_WIDTH
+	DEF LEFTMOST_COLUMN = SEGMENT_D_LEFT
+	FOR ROW, MIDDLE_SEGMENTS_TOP, BOTTOM_SEGMENTS_TOP
+		paint_row_single_tile
+	ENDR
+.cleanFlags
+	ld a, FALSE
+	ld [wLDirty], a
+	ld [wLDiagDirty], a
+	ld [wMDirty], a
+	ld [wNDirty], a
+	ld [wNDiagDirty], a
 	ret
 
 ; @param d: counter, must be <= 8
