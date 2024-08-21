@@ -846,6 +846,48 @@ PaintWallCenterFrontNearTypeB::
 	ret
 
 PaintWallRightSideNearTypeB::
+	ld e, BG_PALETTE_SIDE_NEAR + OAMF_BANK1
+
+	; top part of wall
+	ld d, TILE_FIELD_WALL_B_WALL
+	DEF ROW_WIDTH = SEGMENT_E_WIDTH
+	DEF LEFTMOST_COLUMN = SEGMENT_E_LEFT
+	FOR ROW, 6
+		paint_row_single_tile
+	ENDR
+
+	; door
+	ld d, TILE_FIELD_WALL_B_DOOR
+	DEF ROW_WIDTH = 1
+	DEF LEFTMOST_COLUMN = SEGMENT_E_LEFT + SEGMENT_E_WIDTH - 1
+	FOR ROW, 6, SCREEN_BOTTOM
+		paint_row_single_tile
+	ENDR
+
+	; wall right of door
+	ld d, TILE_FIELD_WALL_B_WALL
+	DEF ROW_WIDTH = 2
+	DEF LEFTMOST_COLUMN = SEGMENT_E_LEFT
+	FOR ROW, 6, SCREEN_BOTTOM - 2
+		paint_row_single_tile
+	ENDR
+	DEF ROW_WIDTH = 1
+	DEF LEFTMOST_COLUMN = SEGMENT_E_LEFT + 1
+	DEF ROW = SCREEN_BOTTOM - 2
+	paint_row_single_tile
+
+	; diagonal. overwrites some of "wall right of door"
+	ld d, TILE_EXPLORE_DIAG_R
+	ld e, BG_PALETTE_SIDE_NEAR
+	call PaintSegmentRDiag
+
+.cleanFlags
+	ld a, FALSE
+	ld [wEDirty], a
+	ld a, FALSE
+	ld [wODirty], a
+	ld a, FALSE
+	ld [wRDirty], a
 	ret
 
 PaintWallLeftSideFarTypeB::
@@ -868,6 +910,7 @@ PaintWallCenterFrontFarTypeB::
 		paint_row_single_tile
 	ENDR
 
+	; this is done in PaintSegmentC
 	;ld a, FALSE
 	;ld [wCDirty], a
 	ret
