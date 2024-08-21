@@ -6,8 +6,8 @@ INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/lib/hardware.inc"
 
-DEF QUARTZ_TOP_LEFT_X EQU TILE_WIDTH * $09 + OAM_PADDING_X
-DEF QUARTZ_TOP_LEFT_Y EQU TILE_HEIGHT * $0E + OAM_PADDING_Y
+DEF ROCK_TOP_LEFT_X EQU TILE_WIDTH * $09 + OAM_PADDING_X
+DEF ROCK_TOP_LEFT_Y EQU TILE_HEIGHT * $0E + OAM_PADDING_Y
 DEF LAMP_TOP_LEFT_X EQU TILE_WIDTH * $09 + OAM_PADDING_X
 DEF LAMP_TOP_LEFT_Y EQU TILE_HEIGHT * $0D + OAM_PADDING_Y
 
@@ -26,41 +26,41 @@ RenderGroundItemCenterFar::
 	ld a, [hl]
 	cp ITEM_NONE
 	jp z, PaintNone
-	cp ITEM_QUARTZ
-	jp z, PaintQuartz
+	cp ITEM_ROCK
+	jp z, PaintROCK
 	cp ITEM_LAMP
 	jp z, PaintLamp
 	cp ITEM_TENT
 	jp z, PaintTent
 	ret
 
-PaintQuartz:
-.paintQuartzA
+PaintROCK:
+.paintROCKA
 	; y
-	ld a, QUARTZ_TOP_LEFT_Y
-	ld [wShadowOam + OAM_QUARTZ_A + OAMA_Y], a
+	ld a, ROCK_TOP_LEFT_Y
+	ld [wShadowOam + OAM_ROCK_A + OAMA_Y], a
 	; x
-	ld a, QUARTZ_TOP_LEFT_X
-	ld [wShadowOam + OAM_QUARTZ_A + OAMA_X], a
+	ld a, ROCK_TOP_LEFT_X
+	ld [wShadowOam + OAM_ROCK_A + OAMA_X], a
 	; tile id
-	ld a, TILE_QUARTZ_A
-	ld [wShadowOam + OAM_QUARTZ_A + OAMA_TILEID], a
+	ld a, TILE_ROCK_A
+	ld [wShadowOam + OAM_ROCK_A + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_QUARTZ
-	ld [wShadowOam + OAM_QUARTZ_A + OAMA_FLAGS], a
-.paintQuartzB
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_ROCK
+	ld [wShadowOam + OAM_ROCK_A + OAMA_FLAGS], a
+.paintROCKB
 	; y
-	ld a, QUARTZ_TOP_LEFT_Y
-	ld [wShadowOam + OAM_QUARTZ_B + OAMA_Y], a
+	ld a, ROCK_TOP_LEFT_Y
+	ld [wShadowOam + OAM_ROCK_B + OAMA_Y], a
 	; x
-	ld a, QUARTZ_TOP_LEFT_X + TILE_WIDTH
-	ld [wShadowOam + OAM_QUARTZ_B + OAMA_X], a
+	ld a, ROCK_TOP_LEFT_X + TILE_WIDTH
+	ld [wShadowOam + OAM_ROCK_B + OAMA_X], a
 	; tile id
-	ld a, TILE_QUARTZ_B
-	ld [wShadowOam + OAM_QUARTZ_B + OAMA_TILEID], a
+	ld a, TILE_ROCK_B
+	ld [wShadowOam + OAM_ROCK_B + OAMA_TILEID], a
 	; attrs/flags
-	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_QUARTZ
-	ld [wShadowOam + OAM_QUARTZ_B + OAMA_FLAGS], a
+	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_ROCK
+	ld [wShadowOam + OAM_ROCK_B + OAMA_FLAGS], a
 .clearOthers
 	ld a, OFFSCREEN_Y
 	ld [wShadowOam + OAM_LAMP_TOP_L + OAMA_Y], a
@@ -131,12 +131,12 @@ PaintLamp:
 	ld [wShadowOam + OAM_LAMP_BOTTOM_R + OAMA_FLAGS], a
 .clearOthers
 	ld a, OFFSCREEN_Y
-	ld [wShadowOam + OAM_QUARTZ_A + OAMA_Y], a
-	ld [wShadowOam + OAM_QUARTZ_B + OAMA_Y], a
+	ld [wShadowOam + OAM_ROCK_A + OAMA_Y], a
+	ld [wShadowOam + OAM_ROCK_B + OAMA_Y], a
 
 	ld a, OFFSCREEN_X
-	ld [wShadowOam + OAM_QUARTZ_A + OAMA_X], a
-	ld [wShadowOam + OAM_QUARTZ_B + OAMA_X], a
+	ld [wShadowOam + OAM_ROCK_A + OAMA_X], a
+	ld [wShadowOam + OAM_ROCK_B + OAMA_X], a
 	ret
 
 PaintTent:
@@ -145,16 +145,16 @@ PaintTent:
 PaintNone:
 ClearGroundItemsFromOam::
 	ld a, OFFSCREEN_Y
-	ld [wShadowOam + OAM_QUARTZ_A + OAMA_Y], a
-	ld [wShadowOam + OAM_QUARTZ_B + OAMA_Y], a
+	ld [wShadowOam + OAM_ROCK_A + OAMA_Y], a
+	ld [wShadowOam + OAM_ROCK_B + OAMA_Y], a
 	ld [wShadowOam + OAM_LAMP_TOP_L + OAMA_Y], a
 	ld [wShadowOam + OAM_LAMP_TOP_R + OAMA_Y], a
 	ld [wShadowOam + OAM_LAMP_BOTTOM_L + OAMA_Y], a
 	ld [wShadowOam + OAM_LAMP_BOTTOM_R + OAMA_Y], a
 
 	ld a, OFFSCREEN_X
-	ld [wShadowOam + OAM_QUARTZ_A + OAMA_X], a
-	ld [wShadowOam + OAM_QUARTZ_B + OAMA_X], a
+	ld [wShadowOam + OAM_ROCK_A + OAMA_X], a
+	ld [wShadowOam + OAM_ROCK_B + OAMA_X], a
 	ld [wShadowOam + OAM_LAMP_TOP_L + OAMA_X], a
 	ld [wShadowOam + OAM_LAMP_TOP_R + OAMA_X], a
 	ld [wShadowOam + OAM_LAMP_BOTTOM_L + OAMA_X], a

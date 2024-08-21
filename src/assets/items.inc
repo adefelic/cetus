@@ -9,7 +9,7 @@ ItemsMinusOne::
 	nop ; so index 0 can equal "no item"
 Items::
 	; items must begin with 3 spaces that will be replaced with quantities when rendered
-	dstruct Item, Quartz, "99x rock", ITEM_QUARTZ
+	dstruct Item, ROCK, "99x rock", ITEM_ROCK
 	dstruct Item, Lamp, "99x lamp", ITEM_LAMP
 	dstruct Item, Tent, "99x tent", ITEM_TENT
 	;dstruct Item, Tent, "99x tent"
