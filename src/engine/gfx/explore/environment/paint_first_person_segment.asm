@@ -778,7 +778,8 @@ PaintWallLeftSideNearTypeB::
 	paint_row_single_tile
 
 	; diagonal. overwrites some of "wall right of door"
-	ld d, TILE_FIELD_WALL_B_SIDE_FAR_DIAG
+	ld d, TILE_EXPLORE_DIAG_L
+	ld e, BG_PALETTE_SIDE_NEAR
 	call PaintSegmentPDiag
 
 .cleanFlags
@@ -800,10 +801,6 @@ PaintWallCenterFrontNearTypeB::
 .segmentD
 	call PaintSegmentD
 .segmentC
-	ld a, [wCDirty]
-	cp a, TRUE
-	ret nz
-
 	ld d, TILE_FIELD_WALL_B_WALL
 	DEF ROW_WIDTH = SEGMENT_C_WIDTH
 	DEF LEFTMOST_COLUMN = SEGMENT_C_LEFT
@@ -817,9 +814,6 @@ PaintWallCenterFrontNearTypeB::
 	FOR ROW, TOP_SEGMENTS_TOP + 6, MIDDLE_SEGMENTS_TOP
 		paint_row_single_tile
 	ENDR
-	ld a, FALSE
-	ld [wCDirty], a
-
 .segmentL_LDiag_MLeft
 	ld d, TILE_FIELD_WALL_B_WALL
 	DEF ROW_WIDTH = SEGMENT_B_WIDTH
@@ -843,11 +837,39 @@ PaintWallCenterFrontNearTypeB::
 	ENDR
 .cleanFlags
 	ld a, FALSE
+	ld [wCDirty], a
 	ld [wLDirty], a
 	ld [wLDiagDirty], a
 	ld [wMDirty], a
 	ld [wNDirty], a
 	ld [wNDiagDirty], a
+	ret
+
+PaintWallRightSideNearTypeB::
+	ret
+
+PaintWallLeftSideFarTypeB::
+	ret
+
+PaintWallRightSideFarTypeB::
+	ret
+
+PaintWallCenterFrontFarTypeB::
+	; make it all wall colored
+	ld d, TILE_FIELD_WALL_B_WALL
+	ld e, BG_PALETTE_FRONT_FAR + OAMF_BANK1
+	call PaintSegmentC
+
+	; draw door on top
+	ld d, TILE_FIELD_WALL_B_DOOR
+	DEF ROW_WIDTH = 4
+	DEF LEFTMOST_COLUMN = SEGMENT_C_LEFT + 2
+	FOR ROW, TOP_SEGMENTS_TOP + 8, MIDDLE_SEGMENTS_TOP
+		paint_row_single_tile
+	ENDR
+
+	;ld a, FALSE
+	;ld [wCDirty], a
 	ret
 
 ; @param d: counter, must be <= 8

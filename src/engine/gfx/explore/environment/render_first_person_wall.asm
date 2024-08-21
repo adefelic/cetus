@@ -17,7 +17,6 @@ PaintWallLeftSideNearTypeC::
 	ret
 
 PaintWallRightSideNearTypeA::
-PaintWallRightSideNearTypeB::
 PaintWallRightSideNearTypeC::
 	ld e, BG_PALETTE_SIDE_NEAR
 	ld d, TILE_EXPLORE_WALL
@@ -30,6 +29,7 @@ PaintWallRightSideNearTypeC::
 
 ; front near
 PaintWallLeftFrontNearTypeA::
+; skip
 PaintWallLeftFrontNearTypeB::
 PaintWallLeftFrontNearTypeC::
 	ld e, BG_PALETTE_FRONT_NEAR
@@ -53,6 +53,7 @@ PaintWallCenterFrontNearTypeC::
 	ret
 
 PaintWallRightFrontNearTypeA::
+; skip
 PaintWallRightFrontNearTypeB::
 PaintWallRightFrontNearTypeC::
 	ld e, BG_PALETTE_FRONT_NEAR
@@ -63,7 +64,6 @@ PaintWallRightFrontNearTypeC::
 
 ; side far
 PaintWallLeftSideFarTypeA::
-PaintWallLeftSideFarTypeB::
 PaintWallLeftSideFarTypeC::
 	ld e, BG_PALETTE_SIDE_FAR
 	ld d, TILE_EXPLORE_WALL
@@ -74,7 +74,6 @@ PaintWallLeftSideFarTypeC::
 	ret
 
 PaintWallRightSideFarTypeA::
-PaintWallRightSideFarTypeB::
 PaintWallRightSideFarTypeC::
 	ld e, BG_PALETTE_SIDE_FAR
 	ld d, TILE_EXPLORE_WALL
@@ -86,6 +85,7 @@ PaintWallRightSideFarTypeC::
 
 ; front far
 PaintWallLeftFrontFarTypeA::
+; skip
 PaintWallLeftFrontFarTypeB::
 PaintWallLeftFrontFarTypeC::
 	ld e, BG_PALETTE_FRONT_FAR
@@ -95,7 +95,6 @@ PaintWallLeftFrontFarTypeC::
 	ret
 
 PaintWallCenterFrontFarTypeA::
-PaintWallCenterFrontFarTypeB::
 PaintWallCenterFrontFarTypeC::
 	ld d, TILE_EXPLORE_WALL
 	ld e, BG_PALETTE_FRONT_FAR
@@ -103,6 +102,7 @@ PaintWallCenterFrontFarTypeC::
 	ret
 
 PaintWallRightFrontFarTypeA::
+; skip
 PaintWallRightFrontFarTypeB::
 PaintWallRightFrontFarTypeC::
 	ld e, BG_PALETTE_FRONT_FAR

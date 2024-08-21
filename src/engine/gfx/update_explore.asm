@@ -13,6 +13,10 @@ InitExploreEventState::
 ; trbl are all relative to the player's orientation
 UpdateExploreScreen::
 .updateShadowBgTilemap
+	; only update if tilemap is dirty
+	ld a, [wIsShadowTilemapDirty]
+	cp FALSE
+	ret z
 	call RenderExploreEnvironmentWalls
 
 ; menus and item sprites are mutually exclusive
@@ -56,6 +60,9 @@ UpdateExploreScreen::
 	; it should write once and update when necessary
 	call PaintDangerIndicator
 	call PaintCompass
+
+	ld a, FALSE
+	ld [wIsShadowTilemapDirty], a
 	ret
 
 PaintExploreSpritesOffScreen::
