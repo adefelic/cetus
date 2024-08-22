@@ -9,7 +9,7 @@ SECTION "Modal Paint Routines", ROMX
 
 PaintModalTopRow::
 .tl_corner
-	ld d, TILE_MODAL_TL_CORNER
+	ld d, TILE_UI_BORDER_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT
 	ld b, 1
 	call CopyByteInDToRange
@@ -18,7 +18,7 @@ PaintModalTopRow::
 	ld b, 1
 	call CopyByteInEToRange
 .top
-	ld d, TILE_MODAL_HORIZONTAL
+	ld d, TILE_UI_BORDER_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 1
 	ld b, MODAL_TEXT_AREA_WIDTH
 	call CopyByteInDToRange
@@ -27,7 +27,7 @@ PaintModalTopRow::
 	ld b, MODAL_TEXT_AREA_WIDTH
 	call CopyByteInEToRange
 .tr_corner
-	ld d, TILE_MODAL_TL_CORNER
+	ld d, TILE_UI_BORDER_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
 	ld b, 1
 	call CopyByteInDToRange
@@ -58,7 +58,7 @@ PaintModalTextRow::
 	jp .checkIfCZero
 .left
 	ld c, d
-	ld d, TILE_MODAL_VERTICAL
+	ld d, TILE_UI_BORDER_VERTICAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 1
 	; add row offset to hl
 	ld a, l
@@ -111,7 +111,7 @@ PaintModalTextRow::
 	ld b, MODAL_TEXT_AREA_WIDTH
 	call CopyByteInEToRange
 .right
-	ld d, TILE_MODAL_VERTICAL
+	ld d, TILE_UI_BORDER_VERTICAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 1 + cols (MODAL_WIDTH - 1)
 	; add row offset to hl
 	ld a, l
@@ -164,7 +164,7 @@ PaintModalEmptyRow::
 	jp .checkIfCZero
 .left
 	ld c, d ; put offset back into c
-	ld d, TILE_MODAL_VERTICAL
+	ld d, TILE_UI_BORDER_VERTICAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 1
 	; add row offset to hl
 	ld a, l
@@ -216,7 +216,7 @@ PaintModalEmptyRow::
 	ld b, MODAL_TEXT_AREA_WIDTH
 	call CopyByteInEToRange
 .right
-	ld d, TILE_MODAL_VERTICAL
+	ld d, TILE_UI_BORDER_VERTICAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 1 + cols (MODAL_WIDTH - 1)
 	; add row offset to hl
 	ld a, l
@@ -244,7 +244,7 @@ PaintModalEmptyRow::
 
 PaintModalBottomRow::
 .bl_corner
-	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
+	ld d, TILE_UI_BORDER_BL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5
 	ld b, 1
 	call CopyByteInDToRange
@@ -253,7 +253,7 @@ PaintModalBottomRow::
 	ld b, 1
 	call CopyByteInEToRange
 .bottom
-	ld d, TILE_MODAL_HORIZONTAL
+	ld d, TILE_UI_BORDER_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 1
 	ld b, MODAL_TEXT_AREA_WIDTH
 	call CopyByteInDToRange
@@ -262,7 +262,7 @@ PaintModalBottomRow::
 	ld b, MODAL_TEXT_AREA_WIDTH
 	call CopyByteInEToRange
 .br_corner
-	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
+	ld d, TILE_UI_BORDER_BL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
 	ld b, 1
 	call CopyByteInDToRange
@@ -274,7 +274,7 @@ PaintModalBottomRow::
 
 PaintModalBottomRowCheckX::
 .bl_corner
-	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
+	ld d, TILE_UI_BORDER_BL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5
 	ld b, 1
 	call CopyByteInDToRange
@@ -283,7 +283,7 @@ PaintModalBottomRowCheckX::
 	ld b, 1
 	call CopyByteInEToRange
 .bottom_line
-	ld d, TILE_MODAL_HORIZONTAL
+	ld d, TILE_UI_BORDER_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 1
 	ld b, MODAL_WIDTH - 6
 	call CopyByteInDToRange
@@ -306,7 +306,7 @@ PaintModalBottomRowCheckX::
 	call CopyByteInEToRange
 
 	; "_"
-	ld d, TILE_MODAL_HORIZONTAL
+	ld d, TILE_UI_BORDER_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 5)
 	ld b, 1
 	call CopyByteInDToRange
@@ -329,7 +329,7 @@ PaintModalBottomRowCheckX::
 	call CopyByteInEToRange
 
 	; "_"
-	ld d, TILE_MODAL_HORIZONTAL
+	ld d, TILE_UI_BORDER_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 2)
 	ld b, 1
 	call CopyByteInDToRange
@@ -338,7 +338,7 @@ PaintModalBottomRowCheckX::
 	ld b, 1
 	call CopyByteInEToRange
 .br_corner
-	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
+	ld d, TILE_UI_BORDER_BL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
 	ld b, 1
 	call CopyByteInDToRange

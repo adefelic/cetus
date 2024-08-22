@@ -8,7 +8,7 @@ SECTION "Encounter Menu Painting", ROMX
 
 PaintBlankTopMenuRow::
 .tl_corner
-	ld d, TILE_MODAL_TL_CORNER
+	ld d, TILE_UI_BORDER_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT
 	ld b, 1
 	call CopyByteInDToRange
@@ -17,7 +17,7 @@ PaintBlankTopMenuRow::
 	ld b, 1
 	call CopyByteInEToRange
 .top
-	ld d, TILE_MODAL_HORIZONTAL
+	ld d, TILE_UI_BORDER_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 1
 	ld b, MODAL_TEXT_AREA_WIDTH
 	call CopyByteInDToRange
@@ -26,7 +26,7 @@ PaintBlankTopMenuRow::
 	ld b, MODAL_TEXT_AREA_WIDTH
 	call CopyByteInEToRange
 .tr_corner
-	ld d, TILE_MODAL_TL_CORNER
+	ld d, TILE_UI_BORDER_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
 	ld b, 1
 	call CopyByteInDToRange

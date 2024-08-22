@@ -11,7 +11,7 @@ SECTION "Reward Screen Painting", ROMX
 
 PaintRewardScreen::
 .blank_row0
-	ld d, TILE_MODAL_EMPTY
+	ld d, TILE_UI_BORDER_EMPTY
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT
 	ld b, REWARD_SCREEN_WIDTH
 	call CopyByteInDToRange
@@ -20,7 +20,7 @@ PaintRewardScreen::
 	ld b, REWARD_SCREEN_WIDTH
 	call CopyByteInEToRange
 .blank_row1
-	ld d, TILE_MODAL_EMPTY
+	ld d, TILE_UI_BORDER_EMPTY
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 1
 	ld b, REWARD_SCREEN_WIDTH
 	call CopyByteInDToRange
@@ -87,7 +87,7 @@ PaintRewardScreen::
 	ld b, REWARD_SCREEN_WIDTH
 	call CopyByteInEToRange
 .blank_row2
-	ld d, TILE_MODAL_EMPTY
+	ld d, TILE_UI_BORDER_EMPTY
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 3
 	ld b, REWARD_SCREEN_WIDTH
 	call CopyByteInDToRange
@@ -96,7 +96,7 @@ PaintRewardScreen::
 	ld b, REWARD_SCREEN_WIDTH
 	call CopyByteInEToRange
 .blank_row3
-	ld d, TILE_MODAL_EMPTY
+	ld d, TILE_UI_BORDER_EMPTY
 	ld hl, wShadowBackgroundTilemap + REWARD_SCREEN_TOP_LEFT + rows 4
 	ld b, REWARD_SCREEN_WIDTH
 	call CopyByteInDToRange

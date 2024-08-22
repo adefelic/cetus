@@ -10,52 +10,52 @@ PaintEnvironment::
 .leftBlock
 	ld d, TILES_ENV_BLOCK_LEFT
 	ld hl, wShadowBackgroundTilemap + ENV_LEFT_BLOCK_TL
-	ld b, TILES_ENV_LINE_WIDTH
+	ld b, ENC_ENV_BLOCK_TILE_WIDTH
 	call CopyIncrementing
 
-	ld d, TILES_ENV_BLOCK_LEFT + TILES_ENV_LINE_WIDTH
+	ld d, TILES_ENV_BLOCK_LEFT + ENC_ENV_BLOCK_TILE_WIDTH
 	ld hl, wShadowBackgroundTilemap + ENV_LEFT_BLOCK_TL + rows 1
-	ld b, TILES_ENV_LINE_WIDTH
+	ld b, ENC_ENV_BLOCK_TILE_WIDTH
 	call CopyIncrementing
 
-	ld d, TILES_ENV_BLOCK_LEFT + TILES_ENV_LINE_WIDTH * 2
+	ld d, TILES_ENV_BLOCK_LEFT + ENC_ENV_BLOCK_TILE_WIDTH * 2
 	ld hl, wShadowBackgroundTilemap + ENV_LEFT_BLOCK_TL + rows 2
-	ld b, TILES_ENV_LINE_WIDTH
+	ld b, ENC_ENV_BLOCK_TILE_WIDTH
 	call CopyIncrementing
 
-	ld d, TILES_ENV_BLOCK_LEFT + TILES_ENV_LINE_WIDTH * 3
+	ld d, TILES_ENV_BLOCK_LEFT + ENC_ENV_BLOCK_TILE_WIDTH * 3
 	ld hl, wShadowBackgroundTilemap + ENV_LEFT_BLOCK_TL + rows 3
-	ld b, TILES_ENV_LINE_WIDTH
+	ld b, ENC_ENV_BLOCK_TILE_WIDTH
 	call CopyIncrementing
 
-	ld d, TILES_ENV_BLOCK_LEFT + TILES_ENV_LINE_WIDTH * 4
+	ld d, TILES_ENV_BLOCK_LEFT + ENC_ENV_BLOCK_TILE_WIDTH * 4
 	ld hl, wShadowBackgroundTilemap + ENV_LEFT_BLOCK_TL + rows 4
-	ld b, TILES_ENV_LINE_WIDTH
+	ld b, ENC_ENV_BLOCK_TILE_WIDTH
 	call CopyIncrementing
 
 .rightBlock
 	ld d, TILES_ENV_BLOCK_RIGHT
 	ld hl, wShadowBackgroundTilemap + ENV_RIGHT_BLOCK_TL
-	ld b, TILES_ENV_LINE_WIDTH
+	ld b, ENC_ENV_BLOCK_TILE_WIDTH
 	call CopyIncrementing
 
-	ld d, TILES_ENV_BLOCK_RIGHT + TILES_ENV_LINE_WIDTH
+	ld d, TILES_ENV_BLOCK_RIGHT + ENC_ENV_BLOCK_TILE_WIDTH
 	ld hl, wShadowBackgroundTilemap + ENV_RIGHT_BLOCK_TL + rows 1
-	ld b, TILES_ENV_LINE_WIDTH
+	ld b, ENC_ENV_BLOCK_TILE_WIDTH
 	call CopyIncrementing
 
-	ld d, TILES_ENV_BLOCK_RIGHT + TILES_ENV_LINE_WIDTH * 2
+	ld d, TILES_ENV_BLOCK_RIGHT + ENC_ENV_BLOCK_TILE_WIDTH * 2
 	ld hl, wShadowBackgroundTilemap + ENV_RIGHT_BLOCK_TL + rows 2
-	ld b, TILES_ENV_LINE_WIDTH
+	ld b, ENC_ENV_BLOCK_TILE_WIDTH
 	call CopyIncrementing
 
-	ld d, TILES_ENV_BLOCK_RIGHT + TILES_ENV_LINE_WIDTH * 3
+	ld d, TILES_ENV_BLOCK_RIGHT + ENC_ENV_BLOCK_TILE_WIDTH * 3
 	ld hl, wShadowBackgroundTilemap + ENV_RIGHT_BLOCK_TL + rows 3
-	ld b, TILES_ENV_LINE_WIDTH
+	ld b, ENC_ENV_BLOCK_TILE_WIDTH
 	call CopyIncrementing
 
-	ld d, TILES_ENV_BLOCK_RIGHT + TILES_ENV_LINE_WIDTH * 4
+	ld d, TILES_ENV_BLOCK_RIGHT + ENC_ENV_BLOCK_TILE_WIDTH * 4
 	ld hl, wShadowBackgroundTilemap + ENV_RIGHT_BLOCK_TL + rows 4
-	ld b, TILES_ENV_LINE_WIDTH
+	ld b, ENC_ENV_BLOCK_TILE_WIDTH
 	call CopyIncrementing
 	ret

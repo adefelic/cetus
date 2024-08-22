@@ -15,7 +15,7 @@ SECTION "Label Modal Paint Routines", ROMX
 ; @param d: the tile index to paint with
 PaintLabelTopModal::
 .tl_corner
-	ld d, TILE_MODAL_TL_CORNER
+	ld d, TILE_UI_BORDER_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT
 	ld b, 1
 	call CopyByteInDToRange
@@ -24,7 +24,7 @@ PaintLabelTopModal::
 	ld b, 1
 	call CopyByteInEToRange
 .top
-	ld d, TILE_MODAL_HORIZONTAL
+	ld d, TILE_UI_BORDER_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + cols 1
 	ld b, 10
 	call CopyByteInDToRange
@@ -33,7 +33,7 @@ PaintLabelTopModal::
 	ld b, 10
 	call CopyByteInEToRange
 .tr_corner
-	ld d, TILE_MODAL_TL_CORNER
+	ld d, TILE_UI_BORDER_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + cols (LABEL_MODAL_WIDTH - 1)
 	ld b, 1
 	call CopyByteInDToRange
@@ -42,7 +42,7 @@ PaintLabelTopModal::
 	ld b, 1
 	call CopyByteInEToRange
 .left
-	ld d, TILE_MODAL_VERTICAL
+	ld d, TILE_UI_BORDER_VERTICAL
 	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + rows 1
 	ld b, 1
 	call CopyByteInDToRange
@@ -63,7 +63,7 @@ PaintLabelTopModal::
 	ld b, 10
 	call CopyByteInEToRange
 .right
-	ld d, TILE_MODAL_VERTICAL
+	ld d, TILE_UI_BORDER_VERTICAL
 	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + rows 1 + cols (LABEL_MODAL_WIDTH - 1)
 	ld b, 1
 	call CopyByteInDToRange
@@ -72,7 +72,7 @@ PaintLabelTopModal::
 	ld b, 1
 	call CopyByteInEToRange
 .bl_corner
-	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
+	ld d, TILE_UI_BORDER_BL_CORNER
 	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + rows 2
 	ld b, 1
 	call CopyByteInDToRange
@@ -81,7 +81,7 @@ PaintLabelTopModal::
 	ld b, 1
 	call CopyByteInEToRange
 .bottom
-	ld d, TILE_MODAL_HORIZONTAL
+	ld d, TILE_UI_BORDER_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + rows 2 + cols 1
 	ld b, 10
 	call CopyByteInDToRange
@@ -90,7 +90,7 @@ PaintLabelTopModal::
 	ld b, 10
 	call CopyByteInEToRange
 .br_corner
-	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
+	ld d, TILE_UI_BORDER_BL_CORNER
 	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + rows 2 + cols (LABEL_MODAL_WIDTH - 1)
 	ld b, 1
 	call CopyByteInDToRange

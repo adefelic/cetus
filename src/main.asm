@@ -1,5 +1,4 @@
 INCLUDE "src/lib/hardware.inc"
-INCLUDE "src/assets/tile_data.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
@@ -102,10 +101,6 @@ LoadObjectTilesIntoVram:
 	ld de, CompassTiles
 	ld hl, VRAM_OBJ_BLOCK
 	ld bc, DangerIndicatorTilesEnd - CompassTiles
-	call Memcopy
-.loadPlayerEncounterSprite
-	ld de, ChinchillaTiles
-	ld bc, ChinchillaTilesEnd - ChinchillaTiles
 	call Memcopy
 .loadItemSprites
 	ld de, ItemTiles

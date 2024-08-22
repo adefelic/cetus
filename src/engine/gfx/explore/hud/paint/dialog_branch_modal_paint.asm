@@ -9,7 +9,7 @@ SECTION "Dialog Branch Modal Paint Routines", ROMX
 
 PaintModalBottomRowDialogBranch::
 .bl_corner
-	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
+	ld d, TILE_UI_BORDER_BL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5
 	ld b, 1
 	call CopyByteInDToRange
@@ -18,7 +18,7 @@ PaintModalBottomRowDialogBranch::
 	ld b, 1
 	call CopyByteInEToRange
 .bottom_line
-	ld d, TILE_MODAL_HORIZONTAL
+	ld d, TILE_UI_BORDER_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols 1
 	ld b, 15
 	call CopyByteInDToRange
@@ -40,7 +40,7 @@ PaintModalBottomRowDialogBranch::
 	ld b, 2
 	call CopyByteInEToRange
 .br_corner
-	ld d, TILE_MODAL_BOTTOM_LEFT_CORNER
+	ld d, TILE_UI_BORDER_BL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + rows 5 + cols (MODAL_WIDTH - 1)
 	ld b, 1
 	call CopyByteInDToRange

@@ -2,18 +2,9 @@ SECTION "Tile Data", ROMX, ALIGN[8]
 
 ;;; bg bank 0
 BgBank0Tiles::
-OWTiles::
-INCBIN "build/gfx/explore-simple.2bpp"
-OWTilesEnd::
-ModalTiles::
-INCBIN "build/gfx/modal-simple.2bpp"
-ModalTilesEnd::
-EncounterTiles::
-INCBIN "build/gfx/encounter-simple.2bpp"
-EncounterTilesEnd::
-DistanceFogTiles::
-INCBIN "build/gfx/distance-fog.2bpp"
-DistanceFogTilesEnd::
+ExploreBGTiles::
+INCBIN "build/gfx/bg-tiles.2bpp"
+ExploreBGTilesEnd::
 EncounterEnvTreesTiles::
 INCBIN "build/gfx/encounter-env-trees.2bpp"
 EncounterEnvTreesTilesEnd::
@@ -41,9 +32,6 @@ CompassTilesEnd::
 DangerIndicatorTiles::
 INCBIN "build/gfx/danger-indicator.2bpp"
 DangerIndicatorTilesEnd::
-ChinchillaTiles::
-INCBIN "build/gfx/chinchilla.2bpp"
-ChinchillaTilesEnd::
 ItemTiles::
 INCBIN "build/gfx/item-tiles.2bpp"
 ItemTilesEnd::

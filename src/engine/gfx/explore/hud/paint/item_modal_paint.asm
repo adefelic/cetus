@@ -8,7 +8,7 @@ INCLUDE "src/assets/tiles/indices/scrib.inc"
 SECTION "Item Modal Paint Routines", ROMX
 PaintModalTopRowItemMenu::
 .tl_corner
-	ld d, TILE_MODAL_TL_CORNER
+	ld d, TILE_UI_BORDER_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT
 	ld b, 1
 	call CopyByteInDToRange
@@ -63,7 +63,7 @@ PaintModalTopRowItemMenu::
 	ld b, 10
 	call CopyByteInEToRange
 .top_line
-	ld d, TILE_MODAL_HORIZONTAL
+	ld d, TILE_UI_BORDER_HORIZONTAL
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols 11
 	ld b, 8
 	call CopyByteInDToRange
@@ -72,7 +72,7 @@ PaintModalTopRowItemMenu::
 	ld b, 8
 	call CopyByteInEToRange
 .tr_corner
-	ld d, TILE_MODAL_TL_CORNER
+	ld d, TILE_UI_BORDER_TL_CORNER
 	ld hl, wShadowBackgroundTilemap + MODAL_TOP_LEFT + cols (MODAL_WIDTH - 1)
 	ld b, 1
 	call CopyByteInDToRange
