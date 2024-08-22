@@ -1,7 +1,9 @@
-INCLUDE "src/assets/items.inc"
 INCLUDE "src/constants/constants.inc"
+INCLUDE "src/constants/item_constants.inc"
 INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/lib/hardware.inc"
+INCLUDE "src/structs/item.inc"
+
 
 SECTION "Item Placement Scratch", WRAM0
 wWallTypeInFrontOfPlayer:: db
