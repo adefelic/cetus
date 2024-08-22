@@ -17,9 +17,9 @@ ScribTilesEnd::
 
 ;;; bg/obj bank 0
 NpcBrambleTiles::
-INCBIN "build/gfx/npc_bramble.2bpp"
+INCBIN "build/gfx/npc/bramble.2bpp"
 NpcOldBonesTiles::
-INCBIN "build/gfx/npc_oldbones.2bpp"
+INCBIN "build/gfx/npc/oldbones.2bpp"
 
 ;;; bg/obj bank 1
 FieldWallBTiles::

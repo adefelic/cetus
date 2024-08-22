@@ -10,10 +10,10 @@ ForestBgPaletteSet::
 	;    door      ground     walls     unused
 	; encounter: unused (todo, pick one for environment)
 	;    dark,     tan,        green,     grey-brown,
-	RGB  04,04,00, 12, 9, 8,  0, 8, 6,   7, 6, 8 ; z0, near sides
-	RGB  04,04,00, 20,10,15,  1, 9, 6,   8, 6, 8 ; z1, near front
-	RGB  04,04,00, 14,11, 9,  1,10, 7,   9, 7, 8 ; z2, far sides
-	RGB  04,04,00, 11,11,11,  1,11, 7,  10, 7, 8 ; z3, far front
+	RGB  00,00,00, 12, 9, 8,  0, 8, 6,   7, 6, 8 ; z0, near sides
+	RGB  00,00,00, 20,10,15,  1, 9, 6,   8, 6, 8 ; z1, near front
+	RGB  00,00,00, 14,11, 9,  1,10, 7,   9, 7, 8 ; z2, far sides
+	RGB  00,00,00, 11,11,11,  1,11, 7,  10, 7, 8 ; z3, far front
 
 	; palettes 4 & 5
 	; explore & encounter:
@@ -62,6 +62,8 @@ OwObjPaletteSet::
 
 ; Enemy/NPC Palettes
 NPCGreenBriarsPalette::
-	RGB  31,00,00, 00,31,00, 00,00,31, 31,31,31
+	;    bckgrnd   branch    thorn     thorn highlight
+	RGB  00,00,00, 10, 7, 4, 16,04,02, 20,4,02
 NPCOldBonesPalette::
-	RGB  10,00,00, 00,10,00, 00,00,10, 10,10,10
+	;    bckgrnd   bone      handle    blade
+	RGB  00,00,00, 22,22,18, 13,10,03, 08,08,08
