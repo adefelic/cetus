@@ -23,7 +23,7 @@ INCBIN "build/gfx/npc_oldbones.2bpp"
 
 ;;; bg/obj bank 1
 FieldWallBTiles::
-INCBIN "build/gfx/field_door_tiles.2bpp"
+INCBIN "build/gfx/wall-b-tiles.2bpp"
 
 ;;; obj bank 0
 CompassTiles::
