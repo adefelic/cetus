@@ -1,9 +1,21 @@
 new planning doc for short, dark, coastal drpg. roguelike elements, soulslike structure
 	- roguelike because you play in short bursts and it makes experimentation more easy
 
+## PREMISE
+- it is hard to balance between nature and technology. technology can produce comfort but it also destroys you
+	- this isn't an interesting premise, it doesn't choose a side
+	- make it so tech things are sometimes powerful and also sometimes useless. nature things are reliable and cheap and uninteresting
+- you should go where you're not supposed to go because that's the only place where you will grow? that will be what differentiates you. you can't pick everything
+- importance of relationships / covenants
+- carrier bag fiction. less spectacle.
+	- hypnotic/ambient music will help with this i think
+- importance of nature w/o overly romanticizing it
+
+- i should remove all stats for now. equipment just gives you moves and some flavor
 
 ## THE FUN
-- it is fun to be surprised by newness
+- it is fun to feel like you're going deeper and deeper into somewhere you shouldn't be
+- it is fun to be surprised / to experience novelty
 	- it is fun to want to get to the next place to see what happens
 	- it is fun to keep running into the same characters in unexpected
 	- it is fun to want to see more kinds of enemy
@@ -11,11 +23,7 @@ new planning doc for short, dark, coastal drpg. roguelike elements, soulslike st
 	- decorating makes the game easier and is the best way to make progress
 	- it is fun to have enemies comment on decoration
 
-
-
-
 - when in doubt, lean on genre convention
-
 
 - inspirations
 	- smt1, strange journey
@@ -35,12 +43,10 @@ new planning doc for short, dark, coastal drpg. roguelike elements, soulslike st
 	- lotr
 		- nature, mystery, melancholy
 	- dark/demon's souls
+		- loneliness
 	- wc3
 		- hero units have simple stats and simple inventories / equipment that modify those stats
 		- simple active abilities
-		- maybe you should have two characters in this to make moves interesting
-			- it would be brutal to be down a guy
-				- make it so you can always lend strength out of combat or something
 
 aesthetics:
 - coastal
@@ -172,7 +178,6 @@ physical damage types: all do damage to hp
 - option 1: simple combat. player does move, enemy does move, repeat until someone is dead. hp only
 - option 2: complicated combat
 
-
 today's combat thoughts:
 
 - attack speed? this could make using a single character more interesting.
@@ -188,28 +193,45 @@ i think that the target complexity should be roughly DRAGON QUEST. you choose a 
 smt combat and eo combat both work because you have a lot of moves to use. maybe there should be some roguelike elements where you "remember" the moves from encounters sometimes. maybe it happens when you are hit by something that is strong against you?
 
 
-- skills have a combat function and a non combat function
+- skills have a combat function and a non combat function?
 
+combat problem:
+ - turn based games without parties are boring
+ 	- they attach particular abilities to particular units with particular weaknesses and their own ability to be incapacitated
+ 	- they give more gradations of danger to the player. it's not all-or-nothing, whther you are dead or not
+ 	- they allow you to expend some resources and still have other resources. they keep your palette of options interesting. 
+ 	- how can this variety of options and gradation of danger work with just one player unit?
+ 		- buriedbornes gives you a constantly evolving move pool and item pool that feed back into one another
+ - action games get away with you having only one player by having combat that is much more varied. time and positioning exist to a degree that they dont in turn-based
+ 	- queuing up multiple moves for a single attack command could make speed stat more relevant. 
+ 		- if each attack costs 10sp instead of 12sp that could mean fitting in another move or going earlier.
+ 			- some weapons have faster speeds, do different elements of dmg, etc
+
+ 			- complexity needs to go on weapons and attacks because there's only one character
 ## moves 
 
 ### damage types: (all verbs)
+- all types do regular damage to your hp 
 - wound
 	- cut / lacerate
 	- crush / break
 	- sting / envenom (poison)
 - inhibit 
 	- bind / trap / obstruct (legs? arms?)
+		- this could become a status
 	- drown / cant breathe
 	- soil / encumber / burden
+		- this could become a status
 	- blaze / dazzle (heat / bright)
 - mental
 	- pressure / stress
-	- confuse / distract
-	- exhaust / tire
+		- this could become a status
+	- distract
+	- exhaust
 	- lull / trick
 	- menace / threaten
+
 	- calm / soothe / appease
-	- yield / submit
 	- befriend / support / protect / advice
 	- respect
 		- hell yes
@@ -238,7 +260,9 @@ smt combat and eo combat both work because you have a lot of moves to use. maybe
 			- 
 
 ### encounter flow:
-	enemy is revealed
+
+** there needs to be an opportunity to give an item to the npc
+- enemy is revealed
 	- check for conversation trigger
 		- if yes, enter conversation
 			- if positive
@@ -246,7 +270,7 @@ smt combat and eo combat both work because you have a lot of moves to use. maybe
 				- go to reward screen
 			- if negative, go to combat screen
 		- if no, it makes a sound (text) (greeting)
-			- either an initiation of combat or "they stare, silent" or something like that
+			- either an initiation of combat or "____ stares, silent" or something like that
 	coin flip for who goes first, 50/50
 	enemy moves if tails
 	then go into turn cycles -- 
@@ -259,6 +283,12 @@ smt combat and eo combat both work because you have a lot of moves to use. maybe
 
 - conversation
 	- enemy comments on an item on this map ... zone? (there isn't a great distinction here. zone / locale / location)
+		- there is a table of all items in the zone
+			- fuck each room is going to need to have a locale affinity now
+			- get the table for the current locale
+			- roll a random number x between 0 and n (number of items in locale)
+			- get the xth item
+			- enemy comments on item, positive or negative
 	- vibes
 		- tower
 			- "ho there!" "that's the spirit" 
@@ -269,107 +299,14 @@ smt combat and eo combat both work because you have a lot of moves to use. maybe
 		- dead
 			- "you see us. it is little but it is something"
 			- "we only wish to be remembered"
-			- "what happened?"
-	"we see you" ""
-
-
-
-## player classes
-characters:
-	- characters have
-		- skill progression
-		- equipment progression
-		- a resistance sheet (skip for now)
-		- a portrait (skip for now)
-
-character list:
-	- scarecrow / effigy
-		- actions:
-			- sway. stress x multiple. restores mp
-			- deceive. confuse x multiple
-			- crow peck. stab xx single
-			- crow flock. confuse xx single 
-			- pole strike. crush xx single
-			- spear. cut xxx single
-			- lantern eyes. stress xxx multiple
-			- wisp / ignite. blaze xxx single
-		- passive abilities:
-			"crows appear"
-				- every turn has a chance of crows helping?
-			"sway"
-				- passive weak mp regen
-				- passive weak stress
-		- str/wk:
-			weaknesses:
-				crush
-				burn
-			strengths:
-				sick
-				sting
-		- initial stats
-			- toughness : 10
-			- volition : 20
-		- weapon progression: - staves both for whacking and for commanding crows
-			- rotten stake
-			- cedar stave
-			- oaken pole
-			- iron fork
-	- reed keeper
-		tool based attacks, vines. plants
-		actions:
-			sow (heal hp, distract)
-			harvest (pierce)
-			sweat (trade hp for mp)
-			douse (drown)
-			tangle (bind)
-			weave
-			graft (trade mp for hp)
-			reap (pierce)
-		weapon progression:
-			- hand scythe
-			- great scythe
-			- wicked scythe
-	- prey
-		sneaky and quick like a prey animal
-		camouflage
-		human / animal (unclear)
-		actions:
-			hide
-			cower
-			throw
-		initial: "prey is wary" - 75% to move first
-		weapon progression:
-			- stone
-			- sling
-			- javelin
-			- atlatl
-	- hermit
-		less weaknesses, more hp
-		mental attacks? endurance based?
-		blue mage
-		human
-	- herald
-		physically strong
-		delusional
-		desperate
-		good gear that rusts over time?
-	- rain caller (appropriation? i think this is fine) / storm witch
-		weather magic
-		actions:
-			- driving rain
-			- wind
-			- thunder (sound)
-			- stillness
-			- calm before the storm
-			- darken skies
-
-
-### player stats:
-	- endurance
-	- willpower
-	hp = endurance * 10
-	mp = willpower * 10
-
+		
+- greetings
+	- tower
+		- 
+	- forest
+	- dead
+		- "what happened?"
+		- groans
 
 ## FAVOR / REPUTATION
 - favor within an individual encounter

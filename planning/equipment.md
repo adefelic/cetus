@@ -1,0 +1,200 @@
+equipment
+
+- i want to avoid using words from other cultures maybe? be descriptive rather than saying what the thing _is_
+
+### weapons
+- two weapons -- WEAPON and ICON
+	- icon modifies magical / mental attacks
+- come with a POWER value that modifies all attacks
+- come with an ATTACK, like
+	- an attack that lets you go first
+	- an attack that incflicts a status
+	- an attack that goes last but lets you take mitigate half damage while waiting
+- spears - tend to hit 1 target
+- small weapons - tend to hit 1 target, except when they dont
+- large weapons - tend to hit multiple targets, except when they dont
+- curved weapons - tend to hit multiple targets, except when they dont
+- fire 
+
+### armor
+
+- item slots
+	- you are always wearing ragged clothes. armor is over it. outer armor over that
+	- head
+		- hats, masks
+		- visible. could have neck or top of chest to make height and position variable
+	- outer layer
+		- weather protection? disguise?
+	- armor
+		- essentially full outfit
+		- visible. determines palette
+	- legs/boots
+		- waterproof, insulated, swimming,
+		- maybe visible? could have the top of leg to make boot height variable
+	- cloak (or another adornment?)
+		- waterproof, windproof, insulated. maybe this should be baked into armor? i want there to be more … mental/feelings/subjectivity-based items like 
+	- amulet
+		- 
+	- icon
+		- icon modifies magical / mental attacks
+	- weapon
+		- weapon modifies physical attacks
+	- 
+
+- head - defensive, cultural, provide resistances
+	- frog helm
+	- imp helm
+	- beaked helm
+	- hood
+	- shroud
+	- wooden masks, different kinds
+	- porcelain mask
+- armor - defensive, cultural, provide resistances
+	- old chain
+	- coarse clothing
+	- tower tabard
+	- green bolt tabard
+	- rootwork shirt
+	- 
+- legs - defensive, cultural, provide resistances
+	- bound leggings
+	- rough trousers
+	- chain leggings
+	- tarnished legguards
+	- vinework legs
+	- scrimshaw legplate
+	- hard leather legs
+	- seavine legs
+	- old plate legs
+	- etched legguards
+- outer layer
+	- cloak of leaves
+	- wind breaker
+	- rain cloak
+	- dark cape
+	- 
+- amulet 1/2, grant another move?
+	- tin salamander
+	- owlfoot charm
+	- flax knot
+	- wooden nail
+	- cat's tear
+	- raven's scale
+	- corn doll
+		- a reminder of who feeds us
+	- quartz figure
+		-
+	- eye stone
+		- another eye to help see
+	- fragrant herb
+		- calms the nerves
+	- horn cup
+		- allegiance to the rangers
+	- bone whistle
+		- allegiance to the dead song
+	- tarnished crest
+		- allegiance to old rule
+	- oily feather
+		- allegiance to dark wings
+	- petal crown
+		- allegiance to flowering things
+
+- icon - grants 2 moves. moves scale with 
+	- badge of god (cross)
+		- tower / echo
+		- heal
+		- + mental defense
+	- straw talisman / corn doll
+		- root / echo
+		- 
+		- 
+	- green lightning badge
+	- everbloom
+	- thorn whip
+	- stone mallet
+	- reed flute
+	- handmade effigy
+	- holly wand
+- weapon - each grants 2 moves
+		- tower
+	- wicked seed (flail)
+	- rotten stake
+		- tower / root 
+		- swing
+		- thrust
+	- cedar stave
+		- scarecrow 1
+	- oaken pole
+		- scarecrow 2
+	- iron fork
+		- scarecrow 3
+	- stone
+	- sling
+	- javelin
+	- atlatl
+	- hand scythe
+	- great scythe
+	- 
+	what would be good equips for 
+		- tower - ordered, 
+			- constabulary weapons
+			- * service steel (saber)
+			- badges of office
+			- * city pennant
+				- embolden
+				- 
+			- * stake hammer (long hammer) - tb
+				- wide swing
+				- stake
+			- farming tools
+				- * sturdy fork
+			- clearing / building tools
+				- * vinecutter
+		- wind - free, wistful?
+			- "foreign" things (these might end up going echo)
+				- foreign dirk
+			- pilgrim things
+			- tools
+			- rifles, bows
+			- pouches
+				- medicines, poisons
+			- wings
+			- caravans, wagons
+				- wagon wheel?
+			- * letter from home
+				- hearten
+				- heal
+			- vine
+
+		- claw - animal, predatory, defensive and offensive, familial?
+			- claws!
+				- * hooked gloves
+					-
+					- 
+				- * talon dagger
+
+			- teeth
+			- beaks
+			- scales
+			- eyes, glaring or mezmerizing
+		- root
+			- leaves, sharp
+			- poisons
+			- roots / nets / whips
+			- branches / clubs
+			- thorns
+			- nectars
+			- petals
+		- echo (it's ok to get a little d&d here)
+			- indigenous things
+			- rusted things 
+				- ragged longsword
+				- wicked scythe
+			- mythical things
+				- meteorite crown
+			- daggers
+			- books
+			- 
+
+
+

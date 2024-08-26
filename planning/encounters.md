@@ -1,7 +1,8 @@
 ## enemies
 encounters can be non-human beings, the land anthropomorphosed, weather, the past
 encounters can be helpful, but usually aren't
-field:
+- field: - golden grass lands, tarn, fallow fields. old well, evidence of past settlement and maybe some current.
+- maybe this should be broken into field 1 (settled-ish) and field 2 (unsettled) or something like that
 	- scare crow (artifice, safety)
 		- sway
 		- watch
@@ -23,6 +24,7 @@ field:
 		- grasp
 		- snare
 	- red briars (more cutting) (nature)
+		- slice
 		- 
 	- snake
 		- coil. bind xx single
@@ -39,15 +41,21 @@ field:
 	- blue/red butterfly (Karner Blue Butterfly)
 		- stardust
 		- starlight
-	- sunflower (day) / moonflower (night)
+	- sunflower (day)
 		- sun ray
+		- glow
+	- moonflower (night)
 		- moon ray
+		- glow
 	- i want more that arent animals. what are things that can happen
 		- recurring text npcs whose quests are advanced whenever you see them (or give them something?)
 	- plank bridge
 		- break
-	- 
-forest:
+	- grave spook
+	- old vines
+	- winter lantern / gourd / turnip
+
+forest: - pine woods. dry, orange-brown ground. twisty trees, grey trunks, briars, pinecones. needs more ...
 	- spider web
 		- tangle. * bind multi
 		- become spider. ends encounter and becomes spider encounter
@@ -72,11 +80,14 @@ forest:
 			- distress, xx, multi
 		- bite
 			- crush, xxx, single
+	- strange orchid
 	- wood turtle
 	- crow
 	- briar puppet / thorn doll (skeleton with briar marionette-ing)
 
-swamp:
+marsh?
+
+swamp: - dark. bluish, dense, soporific, deep. quiet, slow
 	- flies
 		- cloud
 	- still fog
@@ -88,7 +99,7 @@ swamp:
 	- bog turtle
 	- ritual flame
 
-coast:
+coast: - bright, foggy, empty, dead. seaweed, corpses of birds, fish, crustaceans.
 	- drifting fog
 		- confuse. 
 	- bleached bones
