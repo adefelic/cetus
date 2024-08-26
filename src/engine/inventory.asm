@@ -12,6 +12,11 @@ wInventoryLamp: db
 wInventoryTent: db
 wInventoryEnd::
 
+wEquipmentInventory::
+wEquipmentInventoryWeapons::
+wEquipmentInventoryIcons::
+
+
 SECTION "Inventory Functions", ROMX
 
 InitInventory::

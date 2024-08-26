@@ -7,7 +7,7 @@ INCLUDE "src/structs/npc.inc"
 INCLUDE "src/structs/attack.inc"
 INCLUDE "src/structs/palette_animation.inc"
 
-DEF NPC_COUNT_2_EXPONENT EQU 1
+DEF NPC_COUNT_2_EXPONENT EQU 3
 
 SECTION "Encounter Screen Renderer", ROMX
 
@@ -46,10 +46,9 @@ UpdateEncounterScreen::
 	; control should not reach here
 	ret
 
-; todo make this load from wCurrentEncounterTable
 RollEnemyNpc:
 	call Rand
-	; mask out bits that arent used by FIELD_NPCS_COUNT. currently only 1 bit so AND 1
+	; mask out bits that arent used by FIELD_NPCS_COUNT. currently  2 bit so AND 3
 	AND NPC_COUNT_2_EXPONENT
 	sla a ; * 2 so that it's the random number * sizeof address
 	ld d, a

@@ -1,11 +1,13 @@
 SECTION "Location NPC Table", ROMX
 
-DEF FIELD_NPCS_COUNT EQU 2
 FieldNpcs::
 dw NpcGreenBriars
+dw NpcSunflower
+dw NpcSunflower
 dw NpcOldBones
 
-DEF SWAMP_NPCS_COUNT EQU 2
 SwampNpcs::
 dw NpcGreenBriars
+dw NpcGreenBriars
 dw NpcOldBones
+dw NpcMoonflower

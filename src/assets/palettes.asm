@@ -63,7 +63,15 @@ OwObjPaletteSet::
 ; Enemy/NPC Palettes
 NPCGreenBriarsPalette::
 	;    bckgrnd   branch    thorn     thorn highlight
-	RGB  00,00,00, 10, 7, 4, 16,04,02, 20,4,02
+	RGB  00,00,00, 10,10,04, 16,04,02, 20,04,02
 NPCOldBonesPalette::
 	;    bckgrnd   bone      handle    blade
 	RGB  00,00,00, 22,22,18, 13,10,03, 08,08,08
+NPCSunflowerPalette::
+	;    bckgrnd   stem      flower    eyes
+	RGB  00,00,00, 10, 7, 4, 16,10,02, 12,06,03
+NPCMoonflowerPalette::
+	;    bckgrnd   stem      flower    eyes
+	RGB  00,00,00, 10,10,13, 02,08,16, 15,15,20
+
+

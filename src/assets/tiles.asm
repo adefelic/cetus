@@ -20,6 +20,8 @@ NpcBrambleTiles::
 INCBIN "build/gfx/npc/bramble.2bpp"
 NpcOldBonesTiles::
 INCBIN "build/gfx/npc/oldbones.2bpp"
+NpcSunflowerTiles::
+INCBIN "build/gfx/npc/sunflower.2bpp"
 
 ;;; bg/obj bank 1
 FieldWallBTiles::
