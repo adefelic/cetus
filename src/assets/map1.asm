@@ -116,7 +116,7 @@ TownHall_AskAboutSkull_DialogBranchFrames:
 
 ; tile ids for a hard-coded encounter screen
 ; todo move this somewhere else. todo just get rid of this if the encounter background is tile 0
-Map1EncounterScreen::
+BlackBackground::
 	; 32x32
 	; now 18x20
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
@@ -137,7 +137,7 @@ Map1EncounterScreen::
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
-Map1EncounterScreenEnd::
+BlackBackgroundEnd::
 	;db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
 	;db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0
 	;db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0

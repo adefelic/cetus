@@ -167,6 +167,7 @@ InitGame:
 	ld a, FALSE
 	ld [wFoundSkullFlag], a
 	call InitInventory
+	call InitEquipment
 	call InitPlayerCharacter
 	call InitAudio
 

@@ -16,12 +16,22 @@ INCBIN "build/gfx/scrib.2bpp"
 ScribTilesEnd::
 
 ;;; bg/obj bank 0
+
+; npc tiles
 NpcBrambleTiles::
 INCBIN "build/gfx/npc/bramble.2bpp"
 NpcOldBonesTiles::
 INCBIN "build/gfx/npc/oldbones.2bpp"
 NpcSunflowerTiles::
 INCBIN "build/gfx/npc/sunflower.2bpp"
+
+; paper doll tiles
+EquipmentFlailTiles::
+INCBIN "build/gfx/equipment/flail.2bpp"
+
+; icon tiles
+IconFlailTiles::
+INCBIN "build/gfx/icons/icon-flail.2bpp"
 
 ;;; bg/obj bank 1
 FieldWallBTiles::

@@ -23,6 +23,9 @@ InitTileLoadingFlags::
 	ld a, FALSE
 	ld [wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram], a
 	ld [wDoesBgWallTileDataNeedToBeCopiedIntoVram], a
+
+	; hmm, except for the initial load-in, these should only need to be updated one-at-a-time, i think?
+	ld [wDoesWeaponIconTileDataNeedToBeCopiedIntoVram], a
 	ret
 
 ; @param de: source palette set addr

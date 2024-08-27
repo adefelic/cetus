@@ -106,9 +106,9 @@ HandleInitialState:
 	ld a, BG_PALETTE_ENEMY
 	ld [wCurrentNpcPalette], a
 .loadEncounterBackground
-	ld de, Map1EncounterScreen
+	ld de, BlackBackground
 	ld hl, wShadowBackgroundTilemap
-	ld bc, Map1EncounterScreenEnd - Map1EncounterScreen
+	ld bc, BlackBackgroundEnd - BlackBackground
 	call Memcopy
 	ld e, BG_PALETTE_Z0
 	ld hl, wShadowBackgroundTilemapAttrs

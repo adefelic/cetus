@@ -4,6 +4,7 @@ INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/ram/wram.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
+INCLUDE "src/engine/gfx/gfx_macros.inc"
 
 ; the uncontested worst file in this project
 
@@ -33,15 +34,6 @@ wRDirty: db
 wRDiagDirty: db
 
 SECTION "Segment Paint Routines", ROMX
-
-MACRO paint_row_single_tile
-	ld hl, wShadowBackgroundTilemap + rows ROW + cols LEFTMOST_COLUMN
-	ld b, ROW_WIDTH
-	call CopyByteInDToRange
-	ld hl, wShadowBackgroundTilemapAttrs + rows ROW + cols LEFTMOST_COLUMN
-	ld b, ROW_WIDTH
-	call CopyByteInEToRange
-ENDM
 
 MACRO paint_row_random_fog_tiles
 	ld hl, wShadowBackgroundTilemap + rows ROW + cols LEFTMOST_COLUMN

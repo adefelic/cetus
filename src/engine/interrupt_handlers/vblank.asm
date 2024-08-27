@@ -16,11 +16,13 @@ VBlankHandler:
 	push bc
 	push de
 	push hl
+	; todo only call what makes sense for the current screen?: exp/enc/pause
 	call SetEnqueuedBgPaletteSet
 	call SetEnqueuedEnemyBgPalette ; todo would it make more sense to consolidate all palette updates? this overwrites palette 6
 	call CopyBgWallTilesIntoVram
 	call CopyNpcSpriteTilesIntoVram
 	call CopyShadowsToTilemapVram
+	call CopyWeaponIconTilesIntoVram
 	call GetKeys
 	pop hl
 	pop de
@@ -71,9 +73,9 @@ CopyBgWallTilesIntoVram:
 	ldh [rHDMA2], a
 
 	; dest
-	ld a, HIGH(VRAM_BOTH_BLOCK)
+	ld a, HIGH(WALL_TILES_VRAM_ADDR)
 	ldh [rHDMA3], a
-	ld a, LOW(VRAM_BOTH_BLOCK)
+	ld a, LOW(WALL_TILES_VRAM_ADDR)
 	ldh [rHDMA4], a
 
 	; size + enable
@@ -95,6 +97,35 @@ CopyBgWallTilesIntoVram:
 	ld [rVBK], a
 	ret
 
+CopyWeaponIconTilesIntoVram:
+	ld a, [wDoesWeaponIconTileDataNeedToBeCopiedIntoVram]
+	and a
+	ret nz
+.gdmaTileData:
+	; source
+	ld a, [wEquippedWeaponIconTiles + 1]
+	ldh [rHDMA1], a
+	ld a, [wEquippedWeaponIconTiles]
+	ldh [rHDMA2], a
+
+	; dest
+	ld a, HIGH(WEAPON_ICON_VRAM_ADDR)
+	ldh [rHDMA3], a
+	ld a, LOW(WEAPON_ICON_VRAM_ADDR)
+	ldh [rHDMA4], a
+
+	; size + enable
+	ld a, HDMA5F_MODE_GP + EQUIPMENT_ICON_TILES - 1 ; length in tiles, - 1
+	ld [rHDMA5], a ; begin dma transfer
+
+	ld a, FALSE
+	ld [wDoesWeaponIconTileDataNeedToBeCopiedIntoVram], a
+
+	ld bc, EQUIPMENT_ICON_SIZE * 2 + 4
+.waitforDmaToFinish: ; necessary?
+    dec bc
+    jr nz, .waitforDmaToFinish
+	ret
 
 ; dma copy shadow ram to VRAM
 CopyShadowsToTilemapVram::
