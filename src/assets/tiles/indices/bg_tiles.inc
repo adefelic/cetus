@@ -1,4 +1,6 @@
 INCLUDE "src/constants/gfx_constants.inc"
+IF !DEF(DEF_BG_TILE_INDICES)
+DEF DEF_BG_TILE_INDICES EQU 1
 
 ;;
 ; overworld tileset
@@ -54,4 +56,13 @@ DEF TILE_FIELD_WALL_B_SIDE_FAR_DIAG EQU $82
 
 ; pause screen
 DEF TILE_WEAPON_ICON          EQU $80 ; 4 tiles in size
+DEF TILE_WEAPON_PAPER_DOLL    EQU $80 + $40 ; 4 tiles in size
 
+; full vram tile addresses for use in vblank handler
+; todo clean this all up
+DEF NPC_SPRITE_TILE_VRAM_ADDR EQU VRAM_BOTH_BLOCK ; bank 0
+DEF WALL_TILES_VRAM_ADDR EQU VRAM_BOTH_BLOCK ; bank 1
+DEF WEAPON_ICON_VRAM_ADDR EQU VRAM_BOTH_BLOCK
+DEF WEAPON_PAPER_DOLL_VRAM_ADDR EQU VRAM_BOTH_BLOCK + $40 * 16
+
+ENDC

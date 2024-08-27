@@ -5,9 +5,9 @@ INCLUDE "src/constants/palette_constants.inc"
 
 SECTION "Pause Screen State", WRAM0
 wDoesWeaponIconTileDataNeedToBeCopiedIntoVram:: db
+wDoesWeaponPaperDollTileDataNeedToBeCopiedIntoVram:: db
 
 SECTION "Pause Screen Renderer", ROMX
-
 UpdatePauseScreen::
 	ld a, [wIsShadowTilemapDirty]
 	cp FALSE
@@ -17,6 +17,8 @@ UpdatePauseScreen::
 	ld [wDoesWeaponIconTileDataNeedToBeCopiedIntoVram], a
 .loadPaperDollArmorTilesIntoVram
 .loadPaperDollWeaponTilesIntoVram
+	ld a, TRUE
+	ld [wDoesWeaponPaperDollTileDataNeedToBeCopiedIntoVram], a
 .loadBackgroundIntoTilemap
 	ld de, BlackBackground
 	ld hl, wShadowBackgroundTilemap

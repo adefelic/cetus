@@ -1,6 +1,7 @@
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
+INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 
 SECTION "VBlank HRAM", HRAM
 	hLCDC:: db
@@ -23,6 +24,7 @@ VBlankHandler:
 	call CopyNpcSpriteTilesIntoVram
 	call CopyShadowsToTilemapVram
 	call CopyWeaponIconTilesIntoVram
+	call CopyWeaponPaperDollTilesIntoVram
 	call GetKeys
 	pop hl
 	pop de
@@ -122,6 +124,36 @@ CopyWeaponIconTilesIntoVram:
 	ld [wDoesWeaponIconTileDataNeedToBeCopiedIntoVram], a
 
 	ld bc, EQUIPMENT_ICON_SIZE * 2 + 4
+.waitforDmaToFinish: ; necessary?
+    dec bc
+    jr nz, .waitforDmaToFinish
+	ret
+
+CopyWeaponPaperDollTilesIntoVram:
+	ld a, [wDoesWeaponPaperDollTileDataNeedToBeCopiedIntoVram]
+	and a
+	ret nz
+.gdmaTileData:
+	; source
+	ld a, [wEquippedWeaponPaperDollTiles + 1]
+	ldh [rHDMA1], a
+	ld a, [wEquippedWeaponPaperDollTiles]
+	ldh [rHDMA2], a
+
+	; dest
+	ld a, HIGH(WEAPON_PAPER_DOLL_VRAM_ADDR)
+	ldh [rHDMA3], a
+	ld a, LOW(WEAPON_PAPER_DOLL_VRAM_ADDR)
+	ldh [rHDMA4], a
+
+	; size + enable
+	ld a, HDMA5F_MODE_GP + WEAPON_PAPER_DOLL_TILES - 1 ; length in tiles, - 1
+	ld [rHDMA5], a ; begin dma transfer
+
+	ld a, FALSE
+	ld [wDoesWeaponPaperDollTileDataNeedToBeCopiedIntoVram], a
+
+	ld bc, WEAPON_PAPER_DOLL_TILES * 2 + 4
 .waitforDmaToFinish: ; necessary?
     dec bc
     jr nz, .waitforDmaToFinish

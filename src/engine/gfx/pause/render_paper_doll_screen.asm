@@ -51,7 +51,6 @@ MACRO paint_empty_equipment_square
 	call CopyByteInEToRange
 ENDM
 
-
 ; todo, make a NO_ITEM equipment for each slot that has its icon loaded into vram instead of how it works now
 PaintEquipmentIcons:
 	ld d, TILE_EQUIPMENT_BORDER_TL
@@ -95,10 +94,12 @@ PaintEquipmentIcons:
 	ret
 
 PaintWeapon:
-	; todo load weapon art dynamically
-
+	DEF TOP = 1
 	DEF LEFTMOST_COLUMN = 9
-	DEF ROW = 1
-	DEF ROW_WIDTH = 3
-
+	DEF ROW_WIDTH = WEAPON_PAPER_DOLL_WIDTH
+	ld d, TILE_WEAPON_PAPER_DOLL
+	ld e, BG_PALETTE_UI
+	FOR ROW, TOP, TOP + WEAPON_PAPER_DOLL_HEIGHT
+		paint_row_incrementing
+	ENDR
 	ret
