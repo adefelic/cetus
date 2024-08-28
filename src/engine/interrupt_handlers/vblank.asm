@@ -141,19 +141,19 @@ CopyWeaponPaperDollTilesIntoVram:
 	ldh [rHDMA2], a
 
 	; dest
-	ld a, HIGH(WEAPON_PAPER_DOLL_VRAM_ADDR)
+	ld a, HIGH(PAPER_DOLL_WEAPON_VRAM_ADDR)
 	ldh [rHDMA3], a
-	ld a, LOW(WEAPON_PAPER_DOLL_VRAM_ADDR)
+	ld a, LOW(PAPER_DOLL_WEAPON_VRAM_ADDR)
 	ldh [rHDMA4], a
 
 	; size + enable
-	ld a, HDMA5F_MODE_GP + WEAPON_PAPER_DOLL_TILES - 1 ; length in tiles, - 1
+	ld a, HDMA5F_MODE_GP + PAPER_DOLL_WEAPON_TILES - 1 ; length in tiles, - 1
 	ld [rHDMA5], a ; begin dma transfer
 
 	ld a, FALSE
 	ld [wDoesWeaponPaperDollTileDataNeedToBeCopiedIntoVram], a
 
-	ld bc, WEAPON_PAPER_DOLL_TILES * 2 + 4
+	ld bc, PAPER_DOLL_WEAPON_TILES * 2 + 4
 .waitforDmaToFinish: ; necessary?
     dec bc
     jr nz, .waitforDmaToFinish
