@@ -50,6 +50,8 @@ PaintHpStatusLine:
 	ld a, e
 	add NUMBER_CHARACTER_OFFSET
 	ld [hli], a
+	ld a, " "
+	ld [hli], a
 .memcopy
 	; tilemap
 	ld de, wStatusStringBuffer
@@ -96,6 +98,8 @@ PaintMpStatusLine:
 	ld [hli], a
 	ld a, e
 	add NUMBER_CHARACTER_OFFSET
+	ld [hli], a
+	ld a, " "
 	ld [hli], a
 .memcopy
 	; tilemap
@@ -144,6 +148,8 @@ PaintNPCStatus::
 	ld [hli], a
 	ld a, e
 	add NUMBER_CHARACTER_OFFSET
+	ld [hli], a
+	ld a, " "
 	ld [hli], a
 .memcopy
 	; tilemap
