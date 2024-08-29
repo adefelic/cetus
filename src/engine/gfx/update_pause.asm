@@ -4,8 +4,11 @@ INCLUDE "src/constants/palette_constants.inc"
 
 
 SECTION "Pause Screen State", WRAM0
-wDoesWeaponIconTileDataNeedToBeCopiedIntoVram:: db
-wDoesWeaponPaperDollTileDataNeedToBeCopiedIntoVram:: db
+wWeaponIconTilesReadyForVramWrite:: db
+wWeaponPaperDollTilesReadyForVramWrite:: db
+wHeadPaperDollTilesReadyForVramWrite:: db
+wBodyPaperDollTilesReadyForVramWrite:: db
+wLegsPaperDollTilesReadyForVramWrite:: db
 
 SECTION "Pause Screen Renderer", ROMX
 UpdatePauseScreen::
@@ -14,11 +17,16 @@ UpdatePauseScreen::
 	ret z
 .loadEquipmentTilesIntoVram
 	ld a, TRUE
-	ld [wDoesWeaponIconTileDataNeedToBeCopiedIntoVram], a
+	ld [wWeaponIconTilesReadyForVramWrite], a
 .loadPaperDollArmorTilesIntoVram
+	ld a, TRUE
+	ld [wHeadPaperDollTilesReadyForVramWrite], a
+	ld [wBodyPaperDollTilesReadyForVramWrite], a
+	ld [wLegsPaperDollTilesReadyForVramWrite], a
+	; todo have a loadall function here
 .loadPaperDollWeaponTilesIntoVram
 	ld a, TRUE
-	ld [wDoesWeaponPaperDollTileDataNeedToBeCopiedIntoVram], a
+	ld [wWeaponPaperDollTilesReadyForVramWrite], a
 .loadBackgroundIntoTilemap
 	ld de, BlackBackground
 	ld hl, wShadowBackgroundTilemap

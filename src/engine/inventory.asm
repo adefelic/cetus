@@ -13,11 +13,19 @@ wInventoryLamp: db
 wInventoryTent: db
 wInventoryEnd::
 
-wEquipmentInventory::
-wEquipmentInventoryWeapons::
-wEquipmentInventoryIcons::
+wEquippedHead:: dw
+wEquippedHeadIconTiles:: dw
+wEquippedHeadPaperDollTiles:: dw
 
-wEquippedWeapon:: dw ;
+wEquippedBody:: dw
+wEquippedBodyIconTiles:: dw
+wEquippedBodyPaperDollTiles:: dw
+
+wEquippedLegs:: dw
+wEquippedLegsIconTiles:: dw
+wEquippedLegsPaperDollTiles:: dw
+
+wEquippedWeapon:: dw
 wEquippedWeaponIconTiles:: dw
 wEquippedWeaponPaperDollTiles:: dw
 
@@ -35,30 +43,50 @@ InitInventory::
 	ret
 
 InitEquipment::
-	ld hl, EquipmentFlail
-	ld a, l
-	ld [wEquippedWeapon], a
-	ld a, h
-	ld [wEquippedWeapon+1], a
 
-	push hl
-	ld a, Equipment_IconTilesAddr
-	call AddAToHl
-	ld a, [hli]
-	ld [wEquippedWeaponIconTiles], a
-	ld a, [hl]
-	ld [wEquippedWeaponIconTiles+1], a
-	pop hl
+	ld de, EquipmentHelmFrogMouth
+	ld hl, wEquippedHead
+	call EquipSlot
 
-	ld a, Equipment_PaperDollTilesAddr
-	call AddAToHl
-	ld a, [hli]
-	ld [wEquippedWeaponPaperDollTiles], a
-	ld a, [hl]
-	ld [wEquippedWeaponPaperDollTiles+1], a
+	ld de, EquipmentSurcoatRoot
+	ld hl, wEquippedBody
+	call EquipSlot
 
+	ld de, EquipmentLegWrappings
+	ld hl, wEquippedLegs
+	call EquipSlot
+
+	ld de, EquipmentFlail
+	ld hl, wEquippedWeapon
+	call EquipSlot
 	ret
 
+; @param de, src equipment def
+; @param hl, dest slot
+EquipSlot:
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+
+	push de
+	ld a, Equipment_IconTilesAddr
+	call AddAToDe
+	call DereferenceDeIntoDe
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+
+	pop de
+	ld a, Equipment_PaperDollTilesAddr
+	call AddAToDe
+	call DereferenceDeIntoDe
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hl], a
+	ret
 
 ; @param a, item offset
 IncrementInventoryItemQuantity::

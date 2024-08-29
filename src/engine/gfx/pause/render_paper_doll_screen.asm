@@ -7,9 +7,9 @@ SECTION "Paper Doll Screen Renderer", ROMX
 
 RenderPaperDollScreen::
 	call PaintEquipmentIcons
-	; PaintHead
-	; PaintBody
-	; PaintLegs
+	call PaintBody
+	call PaintHead ; this has to be called after body so that the head will overlap a little
+	call PaintLegs
 	call PaintWeapon
 	ret
 
@@ -93,12 +93,51 @@ PaintEquipmentIcons:
 	paint_empty_equipment_square
 	ret
 
+PaintHead:
+	DEF TOP = PAPER_DOLL_HEAD_TOP
+	DEF LEFTMOST_COLUMN = PAPER_DOLL_HEAD_LEFT
+	DEF ROW_WIDTH = PAPER_DOLL_HEAD_WIDTH
+	ld d, TILE_PAPER_DOLL_HEAD
+	ld e, BG_PALETTE_UI + OAMF_BANK1
+	FOR ROW, TOP, TOP + PAPER_DOLL_HEAD_HEIGHT - 1
+		paint_row_incrementing
+	ENDR
+	; draw neck
+	inc d
+	DEF ROW = PAPER_DOLL_HEAD_HEIGHT - 1
+	DEF ROW_WIDTH = 2
+	DEF LEFTMOST_COLUMN = PAPER_DOLL_HEAD_LEFT + 1
+	paint_row_incrementing
+	ret
+
+PaintBody:
+	DEF TOP = PAPER_DOLL_BODY_TOP
+	DEF LEFTMOST_COLUMN = PAPER_DOLL_BODY_LEFT
+	DEF ROW_WIDTH = PAPER_DOLL_BODY_WIDTH
+	ld d, TILE_PAPER_DOLL_BODY
+	ld e, BG_PALETTE_UI + OAMF_BANK1
+	FOR ROW, TOP, TOP + PAPER_DOLL_BODY_HEIGHT
+		paint_row_incrementing
+	ENDR
+	ret
+
+PaintLegs:
+	DEF TOP = PAPER_DOLL_LEGS_TOP
+	DEF LEFTMOST_COLUMN = PAPER_DOLL_LEGS_LEFT
+	DEF ROW_WIDTH = PAPER_DOLL_LEGS_WIDTH
+	ld d, TILE_PAPER_DOLL_LEGS
+	ld e, BG_PALETTE_UI + OAMF_BANK1
+	FOR ROW, TOP, TOP + PAPER_DOLL_LEGS_HEIGHT
+		paint_row_incrementing
+	ENDR
+	ret
+
 PaintWeapon:
 	DEF TOP = PAPER_DOLL_WEAPON_TOP
 	DEF LEFTMOST_COLUMN = PAPER_DOLL_WEAPON_LEFT
 	DEF ROW_WIDTH = PAPER_DOLL_WEAPON_WIDTH
 	ld d, TILE_PAPER_DOLL_WEAPON
-	ld e, BG_PALETTE_UI
+	ld e, BG_PALETTE_UI + OAMF_BANK1
 	FOR ROW, TOP, TOP + PAPER_DOLL_WEAPON_HEIGHT
 		paint_row_incrementing
 	ENDR

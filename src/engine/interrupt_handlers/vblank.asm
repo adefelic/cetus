@@ -3,6 +3,28 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 
+macro gdmaSmall
+	; source
+	ld a, [hli]
+	ldh [rHDMA2], a
+	ld a, [hl]
+	ldh [rHDMA1], a
+
+	; dest
+	ld a, HIGH(DEST)
+	ldh [rHDMA3], a
+	ld a, LOW(DEST)
+	ldh [rHDMA4], a
+
+	; size + enable
+	ld a, HDMA5F_MODE_GP + SIZE_TILES - 1 ; length in tiles, - 1
+	ld [rHDMA5], a ; begin dma transfer
+	ld bc, SIZE_TILES * 2 + 4
+	.waitforDmaToFinish: ; necessary?
+	dec bc
+	jr nz, .waitforDmaToFinish
+endm
+
 SECTION "VBlank HRAM", HRAM
 	hLCDC:: db
 
@@ -18,13 +40,22 @@ VBlankHandler:
 	push de
 	push hl
 	; todo only call what makes sense for the current screen?: exp/enc/pause
+	; explore
 	call SetEnqueuedBgPaletteSet
+	; encounter
 	call SetEnqueuedEnemyBgPalette ; todo would it make more sense to consolidate all palette updates? this overwrites palette 6
+	; explore
 	call CopyBgWallTilesIntoVram
+	; encounter
 	call CopyNpcSpriteTilesIntoVram
-	call CopyShadowsToTilemapVram
+	; pause
 	call CopyWeaponIconTilesIntoVram
+	call CopyHeadPaperDollTilesIntoVram
+	call CopyBodyPaperDollTilesIntoVram
+	call CopyLegsPaperDollTilesIntoVram
 	call CopyWeaponPaperDollTilesIntoVram
+
+	call CopyShadowsToTilemapVram
 	call GetKeys
 	pop hl
 	pop de
@@ -33,7 +64,7 @@ VBlankHandler:
 	reti
 
 CopyNpcSpriteTilesIntoVram:
-	ld a, [wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram]
+	ld a, [wNpcSpriteTilesReadyForVramWrite]
 	and a
 	ret nz
 .gdmaTileData:
@@ -54,17 +85,17 @@ CopyNpcSpriteTilesIntoVram:
 	ld [rHDMA5], a ; begin dma transfer
 
 	ld a, FALSE
-	ld [wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram], a
+	ld [wNpcSpriteTilesReadyForVramWrite], a
 
 	ld bc, NPC_SPRITE_TILES_SIZE * 2 + 4
 .waitforDmaToFinish: ; necessary?
-    dec bc
-    jr nz, .waitforDmaToFinish
+	dec bc
+	jr nz, .waitforDmaToFinish
 
 	ret
 
 CopyBgWallTilesIntoVram:
-	ld a, [wDoesBgWallTileDataNeedToBeCopiedIntoVram]
+	ld a, [wBgWallTilesReadyForVramWrite]
 	and a
 	ret nz
 .gdmaTileData:
@@ -88,19 +119,19 @@ CopyBgWallTilesIntoVram:
 	ld [rHDMA5], a ; begin dma transfer
 
 	ld a, FALSE
-	ld [wDoesBgWallTileDataNeedToBeCopiedIntoVram], a
+	ld [wBgWallTilesReadyForVramWrite], a
 
 	ld bc, WALL_TILES_SIZE * 2 + 4
 .waitforDmaToFinish: ; necessary?
-    dec bc
-    jr nz, .waitforDmaToFinish
+	dec bc
+	jr nz, .waitforDmaToFinish
 	; set bank 0
 	xor a
 	ld [rVBK], a
 	ret
 
 CopyWeaponIconTilesIntoVram:
-	ld a, [wDoesWeaponIconTileDataNeedToBeCopiedIntoVram]
+	ld a, [wWeaponIconTilesReadyForVramWrite]
 	and a
 	ret nz
 .gdmaTileData:
@@ -121,42 +152,100 @@ CopyWeaponIconTilesIntoVram:
 	ld [rHDMA5], a ; begin dma transfer
 
 	ld a, FALSE
-	ld [wDoesWeaponIconTileDataNeedToBeCopiedIntoVram], a
+	ld [wWeaponIconTilesReadyForVramWrite], a
 
 	ld bc, EQUIPMENT_ICON_SIZE * 2 + 4
 .waitforDmaToFinish: ; necessary?
-    dec bc
-    jr nz, .waitforDmaToFinish
+	dec bc
+	jr nz, .waitforDmaToFinish
 	ret
 
 CopyWeaponPaperDollTilesIntoVram:
-	ld a, [wDoesWeaponPaperDollTileDataNeedToBeCopiedIntoVram]
+	ld a, [wWeaponPaperDollTilesReadyForVramWrite]
 	and a
 	ret nz
-.gdmaTileData:
-	; source
-	ld a, [wEquippedWeaponPaperDollTiles + 1]
-	ldh [rHDMA1], a
-	ld a, [wEquippedWeaponPaperDollTiles]
-	ldh [rHDMA2], a
 
-	; dest
-	ld a, HIGH(PAPER_DOLL_WEAPON_VRAM_ADDR)
-	ldh [rHDMA3], a
-	ld a, LOW(PAPER_DOLL_WEAPON_VRAM_ADDR)
-	ldh [rHDMA4], a
+	; set bank 1
+	ld a, 1
+	ld [rVBK], a
 
-	; size + enable
-	ld a, HDMA5F_MODE_GP + PAPER_DOLL_WEAPON_TILES - 1 ; length in tiles, - 1
-	ld [rHDMA5], a ; begin dma transfer
+	ld hl, wEquippedWeaponPaperDollTiles
+	DEF DEST = PAPER_DOLL_WEAPON_VRAM_ADDR
+	DEF SIZE_TILES = PAPER_DOLL_WEAPON_TILES
+	gdmaSmall
+
+	; set bank 0
+	xor a
+	ld [rVBK], a
 
 	ld a, FALSE
-	ld [wDoesWeaponPaperDollTileDataNeedToBeCopiedIntoVram], a
+	ld [wWeaponPaperDollTilesReadyForVramWrite], a
+	ret
 
-	ld bc, PAPER_DOLL_WEAPON_TILES * 2 + 4
-.waitforDmaToFinish: ; necessary?
-    dec bc
-    jr nz, .waitforDmaToFinish
+CopyHeadPaperDollTilesIntoVram:
+	ld a, [wHeadPaperDollTilesReadyForVramWrite]
+	and a
+	ret nz
+
+	; set bank 1
+	ld a, 1
+	ld [rVBK], a
+
+	ld hl, wEquippedHeadPaperDollTiles
+	DEF DEST = PAPER_DOLL_HEAD_VRAM_ADDR
+	DEF SIZE_TILES = PAPER_DOLL_HEAD_TILES
+	gdmaSmall
+
+	; set bank 0
+	xor a
+	ld [rVBK], a
+
+	ld a, FALSE
+	ld [wHeadPaperDollTilesReadyForVramWrite], a
+	ret
+
+CopyBodyPaperDollTilesIntoVram:
+	ld a, [wBodyPaperDollTilesReadyForVramWrite]
+	and a
+	ret nz
+
+	; set bank 1
+	ld a, 1
+	ld [rVBK], a
+
+	ld hl, wEquippedBodyPaperDollTiles
+	DEF DEST = PAPER_DOLL_BODY_VRAM_ADDR
+	DEF SIZE_TILES = PAPER_DOLL_BODY_TILES
+	gdmaSmall
+
+	; set bank 0
+	xor a
+	ld [rVBK], a
+
+	ld a, FALSE
+	ld [wBodyPaperDollTilesReadyForVramWrite], a
+	ret
+
+CopyLegsPaperDollTilesIntoVram:
+	ld a, [wLegsPaperDollTilesReadyForVramWrite]
+	and a
+	ret nz
+
+	; set bank 1
+	ld a, 1
+	ld [rVBK], a
+
+	ld hl, wEquippedLegsPaperDollTiles
+	DEF DEST = PAPER_DOLL_LEGS_VRAM_ADDR
+	DEF SIZE_TILES = PAPER_DOLL_LEGS_TILES
+	gdmaSmall
+
+	; set bank 0
+	xor a
+	ld [rVBK], a
+
+	ld a, FALSE
+	ld [wLegsPaperDollTilesReadyForVramWrite], a
 	ret
 
 ; dma copy shadow ram to VRAM
@@ -199,16 +288,16 @@ GdmaShadowTilemapToVram:
 	ld [rHDMA5], a ; begin dma transfer
 	ld bc, VISIBLE_TILEMAP_SIZE * 2 + 4
 .waitforDmaToFinish: ; necessary?
-    dec bc
-    jr nz, .waitforDmaToFinish
-    ret
+	dec bc
+	jr nz, .waitforDmaToFinish
+	ret
 
 ; @param hl, source address, zero-aligned
 RunDma:
-    ld a, HIGH(hl)
-    ldh [$FF46], a  ; start DMA transfer (starts right after instruction)
-    ld a, 40        ; delay for a total of 4×40 = 160 cycles
+	ld a, HIGH(hl)
+	ldh [$FF46], a  ; start DMA transfer (starts right after instruction)
+	ld a, 40        ; delay for a total of 4×40 = 160 cycles
 .wait
-    dec a           ; 1 cycle
-    jr nz, .wait    ; 3 cycles
-    ret
+	dec a           ; 1 cycle
+	jr nz, .wait    ; 3 cycles
+	ret

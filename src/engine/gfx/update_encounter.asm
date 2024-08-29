@@ -96,7 +96,7 @@ CacheEnemyState:
 	call EnqueueEnemyBgPaletteUpdate
 
 	ld a, TRUE
-	ld [wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram], a
+	ld [wNpcSpriteTilesReadyForVramWrite], a
 	ret
 
 HandleInitialState:

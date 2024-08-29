@@ -14,6 +14,14 @@ AddAToHl::
 	ld h, a
 	ret
 
+AddAToDe::
+	add e
+	ld e, a
+	ld a, d
+	adc 0
+	ld d, a
+	ret
+
 ; @param hl, addr to dereference
 ; @return hl, new addr
 ; uses a,b,c,h,l
@@ -27,6 +35,22 @@ DereferenceHlIntoHl::
 	ld l, a
 	ld a, c
 	ld h, a
+	ret
+
+; @param de, addr to dereference
+; @return de, new addr
+; uses a,b,c,d,e
+DereferenceDeIntoDe::
+	ld a, [de]
+	inc de
+	ld b, a
+	ld a, [de]
+	ld c, a
+
+	ld a, b
+	ld e, a
+	ld a, c
+	ld d, a
 	ret
 
 ; @param a, # to convert. must be >= 0 and <= 99

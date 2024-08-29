@@ -21,11 +21,11 @@ InitColorPalettes::
 
 InitTileLoadingFlags::
 	ld a, FALSE
-	ld [wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram], a
-	ld [wDoesBgWallTileDataNeedToBeCopiedIntoVram], a
+	ld [wNpcSpriteTilesReadyForVramWrite], a
+	ld [wBgWallTilesReadyForVramWrite], a
 
 	; hmm, except for the initial load-in, these should only need to be updated one-at-a-time, i think?
-	ld [wDoesWeaponIconTileDataNeedToBeCopiedIntoVram], a
+	ld [wWeaponIconTilesReadyForVramWrite], a
 	ret
 
 ; @param de: source palette set addr

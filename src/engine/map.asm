@@ -102,7 +102,7 @@ LoadLocale::
 	ld [wCurrentWallTilesAddr+1], a
 
 	ld a, TRUE
-	ld [wDoesBgWallTileDataNeedToBeCopiedIntoVram], a
+	ld [wBgWallTilesReadyForVramWrite], a
 	ret
 
 

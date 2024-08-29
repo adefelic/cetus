@@ -7,8 +7,8 @@ wEncounterState:: db
 
 ; this flag could be put in the same place as palette enqueuing, for consistancy
 ; not sure if i should standardize to an address that becomes 0, or a flag + an address
-wDoesNpcSpriteTileDataNeedToBeCopiedIntoVram:: db
-wDoesBgWallTileDataNeedToBeCopiedIntoVram:: db
+wNpcSpriteTilesReadyForVramWrite:: db
+wBgWallTilesReadyForVramWrite:: db
 
 wNpcAddr:: dw
 wNpcCurrentHp:: db
