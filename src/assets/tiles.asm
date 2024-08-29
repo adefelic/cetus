@@ -5,6 +5,8 @@ BgBank0Tiles::
 ExploreBGTiles::
 INCBIN "build/gfx/bg-tiles.2bpp"
 ExploreBGTilesEnd::
+
+; todo, load env trees during the encounter or something more dynamic
 EncounterEnvTreesTiles::
 INCBIN "build/gfx/encounter-env-trees.2bpp"
 EncounterEnvTreesTilesEnd::

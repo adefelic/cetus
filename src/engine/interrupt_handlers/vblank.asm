@@ -39,11 +39,12 @@ VBlankHandler:
 	push bc
 	push de
 	push hl
-	; todo only call what makes sense for the current screen?: exp/enc/pause
+.updatePalettes
 	; explore
 	call SetEnqueuedBgPaletteSet
 	; encounter
 	call SetEnqueuedEnemyBgPalette ; todo would it make more sense to consolidate all palette updates? this overwrites palette 6
+.updateTiles
 	; explore
 	call CopyBgWallTilesIntoVram
 	; encounter
@@ -54,7 +55,7 @@ VBlankHandler:
 	call CopyBodyPaperDollTilesIntoVram
 	call CopyLegsPaperDollTilesIntoVram
 	call CopyWeaponPaperDollTilesIntoVram
-
+.updateTilemap
 	call CopyShadowsToTilemapVram
 	call GetKeys
 	pop hl
@@ -98,36 +99,14 @@ CopyBgWallTilesIntoVram:
 	ld a, [wBgWallTilesReadyForVramWrite]
 	and a
 	ret nz
-.gdmaTileData:
-	; source
-	ld a, [wCurrentWallTilesAddr + 1]
-	ldh [rHDMA1], a
-	ld a, [wCurrentWallTilesAddr]
-	ldh [rHDMA2], a
 
-	; dest
-	ld a, HIGH(WALL_TILES_VRAM_ADDR)
-	ldh [rHDMA3], a
-	ld a, LOW(WALL_TILES_VRAM_ADDR)
-	ldh [rHDMA4], a
-
-	; size + enable
-	; set bank 1
-	ld a, 1
-	ld [rVBK], a
-	ld a, HDMA5F_MODE_GP + (WALL_TILES_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1) (64 tiles = 1024 bytes total ... / 16 = 64, minus 1 = 63 blocks)
-	ld [rHDMA5], a ; begin dma transfer
+	ld hl, wCurrentWallTilesAddr
+	DEF DEST = WALL_TILES_VRAM_ADDR
+	DEF SIZE_TILES = strfmt("${WALL_TILES_SIZE}")
+	gdmaSmall
 
 	ld a, FALSE
 	ld [wBgWallTilesReadyForVramWrite], a
-
-	ld bc, WALL_TILES_SIZE * 2 + 4
-.waitforDmaToFinish: ; necessary?
-	dec bc
-	jr nz, .waitforDmaToFinish
-	; set bank 0
-	xor a
-	ld [rVBK], a
 	ret
 
 CopyWeaponIconTilesIntoVram:

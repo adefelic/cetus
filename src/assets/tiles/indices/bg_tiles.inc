@@ -2,24 +2,10 @@ INCLUDE "src/constants/gfx_constants.inc"
 IF !DEF(DEF_BG_TILE_INDICES)
 DEF DEF_BG_TILE_INDICES EQU 1
 
-;;
-; overworld tileset
-; this is a representation of the overworld tileset in vram in bank 0
+;;;; tile ids for VRAM_BG_BLOCK
+;
 
-; room type tiles / pausemap gfx tiles
-; deprecated for use as collision map
-; these tiles are both graphical tiles and the source of truth for the room map itself
-; todo decouple these? nah the pausemap is a debug feature not a feature feature
-
-; todo this should really just become a single file.
-; nothing i'm doing is dynamic enough to require the complexity.
-; this would also standardize which colors are 0,1,2,3
-; it would make it easier to add new tiles without having to update all of the indices
-DEF VRAM_BOTH_BLOCK_STARTING_ID EQU $80
-
-
-; offsets from VRAM_BG_BLOCK
-; explore tiles
+; bank 0, explore, encounter, pause
 DEF TILE_COLOR_0                  EQU 0 ; unused
 DEF TILE_UI_BORDER_EMPTY          EQU TILE_COLOR_0
 DEF TILE_COLOR_1                  EQU 1
@@ -40,24 +26,26 @@ DEF TILE_DISTANCE_FOG_A           EQU 13
 DEF TILE_DISTANCE_FOG_B           EQU 14
 DEF TILE_DISTANCE_FOG_LEFT_CORNER EQU 15
 DEF TILE_DISTANCE_FOG_GROUND      EQU 16
-DEF TILE_EQUIPMENT_BORDER_TL      EQU 17
+DEF TILE_EQUIPMENT_BORDER_TL      EQU 17 ; (only used for pause)
 
+; bank 0, encounter. not dynamic! gets loaded in main :(
 DEF TILES_ENV_BLOCK_LEFT          EQU 18
 DEF TILES_ENV_BLOCK_RIGHT         EQU TILES_ENV_BLOCK_LEFT + ENC_ENV_BLOCK_TILE_SIZE
 
-; offsets from NPC_SPRITE_TILE_VRAM_ADDR
+; bank 0, explore
+DEF TILE_FIELD_WALL_B_WALL          EQU TILES_ENV_BLOCK_RIGHT + ENC_ENV_BLOCK_TILE_SIZE
+DEF TILE_FIELD_WALL_B_DOOR          EQU TILE_FIELD_WALL_B_WALL + 1
+DEF TILE_FIELD_WALL_B_SIDE_FAR_DIAG EQU TILE_FIELD_WALL_B_DOOR + 1
 
-DEF TILES_ENCOUNTER_NPC EQU $80
+;;;; tile ids for VRAM_BOTH_BLOCK
+;
 
-; offsets from WALL_TILE_VRAM_ADDR
+DEF VRAM_BOTH_BLOCK_STARTING_ID EQU $80
 
-; side far, column of 1
-DEF TILE_FIELD_WALL_B_WALL          EQU VRAM_BOTH_BLOCK_STARTING_ID
-DEF TILE_FIELD_WALL_B_DOOR          EQU VRAM_BOTH_BLOCK_STARTING_ID + 1
-DEF TILE_FIELD_WALL_B_SIDE_FAR_DIAG EQU VRAM_BOTH_BLOCK_STARTING_ID + 2
+; bank 0, encounter
+DEF TILES_ENCOUNTER_NPC EQU VRAM_BOTH_BLOCK_STARTING_ID
 
 ; pause screen
-; so far, icons in bank 0, paper doll in bank 1
 ; bank 0
 DEF TILE_HEAD_ICON EQU VRAM_BOTH_BLOCK_STARTING_ID
 DEF TILE_BODY_ICON EQU TILE_HEAD_ICON + EQUIPMENT_ICON_TILES
@@ -74,18 +62,15 @@ DEF TILE_PAPER_DOLL_BODY EQU TILE_PAPER_DOLL_HEAD + PAPER_DOLL_HEAD_TILES
 DEF TILE_PAPER_DOLL_LEGS EQU TILE_PAPER_DOLL_BODY + PAPER_DOLL_BODY_TILES
 DEF TILE_PAPER_DOLL_WEAPON EQU TILE_PAPER_DOLL_LEGS + PAPER_DOLL_LEGS_TILES
 
+
 ; full vram tile addresses for use in vblank handler
-; todo clean this all up
+; todo standardize how this is done
 
-; encounter
-; bank 0
+; bank 0, encounter
 DEF NPC_SPRITE_TILE_VRAM_ADDR EQU VRAM_BOTH_BLOCK
-; explore
-; bank 1
-DEF WALL_TILES_VRAM_ADDR EQU VRAM_BOTH_BLOCK ; bank 1
-
-; pause
-; bank 0
+; bank 0, explore
+DEF WALL_TILES_VRAM_ADDR EQU VRAM_BG_BLOCK + (TILE_FIELD_WALL_B_WALL * TILE_SIZE)
+; bank 0, pause
 DEF HEAD_ICON_VRAM_ADDR  EQU VRAM_BOTH_BLOCK + (TILE_HEAD_ICON - VRAM_BOTH_BLOCK_STARTING_ID) * TILE_SIZE
 DEF BODY_ICON_VRAM_ADDR  EQU VRAM_BOTH_BLOCK + (TILE_BODY_ICON - VRAM_BOTH_BLOCK_STARTING_ID) * TILE_SIZE
 DEF LEGS_ICON_VRAM_ADDR  EQU VRAM_BOTH_BLOCK + (TILE_LEGS_ICON - VRAM_BOTH_BLOCK_STARTING_ID) * TILE_SIZE
@@ -94,7 +79,7 @@ DEF RING2_ICON_VRAM_ADDR EQU VRAM_BOTH_BLOCK + (TILE_RING2_ICON - VRAM_BOTH_BLOC
 DEF RING3_ICON_VRAM_ADDR EQU VRAM_BOTH_BLOCK + (TILE_RING3_ICON - VRAM_BOTH_BLOCK_STARTING_ID) * TILE_SIZE
 DEF WEAPON_ICON_VRAM_ADDR EQU VRAM_BOTH_BLOCK + (TILE_WEAPON_ICON - VRAM_BOTH_BLOCK_STARTING_ID) * TILE_SIZE
 DEF ICON_ICON_VRAM_ADDR  EQU VRAM_BOTH_BLOCK + (TILE_ICON_ICON - VRAM_BOTH_BLOCK_STARTING_ID) * TILE_SIZE
-; bank 1
+; bank 1, pause
 DEF PAPER_DOLL_HEAD_VRAM_ADDR EQU VRAM_BOTH_BLOCK + (TILE_PAPER_DOLL_HEAD - VRAM_BOTH_BLOCK_STARTING_ID) * TILE_SIZE
 DEF PAPER_DOLL_BODY_VRAM_ADDR EQU VRAM_BOTH_BLOCK + (TILE_PAPER_DOLL_BODY - VRAM_BOTH_BLOCK_STARTING_ID) * TILE_SIZE
 DEF PAPER_DOLL_LEGS_VRAM_ADDR EQU VRAM_BOTH_BLOCK + (TILE_PAPER_DOLL_LEGS - VRAM_BOTH_BLOCK_STARTING_ID) * TILE_SIZE

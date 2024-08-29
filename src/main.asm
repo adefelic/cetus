@@ -20,7 +20,6 @@ wCurrentMapWalls:: dw
 wCurrentMapEvents:: dw
 wCurrentEncounterTable:: dw
 wCurrentWallTilesAddr:: dw
-wCurrentWallTilesEndAddr:: dw
 wCurrentLocale:: db
 wCurrentMusicTrack:: dw
 

@@ -739,7 +739,7 @@ PaintWallLeftSideNearTypeB::
 	;   this will be impossible without very simplified paint functions
 	; for the time being, i'll just add the one wall type and all locales can use it
 
-	ld e, BG_PALETTE_SIDE_NEAR + OAMF_BANK1
+	ld e, BG_PALETTE_SIDE_NEAR
 
 	; top part of wall
 	ld d, TILE_FIELD_WALL_B_WALL
@@ -787,7 +787,7 @@ PaintWallLeftSideNearTypeB::
 ; but i think it'll cause flickering with labels
 PaintWallCenterFrontNearTypeB::
 	ld d, TILE_FIELD_WALL_B_WALL
-	ld e, BG_PALETTE_FRONT_NEAR + OAMF_BANK1
+	ld e, BG_PALETTE_FRONT_NEAR
 .segmentB
 	call PaintSegmentB
 .segmentD
@@ -838,7 +838,7 @@ PaintWallCenterFrontNearTypeB::
 	ret
 
 PaintWallRightSideNearTypeB::
-	ld e, BG_PALETTE_SIDE_NEAR + OAMF_BANK1
+	ld e, BG_PALETTE_SIDE_NEAR
 
 	; top part of wall
 	ld d, TILE_FIELD_WALL_B_WALL
@@ -891,7 +891,7 @@ PaintWallRightSideFarTypeB::
 PaintWallCenterFrontFarTypeB::
 	; make it all wall colored
 	ld d, TILE_FIELD_WALL_B_WALL
-	ld e, BG_PALETTE_FRONT_FAR + OAMF_BANK1
+	ld e, BG_PALETTE_FRONT_FAR
 	call PaintSegmentC
 
 	; draw door on top
