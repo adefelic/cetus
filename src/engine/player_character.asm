@@ -36,19 +36,19 @@ InitPlayerCharacter::
 	ld [wPlayerAttacksCount], a
 
 .loadAttack1
-	ld a, LOW(AttackSway)
+	ld a, LOW(AttackWatch)
 	ld [wPlayerAttack1], a
-	ld a, HIGH(AttackSway)
+	ld a, HIGH(AttackWatch)
 	ld [wPlayerAttack1+1], a
 .loadAttack2
-	ld a, LOW(AttackDeceive)
+	ld a, LOW(AttackSwipe)
 	ld [wPlayerAttack2], a
-	ld a, HIGH(AttackDeceive)
+	ld a, HIGH(AttackSwipe)
 	ld [wPlayerAttack2+1], a
 .loadAttack3
-	ld a, LOW(AttackCrowPeck)
+	ld a, LOW(AttackMenace)
 	ld [wPlayerAttack3], a
-	ld a, HIGH(AttackCrowPeck)
+	ld a, HIGH(AttackMenace)
 	ld [wPlayerAttack3+1], a
 .loadAttack4
 	; later

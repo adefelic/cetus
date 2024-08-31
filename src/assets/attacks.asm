@@ -22,5 +22,7 @@ Attacks::
 	dstruct Attack, AttackGlow, "glow", 20, 1, "silently glows"
 	dstruct Attack, AttackLull, "lull", 20, 1, "lulls you"
 	dstruct Attack, AttackFlutter, "lull", 20, 1, "flies erratically"
-
+	dstruct Attack, AttackSwipe, "swipe", 20, 1, "take a broad swipe"
+	dstruct Attack, AttackMenace, "menace", 20, 1, "reposition"
+	dstruct Attack, AttackWatch, "watch", 20, 1, "observe the field"
 
