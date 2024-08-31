@@ -6,12 +6,9 @@ SECTION "Attack Definitions", ROMX
 
 ; todo add alternate text if there's a critical hit?
 Attacks::
-	; player attacks
 	dstruct Attack, AttackSway, "sway", 5, 0, "gently sway" ; "sways. there is no wind." "sways in the still air"
 	dstruct Attack, AttackDeceive, "deceive", 25, 2, "are uncanny"
 	dstruct Attack, AttackCrowPeck, "crow peck", 30, 3, "whisper to a crow" ; "a crow rakes __"
-
-	; enemy attacks
 	dstruct Attack, AttackSpear, "spear", 30, 4, "lunge with a spear"
 	dstruct Attack, AttackTrip, "trip", 15, 1, "trips you over"
 	dstruct Attack, AttackUnnerve, "watch", 10, 1, "watch in silence"

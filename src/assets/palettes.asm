@@ -68,6 +68,7 @@ NPCOldBonesPalette::
 	;    bckgrnd   bone      handle    blade
 	RGB  00,00,00, 22,22,18, 13,10,03, 08,08,08
 NPCSunflowerPalette::
+NPCScarecrowPalette::
 	;    bckgrnd   stem      flower    eyes
 	RGB  00,00,00, 10, 7, 4, 16,10,02, 12,06,03
 NPCMoonflowerPalette::

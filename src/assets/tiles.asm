@@ -28,6 +28,8 @@ NpcSunflowerTiles::
 INCBIN "build/gfx/npc/sunflower.2bpp"
 NpcButterflyTiles::
 INCBIN "build/gfx/npc/butterfly.2bpp"
+NpcScarecrowTiles::
+INCBIN "build/gfx/npc/scarecrow.2bpp"
 
 ;; equipment tiles
 
