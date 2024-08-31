@@ -23,4 +23,7 @@ Attacks::
 	dstruct Attack, AttackSunRay, "sun ray", 20, 1, "glow like the sun"
 	dstruct Attack, AttackMoonRay, "moon ray", 20, 1, "glow like the moon"
 	dstruct Attack, AttackGlow, "glow", 20, 1, "silently glows"
+	dstruct Attack, AttackLull, "lull", 20, 1, "lulls you"
+	dstruct Attack, AttackFlutter, "lull", 20, 1, "flies erratically"
+
 

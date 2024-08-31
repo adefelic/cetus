@@ -28,11 +28,18 @@ MoonflowerAttackList::
 	dw AttackGlow
 	dw AttackMoonRay
 
+ButterflyAttackList::
+	dw AttackLull ;todo
+	dw AttackGlow
+	dw AttackFlutter ; todo
+	dw AttackMoonRay
+
 ; NPC Resistance Tables
 BrambleResistanceTable::
 OldBonesResistanceTable::
 SunflowerResistanceTable::
 MoonflowerResistanceTable::
+ButterflyResistanceTable::
 	db RV_NEUTRAL
 	db RV_NEUTRAL
 	db RV_NEUTRAL
@@ -50,3 +57,6 @@ NPCs:
   dstruct NPC, NpcOldBones, "old bones", NpcOldBonesTiles, NPCOldBonesPalette, OldBonesResistanceTable, OldBonesAttackList, 20, 30
   dstruct NPC, NpcSunflower, "sunflower", NpcSunflowerTiles, NPCSunflowerPalette, SunflowerResistanceTable, SunflowerAttackList, 40, 20
   dstruct NPC, NpcMoonflower, "moonflower", NpcSunflowerTiles, NPCMoonflowerPalette, MoonflowerResistanceTable, MoonflowerAttackList, 20, 40
+  dstruct NPC, NpcButterfly, "tarn moth", NpcButterflyTiles, NPCButterflyPalette, ButterflyResistanceTable, ButterflyAttackList, 20, 60
+
+

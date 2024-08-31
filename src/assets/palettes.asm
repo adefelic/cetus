@@ -71,6 +71,7 @@ NPCSunflowerPalette::
 	;    bckgrnd   stem      flower    eyes
 	RGB  00,00,00, 10, 7, 4, 16,10,02, 12,06,03
 NPCMoonflowerPalette::
+NPCButterflyPalette::
 	;    bckgrnd   stem      flower    eyes
 	RGB  00,00,00, 10,10,13, 02,08,16, 15,15,20
 

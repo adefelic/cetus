@@ -3,7 +3,7 @@ SECTION "Location NPC Table", ROMX
 FieldNpcs::
 dw NpcGreenBriars
 dw NpcSunflower
-dw NpcSunflower
+dw NpcButterfly
 dw NpcOldBones
 
 SwampNpcs::

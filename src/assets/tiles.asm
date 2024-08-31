@@ -26,7 +26,8 @@ NpcOldBonesTiles::
 INCBIN "build/gfx/npc/oldbones.2bpp"
 NpcSunflowerTiles::
 INCBIN "build/gfx/npc/sunflower.2bpp"
-
+NpcButterflyTiles::
+INCBIN "build/gfx/npc/butterfly.2bpp"
 
 ;; equipment tiles
 
