@@ -63,7 +63,7 @@ EventMap:
 	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,TownForestWarpEast,TownForestWarpWest,TownCoastWarpEast,TownCoastWarpWest,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,TownRuinWarpEast,TownRuinWarpWest,0,0,0,0,TownForestWarpEast,TownForestWarpWest,TownCoastWarpEast,TownCoastWarpWest,0,0
 	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -77,8 +77,8 @@ EventMap:
 	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,CoastForestWarpEast,CoastForestWarpWest,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,SwampRuinWarpEast,SwampRuinWarpWest,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	dw 0,0,0,0,0,0,0,0,0,0,FieldSwampWarpSouth,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	dw 0,0,0,0,0,0,0,0,TownHall,0,FieldSwampWarpNorth,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -102,14 +102,12 @@ Map1Events::
 	dstruct RoomEvent, TownCoastWarpWest,   WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownCoastWarpWest_WarpDestination
 	dstruct RoomEvent, TownForestWarpEast,  WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownForestWarpEast_WarpDestination
 	dstruct RoomEvent, TownForestWarpWest,  WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownForestWarpWest_WarpDestination
-
-	; todo
-	;dstruct RoomEvent, CoastForestWarpEast, WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, CoastForestWarpEast_WarpDestination
-	;dstruct RoomEvent, CoastForestWarpWest, WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, CoastForestWarpWest_WarpDestination
-	;dstruct RoomEvent, TownRuinWarpEast,    WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownRuinWarpEast_WarpDestination
-	;dstruct RoomEvent, TownRuinWarpWest,    WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownRuinWarpWest_WarpDestination
-	;dstruct RoomEvent, SwampRuinWarpEast,   WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, SwampRuinWarpEast_WarpDestination
-	;dstruct RoomEvent, SwampRuinWarpWest,   WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, SwampRuinWarpWest_WarpDestination
+	dstruct RoomEvent, CoastForestWarpEast, WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, CoastForestWarpEast_WarpDestination
+	dstruct RoomEvent, CoastForestWarpWest, WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, CoastForestWarpWest_WarpDestination
+	dstruct RoomEvent, TownRuinWarpEast,    WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownRuinWarpEast_WarpDestination
+	dstruct RoomEvent, TownRuinWarpWest,    WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownRuinWarpWest_WarpDestination
+	dstruct RoomEvent, SwampRuinWarpEast,   WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, SwampRuinWarpEast_WarpDestination
+	dstruct RoomEvent, SwampRuinWarpWest,   WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, SwampRuinWarpWest_WarpDestination
 
 ; dialog
 TownHall_DialogBranches:
@@ -128,7 +126,7 @@ TownHall_AskAboutSkull_DialogBranchFrames:
 	dstruct DialogBranchFrame, TownHall_AskAboutSkull_Frame0, .SpriteAddr=0, .FlagSetOnCompletion=0, .ItemGetOnCompletion=0, .TextLine0="i'm not sure", .TextLine1="what you're", .TextLine2="speaking of...", .TextLine3="*cough*"
 
 ; warps
-	dstruct WarpDestination, BackWarp_WarpDestination, 18, 2, ORIENTATION_SOUTH, SwampLocale
+	dstruct WarpDestination, BackWarp_WarpDestination, 21, 8, ORIENTATION_SOUTH, SwampLocale
 	dstruct WarpDestination, FieldSwampWarpNorth_WarpDestination, 10, 26, ORIENTATION_NORTH, SwampLocale
 	dstruct WarpDestination, FieldSwampWarpSouth_WarpDestination, 10, 27, ORIENTATION_SOUTH, FieldLocale
 	dstruct WarpDestination, SwampTownWarpEast_WarpDestination, 19, 2, ORIENTATION_EAST, TownLocale
@@ -137,6 +135,12 @@ TownHall_AskAboutSkull_DialogBranchFrames:
 	dstruct WarpDestination, TownCoastWarpWest_WarpDestination, 28, 9, ORIENTATION_WEST, TownLocale
 	dstruct WarpDestination, TownForestWarpEast_WarpDestination, 27, 9, ORIENTATION_EAST, TownLocale
 	dstruct WarpDestination, TownForestWarpWest_WarpDestination, 26, 9, ORIENTATION_WEST, ForestLocale
+	dstruct WarpDestination, CoastForestWarpEast_WarpDestination, 29, 23, ORIENTATION_EAST, CoastLocale
+	dstruct WarpDestination, CoastForestWarpWest_WarpDestination, 28, 23, ORIENTATION_WEST, ForestLocale
+	dstruct WarpDestination, TownRuinWarpEast_WarpDestination, 21, 9, ORIENTATION_EAST, TownLocale
+	dstruct WarpDestination, TownRuinWarpWest_WarpDestination, 20, 9, ORIENTATION_WEST, RuinLocale
+	dstruct WarpDestination, SwampRuinWarpEast_WarpDestination, 12, 24, ORIENTATION_EAST, RuinLocale
+	dstruct WarpDestination, SwampRuinWarpWest_WarpDestination, 11, 24, ORIENTATION_WEST, SwampLocale
 
 
 ; tile ids for a hard-coded encounter screen
