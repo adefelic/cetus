@@ -91,13 +91,12 @@ SetEventStateDialogBranch::
 HandleVisibleEvents::
 .checkLocationTableForEvent
 	call GetEventRoomAddrFromPlayerCoords ; into hl
-	ld a, [hl] ; contains offset of the room's RoomEvent from Map1Events
-	; check for presence of RoomEvent
-	cp EVENT_NONE ; offset is 0 == no event
+	call DereferenceHlIntoHl ; get RoomEvent Addr
+	; check for absence of RoomEvent
+	ld a, h
+	or l
 	jp z, UnsetIsPlayerFacingWallInteractable
 .checkIfPlayerFacingWallInteractable
-	ld hl, Map1Events ; get event definitions
-	call AddAToHl
 	; hl now contains that room's RoomEvent address
 	ld a, [hl] ; get event walls, which are the 0th byte of the RoomEvent
 	ld b, a

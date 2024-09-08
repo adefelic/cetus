@@ -29,7 +29,7 @@ WallMap: ; 32 x 32
 	db 0,ROOM_BL,ROOM_TR,0,ROOM_TL,ROOM_TB,ROOM_RB,0,0,0,ROOM_TBL,ROOM_TR,0,0,ROOM_RL,0,0,0,0,0,0,ROOM_RL,0,ROOM_TRL,0,0,0,0,ROOM_RL,0,ROOM_RL,0
 	db 0,0,ROOM_L,ROOM_TB,ROOM_RB,0,0,0,0,0,0,ROOM_RL,0,0,ROOM_RL,0,ROOM_TL,ROOM_TR,0,0,0,ROOM_L,ROOM_TB,ROOM_R,0,0,0,0,ROOM_RL,0,ROOM_RL,0
 	db 0,0,ROOM_RL,0,0,0,ROOM_TL,ROOM_TB,ROOM_TB,ROOM_TB,ROOM_TB,ROOM_R,0,0,ROOM_L,ROOM_TB,ROOM_B,ROOM_RB,0,0,0,ROOM_RL,0,ROOM_RL,0,0,0,0,ROOM_RL,0,ROOM_RL,0
-	db 0,0,ROOM_L,ROOM_TB,ROOM_T,ROOM_TB,ROOM_RB,0,0,0,0,ROOM_RL,0,0,ROOM_RL,0,0,0,0,0,ROOM_TR2L,ROOM_RBL2,0,ROOM_RL,0,0,ROOM_TL,ROOM_TR2B,ROOM_R2BL2,ROOM_TBL2,ROOM_R,0
+	db 0,0,ROOM_L,ROOM_TB,ROOM_T,ROOM_TB,ROOM_RB,0,0,0,0,ROOM_RL,0,0,ROOM_RL,0,0,0,0,0,ROOM_TR2L,ROOM_RBL2,0,ROOM_RL,0,0,ROOM_TR2L,ROOM_TBL2,ROOM_R2B,ROOM_TBL2,ROOM_R,0
 	db 0,0,ROOM_RL,0,ROOM_RL,0,0,0,ROOM_TBL,ROOM_TB,ROOM_TB,ROOM_RB,0,0,ROOM_RL,0,0,0,0,0,ROOM_RL,0,0,ROOM_RL,0,0,ROOM_RL,0,0,0,ROOM_RL,0
 	db 0,ROOM_TL,ROOM_RB,0,ROOM_RL,0,0,0,0,0,0,0,0,ROOM_TBL,ROOM_B,ROOM_TB,ROOM_TRB,0,0,0,ROOM_RL,0,ROOM_TBL,ROOM_B,ROOM_TRB,0,ROOM_RL,ROOM_TB,ROOM_TR,0,ROOM_RL,0
 	db 0,ROOM_RL,0,0,ROOM_RL,0,ROOM_TL,ROOM_T,ROOM_TR,0,0,0,0,0,0,0,0,0,0,0,ROOM_RL,0,0,0,0,0,ROOM_RL,0,ROOM_RL,0,ROOM_RL,0
@@ -53,53 +53,63 @@ WallMap: ; 32 x 32
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,ROOM_RBL,0,0,0,0,0,0,ROOM_RBL,0,0,ROOM_RBL,0
 	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
-; this table contains possible context events for the player on different squares
-; each entry is an offset into the Map1Events table
 EventMap:
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,SwampTownWarpEast-Map1Events,SwampTownWarpWest-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,FieldSwampWarpDown-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,TownHall-Map1Events,0,FieldSwampWarpUp-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,BackWarp-Map1Events,TownHall-Map1Events,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-	db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,SwampTownWarpEast,SwampTownWarpWest,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,TownForestWarpEast,TownForestWarpWest,TownCoastWarpEast,TownCoastWarpWest,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,FieldSwampWarpSouth,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,TownHall,0,FieldSwampWarpNorth,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,BackWarp,TownHall,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
-; event triggers
 
 DEF CROSS_FOG_STRING EQUS "\"cross fog?\""
+; dang these are offsets and not indices. they need to be indices so i can support more of them at once
 Map1Events::
 	nop ; this is a hack to make it so having an offset of 0 means there is no event
-	dstruct RoomEvent, TownHall,           WALLS_T, "  Enter?  ", "Ask about", ROOMEVENT_DIALOG, 3, TownHall_DialogBranches
-	dstruct RoomEvent, FieldSwampWarpUp,   WALLS_T, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, FieldSwampWarpNorth_WarpDestination
-	dstruct RoomEvent, FieldSwampWarpDown, WALLS_B, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, FieldSwampWarpSouth_WarpDestination
-	dstruct RoomEvent, BackWarp,           WALLS_L, "debug portal",   "", ROOMEVENT_WARP, 0, BackWarp_WarpDestination
-	dstruct RoomEvent, SwampTownWarpEast,  WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, SwampTownWarpEast_WarpDestination
-	dstruct RoomEvent, SwampTownWarpWest,  WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, SwampTownWarpWest_WarpDestination
+	dstruct RoomEvent, TownHall,            WALLS_T, "  Enter?  ", "Ask about", ROOMEVENT_DIALOG, 3, TownHall_DialogBranches
+	dstruct RoomEvent, FieldSwampWarpNorth, WALLS_T, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, FieldSwampWarpNorth_WarpDestination
+	dstruct RoomEvent, FieldSwampWarpSouth, WALLS_B, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, FieldSwampWarpSouth_WarpDestination
+	dstruct RoomEvent, BackWarp,            WALLS_L, "debug hole",     "", ROOMEVENT_WARP, 0, BackWarp_WarpDestination
+	dstruct RoomEvent, SwampTownWarpEast,   WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, SwampTownWarpEast_WarpDestination
+	dstruct RoomEvent, SwampTownWarpWest,   WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, SwampTownWarpWest_WarpDestination
+	dstruct RoomEvent, TownCoastWarpEast,   WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownCoastWarpEast_WarpDestination
+	dstruct RoomEvent, TownCoastWarpWest,   WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownCoastWarpWest_WarpDestination
+	dstruct RoomEvent, TownForestWarpEast,  WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownForestWarpEast_WarpDestination
+	dstruct RoomEvent, TownForestWarpWest,  WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownForestWarpWest_WarpDestination
+
+	; todo
+	;dstruct RoomEvent, CoastForestWarpEast, WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, CoastForestWarpEast_WarpDestination
+	;dstruct RoomEvent, CoastForestWarpWest, WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, CoastForestWarpWest_WarpDestination
+	;dstruct RoomEvent, TownRuinWarpEast,    WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownRuinWarpEast_WarpDestination
+	;dstruct RoomEvent, TownRuinWarpWest,    WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, TownRuinWarpWest_WarpDestination
+	;dstruct RoomEvent, SwampRuinWarpEast,   WALLS_R, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, SwampRuinWarpEast_WarpDestination
+	;dstruct RoomEvent, SwampRuinWarpWest,   WALLS_L, CROSS_FOG_STRING, "", ROOMEVENT_WARP, 0, SwampRuinWarpWest_WarpDestination
 
 ; dialog
 TownHall_DialogBranches:
@@ -123,6 +133,11 @@ TownHall_AskAboutSkull_DialogBranchFrames:
 	dstruct WarpDestination, FieldSwampWarpSouth_WarpDestination, 10, 27, ORIENTATION_SOUTH, FieldLocale
 	dstruct WarpDestination, SwampTownWarpEast_WarpDestination, 19, 2, ORIENTATION_EAST, TownLocale
 	dstruct WarpDestination, SwampTownWarpWest_WarpDestination, 18, 2, ORIENTATION_WEST, SwampLocale
+	dstruct WarpDestination, TownCoastWarpEast_WarpDestination, 29, 9, ORIENTATION_EAST, CoastLocale
+	dstruct WarpDestination, TownCoastWarpWest_WarpDestination, 28, 9, ORIENTATION_WEST, TownLocale
+	dstruct WarpDestination, TownForestWarpEast_WarpDestination, 27, 9, ORIENTATION_EAST, TownLocale
+	dstruct WarpDestination, TownForestWarpWest_WarpDestination, 26, 9, ORIENTATION_WEST, ForestLocale
+
 
 ; tile ids for a hard-coded encounter screen
 ; todo move this somewhere else. todo just get rid of this if the encounter background is tile 0

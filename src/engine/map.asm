@@ -382,13 +382,36 @@ GetEventRoomAddrFromPlayerCoords::
 	ld l, a
 	ld a, [wCurrentMapEvents+1]
 	ld h, a
-	jr GetRoomAddrFromCoords
+	jr GetEventRoomAddrFromCoords
+
+; map addr + ((wPlayerExploreX + wPlayerExploreY*32) * 2)
+; @param d: player X coord
+; @param e: player Y coord
+; @param hl: map addr
+; @return hl: tile address of player occupied tile of map in hl
+GetEventRoomAddrFromCoords::
+	ld b, h
+	ld c, l
+	ld l, e
+	ld h, 0
+	; shift left 5 times to multiply by 32
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	ld a, d
+	add a, l
+	ld l, a
+	add hl, hl ; this is the only difference between this and GetRoomAddrFromCoords
+	add hl, bc
+	ret
 
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: player X coord
 ; @param e: player Y coord
 ; @param hl: map addr
-; @return hl: tile address of player occupied tile of Map1 (this need to change)
+; @return hl: tile address of player occupied tile of map in hl
 GetRoomAddrFromCoords::
 	ld b, h
 	ld c, l
