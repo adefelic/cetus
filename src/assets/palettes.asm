@@ -3,13 +3,12 @@ INCLUDE "src/constants/palette_constants.inc"
 SECTION "Palette Data", ROMX
 
 ; BG palettes
-ForestBgPaletteSet::
-
+FieldBgPaletteSet::
 	; palettes 0 - 3
 	; explore: walls and ground
 	;    door      ground     walls     unused
 	; encounter: unused (todo, pick one for environment)
-	;    dark,     tan,        green,     grey-brown,
+	;    black     tan        green      grey-brown
 	RGB  00,00,00, 12, 9, 8,  0, 8, 6,   7, 6, 8 ; z0, near sides
 	RGB  00,00,00, 20,10,15,  1, 9, 6,   8, 6, 8 ; z1, near front
 	RGB  00,00,00, 14,11, 9,  1,10, 7,   9, 7, 8 ; z2, far sides
@@ -33,7 +32,8 @@ ForestBgPaletteSet::
 	RGB  15,15,15, 14,14,14,  14,11,09,  01,12,07 ; fog
 
 SwampBgPaletteSet::
-	;                                    grey-brown,
+	;    door      ground     walls     unused
+	;    black     grey       bluish     grey-brown,
 	RGB  00,00,00,  4, 4, 4,  5, 5, 8,   7, 6, 8 ; z0, near sides
 	RGB  00,00,00, 00,00,00,  5, 5, 9,   8, 6, 8 ; z1, near front
 	RGB  00,00,00,  6, 5, 6,  5, 6,10,   9, 7, 8 ; z2, far sides
@@ -46,6 +46,56 @@ SwampBgPaletteSet::
 
 	;    fog 1     fog 2      ground    wall
 	RGB  11,11,11, 10,10,10,  6, 5, 6,  05,06,12, ; fog
+
+TownBgPaletteSet::
+	;    door      ground     walls     unused
+	;    black
+	RGB  00,00,00,  7, 6, 8,  15,15,08,   7, 6, 8 ; z0, near sides
+	RGB  00,00,00,  8, 6, 8,  16,15,08,   8, 6, 8 ; z1, near front
+	RGB  00,00,00,  9, 7, 8,  17,15,09,   9, 7, 8 ; z2, far sides
+	RGB  00,00,00, 10, 7, 8,  17,15,09,  10, 7, 8 ; z3, far front
+	RGB  2, 2, 2,  13,13,13,  2,10, 2,   2, 2,10 ; ui
+	RGB  13,13,13,  2,10, 2,  2, 2,10,   1, 1, 1 ; ui2 (highlighted)
+	RGB  4,12, 8,  13,15,15,  7,14,10,  10,15,12 ; special, for ocean walls? has no depth. unused so far
+	;    fog 1     fog 2      ground     wall
+	RGB  11,11,11,  7, 6, 8,  10, 7, 8,  17,15,09 ; fog
+
+CoastBgPaletteSet::
+	;    door      ground     walls     unused
+	;    black
+	RGB  00,00,00, 15,15,02,  10,10,15,   7, 6, 8 ; z0, near sides
+	RGB  00,00,00, 15,15,02,  11,11,16,   8, 6, 8 ; z1, near front
+	RGB  00,00,00, 15,15,02,  11,11,17,   9, 7, 8 ; z2, far sides
+	RGB  00,00,00, 15,15,02,  12,12,18,  10, 7, 8 ; z3, far front
+	RGB  2, 2, 2,  13,13,13,  2,10, 2,   2, 2,10 ; ui
+	RGB  13,13,13,  2,10, 2,  2, 2,10,   1, 1, 1 ; ui2 (highlighted)
+	RGB  4,12, 8,  13,15,15,  7,14,10,  10,15,12 ; special, for ocean walls? has no depth. unused so far
+	RGB  11,11,11, 10,10,10,  6, 5, 6,  05,06,12 ; fog
+
+ForestBgPaletteSet::
+	;    door      ground     walls     unused
+	;    black
+	RGB  00,00,00, 12, 9, 8,  0, 8, 6,   7, 6, 8 ; z0, near sides
+	RGB  00,00,00, 20,10,15,  1, 9, 6,   8, 6, 8 ; z1, near front
+	RGB  00,00,00, 14,11, 9,  1,10, 7,   9, 7, 8 ; z2, far sides
+	RGB  00,00,00, 11,11,11,  1,11, 7,  10, 7, 8 ; z3, far front
+	RGB  2, 2, 2,  13,13,13,  2,10, 2,   2, 2,10 ; ui
+	RGB  13,13,13,  2,10, 2,  2, 2,10,   1, 1, 1 ; ui2 (highlighted)
+	RGB  4,12, 8,  13,15,15,  7,14,10,  10,15,12 ; special, for ocean walls? has no depth. unused so far
+	RGB  11,11,11, 10,10,10,  6, 5, 6,  05,06,12 ; fog
+
+RuinBgPaletteSet::
+	;    door      ground     walls     unused
+	;    black
+	RGB  00,00,00, 12, 9, 8,  17,15,12,   7, 6, 8 ; z0, near sides
+	RGB  00,00,00, 20,10,15,  17,15,12,   8, 6, 8 ; z1, near front
+	RGB  00,00,00, 14,11, 9,  17,15,12,   9, 7, 8 ; z2, far sides
+	RGB  00,00,00, 11,11,11,  17,15,12,  10, 7, 8 ; z3, far front
+	RGB  2, 2, 2,  13,13,13,  2,10, 2,   2, 2,10 ; ui
+	RGB  13,13,13,  2,10, 2,  2, 2,10,   1, 1, 1 ; ui2 (highlighted)
+	RGB  4,12, 8,  13,15,15,  7,14,10,  10,15,12 ; special, for ocean walls? has no depth. unused so far
+	RGB  11,11,11, 10,10,10,  6, 5, 6,  05,06,12 ; fog
+
 
 ; Obj palettes
 OwObjPaletteSet::

@@ -13,9 +13,6 @@ InitColorPalettes::
 	xor a
 	ld [wBgPaletteSetUpdateAddr], a
 	ld [wBgPaletteSetUpdateAddr + 1], a
-
-	ld de, ForestBgPaletteSet
-	call SetBgPaletteSetAutoInc
 	ld de, OwObjPaletteSet
 	jr SetObjPaletteSet
 

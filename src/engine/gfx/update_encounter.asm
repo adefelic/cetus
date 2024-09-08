@@ -7,8 +7,6 @@ INCLUDE "src/structs/npc.inc"
 INCLUDE "src/structs/attack.inc"
 INCLUDE "src/structs/palette_animation.inc"
 
-DEF NPC_COUNT_2_EXPONENT EQU 3
-
 SECTION "Encounter Screen Renderer", ROMX
 
 ; todo get rid of end states, just do things at the end of animation
@@ -48,8 +46,8 @@ UpdateEncounterScreen::
 
 RollEnemyNpc:
 	call Rand
-	; mask out bits that arent used by FIELD_NPCS_COUNT. currently  2 bit so AND 3
-	AND NPC_COUNT_2_EXPONENT
+	; mask out bits that arent used by FIELD_NPCS_COUNT. currently encounter tables have 8 encounters
+	AND %00000111
 	sla a ; * 2 so that it's the random number * sizeof address
 	ld d, a
 	ld hl, wCurrentEncounterTable
