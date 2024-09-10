@@ -2,6 +2,7 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/structs/event.inc"
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Dialog Event Input Handling", ROMX
 
@@ -30,7 +31,7 @@ PressedAFromDialogRoot:
 	ld a, [wDialogTextRowHighlighted] ; this is an index into wMenuItems
 	sla a ; multiply by 2 to transform from index -> address offset
 	ld hl, wMenuItems
-	call AddAToHl
+	AddAToHl
 	ld c, [hl] ; stash the first byte of the zeroth element
 	inc hl
 	ld b, [hl] ; stash the second byte
@@ -43,7 +44,7 @@ PressedAFromDialogRoot:
 	ld a, h
 	ld [wDialogBranchAddr + 1], a
 	ld a, DialogBranch_FramesCount ; FramesCount offset
-	call AddAToHl
+	AddAToHl
 	ld a, [hli] ; hl now pointing to frames array
 	ld [wDialogBranchFramesCount], a
 	call DereferenceHlIntoHl

@@ -1,6 +1,7 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/event_constants.inc"
 INCLUDE "src/structs/event.inc"
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Event Struct Storage", WRAM0
 ; current RoomEvent struct state
@@ -117,7 +118,7 @@ HandleVisibleEvents::
 
 	; store RoomEvent type and handle by type
 	ld a, RoomEvent_Type
-	call AddAToHl
+	AddAToHl
 	ld a, [hl]
 	ld [wRoomEventType], a
 	cp ROOMEVENT_DIALOG
@@ -133,7 +134,7 @@ HandleNewDialogRoomEvent:
 	push hl
 	; store DialogBranchesAddr
 	ld a, RoomEvent_DialogBranchesAddr
-	call AddAToHl
+	AddAToHl
 	call DereferenceHlIntoHl ; put addr of event def in hl
 	ld a, l
 	ld [wDialogBranchesAddr], a
@@ -143,7 +144,7 @@ HandleNewDialogRoomEvent:
 	pop hl
 	; store DialogBranchesCount
 	ld a, RoomEvent_DialogBranchesCount
-	call AddAToHl
+	AddAToHl
 	ld a, [hl]
 	ld [wDialogBranchesCount], a
 	ret
@@ -153,7 +154,7 @@ HandleNewDialogWarpEvent:
 	pop hl
 	; store DialogBranchesAddr
 	ld a, RoomEvent_DialogBranchesAddr
-	call AddAToHl
+	AddAToHl
 	call DereferenceHlIntoHl ; put addr of event def in hl
 	ld a, l
 	ld [wWarpDestinationAddr], a

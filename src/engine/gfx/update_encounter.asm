@@ -6,6 +6,7 @@ INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/structs/npc.inc"
 INCLUDE "src/structs/attack.inc"
 INCLUDE "src/structs/palette_animation.inc"
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Encounter Screen Renderer", ROMX
 
@@ -53,7 +54,7 @@ RollEnemyNpc:
 	ld hl, wCurrentEncounterTable
 	call DereferenceHlIntoHl
 	ld a, d
-	call AddAToHl
+	AddAToHl
 	call DereferenceHlIntoHl
 	jr CacheEnemyState
 
@@ -68,7 +69,7 @@ CacheEnemyState:
 
 	; set wNpcCurrentHp to their max hp. cache values
 	ld a, NPC_MaxHp
-	call AddAToHl
+	AddAToHl
 	ld a, [hl]
 	ld hl, wNpcCurrentHp
 	ld [hl], a
@@ -80,7 +81,7 @@ CacheEnemyState:
 
 	; cache ROM sprite addr
 	ld a, NPC_SpriteAddr
-	call AddAToHl
+	AddAToHl
 	ld a, [hli]
 	ld [wNpcSpriteTilesRomAddr], a
 	ld a, [hl]
@@ -89,7 +90,7 @@ CacheEnemyState:
 	pop hl
 
 	ld a, NPC_PaletteAddr
-	call AddAToHl
+	AddAToHl
 	call DereferenceHlIntoHl
 	call EnqueueEnemyBgPaletteUpdate
 
@@ -171,7 +172,7 @@ HandlePlayerAnimState:
 	ld a, [wNextAnimationKeyFrame+1]
 	ld h, a
 	ld a, sizeof_PaletteAnimationKeyFrame
-	call AddAToHl
+	AddAToHl
 	ld a, l
 	ld [wNextAnimationKeyFrame], a
 	ld a, h
@@ -268,7 +269,7 @@ DoEnemySkill:
 	call DereferenceHlIntoHl
 	; hl now holds addr of npc
 	ld a, NPC_AttacksAddr
-	call AddAToHl
+	AddAToHl
 	call DereferenceHlIntoHl
 	push hl
 	; hl now holds addr of attack list
@@ -276,7 +277,7 @@ DoEnemySkill:
 	AND %00000011 ; random # 0-3 for a random attack
 	sla a ; go from bytes to words. each attack in the list is an address
 	pop hl
-	call AddAToHl
+	AddAToHl
 	call DereferenceHlIntoHl
 	; hl now holds addr of attack definition
 
@@ -288,7 +289,7 @@ DoEnemySkill:
 
 .subDamageFromHp
 	ld a, Attack_DamageValue
-	call AddAToHl
+	AddAToHl
 	ld a, [hl]
 	ld b, a
 

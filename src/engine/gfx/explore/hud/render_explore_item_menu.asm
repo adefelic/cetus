@@ -3,6 +3,7 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/item_constants.inc"
 INCLUDE "src/constants/gfx_event.inc"
 INCLUDE "src/structs/item.inc"
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Item Rendering Scratch", WRAM0
 wItemQuantityNameStringBuffer:: ds BYTES_IN_DIALOG_STRING
@@ -53,10 +54,10 @@ RenderExploreItemMenu::
 
 	;;; get item quantity and convert to decimal
 	ld a, Item_InventoryOffset
-	call AddAToHl
+	AddAToHl
 	ld a, [hl] ; a now contains wInventory offset
 	ld hl, wInventory
-	call AddAToHl
+	AddAToHl
 	ld a, [hl] ; a now contains wInventory quantity
 	call ConvertBinaryNumberToTwoDigitDecimalNumber ; 10s in d, 1s in e
 	pop hl ; restore wMenuItems position ptr
@@ -142,7 +143,7 @@ PopulateMenuItemsFromInventory:
 	push hl ; stash addr of wMenuItems[b]
 	ld hl, wInventory + 1 ; to deal with 0 meaning empty space
 	ld a, b
-	call AddAToHl
+	AddAToHl
 	ld a, [hl]
 	pop hl ; restore wMenuItems[b]
 	cp 0

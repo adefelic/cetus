@@ -5,6 +5,7 @@ INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/ram/wram.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/engine/gfx/gfx_macros.inc"
+INCLUDE "src/utils/macros.inc"
 
 ; the uncontested worst file in this project
 
@@ -460,7 +461,7 @@ PaintSegmentMGround::
 
 	push af ; stash random column #
 	ld hl, wShadowBackgroundTilemap + rows 13 + cols 6
-	call AddAToHl
+	AddAToHl
 	ld d, TILE_GRASS_FAR
 	ld b, 1
 	call CopyByteInDToRange
@@ -473,7 +474,7 @@ PaintSegmentMGround::
 
 	pop af
 	ld hl, wShadowBackgroundTilemapAttrs + rows 13 + cols 6
-	call AddAToHl
+	AddAToHl
 	ld b, 1
 	call CopyByteInEToRange
 .randomGrassRow14
@@ -485,7 +486,7 @@ PaintSegmentMGround::
 
 	push af ; stash random column #
 	ld hl, wShadowBackgroundTilemap + rows 14 + cols 5
-	call AddAToHl
+	AddAToHl
 	ld d, TILE_GRASS_FAR
 	ld b, 1
 	call CopyByteInDToRange
@@ -498,7 +499,7 @@ PaintSegmentMGround::
 
 	pop af
 	ld hl, wShadowBackgroundTilemapAttrs + rows 14 + cols 5
-	call AddAToHl
+	AddAToHl
 	ld b, 1
 	call CopyByteInEToRange
 .randomGrassRow15
@@ -510,7 +511,7 @@ PaintSegmentMGround::
 
 	push af ; stash random column #
 	ld hl, wShadowBackgroundTilemap + rows 15 + cols 4
-	call AddAToHl
+	AddAToHl
 	ld d, TILE_GRASS_FAR
 	ld b, 1
 	call CopyByteInDToRange
@@ -523,7 +524,7 @@ PaintSegmentMGround::
 
 	pop af
 	ld hl, wShadowBackgroundTilemapAttrs + rows 15 + cols 4
-	call AddAToHl
+	AddAToHl
 	ld b, 1
 	call CopyByteInEToRange
 .clean
@@ -648,7 +649,7 @@ PaintSegmentQGround::
 
 	push af ; stash random column #
 	ld hl, wShadowBackgroundTilemap + rows 16 + cols 3
-	call AddAToHl
+	AddAToHl
 	ld d, TILE_GRASS_NEAR
 	ld b, 1
 	call CopyByteInDToRange
@@ -661,7 +662,7 @@ PaintSegmentQGround::
 
 	pop af
 	ld hl, wShadowBackgroundTilemapAttrs + rows 16 + cols 3
-	call AddAToHl
+	AddAToHl
 	ld b, 1
 	call CopyByteInEToRange
 .randomGrassRow17
@@ -673,7 +674,7 @@ PaintSegmentQGround::
 
 	push af ; stash random column #
 	ld hl, wShadowBackgroundTilemap + rows 17 + cols 2
-	call AddAToHl
+	AddAToHl
 	ld d, TILE_GRASS_NEAR
 	ld b, 1
 	call CopyByteInDToRange
@@ -686,7 +687,7 @@ PaintSegmentQGround::
 
 	pop af ; restore random column #
 	ld hl, wShadowBackgroundTilemapAttrs + rows 17 + cols 2
-	call AddAToHl
+	AddAToHl
 	ld b, 1
 	call CopyByteInEToRange
 

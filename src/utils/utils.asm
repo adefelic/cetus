@@ -1,18 +1,5 @@
+
 SECTION "Utils", ROMX
-
-
-; TODO make these into macros?
-
-
-; @param a, offset
-; @param hl, address
-AddAToHl::
-	add l
-	ld l, a
-	ld a, h
-	adc 0
-	ld h, a
-	ret
 
 AddAToDe::
 	add e
@@ -22,6 +9,7 @@ AddAToDe::
 	ld d, a
 	ret
 
+; todo make this a macro
 ; @param hl, addr to dereference
 ; @return hl, new addr
 ; uses a,b,c,h,l

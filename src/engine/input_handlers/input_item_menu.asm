@@ -3,7 +3,7 @@ INCLUDE "src/constants/item_constants.inc"
 INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/structs/item.inc"
-
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Item Placement Scratch", WRAM0
 wWallTypeInFrontOfPlayer:: db
@@ -83,7 +83,7 @@ HandlePressedA:
 	; get the item id of highlighted item in menu
 	call GetHighlightedMenuItemAddr ; in hl
 	ld a, Item_InventoryOffset
-	call AddAToHl
+	AddAToHl
 	ld a, [hl] ; item index is in a
 	ld [wItemTypeBeingPlaced], a ; debug
 	ld [de], a ; store item id in item map room

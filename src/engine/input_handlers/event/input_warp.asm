@@ -1,5 +1,6 @@
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/structs/event.inc"
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Warp Event Input Handling", ROMX
 
@@ -9,28 +10,28 @@ DoWarp::
 	call DereferenceHlIntoHl
 	push hl ; stash hl
 	ld a, WarpDestination_DestinationX
-	call AddAToHl
+	AddAToHl
 	ld a, [hl]
 	ld [wPlayerExploreX], a
 
 	pop hl
 	push hl
 	ld a, WarpDestination_DestinationY
-	call AddAToHl
+	AddAToHl
 	ld a, [hl]
 	ld [wPlayerExploreY], a
 
 	pop hl
 	push hl
 	ld a, WarpDestination_DestinationOrientation
-	call AddAToHl
+	AddAToHl
 	ld a, [hl]
 	ld [wPlayerOrientation], a
 
 	pop hl
 	; make hl point to the Locale now instead of the WarpDestination
 	ld a, WarpDestination_DestinationLocale
-	call AddAToHl
+	AddAToHl
 	call DereferenceHlIntoHl
 	call LoadLocale
 	jp DirtyFpSegmentsAndTilemap

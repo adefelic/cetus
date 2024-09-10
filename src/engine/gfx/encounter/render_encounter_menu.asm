@@ -4,6 +4,7 @@ INCLUDE "src/constants/gfx_event.inc"
 INCLUDE "src/structs/attack.inc"
 INCLUDE "src/structs/npc.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
+INCLUDE "src/utils/macros.inc"
 
 DEF MAX_ATTACKS_IN_MENU EQU 4
 
@@ -55,7 +56,7 @@ RenderEncounterMenuPlayerAttacks::
 
 	;;; get mp cost and convert to decimal
 	ld a, Attack_MpCost
-	call AddAToHl
+	AddAToHl
 	ld a, [hl] ; a now contains mp cost
 	call ConvertBinaryNumberToTwoDigitDecimalNumber ; 10s in d, 1s in e
 	pop hl ; restore wMenuItems position ptr
@@ -262,7 +263,7 @@ LoadBufferWithUsedStringAndAttackName:
 	ld hl, wCurrentAttack
 	call DereferenceHlIntoHl
 	ld a, Attack_Name
-	call AddAToHl
+	AddAToHl
 .copy
 	ld d, h
 	ld e, l
@@ -294,7 +295,7 @@ LoadNpcNameString:
 	ld hl, wNpcAddr
 	call DereferenceHlIntoHl
 	ld a, NPC_Name
-	call AddAToHl
+	AddAToHl
 	ld b, CHARACTER_NAME_LENGTH
 	jr CopyStringIntoBufferWithWhitespace
 

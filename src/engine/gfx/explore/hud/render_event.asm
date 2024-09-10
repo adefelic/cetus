@@ -2,6 +2,7 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/event_constants.inc"
 INCLUDE "src/constants/gfx_event.inc"
 INCLUDE "src/structs/event.inc"
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Dialog Modal State", WRAM0
 wBottomMenuDirty:: db
@@ -225,7 +226,7 @@ RenderDialogBranch:
 
 	; update wCurrentDialogBranchFrameAddr to point to new frame
 	ld a, sizeof_DialogBranchFrame
-	call AddAToHl
+	AddAToHl
 	ld a, l
 	ld [wCurrentDialogBranchFrameAddr], a
 	ld a, h
@@ -236,7 +237,7 @@ RenderDialogBranch:
 	ld [wTextRowsRendered], a
 .addTextLine0Offset
 	ld a, DialogBranchFrame_TextLine0
-	call AddAToHl
+	AddAToHl
 .renderTextLine
 	push hl ; stash addr of text line to draw
 	ld a, [wTextRowsRendered]
@@ -251,7 +252,7 @@ RenderDialogBranch:
 	cp MODAL_TEXT_AREA_HEIGHT
 	jp z, .renderBottomRow
 	ld a, BYTES_IN_DIALOG_STRING
-	call AddAToHl ; add offset to get next text line addr
+	AddAToHl ; add offset to get next text line addr
 	jp .renderTextLine
 .renderBottomRow
 	call PaintModalBottomRowDialogBranch
@@ -265,6 +266,6 @@ GetHighlightedMenuItemAddr::
 	ld a, [wDialogTextRowHighlighted]
 	sla a ; x2 to go from index to address offset
 	ld hl, wMenuItems
-	call AddAToHl
+	AddAToHl
 	call DereferenceHlIntoHl
 	ret

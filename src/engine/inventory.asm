@@ -1,4 +1,5 @@
 INCLUDE "src/structs/equipment.inc"
+INCLUDE "src/utils/macros.inc"
 
 DEF INITIAL_ROCKS_COUNT EQU 5
 DEF INITIAL_LAMPS_COUNT EQU 3
@@ -91,7 +92,7 @@ EquipSlot:
 ; @param a, item offset
 IncrementInventoryItemQuantity::
 	ld hl, wInventory
-	call AddAToHl
+	AddAToHl
 	ld a, [hl]
 	inc a
 	cp MAX_ITEM_STACK + 1
@@ -102,7 +103,7 @@ IncrementInventoryItemQuantity::
 ; @param a, item offset
 DecrementInventoryItemQuantity::
 	ld hl, wInventory
-	call AddAToHl
+	AddAToHl
 	ld a, [hl]
 	dec a
 	cp 255

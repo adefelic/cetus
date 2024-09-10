@@ -3,6 +3,7 @@ INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/structs/map.inc"
 INCLUDE "src/structs/locale.inc"
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Map / Room Parsing", ROMX
 
@@ -19,7 +20,7 @@ LoadMapInHl::
 	push hl ; stash map struct location
 
 	ld a, Map_WallMapAddr
-	call AddAToHl
+	AddAToHl
 	call DereferenceHlIntoHl
 	ld a, l
 	ld [wCurrentMapWalls], a
@@ -30,7 +31,7 @@ LoadMapInHl::
 	push hl
 
 	ld a, Map_EventMapAddr
-	call AddAToHl
+	AddAToHl
 	call DereferenceHlIntoHl
 	ld a, l
 	ld [wCurrentMapEvents], a
@@ -41,7 +42,7 @@ LoadMapInHl::
 	push hl
 
 	ld a, Map_StartingLocale
-	call AddAToHl
+	AddAToHl
 	call DereferenceHlIntoHl
 	call LoadLocale
 
@@ -49,7 +50,7 @@ LoadMapInHl::
 
 	; the struct contains orientation, x, y bytes in order so we can inc through with hli
 	ld a, Map_StartingOrientation
-	call AddAToHl
+	AddAToHl
 	ld a, [hli]
 	ld [wPlayerOrientation], a
 	ld a, [hli]
@@ -63,7 +64,7 @@ LoadLocale::
 .loadPaletteSet
 	push hl ; contains addr of Locale
 	ld a, Locale_BgPaletteSetAddr
-	call AddAToHl ; contains addr of Locale_BgPaletteSetAddr
+	AddAToHl ; contains addr of Locale_BgPaletteSetAddr
 	call DereferenceHlIntoHl
 	ld d, h
 	ld e, l
@@ -73,7 +74,7 @@ LoadLocale::
 
 .loadEncountersTable
 	ld a, Locale_EncountersTableAddr
-	call AddAToHl
+	AddAToHl
 	ld a, [hli]
 	ld [wCurrentEncounterTable], a
 	ld a, [hl]
@@ -83,7 +84,7 @@ LoadLocale::
 
 .loadMusic
 	ld a, Locale_MusicAddr
-	call AddAToHl
+	AddAToHl
 	ld a, [hli]
 	ld [wCurrentMusicTrack], a
 	ld a, [hl]
@@ -95,7 +96,7 @@ LoadLocale::
 
 .loadSpecialWallTiles
 	ld a, Locale_WallTilesAddr
-	call AddAToHl
+	AddAToHl
 	ld a, [hli]
 	ld [wCurrentWallTilesAddr], a
 	ld a, [hl]

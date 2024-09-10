@@ -4,6 +4,7 @@ INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/encounter_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/structs/attack.inc"
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Battle Screen Input Handling", ROMX
 
@@ -98,7 +99,7 @@ DoAttack:
 
 .checkMpCost
 	ld a, Attack_MpCost
-	call AddAToHl
+	AddAToHl
 	ld a, [hl]
 	ld b, a ; put mp cost in b
 
@@ -120,7 +121,7 @@ DoAttack:
 	ld [wCurrentAttack+1], a
 
 	ld a, Attack_DamageValue
-	call AddAToHl
+	AddAToHl
 	ld a, [hl]
 	ld b, a
 
