@@ -1,11 +1,14 @@
+## making encounters interesting through itemization
+
+- different weapons and icons can give you different moves
+- 
+
+
 ## enemies
 encounters can be non-human beings, the land anthropomorphosed, weather, the past
 encounters can be helpful, but usually aren't
 - field: - golden grass lands, tarn, fallow fields. old well, evidence of past settlement and maybe some current.
 - maybe this should be broken into field 1 (settled-ish) and field 2 (unsettled) or something like that
-	- scare crow (artifice, safety)
-		- sway
-		- watch
 	- knotted grass / vines (nature)
 		- entangle. * bind multi
 		- trip. xx mud single
@@ -23,7 +26,7 @@ encounters can be helpful, but usually aren't
 		- trip. xx mud single
 		- grasp
 		- snare
-	- red briars (more cutting) (nature)
+	- red briars (more cutting) (nature) (palette swap)
 		- slice
 		- 
 	- snake
@@ -38,15 +41,6 @@ encounters can be helpful, but usually aren't
 		- judge. blaze xxxx single
 		- wither.
 	- prairie chicken
-	- blue/red butterfly (Karner Blue Butterfly)
-		- stardust
-		- starlight
-	- sunflower (day)
-		- sun ray
-		- glow
-	- moonflower (night)
-		- moon ray
-		- glow
 	- i want more that arent animals. what are things that can happen
 		- recurring text npcs whose quests are advanced whenever you see them (or give them something?)
 	- plank bridge
@@ -98,6 +92,7 @@ swamp: - dark. bluish, dense, soporific, deep. quiet, slow
 	- spore bat - like the mold that kills bats making them into mold zombies instead of dead
 	- bog turtle
 	- ritual flame
+	- memorial candles
 
 coast: - bright, foggy, empty, dead. seaweed, corpses of birds, fish, crustaceans.
 	- drifting fog
@@ -138,3 +133,9 @@ beyond:
 	- black hole
 	- wave \/\/\/\
 	- particle .
+collapsing manor: (walls use victorian/georgian panelling)
+	- candelabra
+	- moving shadow
+	- curtain silhouette
+	- creaking door
+	- 

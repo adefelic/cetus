@@ -2,51 +2,54 @@ equipment
 
 - i want to avoid using words from other cultures maybe? be descriptive rather than saying what the thing _is_
 
-### weapons
+
+8 slots total
+
+
+### weapons: 2 slots
 - two weapons -- WEAPON and ICON
-	- icon modifies magical / mental attacks
+	- weapon grants physical attacks
+	- icon grants magical / mental attacks
 - come with a POWER value that modifies all attacks
 - come with an ATTACK, like
 	- an attack that lets you go first
-	- an attack that incflicts a status
+	- an attack that inflicts a status
 	- an attack that goes last but lets you take mitigate half damage while waiting
-- spears - tend to hit 1 target
-- small weapons - tend to hit 1 target, except when they dont
-- large weapons - tend to hit multiple targets, except when they dont
-- curved weapons - tend to hit multiple targets, except when they dont
-- fire 
+	- spears - tend to hit 1 target
+	- small weapons - tend to hit 1 target, except when they dont
+	- large weapons - tend to hit multiple targets, except when they dont
+	- curved weapons - tend to hit multiple targets, except when they dont
+	- fire 
 
-### armor
-
+### armor: 6 slots
 - item slots
-	- you are always wearing ragged clothes. armor is over it. outer armor over that
-	- head
+	- ** head
 		- hats, masks
 		- visible. could have neck or top of chest to make height and position variable
-	- outer layer
-		- weather protection? disguise?
-	- armor
+		- idk what they do. provide resistances?
+	- ** body
 		- essentially full outfit
-		- visible. determines palette
-	- legs/boots
-		- waterproof, insulated, swimming,
-		- maybe visible? could have the top of leg to make boot height variable
-	- cloak (or another adornment?)
-		- waterproof, windproof, insulated. maybe this should be baked into armor? i want there to be more … mental/feelings/subjectivity-based items like 
-	- amulet
-		- 
-	- icon
-		- icon modifies magical / mental attacks
-	- weapon
-		- weapon modifies physical attacks
-	- 
+		- sets color palette ?
+		- visible.
+			- affixes: waterproof, windproof, insulated
+		- idk what they do. provide resistances?
+	- ** legs/boots
+		- waterproof, insulated, swimming, lightweight
+		- idk what they do. provide resistances?
+	- covenant item / badge / sigil
+		- sets color palette ?
+		- ?
+	- amulet 1
+		- necklace, ring, wrist, whatever
+	- amulet 2
+		- provides move
+		- provides resistance
 
 - head - defensive, cultural, provide resistances
 	- frog helm
 	- imp helm
-	- beaked helm
 	- hood
-	- shroud
+	- beaked helm
 	- wooden masks, different kinds
 	- porcelain mask
 - armor - defensive, cultural, provide resistances
@@ -63,6 +66,7 @@ equipment
 	- tarnished legguards
 	- vinework legs
 	- scrimshaw legplate
+	- rust skirts
 	- hard leather legs
 	- seavine legs
 	- old plate legs
@@ -88,16 +92,44 @@ equipment
 		- another eye to help see
 	- fragrant herb
 		- calms the nerves
+
+- covenant items. they give you a color palette. maybe they dont have gameplay benefit, or they do but it's not a big deal
 	- horn cup
 		- allegiance to the rangers
+		- brown / white / green
+	- stone badge
+		- allegiance to constructs
+		- white / tan / brown
 	- bone whistle
-		- allegiance to the dead song
+		- allegiance to an old song
+		- off white / dark grey / brown
 	- tarnished crest
-		- allegiance to old rule
-	- oily feather
-		- allegiance to dark wings
+		- allegiance to an old way
+		- white / rust / verdigris
+	- cold feather / wing blade
+		- allegiance to dark birds, bats
+		- dark blue / dark violet / ?
 	- petal crown
 		- allegiance to flowering things
+		- green / lavender / white
+	- thorn circlet
+		- allegiance to flowers
+		- deep green / deep crimson / violet? or darker green
+	- bee attar (or maybe a cocoon?) (i cannot be trapped, i trap myself)
+		- allegiance to moths / butterflies
+		- light blue / light brown / white
+	- grass braid
+		- allegiance to the harvest
+		- pale green / tan / deep green
+	- nacre icon
+		- allegiance to shelled things
+		- light blue / light violet / white
+	- bloodsap pendant
+		- allegiance to blood watered trees
+		- deep red / red / brown
+	- favorite rock
+		- allegiance to river folk
+		- dark blue / brown / grey
 
 - icon - grants 2 moves. moves scale with 
 	- badge of god (cross)
@@ -196,5 +228,18 @@ equipment
 			- books
 			- 
 
+### UI planning
 
+when you select an equipment slot, there needs to be two kinds of info displayed:
+1. the other items that can go in the slot
+	- each has a name
+	- each has an icon, potentially
+
+2. the effects of the item currently selected
+
+we have 4, 18 character rows for text:
+"item name"
+" move 1 cost dmg type"
+"                  "
+"                  "
 

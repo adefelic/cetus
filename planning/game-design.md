@@ -1,6 +1,25 @@
 new planning doc for short, dark, coastal drpg. roguelike elements, soulslike structure
 	- roguelike because you play in short bursts and it makes experimentation more easy
 
+	are we the minotaur
+	do labyrinths have a center or an exit
+
+	- i don't think i even want a super compelling gameplay experience
+	- i just want there to be enough variability to make it interesting
+	- weapons do damage types but fuckin a, damage is damage. damage types are more for flavor than for puzzles.
+	- maybe this is what the past is largely for. you need to deliver things to the past so that they are both put away and not forgotten. 
+
+
+	maybe you find equipment and use it long enough to put it back. 
+		maybe you are cleaning up
+		bad ending - you get to the exit
+		good ending - you put everything back where it belongs. repair. you can leave when you like but there are just more mazes out there
+			- you can take a little bit. you can't destroy yourself.
+			- kf4 is a game of repair. you ae putting the idol back.
+			- you have to do some violence. we are in the shit. we have to eat plastic.
+			- maybe you need to return weapons
+
+
 ## PREMISE
 - it is hard to balance between nature and technology. technology can produce comfort but it also destroys you
 	- this isn't an interesting premise, it doesn't choose a side
@@ -44,9 +63,13 @@ new planning doc for short, dark, coastal drpg. roguelike elements, soulslike st
 		- nature, mystery, melancholy
 	- dark/demon's souls
 		- loneliness
+	- earthbound
+		- jrpg combat that isn't necessarily life or death combat
 	- wc3
 		- hero units have simple stats and simple inventories / equipment that modify those stats
 		- simple active abilities
+	- castlevania - weapon upgrade system?
+		- preserves movesets but gives upgraded look. are movesets going to be unique enough? this would keep the inventory small which is nice
 
 aesthetics:
 - coastal
@@ -382,7 +405,11 @@ combat system goals
 
 - multitype moves
 
-- items can be giftable? use shiny items on a crow and they will eventually help you. maybe they will do an extra attack for you if you are in their woods
+- items can be giftable? 
+	- use shiny items on a crow and they will eventually help you. maybe they will do an extra attack for you if you are in their woods
+	- give food when the seagull shows up and he will help you out later occasionally
+		- there could be both a random element to this, and scripted elements.
+		- befriending the npcs of the area to have them contribute random attacks would be a cool way to "clear" old areas and make them easier going forwards
 
 
 ### case study: pokemon

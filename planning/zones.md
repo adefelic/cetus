@@ -1,0 +1,6 @@
+- outer fields
+- swamp
+- northern field (old town)
+- coast
+- forest
+- ruins

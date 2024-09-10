@@ -24,9 +24,9 @@ ok gotta figure out - v0 of STATS, ITEMIZATION, ABILITIES, COMBAT
 - more like chosen ideology than a description of how smart you are
 - you put points into these things and gear will scale with them.
 - stats are
-	- endurance 
+	- endurance / wholeness ?
 		- hp
-	- willpower 
+	- willpower / will
 		- mp
 	- the claw
 		- nature (beast / bird of prey. predator, k-strategist, darwinistic, brutal, perfection?)
