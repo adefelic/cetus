@@ -32,7 +32,7 @@ InitAudio::
 	ldh [rNR50], a
 
 	; comment out to disable hUGE
-	ld hl, MusicSwamp
+	;ld hl, MusicSwamp
 	call hUGE_init
 
 	; this is from my old sound effect stuff and not hUGE
