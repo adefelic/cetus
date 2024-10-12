@@ -3,6 +3,7 @@ INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/lib/hardware.inc"
+INCLUDE "src/utils/macros.inc"
 
 DEF LABEL_MODAL_TOP_LEFT EQU rows 2 + cols 4
 DEF LABEL_MODAL_WIDTH EQU 12
@@ -57,7 +58,7 @@ PaintLabelTopModal::
 	ld d, [hl]
 	ld hl, wShadowBackgroundTilemap + LABEL_MODAL_TOP_LEFT + rows 1 + cols 1
 	ld b, 10
-	call MemcopySmall
+	MemcopySmall
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowBackgroundTilemapAttrs + LABEL_MODAL_TOP_LEFT + rows 1 + cols 1
 	ld b, 10

@@ -25,7 +25,7 @@ wCurrentDialogFrame:: dw ; addr of the dialog option frame is currently rendered
 wCurrentLabelAddr:: dw ; addr of the label to paint if the dialog state is DIALOG_STATE_LABEL
 
 ; specifically _new_ event parsing. event loading? event initilization? event map parsing?
-SECTION "Event Parsing", ROMX
+SECTION "Event Parsing", ROM0
 
 ResetAllEventState::
 	ld a, FALSE
@@ -92,7 +92,7 @@ SetEventStateDialogBranch::
 HandleVisibleEvents::
 .checkLocationTableForEvent
 	call GetEventRoomAddrFromPlayerCoords ; into hl
-	call DereferenceHlIntoHl ; get RoomEvent Addr
+	DereferenceHlIntoHl ; get RoomEvent Addr
 	; check for absence of RoomEvent
 	ld a, h
 	or l
@@ -135,7 +135,7 @@ HandleNewDialogRoomEvent:
 	; store DialogBranchesAddr
 	ld a, RoomEvent_DialogBranchesAddr
 	AddAToHl
-	call DereferenceHlIntoHl ; put addr of event def in hl
+	DereferenceHlIntoHl ; put addr of event def in hl
 	ld a, l
 	ld [wDialogBranchesAddr], a
 	ld a, h
@@ -155,7 +155,7 @@ HandleNewDialogWarpEvent:
 	; store DialogBranchesAddr
 	ld a, RoomEvent_DialogBranchesAddr
 	AddAToHl
-	call DereferenceHlIntoHl ; put addr of event def in hl
+	DereferenceHlIntoHl ; put addr of event def in hl
 	ld a, l
 	ld [wWarpDestinationAddr], a
 	ld a, h

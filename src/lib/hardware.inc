@@ -33,7 +33,7 @@ ENDC
 
 ; If all of these are already defined, don't do it again.
 
-    IF !DEF(HARDWARE_INC)
+IF !DEF(HARDWARE_INC)
 DEF HARDWARE_INC EQU 1
 
 MACRO rev_Check_hardware_inc

@@ -87,7 +87,7 @@ RenderEncounterMenuPlayerAttacks::
 	; it's cool to pass wCurrentMenuItemObjectAddr in de because its zeroth element is the name string that needs to be passed
 	ld a, BYTES_IN_ATTACK_STRING - 3
 	ld b, a
-	call MemcopySmall
+	MemcopySmall
 
 	ld hl, wAttackNameStringBuffer
 	pop bc ; restore iterators for PaintModalTextRow
@@ -134,7 +134,7 @@ PopulateMenuItemsFromPlayerAttacks:
 	ld de, wPlayerAttacks ; source
 	ld hl, wMenuItems ; dest
 	ld b, 8 ; 4 pointers
-	call MemcopySmall
+	MemcopySmall
 
 	ld a, [wPlayerAttacksCount]
 	ld [wMenuItemsCount], a
@@ -261,7 +261,7 @@ LoadBufferWithUsedStringAndAttackName:
 	call CopyStringIntoBufferWithWhitespace
 .getAttackName
 	ld hl, wCurrentAttack
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	ld a, Attack_Name
 	AddAToHl
 .copy
@@ -293,7 +293,7 @@ ClearTextRowBuffer:
 ; loads name into wAttackNameStringBuffer
 LoadNpcNameString:
 	ld hl, wNpcAddr
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	ld a, NPC_Name
 	AddAToHl
 	ld b, CHARACTER_NAME_LENGTH

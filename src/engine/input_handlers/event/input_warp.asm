@@ -7,7 +7,7 @@ SECTION "Warp Event Input Handling", ROMX
 ; this is inefficient and can be improved once the WarpDestination and Locale struct designs have settled
 DoWarp::
 	ld hl, wWarpDestinationAddr
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	push hl ; stash hl
 	ld a, WarpDestination_DestinationX
 	AddAToHl
@@ -32,6 +32,6 @@ DoWarp::
 	; make hl point to the Locale now instead of the WarpDestination
 	ld a, WarpDestination_DestinationLocale
 	AddAToHl
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	call LoadLocale
 	jp DirtyFpSegmentsAndTilemap

@@ -41,8 +41,12 @@ VBlankHandler:
 	push hl
 .updatePalettes
 	; explore
+	;ld a, BANK(SetEnqueuedBgPaletteSet)
+	;ld [rROMB0], a
 	call SetEnqueuedBgPaletteSet
 	; encounter
+	;ld a, BANK(SetEnqueuedEnemyBgPalette)
+	;ld [rROMB0], a
 	call SetEnqueuedEnemyBgPalette ; todo would it make more sense to consolidate all palette updates? this overwrites palette 6
 .updateTiles
 	; explore
@@ -101,6 +105,7 @@ CopyBgWallTilesIntoVram:
 	ret nz
 
 	ld hl, wCurrentWallTilesAddr
+	; hmm there are some warnings here ...
 	DEF DEST = WALL_TILES_VRAM_ADDR
 	DEF SIZE_TILES = strfmt("${WALL_TILES_SIZE}")
 	gdmaSmall

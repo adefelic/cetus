@@ -92,7 +92,7 @@ RenderDialogRoot:
 .renderTextLoop
 	; the word at offset 0 of a DialogBranch is the address of the flag that determines whether it should be displayed
 	push hl ; stash DialogBranch[wTextRowsRendered] addr
-	call DereferenceHlIntoHl ; load addr of flag
+	DereferenceHlIntoHl ; load addr of flag
 	ld a, [hl]
 	cp FALSE ; check if flag is false.
 	jp z, .checkNext
@@ -267,5 +267,5 @@ GetHighlightedMenuItemAddr::
 	sla a ; x2 to go from index to address offset
 	ld hl, wMenuItems
 	AddAToHl
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	ret

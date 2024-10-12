@@ -48,6 +48,7 @@ encounters can be helpful, but usually aren't
 	- grave spook
 	- old vines
 	- winter lantern / gourd / turnip
+	- angy jay
 
 forest: - pine woods. dry, orange-brown ground. twisty trees, grey trunks, briars, pinecones. needs more ...
 	- spider web

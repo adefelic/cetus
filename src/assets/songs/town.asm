@@ -2,7 +2,7 @@ INCLUDE "src/lib/hUGEDriver/hUGE.inc"
 
 SECTION "town Song Data", ROMX
 
-MusicTown::
+xMusicTown::
 db 8
 dw order_cnt
 dw order1, order2, order3, order4

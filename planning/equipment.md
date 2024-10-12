@@ -22,28 +22,23 @@ equipment
 	- fire 
 
 ### armor: 6 slots
-- item slots
-	- ** head
-		- hats, masks
-		- visible. could have neck or top of chest to make height and position variable
-		- idk what they do. provide resistances?
-	- ** body
-		- essentially full outfit
-		- sets color palette ?
-		- visible.
-			- affixes: waterproof, windproof, insulated
-		- idk what they do. provide resistances?
-	- ** legs/boots
-		- waterproof, insulated, swimming, lightweight
-		- idk what they do. provide resistances?
-	- covenant item / badge / sigil
-		- sets color palette ?
-		- ?
-	- amulet 1
-		- necklace, ring, wrist, whatever
-	- amulet 2
-		- provides move
-		- provides resistance
+- ** head
+	- hats, masks
+	- visible. could have neck or top of chest to make height and position variable
+	- idk what they do. provide resistances?
+- ** body
+	- affixes: waterproof, windproof, insulated
+	- idk what they do. provide resistances?
+- ** legs/boots
+	- waterproof, insulated, swimming, lightweight
+	- idk what they do. provide resistances?
+- covenant item / badge / sigil
+	- sets color palette
+- accessory
+	- necklace, ring, wrist, whatever
+- accessory
+	- provides move
+	- provides resistance
 
 - head - defensive, cultural, provide resistances
 	- frog helm
@@ -71,13 +66,9 @@ equipment
 	- seavine legs
 	- old plate legs
 	- etched legguards
-- outer layer
-	- cloak of leaves
-	- wind breaker
-	- rain cloak
-	- dark cape
-	- 
-- amulet 1/2, grant another move?
+	- coot feet (like american foot). heavy armor, aquatic
+	- mist skirt
+- accessories
 	- tin salamander
 	- owlfoot charm
 	- flax knot
@@ -92,6 +83,10 @@ equipment
 		- another eye to help see
 	- fragrant herb
 		- calms the nerves
+	- cloak of leaves
+	- wind breaker
+	- rain cloak
+	- dark cape
 
 - covenant items. they give you a color palette. maybe they dont have gameplay benefit, or they do but it's not a big deal
 	- horn cup
@@ -101,13 +96,13 @@ equipment
 		- allegiance to constructs
 		- white / tan / brown
 	- bone whistle
-		- allegiance to an old song
+		- allegiance to the wind
 		- off white / dark grey / brown
 	- tarnished crest
 		- allegiance to an old way
 		- white / rust / verdigris
 	- cold feather / wing blade
-		- allegiance to dark birds, bats
+		- allegiance to dark wings (birds, bats)
 		- dark blue / dark violet / ?
 	- petal crown
 		- allegiance to flowering things
@@ -115,7 +110,7 @@ equipment
 	- thorn circlet
 		- allegiance to flowers
 		- deep green / deep crimson / violet? or darker green
-	- bee attar (or maybe a cocoon?) (i cannot be trapped, i trap myself)
+	- bee attar (empty chrysalis)
 		- allegiance to moths / butterflies
 		- light blue / light brown / white
 	- grass braid
@@ -130,6 +125,10 @@ equipment
 	- favorite rock
 		- allegiance to river folk
 		- dark blue / brown / grey
+	- crossbeak
+		- dun, black, dim yellow
+	- glinting oakleaf 
+		- deep green, pale green, cool white
 
 - icon - grants 2 moves. moves scale with 
 	- badge of god (cross)
@@ -140,13 +139,17 @@ equipment
 		- root / echo
 		- 
 		- 
-	- green lightning badge
 	- everbloom
 	- thorn whip
 	- stone mallet
 	- reed flute
 	- handmade effigy
 	- holly wand
+	- bell
+	- spyglass
+	- clouded mirror
+	- perfect mirror
+
 - weapon - each grants 2 moves
 		- tower
 	- wicked seed (flail)
@@ -166,6 +169,8 @@ equipment
 	- atlatl
 	- hand scythe
 	- great scythe
+	- tattersaw
+	- citole
 	- 
 	what would be good equips for 
 		- tower - ordered, 
@@ -204,7 +209,6 @@ equipment
 					-
 					- 
 				- * talon dagger
-
 			- teeth
 			- beaks
 			- scales

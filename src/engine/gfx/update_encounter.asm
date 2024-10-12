@@ -52,10 +52,10 @@ RollEnemyNpc:
 	sla a ; * 2 so that it's the random number * sizeof address
 	ld d, a
 	ld hl, wCurrentEncounterTable
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	ld a, d
 	AddAToHl
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	jr CacheEnemyState
 
 CacheEnemyState:
@@ -91,7 +91,7 @@ CacheEnemyState:
 
 	ld a, NPC_PaletteAddr
 	AddAToHl
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	call EnqueueEnemyBgPaletteUpdate
 
 	ld a, TRUE
@@ -108,7 +108,7 @@ HandleInitialState:
 	ld de, BlackBackground
 	ld hl, wShadowBackgroundTilemap
 	ld bc, BlackBackgroundEnd - BlackBackground
-	call Memcopy
+	Memcopy
 	ld e, BG_PALETTE_Z0
 	ld hl, wShadowBackgroundTilemapAttrs
 	ld bc, VISIBLE_TILEMAP_SIZE
@@ -266,11 +266,11 @@ LoadRewardScreen:
 
 DoEnemySkill:
 	ld hl, wNpcAddr
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	; hl now holds addr of npc
 	ld a, NPC_AttacksAddr
 	AddAToHl
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	push hl
 	; hl now holds addr of attack list
 	call Rand
@@ -278,7 +278,7 @@ DoEnemySkill:
 	sla a ; go from bytes to words. each attack in the list is an address
 	pop hl
 	AddAToHl
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	; hl now holds addr of attack definition
 
 	; cache def reference

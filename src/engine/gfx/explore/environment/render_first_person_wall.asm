@@ -3,7 +3,6 @@ INCLUDE "src/constants/palette_constants.inc"
 
 SECTION "First Person Environment Wall Renderer", ROMX
 
-
 ; side near
 PaintWallLeftSideNearTypeA::
 PaintWallLeftSideNearTypeC::

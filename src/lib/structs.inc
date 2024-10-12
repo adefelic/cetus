@@ -1,6 +1,5 @@
-IF !DEF(DEF_STRUCTS)
-DEF DEF_STRUCTS EQU 1
-
+IF !DEF(STRUCTS_INC)
+DEF STRUCTS_INC EQU 1
 ; MIT License
 ;
 ; Copyright (c) 2018-2022 Eldred Habert and contributors
@@ -26,7 +25,7 @@ DEF DEF_STRUCTS EQU 1
 
 
 
-DEF STRUCTS_VERSION equs "3.0.1"
+DEF STRUCTS_VERSION equs "4.0.0"
 MACRO structs_assert
     assert (\1), "rgbds-structs {STRUCTS_VERSION} bug. Please report at https://github.com/ISSOtm/rgbds-structs, and share the above stack trace *and* your code there!"
 ENDM
@@ -209,7 +208,7 @@ MACRO dstruct ; struct_type, instance_name[, ...]
     ; there because that would require a duplicated `ELSE`).
     DEF IS_NAMED_INSTANTIATION = 0
     IF _NARG > 2
-        REDEF IS_NAMED_INSTANTIATION = STRIN("\3", "=")
+        DEF IS_NAMED_INSTANTIATION = !STRCMP(STRSUB("\3", 1, 1), ".") && STRIN("\3", "=")
     ENDC
 
     IF IS_NAMED_INSTANTIATION
@@ -251,9 +250,9 @@ MACRO dstruct ; struct_type, instance_name[, ...]
             ; Save the argument to report in case a later argument conflicts with it
             DEF FIELD_{d:FIELD_ID}_ARG EQUS "{CUR_ARG}"
 
-            ; Escape any commas in a multi-byte argument initializer so it can
-            ; be passed as one argument to the nested ordered instantiation
-            DEF FIELD_{d:FIELD_ID}_INITIALIZER EQUS STRRPL(STRSUB("{CUR_ARG}", EQUAL_POS + 1), ",", "\\,")
+            ; Enclose argument initializers in parentheses so any commas inside
+            ; it will not start a new argument
+            DEF FIELD_{d:FIELD_ID}_INITIALIZER EQUS STRCAT("(", STRSUB("{CUR_ARG}", EQUAL_POS + 1), ")")
         ENDR
         PURGE ARG_NUM, CUR_ARG
 
@@ -269,8 +268,9 @@ MACRO dstruct ; struct_type, instance_name[, ...]
         PURGE FIELD_ID
 
         ; Do the nested ordered instantiation
+        DEF WAS_NAMED_INSTANTIATION = 1
         dstruct {ORDERED_ARGS} ; purges IS_NAMED_INSTANTIATION
-        PURGE ORDERED_ARGS
+        PURGE ORDERED_ARGS, WAS_NAMED_INSTANTIATION
 
     ELSE
         ; This is an ordered instantiation, not a named one.
@@ -295,7 +295,13 @@ MACRO dstruct ; struct_type, instance_name[, ...]
                 ; Declare the space for the field
                 IF ARG_NUM <= _NARG
                     ; ROM declaration; use `db`, `dw`, or `dl`
-                    d{{STRUCT_FIELD_TYPE}} \<ARG_NUM>
+                    DEF FIELD_INITIALIZER EQUS "\<ARG_NUM>"
+                    IF DEF(WAS_NAMED_INSTANTIATION)
+                        ; Remove the parentheses that named instantiation placed around the field initializer
+                        REDEF FIELD_INITIALIZER EQUS STRSUB("{FIELD_INITIALIZER}", 2, STRLEN("{FIELD_INITIALIZER}") - 2)
+                    ENDC
+                    d{{STRUCT_FIELD_TYPE}} {FIELD_INITIALIZER}
+                    PURGE FIELD_INITIALIZER
                     REDEF ARG_NUM = ARG_NUM + 1
                 ENDC
                 ; Add padding as necessary after the provided initializer
@@ -311,12 +317,14 @@ MACRO dstruct ; struct_type, instance_name[, ...]
         PURGE FIELD_ID, ARG_NUM, DSTRUCT_SEPARATOR
 
         ; Define instance's properties from struct's
-        DEF \2_nb_fields EQU \1_nb_fields
-        DEF sizeof_\2    EQU @ - (\2)
-        structs_assert sizeof_\1 == sizeof_\2
+        IF !STRIN("\2", ".")
+            DEF \2_nb_fields EQU \1_nb_fields
+            DEF sizeof_\2    EQU @ - (\2)
+            structs_assert sizeof_\1 == sizeof_\2
 
-        IF DEF(STRUCTS_EXPORT_CONSTANTS)
-            EXPORT \2_nb_fields, sizeof_\2
+            IF DEF(STRUCTS_EXPORT_CONSTANTS)
+                EXPORT \2_nb_fields, sizeof_\2
+            ENDC
         ENDC
 
         PURGE IS_NAMED_INSTANTIATION

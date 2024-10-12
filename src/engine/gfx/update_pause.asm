@@ -1,7 +1,7 @@
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
-
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Pause Screen State", WRAM0
 wWeaponIconTilesReadyForVramWrite:: db
@@ -31,7 +31,7 @@ UpdatePauseScreen::
 	ld de, BlackBackground
 	ld hl, wShadowBackgroundTilemap
 	ld bc, BlackBackgroundEnd - BlackBackground
-	call Memcopy
+	Memcopy
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs
 	ld bc, VISIBLE_TILEMAP_SIZE

@@ -1,6 +1,7 @@
 INCLUDE "src/lib/structs.inc"
 
 	struct Map
+		;bytes 1, Bank ; bank # of this object ... ?????? this wont work because it has to already be loaded
 		bytes 1, Height ; in rooms ; 32 or 30 ... 32
 		bytes 1, Width  ; in rooms
 		bytes 1, StartingOrientation

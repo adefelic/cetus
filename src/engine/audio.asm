@@ -1,6 +1,7 @@
 INCLUDE "src/assets/audio.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/lib/hardware.inc"
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Shadow Audio Registers", WRAM0
 wNR50: db ; not used yet
@@ -15,7 +16,7 @@ wCh4NoteDurationRemaining: db ; counter
 wIsCh4SoundLoaded: db ; flag. used so we dont restart a note that's currently playing
 wIsCh4SfxActive: db ; flag. used to bypass audio engine if nothing is happening
 
-SECTION "Audio Routines", ROMX
+SECTION "Audio Routines", ROM0
 
 InitAudio::
 	; turn on APU
@@ -49,7 +50,7 @@ InitAudio::
 
 LoadCurrentMusic::
 	ld hl, wCurrentMusicTrack
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	call hUGE_init
 	ret
 
@@ -130,7 +131,7 @@ PlayChannel4:
 	ld l, a
 	ld a, [wCh4CurrentSound + 1]
 	ld h, a
-	call DereferenceHlIntoHl ; second dereference ; todo just dereference once and store that value instead
+	DereferenceHlIntoHl ; second dereference ; todo just dereference once and store that value instead
 	jp LoadChannel4Sound
 
 ; @param hl: addr of sound

@@ -1,3 +1,5 @@
+INCLUDE "src/lib/hardware.inc"
+
 SECTION "lcd handler stub", ROM0[$0048]
 	jp LcdHandler
 
@@ -7,6 +9,8 @@ LcdHandler:
 	push bc
 	push de
 	push hl
+	ld a, BANK(UpdateAudio)
+	ld [rROMB0], a
 	call UpdateAudio
 	call AdvanceEncounterAnimation
 	pop hl

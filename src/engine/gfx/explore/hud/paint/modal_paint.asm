@@ -4,6 +4,7 @@ INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Modal Paint Routines", ROMX
 
@@ -95,7 +96,7 @@ PaintModalTextRow::
 	adc 0
 	ld h, a
 	ld b, MODAL_TEXT_AREA_WIDTH
-	call MemcopySmall
+	MemcopySmall
 
 	ld a, [wTextRowsRendered]
 	call PutTextPaletteInE

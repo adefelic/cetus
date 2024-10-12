@@ -17,6 +17,7 @@ wPlayerExploreX:: db
 wPlayerExploreY:: db
 wPlayerOrientation:: db
 wCurrentMap:: dw
+wCurrentMapBank:: db
 wCurrentMapWalls:: dw
 wCurrentMapEvents:: dw
 wCurrentEncounterTable:: dw
@@ -42,6 +43,19 @@ SECTION "Event Flags", WRAM0
 wAlwaysTrueEventFlag:: db
 wFoundSkullFlag:: db
 
+; rst
+; from https://github.com/evie-calico/esprit/blob/9d218c35579fb3a2c6352824611dfa91feb60353/src/util/rst.asm#L51
+section "Swap Bank", ROM0[$0020 - 1]
+BankReturn::
+	pop af
+; Sets rROMB0 and hCurrentBank to `a`
+; @param a: Bank
+SwapBank::
+	assert @ == $20
+	ldh [hCurrentBank], a
+	ld [rROMB0], a
+	ret
+
 ; unused hardware interrupts
 SECTION "timer", ROM0[$0050]
 	;jp TimerInterruptHandler
@@ -59,11 +73,11 @@ SECTION "Header", ROM0[$100]
 EntryPoint:
 	di
 
-	; from gb-starter-kit
-	; Kill sound to get rid of boot pop
+	; from gb-starter-kit: kill sound to get rid of boot pop
 	xor a
 	ldh [rNR52], a
-
+	; set bank 0 as our current bank for the sake of swapping from
+	ldh [hCurrentBank], a
 .waitVBlank:
 	ldh a, [rLY]
 	cp SCRN_Y
@@ -73,41 +87,8 @@ EntryPoint:
 	xor a
 	ld [rLCDC], a
 
-; todo should make inc files for different tile aggregations?
-; so i dont have to track where in tile memory to put tiles
-LoadBgTilesIntoVram:
-.loadExploreAndEncounterTiles
-	; Copy BG tile data into VRAM bank 0
-	ld de, BgBank0Tiles
-	ld hl, VRAM_BG_BLOCK
-	ld bc, BgBank0TilesEnd - BgBank0Tiles
-	call Memcopy
-
-.loadFont
-	; Copy BG tile data into VRAM bank 1
-	ld a, 1
-	ld [rVBK], a
-	ld de, ScribTiles
-	ld hl, VRAM_BG_BLOCK
-	ld bc, ScribTilesEnd - ScribTiles
-	call Memcopy
-	; back to VRAM bank 0
-	ld a, 0
-	ld [rVBK], a
-
-LoadObjectTilesIntoVram:
-.loadHudSprites
-	; copy into sprite tile area, bank 0
-	ld de, CompassTiles
-	ld hl, VRAM_OBJ_BLOCK
-	ld bc, DangerIndicatorTilesEnd - CompassTiles
-	call Memcopy
-.loadItemSprites
-	ld de, ItemTiles
-	ld bc, ItemTilesEnd - ItemTiles
-	call Memcopy
-
 InitGraphics:
+	call LoadInitialTilesIntoVram
 	call InitColorPalettes
 	call InitTileLoadingFlags
 
@@ -134,6 +115,9 @@ ClearShadowOam:
 	jp nz, .loop
 
 InitGame:
+	;ld a, bank(InitGame)
+	;ldh [hCurrentBank], a
+
 	; clear item map
 	call ClearItemMap ; currently this is hardcoded to be the area of Map1 * 1 byte (1024 bytes). that's a lot of ram and a lot of sram.
 	; the goal is for this to be playable on real hardware but it's fine for it to be a bit optimal on an emulator with infinite rom, sram, etc
@@ -195,6 +179,8 @@ InitGame:
 .loadMap
 	; load map
 	ld hl, Map1
+	ld a, bank(Map1)
+	ld [wCurrentMapBank], a
 	call LoadMapInHl
 
 	; init screen rendering state
@@ -206,6 +192,46 @@ Main:
 	call ProcessInput
 	call UpdateShadowVram ; processes game state and dirty flags, draws screen to shadow maps
 	jr Main
+
+; todo should make inc files for different tile aggregations?
+; so i dont have to track where in tile memory to put tiles
+LoadInitialTilesIntoVram:
+LoadBgTilesIntoVram:
+.loadExploreAndEncounterTiles
+	ld a, [hCurrentBank]
+	push af
+
+	ld a, bank(BgBank0Tiles)
+	rst SwapBank
+
+	; Copy BG tile data into VRAM bank 0
+	ld de, BgBank0Tiles
+	ld hl, VRAM_BG_BLOCK
+	ld bc, BgBank0TilesEnd - BgBank0Tiles
+	Memcopy
+.loadFont
+	; Copy BG tile data into VRAM bank 1
+	ld a, 1
+	ld [rVBK], a
+	ld de, ScribTiles
+	ld hl, VRAM_BG_BLOCK
+	ld bc, ScribTilesEnd - ScribTiles
+	Memcopy
+	; back to VRAM bank 0
+	ld a, 0
+	ld [rVBK], a
+LoadObjectTilesIntoVram:
+.loadHudSprites
+	; copy into sprite tile area, bank 0
+	ld de, CompassTiles
+	ld hl, VRAM_OBJ_BLOCK
+	ld bc, DangerIndicatorTilesEnd - CompassTiles
+	Memcopy
+.loadItemSprites
+	ld de, ItemTiles
+	ld bc, ItemTilesEnd - ItemTiles
+	Memcopy
+	jp BankReturn
 
 UpdateShadowVram::
 	ld a, [wActiveFrameScreen]

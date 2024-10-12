@@ -10,7 +10,7 @@ wWallTypeInFrontOfPlayer:: db
 wItemTypeInFrontOfPlayer:: db
 wItemTypeBeingPlaced:: db
 
-SECTION "Explore Screen Item Menu Input Handling", ROMX
+SECTION "Explore Screen Item Menu Input Handling", ROM0
 
 HandleInputFromItemMenu::
 ;.checkPressedStart:

@@ -96,7 +96,6 @@ RuinBgPaletteSet::
 	RGB  4,12, 8,  13,15,15,  7,14,10,  10,15,12 ; special, for ocean walls? has no depth. unused so far
 	RGB  11,11,11, 10,10,10,  6, 5, 6,  05,06,12 ; fog
 
-
 ; Obj palettes
 OwObjPaletteSet::
 	RGB 0,0,0,  0,27,31,  00,14,24,  31,31,31 ; rock: clear, light blue, blue, unused
@@ -108,7 +107,6 @@ OwObjPaletteSet::
 	RGB 0,0,0, 10,10,12,   6, 6, 8,   2, 2, 4 ; player
 	RGB 0,0,0,  0, 0, 0,   0, 0, 0,   0, 0, 0 ; unused
 	RGB 0,0,0,  0, 0, 0,   0, 0, 0,   0, 0, 0 ; unused
-
 
 ; Enemy/NPC Palettes
 NPCGreenBriarsPalette::

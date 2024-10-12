@@ -2,6 +2,7 @@ INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/engine/gfx/gfx_macros.inc"
 INCLUDE "src/structs/equipment.inc"
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Paper Doll Screen Renderer", ROMX
 
@@ -76,7 +77,7 @@ PaintEquipmentIcons:
 .checkWeapon
 	DEF TOP = 10
 	ld hl, wEquippedWeapon
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	ld a, h
 	or l
 	jp z, .weaponEmpty

@@ -5,7 +5,7 @@ INCLUDE "src/structs/map.inc"
 INCLUDE "src/structs/locale.inc"
 INCLUDE "src/utils/macros.inc"
 
-SECTION "Map / Room Parsing", ROMX
+SECTION "Map / Room Parsing", ROM0
 
 ; todo split into map loading and map utils
 
@@ -16,12 +16,23 @@ LoadMapInHl::
 	ld a, h
 	ld [wCurrentMap+1], a
 
+;; fuck how do you discover the bank of a variable ... i think it has to be stashed
+; gonna have to update all my structs to store their own bank
+	; stash current bank
+	ld a, [hCurrentBank]
+	push af
+	ld a, [wCurrentMapBank]
+	rst SwapBank
+
+;	jp BankReturn
+
+
 	; long term todo, optimize map struct to let this use hli instead of stack verbs
 	push hl ; stash map struct location
 
 	ld a, Map_WallMapAddr
 	AddAToHl
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	ld a, l
 	ld [wCurrentMapWalls], a
 	ld a, h
@@ -32,7 +43,7 @@ LoadMapInHl::
 
 	ld a, Map_EventMapAddr
 	AddAToHl
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	ld a, l
 	ld [wCurrentMapEvents], a
 	ld a, h
@@ -43,7 +54,7 @@ LoadMapInHl::
 
 	ld a, Map_StartingLocale
 	AddAToHl
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	call LoadLocale
 
 	pop hl
@@ -65,7 +76,7 @@ LoadLocale::
 	push hl ; contains addr of Locale
 	ld a, Locale_BgPaletteSetAddr
 	AddAToHl ; contains addr of Locale_BgPaletteSetAddr
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	ld d, h
 	ld e, l
 	call EnqueueBgPaletteSetUpdate

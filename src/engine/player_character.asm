@@ -21,7 +21,7 @@ wPlayerAttack2: dw
 wPlayerAttack3: dw
 wPlayerAttack4: dw
 
-SECTION "Player Character Functions", ROMX
+SECTION "Player Character Functions", ROM0
 
 InitPlayerCharacter::
 	ld a, MAX_HP

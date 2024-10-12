@@ -5,7 +5,6 @@ INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/structs/event.inc"
 INCLUDE "src/structs/map.inc"
 
-
 ; csv:
 ;   https://docs.google.com/spreadsheets/d/13GqaktULwpdHMGMlaf0OvSwk79VNFjUJ6q3atw7Apqc/edit?usp=sharing
 

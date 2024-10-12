@@ -30,7 +30,7 @@ wEquippedWeapon:: dw
 wEquippedWeaponIconTiles:: dw
 wEquippedWeaponPaperDollTiles:: dw
 
-SECTION "Inventory Functions", ROMX
+SECTION "Inventory Functions", ROM0
 
 InitInventory::
 	xor a
@@ -72,8 +72,8 @@ EquipSlot:
 
 	push de
 	ld a, Equipment_IconTilesAddr
-	call AddAToDe
-	call DereferenceDeIntoDe
+	AddAToDe
+	DereferenceDeIntoDe
 	ld a, e
 	ld [hli], a
 	ld a, d
@@ -81,8 +81,8 @@ EquipSlot:
 
 	pop de
 	ld a, Equipment_PaperDollTilesAddr
-	call AddAToDe
-	call DereferenceDeIntoDe
+	AddAToDe
+	DereferenceDeIntoDe
 	ld a, e
 	ld [hli], a
 	ld a, d

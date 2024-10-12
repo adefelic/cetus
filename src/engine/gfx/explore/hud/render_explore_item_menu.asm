@@ -83,7 +83,7 @@ RenderExploreItemMenu::
 	inc de
 	ld a, BYTES_IN_DIALOG_STRING - 3
 	ld b, a
-	call MemcopySmall
+	MemcopySmall
 
 	ld hl, wItemQuantityNameStringBuffer
 

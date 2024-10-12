@@ -3,7 +3,7 @@ INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/event_constants.inc"
 INCLUDE "src/assets/tiles/indices/object_tiles.inc"
 
-SECTION "Explore Screen Renderer", ROMX
+SECTION "Explore Screen Renderer", ROM0
 
 InitExploreEventState::
 	jp ResetAllEventState

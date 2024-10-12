@@ -2,7 +2,7 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/lib/hardware.inc"
 
-SECTION "Pause Screen Input Handling", ROMX
+SECTION "Pause Screen Input Handling", ROM0
 
 HandleInputPauseScreen::
 .checkPressedStart:

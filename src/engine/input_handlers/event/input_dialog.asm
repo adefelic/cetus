@@ -47,7 +47,7 @@ PressedAFromDialogRoot:
 	AddAToHl
 	ld a, [hli] ; hl now pointing to frames array
 	ld [wDialogBranchFramesCount], a
-	call DereferenceHlIntoHl
+	DereferenceHlIntoHl
 	ld a, l
 	ld [wDialogBranchFramesAddr], a
 	ld [wCurrentDialogBranchFrameAddr], a

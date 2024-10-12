@@ -1,3 +1,7 @@
+; it seems this file is just for big chunks of ram.
+INCLUDE "src/lib/hardware.inc"
+INCLUDE "src/constants/gfx_constants.inc"
+
 SECTION "Shadow OAM", WRAM0, ALIGN[8]
 wShadowOam::
 ds sizeof_OAM_ATTRS * OAM_COUNT

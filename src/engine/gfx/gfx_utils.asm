@@ -2,12 +2,13 @@ INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
+INCLUDE "src/utils/macros.inc"
 
 SECTION "Palette Update State", WRAM0
 wBgPaletteSetUpdateAddr:: dw
 wBgPaletteUpdateAddr:: dw
 
-SECTION "General Graphics Utilities", ROMX
+SECTION "Palette Routines", ROM0
 
 InitColorPalettes::
 	xor a
@@ -79,20 +80,35 @@ SetEnqueuedBgPaletteSet::
 	ret
 
 SetEnemyBgPalette:
+	ld a, [hCurrentBank]
+	push af
+
+	; hack
+	ld a, bank(FieldBgPaletteSet)
+
+	rst SwapBank
 	ld a, BCPSF_AUTOINC | PALETTE_SIZE * BG_PALETTE_ENEMY; load bg color palette specification auto increment on write + addr of BG_PALETTE_ENEMY
 	ld [rBCPS], a
 	ld hl, rBCPD
 	ld b, PALETTE_SIZE
-	jr CopyColorsToPalette
+	MemcopySmall
+	jp BankReturn
 
 ; this should only be called on VBlank
 ; @param de: source palette set addr
 SetBgPaletteSetAutoInc:
+	ld a, [hCurrentBank]
+	push af
+
+	; hack
+	ld a, bank(FieldBgPaletteSet)
+
 	ld a, BCPSF_AUTOINC ; load bg color palette specification auto increment on write + addr of zero
 	ld [rBCPS], a
 	ld hl, rBCPD
 	ld b, PALETTE_SET_SIZE
-	jr CopyColorsToPalette
+	MemcopySmall
+	jp BankReturn
 
 ; this should only be called on VBlank
 ; @param de: source palette set addr
@@ -101,23 +117,26 @@ SetObjPaletteSet:
 	ld [rOCPS], a
 	ld hl, rOCPD
 	ld b, PALETTE_SET_SIZE
-	jr CopyColorsToPalette
+	MemcopySmall
+	jp BankReturn
 
-; @param de: source
-; @param hl: destination
-; @param b: length
-CopyColorsToPalette:
-	ld a, [de]
-	ld [hl], a
-	inc de
-	dec b
-	jp nz, CopyColorsToPalette
-	ret
+; i'm trialing replaicng this with MemcopySmall+ret
+;; @param de: source
+;; @param hl: destination
+;; @param b: length
+;CopyColorsToPalette:
+;	ld a, [de]
+;	ld [hl], a
+;	inc de
+;	dec b
+;	jp nz, CopyColorsToPalette
+;	ret
+
+SECTION "Tilemap Dirty Routines", ROM0
 
 ; necessary when drawing background environment tiles
 DirtyFpSegmentsAndTilemap::
 	call DirtyFpSegments
-
 ; necessary when drawing over background environmenttiles
 DirtyTilemap::
 	ld a, TRUE

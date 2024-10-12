@@ -1,6 +1,6 @@
 INCLUDE "src/constants/explore_constants.inc"
 
-SECTION "Item Map Parsing", ROMX
+SECTION "Item Map Parsing", ROM0
 
 ; todo replace with LoadItemMap which would dump some sram into wItemMap
 ClearItemMap::

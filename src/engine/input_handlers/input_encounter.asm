@@ -6,7 +6,7 @@ INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/structs/attack.inc"
 INCLUDE "src/utils/macros.inc"
 
-SECTION "Battle Screen Input Handling", ROMX
+SECTION "Battle Screen Input Handling", ROM0
 
 HandleInputEncounterScreen::
 	; todo: if not player turn, disable input
@@ -146,7 +146,7 @@ DoAttack:
 	ld a, [hli] ; hl point to KeyFramesAddr
 	ld [wAnimationKeyFramesRemaining], a
 
-	call DereferenceHlIntoHl ; hl now contains addr of initial keyframe struct
+	DereferenceHlIntoHl ; hl now contains addr of initial keyframe struct
 	ld a, l
 	ld [wNextAnimationKeyFrame], a
 	ld a, h

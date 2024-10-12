@@ -7,7 +7,7 @@ INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/structs/event.inc"
 INCLUDE "src/lib/hardware.inc"
 
-SECTION "Explore Screen Input Handling", ROMX
+SECTION "Explore Screen Input Handling", ROM0
 
 HandleInputExploreScreen::
 	ld a, [wIsPlayerFacingWallInteractable]

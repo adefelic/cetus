@@ -1,6 +1,7 @@
 INCLUDE "src/assets/tiles/indices/scrib.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
+INCLUDE "src/utils/macros.inc"
 
 DEF PLAYER_STATUS_HP_LINE EQU rows 10 + cols 9
 DEF PLAYER_STATUS_MP_LINE EQU PLAYER_STATUS_HP_LINE + rows 1
@@ -57,7 +58,7 @@ PaintHpStatusLine:
 	ld de, wStatusStringBuffer
 	ld hl, wShadowBackgroundTilemap + PLAYER_STATUS_HP_LINE
 	ld b, STATUS_LINE_STRING_LEN
-	call MemcopySmall
+	MemcopySmall
 	; attrs
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowBackgroundTilemapAttrs + PLAYER_STATUS_HP_LINE
@@ -106,7 +107,7 @@ PaintMpStatusLine:
 	ld de, wStatusStringBuffer
 	ld hl, wShadowBackgroundTilemap + PLAYER_STATUS_MP_LINE
 	ld b, STATUS_LINE_STRING_LEN
-	call MemcopySmall
+	MemcopySmall
 	; attrs
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowBackgroundTilemapAttrs + PLAYER_STATUS_MP_LINE
@@ -156,7 +157,7 @@ PaintNPCStatus::
 	ld de, wStatusStringBuffer
 	ld hl, wShadowBackgroundTilemap + NPC_STATUS_HP_LINE
 	ld b, STATUS_LINE_STRING_LEN
-	call MemcopySmall
+	MemcopySmall
 	; attrs
 	ld e, BG_PALETTE_UI + OAMF_BANK1
 	ld hl, wShadowBackgroundTilemapAttrs + NPC_STATUS_HP_LINE
