@@ -26,7 +26,6 @@ LoadMapInHl::
 
 ;	jp BankReturn
 
-
 	; long term todo, optimize map struct to let this use hli instead of stack verbs
 	push hl ; stash map struct location
 

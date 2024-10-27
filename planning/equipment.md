@@ -66,7 +66,7 @@ equipment
 	- seavine legs
 	- old plate legs
 	- etched legguards
-	- coot feet (like american foot). heavy armor, aquatic
+	- coot feet (like the bird). heavy armor, aquatic
 	- mist skirt
 - accessories
 	- tin salamander
@@ -88,47 +88,63 @@ equipment
 	- rain cloak
 	- dark cape
 
+- maybe a covenant item also gives you a covenant ally. do they act randomly? that could be neat
+	- having a helper guy makes the slog easier and makes combat more interesting. should you be switching helpers on the fly? or should they be leveled up individually
 - covenant items. they give you a color palette. maybe they dont have gameplay benefit, or they do but it's not a big deal
 	- horn cup
 		- allegiance to the rangers
 		- brown / white / green
+		- ally: antelope goat
 	- stone badge
 		- allegiance to constructs
 		- white / tan / brown
+		- ally: road builder
 	- bone whistle
 		- allegiance to the wind
 		- off white / dark grey / brown
+		- skeleton
 	- tarnished crest
 		- allegiance to an old way
 		- white / rust / verdigris
+		- ally: ghost of past monarchy
 	- cold feather / wing blade
 		- allegiance to dark wings (birds, bats)
 		- dark blue / dark violet / ?
+		- ally: raven
 	- petal crown
 		- allegiance to flowering things
 		- green / lavender / white
-	- thorn circlet
+		- ally: blooms around you
+	- thorn circle
 		- allegiance to flowers
 		- deep green / deep crimson / violet? or darker green
-	- bee attar (empty chrysalis)
+		- ally: thorns around you
+	- bug shell
 		- allegiance to moths / butterflies
 		- light blue / light brown / white
+		- ally: bees
 	- grass braid
-		- allegiance to the harvest
+		- allegiance to the harvest / coexisting 
 		- pale green / tan / deep green
+		- ally: 
 	- nacre icon
 		- allegiance to shelled things
 		- light blue / light violet / white
+		- ally: snail / nautilus
 	- bloodsap pendant
 		- allegiance to blood watered trees
 		- deep red / red / brown
 	- favorite rock
 		- allegiance to river folk
 		- dark blue / brown / grey
-	- crossbeak
+		- ally: river otter
+	- crossed beak
 		- dun, black, dim yellow
+		- ally: another bird???
 	- glinting oakleaf 
 		- deep green, pale green, cool white
+		- ally: elf
+	- 
 
 - icon - grants 2 moves. moves scale with 
 	- badge of god (cross)
@@ -149,6 +165,9 @@ equipment
 	- spyglass
 	- clouded mirror
 	- perfect mirror
+	- censer
+		- red smoke
+		- black smoke
 
 - weapon - each grants 2 moves
 		- tower
@@ -173,7 +192,7 @@ equipment
 	- citole
 	- 
 	what would be good equips for 
-		- tower - ordered, 
+		- tower - ordered. moral.
 			- constabulary weapons
 			- * service steel (saber)
 			- badges of office
@@ -187,7 +206,7 @@ equipment
 				- * sturdy fork
 			- clearing / building tools
 				- * vinecutter
-		- wind - free, wistful?
+		- wind - free, wistful? creative
 			- "foreign" things (these might end up going echo)
 				- foreign dirk
 			- pilgrim things

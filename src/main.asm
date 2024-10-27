@@ -76,6 +76,7 @@ EntryPoint:
 	; from gb-starter-kit: kill sound to get rid of boot pop
 	xor a
 	ldh [rNR52], a
+
 	; set bank 0 as our current bank for the sake of swapping from
 	ldh [hCurrentBank], a
 .waitVBlank:
@@ -101,23 +102,20 @@ ClearOam:
 	dec b
 	jp nz, .loop
 
-; necessary?
-ClearShadowOam:
-	xor a
-	ld bc, wShadowOamEnd - wShadowOam
-	ld hl, wShadowOam
-.loop:
-	xor a
-	ld [hli], a
-	dec bc
-	ld a, b
-	or c
-	jp nz, .loop
+; necessary? should be moved into sprite loading regardless
+;ClearShadowOam:
+;	xor a
+;	ld bc, wShadowOamEnd - wShadowOam
+;	ld hl, wShadowOam
+;.loop:
+;	xor a
+;	ld [hli], a
+;	dec bc
+;	ld a, b
+;	or c
+;	jp nz, .loop
 
 InitGame:
-	;ld a, bank(InitGame)
-	;ldh [hCurrentBank], a
-
 	; clear item map
 	call ClearItemMap ; currently this is hardcoded to be the area of Map1 * 1 byte (1024 bytes). that's a lot of ram and a lot of sram.
 	; the goal is for this to be playable on real hardware but it's fine for it to be a bit optimal on an emulator with infinite rom, sram, etc
@@ -132,7 +130,7 @@ InitGame:
 	ld [wIsRandSeeded], a
 
 	; init player state with map defaults
-	call InitDangerLevel
+	call InitDangerLevel ; todo move this to entering explore screen from encounter or main menu
 
 	; init game screen state
 	ld a, SCREEN_EXPLORE
@@ -151,7 +149,7 @@ InitGame:
 	ld a, FALSE
 	ld [wFoundSkullFlag], a
 	call InitInventory
-	call InitEquipment
+	call InitEquipment ; zzz control is blasting off here
 	call InitPlayerCharacter
 	call InitAudio
 
@@ -198,9 +196,9 @@ Main:
 LoadInitialTilesIntoVram:
 LoadBgTilesIntoVram:
 .loadExploreAndEncounterTiles
+	; swap bank for copy
 	ld a, [hCurrentBank]
 	push af
-
 	ld a, bank(BgBank0Tiles)
 	rst SwapBank
 
@@ -231,7 +229,7 @@ LoadObjectTilesIntoVram:
 	ld de, ItemTiles
 	ld bc, ItemTilesEnd - ItemTiles
 	Memcopy
-	jp BankReturn
+	jp BankReturn ; zzz
 
 UpdateShadowVram::
 	ld a, [wActiveFrameScreen]

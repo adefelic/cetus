@@ -9,11 +9,22 @@ wBgPaletteSetUpdateAddr:: dw
 wBgPaletteUpdateAddr:: dw
 
 SECTION "Palette Routines", ROM0
-
 InitColorPalettes::
+	; bg:
+	; zero out bg palette set. it'll be written to when the map is loaded
 	xor a
 	ld [wBgPaletteSetUpdateAddr], a
 	ld [wBgPaletteSetUpdateAddr + 1], a
+	; obj:
+	; hardcode loading OwObjPaletteSet
+
+	; this might be preemptive?
+	; swap bank for copy
+	ld a, [hCurrentBank]
+	push af
+	ld a, bank(OwObjPaletteSet)
+	rst SwapBank
+
 	ld de, OwObjPaletteSet
 	jr SetObjPaletteSet
 
@@ -117,7 +128,12 @@ SetObjPaletteSet:
 	ld [rOCPS], a
 	ld hl, rOCPD
 	ld b, PALETTE_SET_SIZE
-	MemcopySmall
+.loop_do_not_increment_hl
+	ld a, [de]
+	ld [hl], a
+	inc de
+	dec b
+	jp nz, .loop_do_not_increment_hl
 	jp BankReturn
 
 ; i'm trialing replaicng this with MemcopySmall+ret

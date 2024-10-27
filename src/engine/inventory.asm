@@ -44,23 +44,31 @@ InitInventory::
 	ret
 
 InitEquipment::
+	; a longer term solution for could involve loading a hardcoded location for equipment
+	;   rather than making it potentially unique per item w true far pointers
 
-	ld de, EquipmentHelmFrogMouth
-	ld hl, wEquippedHead
-	call EquipSlot
+	; swap bank for copy
+	ld a, [hCurrentBank]
+	push af
+	ld a, bank(EquipmentHelmFrogMouth)
+	rst SwapBank
 
-	ld de, EquipmentSurcoatRoot
-	ld hl, wEquippedBody
-	call EquipSlot
+		ld de, EquipmentHelmFrogMouth ; hmm ..... this is saying 66de in rom0 in the debugger
+		ld hl, wEquippedHead
+		call EquipSlot
 
-	ld de, EquipmentLegWrappings
-	ld hl, wEquippedLegs
-	call EquipSlot
+		ld de, EquipmentSurcoatRoot
+		ld hl, wEquippedBody
+		call EquipSlot
 
-	ld de, EquipmentFlail
-	ld hl, wEquippedWeapon
-	call EquipSlot
-	ret
+		ld de, EquipmentLegWrappings
+		ld hl, wEquippedLegs
+		call EquipSlot
+
+		ld de, EquipmentFlail
+		ld hl, wEquippedWeapon
+		call EquipSlot
+	jp BankReturn
 
 ; @param de, src equipment def
 ; @param hl, dest slot

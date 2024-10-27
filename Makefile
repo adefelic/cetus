@@ -21,7 +21,7 @@ GFX  := rgbgfx
 # tool flags
 ASM_FLAGS := 
 LINK_FLAGS := #-t # this makes the rom "tiny", such that all ROM is considered a single unextensible ROM0 bank. will remove when rom exceeds 64k
-FIX_FLAGS := -v -p 0xFF -C --mbc-type MBC1
+FIX_FLAGS := -v -p 0xFF -C --mbc-type MBC5
 
 # from https://stackoverflow.com/a/18258352/1221106
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
