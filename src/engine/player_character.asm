@@ -36,6 +36,12 @@ InitPlayerCharacter::
 	ld [wPlayerAttacksCount], a
 
 .loadAttack1
+	; swap bank for copy
+	ld a, [hCurrentBank]
+	push af
+	ld a, bank(AttackWatch)
+	rst SwapBank
+
 	ld a, LOW(AttackWatch)
 	ld [wPlayerAttack1], a
 	ld a, HIGH(AttackWatch)
@@ -52,4 +58,4 @@ InitPlayerCharacter::
 	ld [wPlayerAttack3+1], a
 .loadAttack4
 	; later
-	ret
+	jp BankReturn

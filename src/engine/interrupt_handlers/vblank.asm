@@ -36,7 +36,6 @@ SECTION "vblank handler stub", ROM0[$0040]
 
 SECTION "vblank handler", ROM0
 VBlankHandler:
-	;ret ; zzz
 	push bc
 	push de
 	push hl

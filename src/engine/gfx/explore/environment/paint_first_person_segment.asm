@@ -42,7 +42,7 @@ MACRO paint_row_random_fog_tiles
 	call CopyByteInEToRange
 ENDM
 
-SECTION "Segment A Paint Routines", ROMX
+SECTION "Segment Paint Routines", ROM0
 
 ; @param d: the tile index to paint with
 ; @param e: the attribute byte to paint with
@@ -80,9 +80,6 @@ PaintSegmentADistanceFog::
 	ld a, FALSE
 	ld [wADirty], a
 	ret
-
-
-SECTION "Segment B Paint Routines", ROMX
 
 PaintSegmentB::
 	ld a, [wBDirty]
@@ -149,8 +146,6 @@ PaintSegmentBFogBorderRight:
 	ld a, FALSE
 	ld [wBDirty], a
 	ret
-
-SECTION "Segment C Paint Routines", ROMX
 
 PaintSegmentC::
 	ld a, [wCDirty]
@@ -258,8 +253,6 @@ PaintSegmentCFogBorderRight:
 	ld [wCDirty], a
 	ret
 
-SECTION "Segment D Paint Routines", ROMX
-
 PaintSegmentD::
 	ld a, [wDDirty]
 	cp a, TRUE
@@ -326,8 +319,6 @@ PaintSegmentDFogBorderLeft:
 	ld [wDDirty], a
 	ret
 
-SECTION "Segment E Paint Routines", ROMX
-
 PaintSegmentE::
 	ld a, [wEDirty]
 	cp a, TRUE
@@ -362,8 +353,6 @@ PaintSegmentEDistanceFog::
 	ld [wEDirty], a
 	ret
 
-SECTION "Segment K Paint Routines", ROMX
-
 PaintSegmentK::
 	ld a, [wKDirty]
 	cp a, TRUE
@@ -378,8 +367,6 @@ PaintSegmentK::
 	ld a, FALSE
 	ld [wKDirty], a
 	ret
-
-SECTION "Segment L Paint Routines", ROMX
 
 PaintSegmentL::
 	ld a, [wLDirty]
@@ -420,8 +407,6 @@ PaintSegmentLDiag::
 	ld a, FALSE
 	ld [wLDiagDirty], a
 	ret
-
-SECTION "Segment M Paint Routines", ROMX
 
 PaintSegmentM::
 	ld a, [wMDirty]
@@ -546,8 +531,6 @@ PaintSegmentMGround::
 	ld [wMDirty], a
 	ret
 
-SECTION "Segment N Paint Routines", ROMX
-
 PaintSegmentN::
 	ld a, [wNDirty]
 	cp a, TRUE
@@ -590,8 +573,6 @@ PaintSegmentNDiag::
 	ld [wNDiagDirty], a
 	ret
 
-SECTION "Segment O Paint Routines", ROMX
-
 PaintSegmentO::
 	ld a, [wODirty]
 	cp a, TRUE
@@ -606,8 +587,6 @@ PaintSegmentO::
 	ld a, FALSE
 	ld [wODirty], a
 	ret
-
-SECTION "Segment P Paint Routines", ROMX
 
 PaintSegmentP::
 	ld a, [wPDirty]
@@ -645,8 +624,6 @@ PaintSegmentPDiag::
 	ld a, FALSE
 	ld [wPDiagDirty], a
 	ret
-
-SECTION "Segment Q Paint Routines", ROMX
 
 PaintSegmentQGround::
 	ld a, [wQDirty]
@@ -718,8 +695,6 @@ PaintSegmentQGround::
 	ld [wQDirty], a
 	ret
 
-SECTION "Segment R Paint Routines", ROMX
-
 PaintSegmentR::
 	ld a, [wRDirty]
 	cp a, TRUE
@@ -761,7 +736,7 @@ PaintSegmentRDiag::
 ; i don't remember why these are split between here and render_first_person_wall.asm ...
 ; i think it was because they required custom segment rendering?
 ; rather than just using the existing segment paint routines
-SECTION "Fancy Wall Paint Routines", ROMX
+SECTION "Fancy Wall Paint Routines", ROM0
 
 PaintWallLeftSideNearTypeB::
 	; hmm how will this work, if specials walls are different per-locale
@@ -939,7 +914,7 @@ PaintWallCenterFrontFarTypeB::
 	ret
 
 
-SECTION "Fog Painting Routines", ROMX
+SECTION "Fog Painting Routines", ROM0
 
 ; @param d: counter, must be <= 8
 ; @param hl: destination
@@ -982,7 +957,7 @@ GetRandomYFlipFogAttrsXFlip:
 	sra c ; shift c
 	ret
 
-SECTION "Segment Dirtying Routine", ROMX
+SECTION "Segment Dirtying Routine", ROM0
 
 ; todo there is probably a more efficient way to do this
 DirtyFpSegments::

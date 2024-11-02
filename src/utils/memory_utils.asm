@@ -1,4 +1,4 @@
-SECTION "Memory Copy Utils", ROMX
+SECTION "Memory Copy Utils", ROM0
 
 ; @param d: source tile id
 ; @param hl: destination

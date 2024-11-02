@@ -149,14 +149,13 @@ InitGame:
 	ld a, FALSE
 	ld [wFoundSkullFlag], a
 	call InitInventory
-	call InitEquipment ; zzz control is blasting off here
+	call InitEquipment
 	call InitPlayerCharacter
-	call InitAudio
+	call InitAudio ; audio might not work, let's skip that for now
 
-	; enable lcd at the next vblank interrupt
+.enableLcdAtNextVblankInterrupt
 	ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
 	ldh [hLCDC], a
-
 .enableInterrupts
 	; arbitrary line, 0-153
 	ld a, 50
@@ -175,21 +174,37 @@ InitGame:
 	ldh [rIF], a ; Clears "accumulated" interrupts
 
 .loadMap
-	; load map
-	ld hl, Map1
-	ld a, bank(Map1)
-	ld [wCurrentMapBank], a
-	call LoadMapInHl
+	;ld a, [hCurrentBank]
+	;push af
+	;ld a, bank(Map1)
+	;rst SwapBank
+	;	ld hl, Map1
+	;	ld [wCurrentMapBank], a
+	;	call LoadMapInHl
+	;; call BankReturn
+	;pop af
+	;rst SwapBank
+	call LoadMap1
 
 	; init screen rendering state
 	ld a, TRUE
 	ld [wIsShadowTilemapDirty], a
 	call DirtyFpSegments
 	call UpdateShadowVram
-Main:
+.main:
 	call ProcessInput
 	call UpdateShadowVram ; processes game state and dirty flags, draws screen to shadow maps
-	jr Main
+	jr .main
+
+LoadMap1:
+	ld a, [hCurrentBank]
+	push af
+	ld a, bank(Map1)
+	rst SwapBank
+		ld hl, Map1
+		ld [wCurrentMapBank], a
+		call LoadMapInHl
+	jp BankReturn
 
 ; todo should make inc files for different tile aggregations?
 ; so i dont have to track where in tile memory to put tiles
@@ -229,7 +244,7 @@ LoadObjectTilesIntoVram:
 	ld de, ItemTiles
 	ld bc, ItemTilesEnd - ItemTiles
 	Memcopy
-	jp BankReturn ; zzz
+	jp BankReturn
 
 UpdateShadowVram::
 	ld a, [wActiveFrameScreen]

@@ -11,7 +11,7 @@ DEF COMPASS_ARROW_X EQU TILE_WIDTH * 10 + OAM_PADDING_X
 DEF COMPASS_CHAR_Y EQU TILE_HEIGHT * 1 + OAM_PADDING_Y
 DEF COMPASS_CHAR_X EQU TILE_WIDTH * 9 + OAM_PADDING_X
 
-SECTION "HUD Compass Paint Routines", ROMX
+SECTION "HUD Compass Paint Routines", ROM0
 
 ; todo, fix, this is copying sprites into the OAM every frame, whether they change or not
 PaintCompass::

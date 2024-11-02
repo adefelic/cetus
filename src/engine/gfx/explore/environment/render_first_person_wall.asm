@@ -1,7 +1,7 @@
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/constants/palette_constants.inc"
 
-SECTION "First Person Environment Wall Renderer", ROMX
+SECTION "First Person Environment Wall Renderer", ROM0
 
 ; side near
 PaintWallLeftSideNearTypeA::

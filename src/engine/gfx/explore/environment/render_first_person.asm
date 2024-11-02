@@ -14,13 +14,16 @@ wRoomNearLeft:: db
 wRoomNearCenter:: db
 wRoomNearRight:: db
 
-SECTION "First Person Environment Renderer", ROMX
+SECTION "First Person Environment Renderer", ROM0
 
 ; first person perspective can display up to 6 rooms in this order:
 ;
 ; [5][4][6]
 ; [2][1][3]
 ;
+
+
+;zzz this is where control blasts off
 
 	; todo? move wCurrentVisibleRoomAttrs to wPreviousVisibleRoomAttrs
 	; todo bounds check and skip rooms that are oob

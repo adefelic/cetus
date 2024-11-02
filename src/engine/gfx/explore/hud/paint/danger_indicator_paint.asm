@@ -9,7 +9,7 @@ INCLUDE "src/constants/palette_constants.inc"
 DEF DANGER_Y EQU OAM_PADDING_Y
 DEF DANGER_X EQU TILE_WIDTH * 6 + OAM_PADDING_X
 
-SECTION "HUD Danger Indicator Paint Routines", ROMX
+SECTION "HUD Danger Indicator Paint Routines", ROM0
 
 ; todo have a "load oam" routine that loads all explore-screen sprites into the oam
 ; update this so that it just modifies what's already in there

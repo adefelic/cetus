@@ -10,21 +10,12 @@ SECTION "Map / Room Parsing", ROM0
 ; todo split into map loading and map utils
 
 ; @param hl, addr of map struct def
+; please switch bank right in advance of this
 LoadMapInHl::
 	ld a, l
 	ld [wCurrentMap], a
 	ld a, h
 	ld [wCurrentMap+1], a
-
-;; fuck how do you discover the bank of a variable ... i think it has to be stashed
-; gonna have to update all my structs to store their own bank
-	; stash current bank
-	ld a, [hCurrentBank]
-	push af
-	ld a, [wCurrentMapBank]
-	rst SwapBank
-
-;	jp BankReturn
 
 	; long term todo, optimize map struct to let this use hli instead of stack verbs
 	push hl ; stash map struct location
@@ -69,6 +60,8 @@ LoadMapInHl::
 	ld [wPlayerExploreY], a
 	ret
 
+
+; todo i don't _think_ the banks needs to be adjusted here to point to the bank the locale is in
 ; @param hl, addr of Locale
 LoadLocale::
 .loadPaletteSet
@@ -401,6 +394,11 @@ GetEventRoomAddrFromPlayerCoords::
 ; @param hl: map addr
 ; @return hl: tile address of player occupied tile of map in hl
 GetEventRoomAddrFromCoords::
+	ld a, [hCurrentBank]
+	push af
+	ld a, bank(Map1) ; hard coded
+	rst SwapBank
+
 	ld b, h
 	ld c, l
 	ld l, e
@@ -416,7 +414,7 @@ GetEventRoomAddrFromCoords::
 	ld l, a
 	add hl, hl ; this is the only difference between this and GetRoomAddrFromCoords
 	add hl, bc
-	ret
+	jp BankReturn
 
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: player X coord
@@ -424,6 +422,11 @@ GetEventRoomAddrFromCoords::
 ; @param hl: map addr
 ; @return hl: tile address of player occupied tile of map in hl
 GetRoomAddrFromCoords::
+	ld a, [hCurrentBank]
+	push af
+	ld a, bank(Map1) ; hard coded
+	rst SwapBank
+
 	ld b, h
 	ld c, l
 	ld l, e
@@ -438,7 +441,7 @@ GetRoomAddrFromCoords::
 	add a, l
 	ld l, a
 	add hl, bc
-	ret
+	jp BankReturn
 
 ; Map1 + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: room X coord

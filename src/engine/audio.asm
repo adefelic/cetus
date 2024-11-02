@@ -32,9 +32,9 @@ InitAudio::
 	ld a, NR50_LEFT_SPEAKER_VOLUME_MAX + NR50_RIGHT_SPEAKER_VOLUME_MAX
 	ldh [rNR50], a
 
+	; todo replace this with a call to LoadCurrentMusic
 	; comment out to disable hUGE
-	;ld hl, MusicSwamp
-	call hUGE_init
+	;call InitMusic
 
 	; this is from my old sound effect stuff and not hUGE
 	xor a
@@ -48,11 +48,27 @@ InitAudio::
 	ld [wIsCh4SfxActive], a
 	ret
 
+; it looks like this isn't necessary anyways because music is loaded when the map is loaded
+;InitMusic:
+;	ld a, [hCurrentBank]
+;	push af
+;	ld a, bank(MusicSwamp)
+;	rst SwapBank
+;	ld hl, MusicSwamp
+;	call hUGE_init
+;	jp BankReturn
+
 LoadCurrentMusic::
-	ld hl, wCurrentMusicTrack
-	DereferenceHlIntoHl
-	call hUGE_init
-	ret
+	; oh no all music should probably be in the same bank because its parameterized
+	; i'm not actually sure if this is necessary. i assume hUGE_init accesses music ROM
+	ld a, [hCurrentBank]
+	push af
+	ld a, bank(MusicSwamp)
+	rst SwapBank
+		ld hl, wCurrentMusicTrack
+		DereferenceHlIntoHl
+		call hUGE_init
+	jp BankReturn
 
 PlayFootstepSfx::
 	ld hl, FootstepSfx

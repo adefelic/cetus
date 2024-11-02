@@ -9,7 +9,7 @@ SECTION "Item Rendering Scratch", WRAM0
 wItemQuantityNameStringBuffer:: ds BYTES_IN_DIALOG_STRING
 wCurrentMenuItemObjectAddr:: dw ; in this case, the Item that is being referred to
 
-SECTION "Explore Item Menu Renderer", ROMX
+SECTION "Explore Item Menu Renderer", ROM0
 
 ; todo rendering breaks when the inventory is totally empty
 RenderExploreItemMenu::
