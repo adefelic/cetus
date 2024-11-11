@@ -75,6 +75,8 @@ SetEnqueuedEnemyBgPalette::
 ; this should only be called on VBlank
 ; enqueues if wBgPaletteSetUpdateAddr != 0
 SetEnqueuedBgPaletteSet::
+; zzz i think this is a good spot to start debugging
+
 	ld a, [wBgPaletteSetUpdateAddr]
 	ld d, a
 	ld a, [wBgPaletteSetUpdateAddr + 1]
@@ -83,43 +85,49 @@ SetEnqueuedBgPaletteSet::
 	xor a, d
 	ret z ; return if wBgPaletteSetUpdateAddr is 0x0000
 
+	ld a, [hCurrentBank]
+	push af
+	ld a, bank(FieldBgPaletteSet) ; hard coded
+	rst SwapBank
+
 	call SetBgPaletteSetAutoInc
 
 	xor a
 	ld [wBgPaletteSetUpdateAddr], a
 	ld [wBgPaletteSetUpdateAddr + 1], a
-	ret
+	jp BankReturn
 
 SetEnemyBgPalette:
-	ld a, [hCurrentBank]
-	push af
-
 	; hack
-	ld a, bank(FieldBgPaletteSet)
+	;ld a, [hCurrentBank]
+	;push af
+	;ld a, bank(FieldBgPaletteSet)
+	;rst SwapBank
 
-	rst SwapBank
 	ld a, BCPSF_AUTOINC | PALETTE_SIZE * BG_PALETTE_ENEMY; load bg color palette specification auto increment on write + addr of BG_PALETTE_ENEMY
 	ld [rBCPS], a
 	ld hl, rBCPD
 	ld b, PALETTE_SIZE
 	MemcopySmall
-	jp BankReturn
+	;jp BankReturn
+	ret
 
 ; this should only be called on VBlank
 ; @param de: source palette set addr
 SetBgPaletteSetAutoInc:
-	ld a, [hCurrentBank]
-	push af
+	;ld a, [hCurrentBank]
+	;push af
 
-	; hack
-	ld a, bank(FieldBgPaletteSet)
+	;; hack
+	;ld a, bank(FieldBgPaletteSet)
 
 	ld a, BCPSF_AUTOINC ; load bg color palette specification auto increment on write + addr of zero
 	ld [rBCPS], a
 	ld hl, rBCPD
 	ld b, PALETTE_SET_SIZE
 	MemcopySmall
-	jp BankReturn
+	;jp BankReturn
+	ret
 
 ; this should only be called on VBlank
 ; @param de: source palette set addr
@@ -136,7 +144,7 @@ SetObjPaletteSet:
 	jp nz, .loop_do_not_increment_hl
 	jp BankReturn
 
-; i'm trialing replaicng this with MemcopySmall+ret
+; i'm trialing replacing this with MemcopySmall+ret
 ;; @param de: source
 ;; @param hl: destination
 ;; @param b: length

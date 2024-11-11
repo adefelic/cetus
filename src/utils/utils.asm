@@ -1,5 +1,5 @@
 
-SECTION "Utils", ROMX
+SECTION "Utils", ROM0
 
 ; @param a, # to convert. must be >= 0 and <= 99
 ; @return d, # in 10s place

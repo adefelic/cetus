@@ -13,6 +13,7 @@ DEF LAMP_TOP_LEFT_Y EQU TILE_HEIGHT * $0D + OAM_PADDING_Y
 
 SECTION "Ground Item Paint Routines", ROM0
 
+; fixme make this use the room cache instead of checking the map
 RenderGroundItemCenterFar::
 .checkForWall
 	call GetRoomCoordsCenterNearWRTPlayer

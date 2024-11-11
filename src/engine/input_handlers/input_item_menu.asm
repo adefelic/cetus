@@ -61,6 +61,7 @@ HandlePressedA:
 	; get room in front of player, see if there's a wall in the way
 .checkForWall
 	; check closest player facing wall
+	; fixme use wallcache for this
 	call GetRoomCoordsCenterNearWRTPlayer
 	call GetCurrentMapWallsRoomAddrFromRoomCoords
 	call GetTopWallWrtPlayer

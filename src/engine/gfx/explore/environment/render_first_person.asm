@@ -22,16 +22,14 @@ SECTION "First Person Environment Renderer", ROM0
 ; [2][1][3]
 ;
 
+; todo? move wCurrentVisibleRoomAttrs to wPreviousVisibleRoomAttrs
+; todo bounds check and skip rooms that are oob
+; currently this does no bounds checking for rooms with negative coords.
+;   the whole map starts at 1,1 rather than 0,0 to make it unnecessary
 
-;zzz this is where control blasts off
-
-	; todo? move wCurrentVisibleRoomAttrs to wPreviousVisibleRoomAttrs
-	; todo bounds check and skip rooms that are oob
-	; currently this does no bounds checking for rooms with negative coords.
-	;   the whole map starts at 1,1 rather than 0,0 to make it unnecessary
 RenderExploreEnvironmentWalls::
 	; todo this shouldn't be called here, it should be called whenever the player's location is invalidated
-	;    so moves or rotations
+	;    so moves or rotations. and on init. maybe fake a rotation on init
 	call UpdateRoomWallCache
 
 ; process rooms closest to farthest w/ dirtying to only draw topmost z segments
@@ -221,6 +219,10 @@ ProcessRoomRightFar:
 ; todo rotate room walls here so we dont have to do it later
 UpdateRoomWallCache:
 .getRooms
+	ld a, [hCurrentBank]
+	push af
+	ld a, bank(Map1) ; hard coded
+	rst SwapBank
 	; far left
 	call GetRoomCoordsLeftFarWRTPlayer
 	call GetCurrentMapWallsRoomAddrFromRoomCoords
@@ -264,7 +266,8 @@ UpdateRoomWallCache:
 	jp z, RotateRoomCacheRightFourTimes
 	cp a, ORIENTATION_EAST
 	jp z, RotateRoomCacheLeftTwice
-	ret
+	jp BankReturn
+	;ret
 
 RotateRoomCacheRightTwice:
 	ld hl, wRoomFarLeft
@@ -291,7 +294,8 @@ endr
 rept 2
 	rrc [hl]
 endr
-	ret
+	jp BankReturn
+	;ret
 
 RotateRoomCacheRightFourTimes:
 	ld hl, wRoomFarLeft
@@ -318,7 +322,8 @@ endr
 rept 4
 	rrc [hl]
 endr
-	ret
+	jp BankReturn
+	;ret
 
 RotateRoomCacheLeftTwice:
 	ld hl, wRoomFarLeft
@@ -345,4 +350,5 @@ endr
 rept 2
 	rlc [hl]
 endr
-	ret
+	jp BankReturn
+	;ret

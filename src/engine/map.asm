@@ -394,10 +394,10 @@ GetEventRoomAddrFromPlayerCoords::
 ; @param hl: map addr
 ; @return hl: tile address of player occupied tile of map in hl
 GetEventRoomAddrFromCoords::
-	ld a, [hCurrentBank]
-	push af
-	ld a, bank(Map1) ; hard coded
-	rst SwapBank
+	;ld a, [hCurrentBank]
+	;push af
+	;ld a, bank(Map1) ; hard coded
+	;rst SwapBank
 
 	ld b, h
 	ld c, l
@@ -414,18 +414,21 @@ GetEventRoomAddrFromCoords::
 	ld l, a
 	add hl, hl ; this is the only difference between this and GetRoomAddrFromCoords
 	add hl, bc
-	jp BankReturn
+	;jp BankReturn
+	ret
 
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: player X coord
 ; @param e: player Y coord
 ; @param hl: map addr
 ; @return hl: tile address of player occupied tile of map in hl
+;
+; calculates the offset from the addr of the current map that the coordinates represent
 GetRoomAddrFromCoords::
-	ld a, [hCurrentBank]
-	push af
-	ld a, bank(Map1) ; hard coded
-	rst SwapBank
+	;ld a, [hCurrentBank]
+	;push af
+	;ld a, bank(Map1) ; hard coded
+	;rst SwapBank
 
 	ld b, h
 	ld c, l
@@ -441,7 +444,8 @@ GetRoomAddrFromCoords::
 	add a, l
 	ld l, a
 	add hl, bc
-	jp BankReturn
+	;jp BankReturn
+	ret
 
 ; Map1 + wPlayerExploreX + wPlayerExploreY*32
 ; @param d: room X coord

@@ -11,7 +11,7 @@ LcdHandler:
 	push hl
 	ld a, BANK(UpdateAudio)
 	ld [rROMB0], a
-	call UpdateAudio
+	;call UpdateAudio zzz
 	call AdvanceEncounterAnimation
 	pop hl
 	pop de

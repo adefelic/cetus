@@ -85,6 +85,7 @@ HandlePressedA:
 	; control should not reach here
 	ret
 
+; fixme use room cache instead of GetCurrentMapWallsRoomAddrFromRoomCoords
 ; open menu or pickup item if there is one
 ; todo move item pickup to long press of B
 HandlePressedB:
@@ -138,6 +139,7 @@ HandlePressedUp:
 	ld d, a
 	ld a, [wPlayerExploreY]
 	ld e, a
+	; fixme wrap whereever the outpu of this is used in bank handling
 	call GetCurrentMapWallsRoomAddrFromRoomCoords ; put room addr in hl
 AdvanceIfNoCollisions:
 	ld a, [wPlayerOrientation]

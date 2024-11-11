@@ -1,7 +1,7 @@
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 
-SECTION "Encounter Environment Rendering", ROMX
+SECTION "Encounter Environment Rendering", ROM0
 
 DEF ENV_LEFT_BLOCK_TL EQU rows 4
 DEF ENV_RIGHT_BLOCK_TL EQU ENV_LEFT_BLOCK_TL + cols 15

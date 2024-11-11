@@ -89,8 +89,14 @@ SetEventStateDialogBranch::
 	ret
 
 ; populate current event state with new events
+; fixme idk if bank handling here works
 HandleVisibleEvents::
 .checkLocationTableForEvent
+	ld a, [hCurrentBank]
+	push af
+	ld a, bank(Map1) ; hard coded
+	rst SwapBank
+
 	call GetEventRoomAddrFromPlayerCoords ; into hl
 	DereferenceHlIntoHl ; get RoomEvent Addr
 	; check for absence of RoomEvent
@@ -126,7 +132,8 @@ HandleVisibleEvents::
 	cp ROOMEVENT_WARP
 	jp z, HandleNewDialogWarpEvent
 	pop hl
-	ret
+	jp BankReturn
+	;ret
 
 HandleNewDialogRoomEvent:
 .storeDialogBranchData
