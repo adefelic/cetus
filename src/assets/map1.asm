@@ -4,6 +4,7 @@ INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/room_constants.inc"
 INCLUDE "src/structs/event.inc"
 INCLUDE "src/structs/map.inc"
+INCLUDE "src/structs/locale.inc"
 
 ; csv:
 ;   https://docs.google.com/spreadsheets/d/13GqaktULwpdHMGMlaf0OvSwk79VNFjUJ6q3atw7Apqc/edit?usp=sharing
@@ -141,6 +142,15 @@ TownHall_AskAboutSkull_DialogBranchFrames:
 	dstruct WarpDestination, TownRuinWarpWest_WarpDestination, 20, 9, ORIENTATION_WEST, RuinLocale
 	dstruct WarpDestination, SwampRuinWarpEast_WarpDestination, 12, 24, ORIENTATION_EAST, RuinLocale
 	dstruct WarpDestination, SwampRuinWarpWest_WarpDestination, 11, 24, ORIENTATION_WEST, SwampLocale
+
+;SECTION "Locale definitions", ROMX
+Locales:
+	dstruct Locale, FieldLocale,  FieldWallBTiles, xMusicTown, FieldBgPaletteSet,  FieldNpcs
+	dstruct Locale, SwampLocale,  FieldWallBTiles, XMusicRuin, SwampBgPaletteSet,  SwampNpcs
+	dstruct Locale, TownLocale,   FieldWallBTiles, xMusicTown, TownBgPaletteSet,   SwampNpcs
+	dstruct Locale, CoastLocale,  FieldWallBTiles, XMusicRuin, CoastBgPaletteSet,  SwampNpcs
+	dstruct Locale, ForestLocale, FieldWallBTiles, XMusicRuin, ForestBgPaletteSet, SwampNpcs
+	dstruct Locale, RuinLocale,   FieldWallBTiles, XMusicRuin, RuinBgPaletteSet,   SwampNpcs
 
 
 ; tile ids for a hard-coded encounter screen

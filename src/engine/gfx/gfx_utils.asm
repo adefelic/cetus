@@ -83,11 +83,11 @@ SetEnqueuedBgPaletteSet::
 	ld e, a
 
 	xor a, d
-	ret z ; return if wBgPaletteSetUpdateAddr is 0x0000
+	ret z ; return if wBgPaletteSetUpdateAddr is 0x0000 ; wait this might be possible if it's in a different bank?
 
 	ld a, [hCurrentBank]
 	push af
-	ld a, bank(FieldBgPaletteSet) ; hard coded
+	ld a, bank(Palettes) ; hard coded
 	rst SwapBank
 
 	call SetBgPaletteSetAutoInc
@@ -101,7 +101,7 @@ SetEnemyBgPalette:
 	; hack
 	;ld a, [hCurrentBank]
 	;push af
-	;ld a, bank(FieldBgPaletteSet)
+	;ld a, bank(Palettes)
 	;rst SwapBank
 
 	ld a, BCPSF_AUTOINC | PALETTE_SIZE * BG_PALETTE_ENEMY; load bg color palette specification auto increment on write + addr of BG_PALETTE_ENEMY
@@ -115,18 +115,16 @@ SetEnemyBgPalette:
 ; this should only be called on VBlank
 ; @param de: source palette set addr
 SetBgPaletteSetAutoInc:
-	;ld a, [hCurrentBank]
-	;push af
-
-	;; hack
-	;ld a, bank(FieldBgPaletteSet)
-
 	ld a, BCPSF_AUTOINC ; load bg color palette specification auto increment on write + addr of zero
 	ld [rBCPS], a
 	ld hl, rBCPD
 	ld b, PALETTE_SET_SIZE
-	MemcopySmall
-	;jp BankReturn
+.loop
+	ld a, [de]
+	ld [hl], a
+	inc de
+	dec b
+	jp nz, .loop
 	ret
 
 ; this should only be called on VBlank

@@ -2,7 +2,10 @@ INCLUDE "src/constants/palette_constants.inc"
 
 SECTION "Palette Data", ROMX
 
+; the current issue is that we don't know which bank the palettes are in.
+
 ; BG palettes
+Palettes::
 FieldBgPaletteSet::
 	; palettes 0 - 3
 	; explore: walls and ground

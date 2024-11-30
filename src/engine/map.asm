@@ -60,7 +60,6 @@ LoadMapInHl::
 	ld [wPlayerExploreY], a
 	ret
 
-
 ; todo i don't _think_ the banks needs to be adjusted here to point to the bank the locale is in
 ; @param hl, addr of Locale
 LoadLocale::
