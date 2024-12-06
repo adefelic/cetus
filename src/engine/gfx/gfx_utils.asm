@@ -75,8 +75,6 @@ SetEnqueuedEnemyBgPalette::
 ; this should only be called on VBlank
 ; enqueues if wBgPaletteSetUpdateAddr != 0
 SetEnqueuedBgPaletteSet::
-; zzz i think this is a good spot to start debugging
-
 	ld a, [wBgPaletteSetUpdateAddr]
 	ld d, a
 	ld a, [wBgPaletteSetUpdateAddr + 1]

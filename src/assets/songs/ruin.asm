@@ -2,7 +2,7 @@ INCLUDE "src/lib/hUGEDriver/hUGE.inc"
 
 SECTION "ruin Song Data", ROMX
 
-XMusicRuin::
+xMusicRuin::
 db 16
 dw order_cnt
 dw order1, order2, order3, order4
