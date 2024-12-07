@@ -1,12 +1,14 @@
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
 INCLUDE "src/constants/constants.inc"
+INCLUDE "src/constants/error_constants.inc"
 INCLUDE "src/constants/explore_constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/utils/macros.inc"
 
 SECTION "App State", WRAM0
 wIsRandSeeded:: db
+wErrorCode:: db
 
 SECTION "Game State", WRAM0
 wActiveFrameScreen:: db
@@ -55,6 +57,10 @@ SwapBank::
 	ldh [hCurrentBank], a
 	ld [rROMB0], a
 	ret
+
+SECTION "crash", ROM0[$0038]
+Crash:
+	jp CrashHandler
 
 ; unused hardware interrupts
 SECTION "timer", ROM0[$0050]
@@ -262,7 +268,8 @@ ProcessInput::
 	cp SCREEN_PAUSE
 	jp z, HandleInputPauseScreen
 	; control should not reach here
-	ret
+	ld a, ERR_UNKNOWN_ACTIVE_FRAME_SCREEN
+	rst Crash
 
 GetKeys::
 	; poll controller buttons
@@ -310,3 +317,10 @@ endr
 	or a, $F0 ; mask out top nibble
 .knownret
 	ret
+
+SECTION "Crash Handler", ROM0
+CrashHandler:
+	ld [wErrorCode], a
+.done
+	stop
+	jp .done
