@@ -70,7 +70,6 @@ SetEnqueuedEnemyBgPalette::
 	ld [wBgPaletteUpdateAddr + 1], a
 	ret
 
-
 ; updates all 8 BG palettes
 ; this should only be called on VBlank
 ; enqueues if wBgPaletteSetUpdateAddr != 0
@@ -139,18 +138,6 @@ SetObjPaletteSet:
 	dec b
 	jp nz, .loop_do_not_increment_hl
 	jp BankReturn
-
-; i'm trialing replacing this with MemcopySmall+ret
-;; @param de: source
-;; @param hl: destination
-;; @param b: length
-;CopyColorsToPalette:
-;	ld a, [de]
-;	ld [hl], a
-;	inc de
-;	dec b
-;	jp nz, CopyColorsToPalette
-;	ret
 
 SECTION "Tilemap Dirty Routines", ROM0
 

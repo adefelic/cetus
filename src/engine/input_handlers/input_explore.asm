@@ -140,6 +140,10 @@ HandlePressedUp:
 	ld a, [wPlayerExploreY]
 	ld e, a
 	; fixme wrap whereever the outpu of this is used in bank handling
+	ld a, [hCurrentBank]
+	push af
+	ld a, bank(Map1) ; hard coded, fixme
+	rst SwapBank
 	call GetCurrentMapWallsRoomAddrFromRoomCoords ; put room addr in hl
 AdvanceIfNoCollisions:
 	ld a, [wPlayerOrientation]
@@ -183,13 +187,15 @@ AdvanceIfNoCollisions:
 	jp .finishAdvance
 .doNotAdvance
 	; todo play bonk sound
-	ret
+	;ret
+	jp BankReturn
 .finishAdvance
 	call UpdateDangerLevel ; todo only do this if you're not on a safe space
 	; todo reset danger if you're on a safe space
 	call PlayFootstepSfx
 	call HandleVisibleEvents
-	jp DirtyFpSegmentsAndTilemap
+	call DirtyFpSegmentsAndTilemap
+	jp BankReturn
 
 HandlePressedDown:
 .turnAround
