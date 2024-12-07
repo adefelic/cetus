@@ -102,14 +102,19 @@ HandleVisibleEvents::
 	; check for absence of RoomEvent
 	ld a, h
 	or l
-	jp z, UnsetIsPlayerFacingWallInteractable
+	jp z, .unsetIsPlayerFacingWallInteractable
 .checkIfPlayerFacingWallInteractable
 	; hl now contains that room's RoomEvent address
+	; zzz are hl in the wrong order? try swapping. just gonna keep this here for now and come back to later
+	.swap
+		ld a, l
+		ld l, h
+		ld h, a
 	ld a, [hl] ; get event walls, which are the 0th byte of the RoomEvent
 	ld b, a
 	ld a, [wPlayerOrientation]
 	and b
-	jp z, UnsetIsPlayerFacingWallInteractable ; it's ok to keep setting this when an event isn't found
+	jp z, .unsetIsPlayerFacingWallInteractable ; it's ok to keep setting this when an event isn't found
 .setIsPlayerFacingWallInteractable:
 	ld a, TRUE
 	ld [wIsPlayerFacingWallInteractable], a
@@ -121,19 +126,22 @@ HandleVisibleEvents::
 	ld a, h
 	ld [wRoomEventAddr + 1], a
 	push hl ; stash RoomEvent addr
-
-	; store RoomEvent type and handle by type
-	ld a, RoomEvent_Type
-	AddAToHl
-	ld a, [hl]
-	ld [wRoomEventType], a
-	cp ROOMEVENT_DIALOG
-	jp z, HandleNewDialogRoomEvent
-	cp ROOMEVENT_WARP
-	jp z, HandleNewDialogWarpEvent
+		; store RoomEvent type and handle by type
+		ld a, RoomEvent_Type
+		AddAToHl
+		ld a, [hl]
+		ld [wRoomEventType], a
+		cp ROOMEVENT_DIALOG
+		jp z, HandleNewDialogRoomEvent
+		cp ROOMEVENT_WARP
+		jp z, HandleNewDialogWarpEvent
 	pop hl
 	jp BankReturn
-	;ret
+.unsetIsPlayerFacingWallInteractable:
+	; only accessible by jumps
+	ld a, FALSE
+	ld [wIsPlayerFacingWallInteractable], a
+	jp BankReturn
 
 HandleNewDialogRoomEvent:
 .storeDialogBranchData
@@ -167,9 +175,4 @@ HandleNewDialogWarpEvent:
 	ld [wWarpDestinationAddr], a
 	ld a, h
 	ld [wWarpDestinationAddr + 1], a
-	ret
-
-UnsetIsPlayerFacingWallInteractable:
-	ld a, FALSE
-	ld [wIsPlayerFacingWallInteractable], a
 	ret

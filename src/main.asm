@@ -174,16 +174,6 @@ InitGame:
 	ldh [rIF], a ; Clears "accumulated" interrupts
 
 .loadMap
-	;ld a, [hCurrentBank]
-	;push af
-	;ld a, bank(Map1)
-	;rst SwapBank
-	;	ld hl, Map1
-	;	ld [wCurrentMapBank], a
-	;	call LoadMapInHl
-	;; call BankReturn
-	;pop af
-	;rst SwapBank
 	call LoadMap1
 
 	; init screen rendering state
