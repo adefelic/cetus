@@ -35,14 +35,14 @@ SECTION "Explore Screen Event Renderer", ROMX
 ; todo the label should be rendered as a result of there being an interactable available, not as a first step of dialog. pls decouple
 
 ; overlay event bg tiles, reading from the active event pointers
-RenderDialog::
+RenderDialogOrLabel::
 	ld a, [wBottomMenuDirty] ; whoa this is wrong. this would only be a good check if the LABEL state also used the bottom menu.
 	; fixme, make this not re-render the menus if they're up there already. or decouple LABEL from events
 	cp TRUE
 	ret nz
 	ld a, [wDialogState]
 	cp DIALOG_STATE_LABEL
-	jp z, RenderLabel
+	jp z, RenderDialogLabel
 	cp DIALOG_STATE_ROOT
 	jp z, RenderDialogRoot
 	cp DIALOG_STATE_BRANCH
@@ -50,19 +50,26 @@ RenderDialog::
 	; control shouldn't reach here
 	ret
 
-RenderLabel:
-	; load wRoomEventAddr, add EventLabelText offset, store in wCurrentLabelAddr
-	; this is still used in the PaintLabelTopModal routine
-	ld a, [wRoomEventAddr]
+; load wRoomEventAddr, add EventLabelText offset, store in wCurrentLabelAddr
+RenderDialogLabel:
+;zzz2
+	ld a, [hCurrentRomBank]
+	push af
+	ld a, bank(Map1) ; hardcoded
+	rst SwapBank
+
+	ld a, [wRoomEventAddr] ; points into the event map, which is in the same bank as Map1
 	add RoomEvent_EventLabelText
-	ld [wCurrentLabelAddr], a
+	ld [wCurrentLabelAddr], a  ; points into the event def list, which is in the same bank as Map1
 	ld a, [wRoomEventAddr + 1]
 	adc 0
 	ld [wCurrentLabelAddr + 1], a
 	call PaintLabelTopModal
+
+	; fixme the label is not the bottom menu
 	ld a, FALSE
 	ld [wBottomMenuDirty], a
-	ret
+	jp BankReturn
 
 ; display a list of 4 options
 RenderDialogRoot:

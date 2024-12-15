@@ -219,9 +219,9 @@ ProcessRoomRightFar:
 ; todo rotate room walls here so we dont have to do it later
 UpdateRoomWallCache:
 .getRooms
-	ld a, [hCurrentBank]
+	ld a, [hCurrentRomBank]
 	push af
-	ld a, bank(Map1) ; hard coded
+	ld a, bank(Map1) ; hardcoded
 	rst SwapBank
 	; far left
 	call GetRoomCoordsLeftFarWRTPlayer

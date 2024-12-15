@@ -1,4 +1,5 @@
 INCLUDE "src/constants/constants.inc"
+INCLUDE "src/constants/error_constants.inc"
 INCLUDE "src/constants/event_constants.inc"
 INCLUDE "src/structs/event.inc"
 INCLUDE "src/utils/macros.inc"
@@ -92,24 +93,26 @@ SetEventStateDialogBranch::
 ; fixme idk if bank handling here works
 HandleVisibleEvents::
 .checkLocationTableForEvent
-	ld a, [hCurrentBank]
+	; this should be safe to happen in any bank because it's just math and reading from ram
+	call CalcEventRoomAddrFromPlayerMapCoords ; into hl
+
+	ld a, [hCurrentRomBank]
 	push af
-	ld a, bank(Map1) ; hard coded
+	ld a, bank(Map1) ; hardcoded
 	rst SwapBank
 
-	call GetEventRoomAddrFromPlayerCoords ; into hl
-	DereferenceHlIntoHl ; get RoomEvent Addr
-	; check for absence of RoomEvent
+	DereferenceHlIntoHl ; get RoomEvent value from ptr. either an address of RoomEvent or 0
+	; check for 0 (absence of RoomEvent)
 	ld a, h
 	or l
 	jp z, .unsetIsPlayerFacingWallInteractable
 .checkIfPlayerFacingWallInteractable
 	; hl now contains that room's RoomEvent address
 	; zzz are hl in the wrong order? try swapping. just gonna keep this here for now and come back to later
-	.swap
-		ld a, l
-		ld l, h
-		ld h, a
+	;.swap
+	;	ld a, l
+	;	ld l, h
+	;	ld h, a
 	ld a, [hl] ; get event walls, which are the 0th byte of the RoomEvent
 	ld b, a
 	ld a, [wPlayerOrientation]
@@ -120,52 +123,55 @@ HandleVisibleEvents::
 	ld [wIsPlayerFacingWallInteractable], a
 	call SetEventStateDialogLabel
 .loadRoomEventIntoRam:
+	; ... could it be these dereferences? it shouldn't be. we're in the bank of the map (map1)
 	; store RoomEvent addr
 	ld a, l
 	ld [wRoomEventAddr], a
 	ld a, h
 	ld [wRoomEventAddr + 1], a
 	push hl ; stash RoomEvent addr
-		; store RoomEvent type and handle by type
+		; cache RoomEvent values
 		ld a, RoomEvent_Type
 		AddAToHl
 		ld a, [hl]
 		ld [wRoomEventType], a
 		cp ROOMEVENT_DIALOG
-		jp z, HandleNewDialogRoomEvent
+		jp z, CacheNewDialogRoomEvent
 		cp ROOMEVENT_WARP
-		jp z, HandleNewDialogWarpEvent
-	pop hl
-	jp BankReturn
+		jp z, CacheNewDialogWarpEvent
+		; does control ever get here?
+		ld a, ERR_UNKNOWN_EVENT_TYPE
+		rst Crash
+		;pop hl
+		;jp BankReturn
 .unsetIsPlayerFacingWallInteractable:
 	; only accessible by jumps
 	ld a, FALSE
 	ld [wIsPlayerFacingWallInteractable], a
 	jp BankReturn
 
-HandleNewDialogRoomEvent:
+CacheNewDialogRoomEvent:
 .storeDialogBranchData
 	pop hl
 	push hl
-	; store DialogBranchesAddr
-	ld a, RoomEvent_DialogBranchesAddr
-	AddAToHl
-	DereferenceHlIntoHl ; put addr of event def in hl
-	ld a, l
-	ld [wDialogBranchesAddr], a
-	ld a, h
-	ld [wDialogBranchesAddr + 1], a
-
+		; store DialogBranchesAddr
+		ld a, RoomEvent_DialogBranchesAddr
+		AddAToHl
+		DereferenceHlIntoHl ; put addr of event def in hl
+		ld a, l
+		ld [wDialogBranchesAddr], a
+		ld a, h
+		ld [wDialogBranchesAddr + 1], a
 	pop hl
 	; store DialogBranchesCount
 	ld a, RoomEvent_DialogBranchesCount
 	AddAToHl
 	ld a, [hl]
 	ld [wDialogBranchesCount], a
-	ret
+	jp BankReturn
 
-; this function is the same as the first half of HandleNewDialogRoomEvent
-HandleNewDialogWarpEvent:
+; this function is the same as the first half of CacheNewDialogRoomEvent
+CacheNewDialogWarpEvent:
 	pop hl
 	; store DialogBranchesAddr
 	ld a, RoomEvent_DialogBranchesAddr
@@ -175,4 +181,4 @@ HandleNewDialogWarpEvent:
 	ld [wWarpDestinationAddr], a
 	ld a, h
 	ld [wWarpDestinationAddr + 1], a
-	ret
+	jp BankReturn

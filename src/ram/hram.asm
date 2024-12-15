@@ -1,2 +1,2 @@
 SECTION "misc hram", HRAM
-hCurrentBank:: db
+hCurrentRomBank:: db

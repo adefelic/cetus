@@ -20,7 +20,7 @@ InitColorPalettes::
 
 	; this might be preemptive?
 	; swap bank for copy
-	ld a, [hCurrentBank]
+	ld a, [hCurrentRomBank]
 	push af
 	ld a, bank(OwObjPaletteSet)
 	rst SwapBank
@@ -82,9 +82,9 @@ SetEnqueuedBgPaletteSet::
 	xor a, d
 	ret z ; return if wBgPaletteSetUpdateAddr is 0x0000 ; wait this might be possible if it's in a different bank?
 
-	ld a, [hCurrentBank]
+	ld a, [hCurrentRomBank]
 	push af
-	ld a, bank(Palettes) ; hard coded
+	ld a, bank(Palettes) ; hardcoded
 	rst SwapBank
 
 	call SetBgPaletteSetAutoInc
@@ -96,7 +96,7 @@ SetEnqueuedBgPaletteSet::
 
 SetEnemyBgPalette:
 	; hack
-	;ld a, [hCurrentBank]
+	;ld a, [hCurrentRomBank]
 	;push af
 	;ld a, bank(Palettes)
 	;rst SwapBank

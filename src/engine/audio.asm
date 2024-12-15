@@ -50,7 +50,7 @@ InitAudio::
 
 ; it looks like this isn't necessary anyways because music is loaded when the map is loaded
 ;InitMusic:
-;	ld a, [hCurrentBank]
+;	ld a, [hCurrentRomBank]
 ;	push af
 ;	ld a, bank(MusicSwamp)
 ;	rst SwapBank
@@ -61,7 +61,7 @@ InitAudio::
 LoadCurrentMusic::
 	; oh no all music should probably be in the same bank because its parameterized
 	; i'm not actually sure if this is necessary. i assume hUGE_init accesses music ROM
-	ld a, [hCurrentBank]
+	ld a, [hCurrentRomBank]
 	push af
 	ld a, bank(MusicSwamp)
 	rst SwapBank

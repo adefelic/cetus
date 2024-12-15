@@ -30,8 +30,8 @@ UpdateExploreScreen::
 
 .checkIfShouldRenderEvent ; (label or dialog)
 	ld a, [wIsPlayerFacingWallInteractable]
-	cp FALSE
-	call nz, RenderDialog
+	cp TRUE
+	call z, RenderDialogOrLabel
 
 ; dont render item if we're facing an interactable and not in the label state
 .checkIfShouldRenderItemSprite

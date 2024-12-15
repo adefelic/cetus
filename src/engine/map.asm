@@ -19,34 +19,28 @@ LoadMapInHl::
 
 	; long term todo, optimize map struct to let this use hli instead of stack verbs
 	push hl ; stash map struct location
-
-	ld a, Map_WallMapAddr
-	AddAToHl
-	DereferenceHlIntoHl
-	ld a, l
-	ld [wCurrentMapWalls], a
-	ld a, h
-	ld [wCurrentMapWalls+1], a
-
+		ld a, Map_WallMapAddr
+		AddAToHl
+		DereferenceHlIntoHl
+		ld a, l
+		ld [wCurrentMapWalls], a
+		ld a, h
+		ld [wCurrentMapWalls+1], a
 	pop hl
 	push hl
-
-	ld a, Map_EventMapAddr
-	AddAToHl
-	DereferenceHlIntoHl
-	ld a, l
-	ld [wCurrentMapEvents], a
-	ld a, h
-	ld [wCurrentMapEvents+1], a
-
+		ld a, Map_EventMapAddr
+		AddAToHl
+		DereferenceHlIntoHl
+		ld a, l
+		ld [wCurrentMapEvents], a
+		ld a, h
+		ld [wCurrentMapEvents+1], a
 	pop hl
 	push hl
-
-	ld a, Map_StartingLocale
-	AddAToHl
-	DereferenceHlIntoHl
-	call LoadLocale
-
+		ld a, Map_StartingLocale
+		AddAToHl
+		DereferenceHlIntoHl
+		call LoadLocale
 	pop hl
 
 	; the struct contains orientation, x, y bytes in order so we can inc through with hli
@@ -374,9 +368,8 @@ GetRoomCoordsRightFarWRTPlayer::
 	ld e, a
 	ret
 
-; map addr + wPlayerExploreX + wPlayerExploreY*32
 ; @return hl: tile address of room of event map
-GetEventRoomAddrFromPlayerCoords::
+CalcEventRoomAddrFromPlayerMapCoords::
 	ld a, [wPlayerExploreX]
 	ld d, a
 	ld a, [wPlayerExploreY]
@@ -385,19 +378,14 @@ GetEventRoomAddrFromPlayerCoords::
 	ld l, a
 	ld a, [wCurrentMapEvents+1]
 	ld h, a
-	jr GetEventRoomAddrFromCoords
+	jr CalcEventRoomAddrFromMapCoords
 
 ; map addr + ((wPlayerExploreX + wPlayerExploreY*32) * 2)
 ; @param d: player X coord
 ; @param e: player Y coord
 ; @param hl: map addr
 ; @return hl: tile address of player occupied tile of map in hl
-GetEventRoomAddrFromCoords::
-	;ld a, [hCurrentBank]
-	;push af
-	;ld a, bank(Map1) ; hard coded
-	;rst SwapBank
-
+CalcEventRoomAddrFromMapCoords:
 	ld b, h
 	ld c, l
 	ld l, e
@@ -411,9 +399,8 @@ GetEventRoomAddrFromCoords::
 	ld a, d
 	add a, l
 	ld l, a
-	add hl, hl ; this is the only difference between this and GetRoomAddrFromCoords
+	add hl, hl ; this is the only difference between this and CalcRoomAddrFromMapCoords
 	add hl, bc
-	;jp BankReturn
 	ret
 
 ; map addr + wPlayerExploreX + wPlayerExploreY*32
@@ -421,14 +408,8 @@ GetEventRoomAddrFromCoords::
 ; @param e: player Y coord
 ; @param hl: map addr
 ; @return hl: tile address of player occupied tile of map in hl
-;
 ; calculates the offset from the addr of the current map that the coordinates represent
-GetRoomAddrFromCoords::
-	;ld a, [hCurrentBank]
-	;push af
-	;ld a, bank(Map1) ; hard coded
-	;rst SwapBank
-
+CalcRoomAddrFromMapCoords::
 	ld b, h
 	ld c, l
 	ld l, e
@@ -443,7 +424,6 @@ GetRoomAddrFromCoords::
 	add a, l
 	ld l, a
 	add hl, bc
-	;jp BankReturn
 	ret
 
 ; Map1 + wPlayerExploreX + wPlayerExploreY*32
@@ -455,4 +435,4 @@ GetCurrentMapWallsRoomAddrFromRoomCoords::
 	ld l, a
 	ld a, [wCurrentMapWalls+1]
 	ld h, a
-	jr GetRoomAddrFromCoords
+	jr CalcRoomAddrFromMapCoords

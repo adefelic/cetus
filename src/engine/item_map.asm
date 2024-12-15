@@ -22,4 +22,4 @@ ClearItemMap::
 ; @return hl: item map room address of tile
 GetActiveItemMapRoomAddrFromCoords::
 	ld hl, wItemMap
-	jp GetRoomAddrFromCoords
+	jp CalcRoomAddrFromMapCoords

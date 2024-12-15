@@ -140,9 +140,9 @@ HandlePressedUp:
 	ld a, [wPlayerExploreY]
 	ld e, a
 	; fixme wrap whereever the outpu of this is used in bank handling
-	ld a, [hCurrentBank]
+	ld a, [hCurrentRomBank]
 	push af
-	ld a, bank(Map1) ; hard coded, fixme
+	ld a, bank(Map1) ; hardcoded, fixme
 	rst SwapBank
 	call GetCurrentMapWallsRoomAddrFromRoomCoords ; put room addr in hl
 AdvanceIfNoCollisions:

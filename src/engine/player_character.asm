@@ -37,7 +37,7 @@ InitPlayerCharacter::
 
 .loadAttack1
 	; swap bank for copy
-	ld a, [hCurrentBank]
+	ld a, [hCurrentRomBank]
 	push af
 	ld a, bank(AttackWatch)
 	rst SwapBank

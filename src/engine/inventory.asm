@@ -48,7 +48,7 @@ InitEquipment::
 	;   rather than making it potentially unique per item w true far pointers
 
 	; swap bank for copy
-	ld a, [hCurrentBank]
+	ld a, [hCurrentRomBank]
 	push af
 	ld a, bank(EquipmentHelmFrogMouth)
 	rst SwapBank

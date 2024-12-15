@@ -50,16 +50,16 @@ wFoundSkullFlag:: db
 section "Swap Bank", ROM0[$0020 - 1]
 BankReturn::
 	pop af
-; Sets rROMB0 and hCurrentBank to `a`
+; Sets rROMB0 and hCurrentRomBank to `a`
 ; @param a: Bank
 SwapBank::
 	assert @ == $20
-	ldh [hCurrentBank], a
+	ldh [hCurrentRomBank], a
 	ld [rROMB0], a
 	ret
 
 SECTION "crash", ROM0[$0038]
-Crash:
+Crash::
 	jp CrashHandler
 
 ; unused hardware interrupts
@@ -84,7 +84,7 @@ EntryPoint:
 	ldh [rNR52], a
 
 	; set bank 0 as our current bank for the sake of swapping from
-	ldh [hCurrentBank], a
+	ldh [hCurrentRomBank], a
 .waitVBlank:
 	ldh a, [rLY]
 	cp SCRN_Y
@@ -193,7 +193,7 @@ InitGame:
 	jr .main
 
 LoadMap1:
-	ld a, [hCurrentBank]
+	ld a, [hCurrentRomBank]
 	push af
 	ld a, bank(Map1)
 	rst SwapBank
@@ -208,7 +208,7 @@ LoadInitialTilesIntoVram:
 LoadBgTilesIntoVram:
 .loadExploreAndEncounterTiles
 	; swap bank for copy
-	ld a, [hCurrentBank]
+	ld a, [hCurrentRomBank]
 	push af
 	ld a, bank(BgBank0Tiles)
 	rst SwapBank
@@ -251,7 +251,8 @@ UpdateShadowVram::
 	cp SCREEN_PAUSE
 	jp z, UpdatePauseScreen
 	; control should not reach here
-	ret
+	ld a, ERR_UNKNOWN_ACTIVE_FRAME_SCREEN
+	rst Crash
 
 ; this handles one button of input then returns
 ProcessInput::
