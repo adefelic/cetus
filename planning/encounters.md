@@ -7,48 +7,47 @@
 ## enemies
 encounters can be non-human beings, the land anthropomorphosed, weather, the past
 encounters can be helpful, but usually aren't
+asterisks = difficulty
 - field: - golden grass lands, tarn, fallow fields. old well, evidence of past settlement and maybe some current.
 - maybe this should be broken into field 1 (settled-ish) and field 2 (unsettled) or something like that
-	- knotted grass / vines (nature)
+	- knotted grass / vines (nature) *
 		- entangle. * bind multi
 		- trip. xx mud single
 		- snare
-	- marsh hawk (day) (action)
+	- marsh hawk (day) (action) ***
 		- watch. pressure xx single
 		- harry. confuse xx multi
 		- gouge. cut xxx single
-	- great owl (night) (action, caution)
+	- great owl (night) (action, caution) ***
 		- watch
 		- swoop / graze (high damage)
-	- green briars (more grabbing) (nature, safety)
+	- green briars (more grabbing) (nature, safety) *
 		- needle. x cut multi
 		- entangle. * bind multi
 		- trip. xx mud single
 		- grasp
 		- snare
-	- red briars (more cutting) (nature) (palette swap)
+	- red briars (more cutting) (nature) (palette swap) **
 		- slice
 		- 
-	- snake
+	- snake **
 		- coil. bind xx single
 		- fangs. sting xxx single
 		- vanish. confuse x multi
-	- old bones (skull + ribs + an arm)
+	- old bones (skull + ribs + an arm) *
 		- unnerve. pressure x single
 		- grab. bind xxx single
-	- the patriarch (sun)
+	- the patriarch (sun) ******
 		- glare. blaze xx multi
 		- judge. blaze xxxx single
 		- wither.
 	- prairie chicken
 	- i want more that arent animals. what are things that can happen
 		- recurring text npcs whose quests are advanced whenever you see them (or give them something?)
-	- plank bridge
+	- plank bridge *
 		- break
-	- grave spook
-	- old vines
-	- winter lantern / gourd / turnip
-	- angy jay
+	- grave spook **
+	- winter vines / gourd / turnip
 
 forest: - pine woods. dry, orange-brown ground. twisty trees, grey trunks, briars, pinecones. needs more ...
 	- spider web
@@ -96,22 +95,32 @@ swamp: - dark. bluish, dense, soporific, deep. quiet, slow
 	- memorial candles
 
 coast: - bright, foggy, empty, dead. seaweed, corpses of birds, fish, crustaceans.
-	- drifting fog
+	- drifting fog *
 		- confuse. 
-	- bleached bones
+	- bleached bones *
 		- sea water
-	- beached creature
-		- eject sea water
-	- keen gull 
-	- sea glass
+	- sea glass *
 		- glitter, lull
-	- horseshoe crab
+	- keen gull **
+	- horseshoe crab **
 		- wait
-	- dying shark
+	- crawling turtle **
+	- crashing wave ***
+	- beached creature ***
+		- eject sea water
+	- osprey ***
+	- dying shark ****
 		- gasp
 		- lurch
-	- osprey
-	- crawling turtle
+	- great urchin *****
+		- crawl
+		- impale
+		- sniff/taste
+	- pilgrim star ******
+		- capture
+		- digest
+		- writhe
+		- thrash
 underwater:
 	- seaweed dragon
 	- green crab
@@ -124,7 +133,6 @@ underwater:
 	- stranded meteorite
 beyond:
 	- lost star
-	- wild starlike
 	- wanderer (comet)
 	- starlike abandoned
 	- eye

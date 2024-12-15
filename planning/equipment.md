@@ -47,13 +47,14 @@ equipment
 	- beaked helm
 	- wooden masks, different kinds
 	- porcelain mask
+	- ironlace mantle
 - armor - defensive, cultural, provide resistances
 	- old chain
 	- coarse clothing
 	- tower tabard
 	- green bolt tabard
 	- rootwork shirt
-	- 
+	- mycal lattice 
 - legs - defensive, cultural, provide resistances
 	- bound leggings
 	- rough trousers

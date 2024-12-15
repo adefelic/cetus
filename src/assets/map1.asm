@@ -88,7 +88,6 @@ EventMap:
 	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	dw 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
-
 DEF CROSS_FOG_STRING EQUS "\"cross fog?\""
 ; dang these are offsets and not indices. they need to be indices so i can support more of them at once
 Map1Events::
