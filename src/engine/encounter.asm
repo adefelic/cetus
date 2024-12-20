@@ -26,7 +26,7 @@ wNextAnimationKeyFramePalette:: dw
 wAnimationKeyFramesRemaining:: db
 wAnimationFramesRemaining:: db
 
-SECTION "Encounter init logic", ROMX
+SECTION "Encounter init logic", ROM0
 BeginEncounter::
 .setEncounterState
 	ld a, ENCOUNTER_STATE_INITIAL

@@ -6,7 +6,7 @@ INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
 INCLUDE "src/utils/macros.inc"
 
-SECTION "Modal Paint Routines", ROMX
+SECTION "Modal Paint Routines", ROM0
 
 PaintModalTopRow::
 .tl_corner

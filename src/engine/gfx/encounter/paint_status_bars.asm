@@ -13,7 +13,7 @@ DEF STATUS_LINE_STRING_LEN EQU 11
 SECTION "Player Status Buffers", WRAM0
 wStatusStringBuffer:: ds STATUS_LINE_STRING_LEN
 
-SECTION "Player Status Rendering", ROMX
+SECTION "Player Status Rendering", ROM0
 
 PaintPlayerStatus::
 PaintHpStatusLine:

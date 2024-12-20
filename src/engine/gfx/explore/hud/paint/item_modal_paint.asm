@@ -5,7 +5,7 @@ INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
 
-SECTION "Item Modal Paint Routines", ROMX
+SECTION "Item Modal Paint Routines", ROM0
 PaintModalTopRowItemMenu::
 .tl_corner
 	ld d, TILE_UI_BORDER_TL_CORNER

@@ -23,7 +23,7 @@
 ; 3. This notice may not be removed or altered from any source distribution.
 ;
 section "rand_ram", WRAM0
-randstate: ds 4
+randstate:: ds 4
 
 ; The formula is
 ; x[i + 1] = (x[i] + 0xB3) * 0x01010101

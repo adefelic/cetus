@@ -11,7 +11,7 @@ DEF MAX_ATTACKS_IN_MENU EQU 4
 SECTION "Attack Menu Rendering Scratch", WRAM0
 wAttackNameStringBuffer:: ds BYTES_IN_ATTACK_STRING
 
-SECTION "Encounter Menu Rendering", ROMX
+SECTION "Encounter Menu Rendering", ROM0
 
 rPlayerString:: db "you               "
 rUsedString:: db "used "

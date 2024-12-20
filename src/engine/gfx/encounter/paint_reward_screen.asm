@@ -7,7 +7,7 @@ INCLUDE "src/assets/tiles/indices/scrib.inc"
 DEF REWARD_SCREEN_TOP_LEFT EQU rows 5 + cols 2
 DEF REWARD_SCREEN_WIDTH EQU 20 - 4
 
-SECTION "Reward Screen Painting", ROMX
+SECTION "Reward Screen Painting", ROM0
 
 PaintRewardScreen::
 .blank_row0

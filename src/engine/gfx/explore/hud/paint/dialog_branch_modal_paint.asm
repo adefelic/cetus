@@ -5,7 +5,7 @@ INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
 
-SECTION "Dialog Branch Modal Paint Routines", ROMX
+SECTION "Dialog Branch Modal Paint Routines", ROM0
 
 PaintModalBottomRowDialogBranch::
 .bl_corner

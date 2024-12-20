@@ -10,7 +10,7 @@ wHeadPaperDollTilesReadyForVramWrite:: db
 wBodyPaperDollTilesReadyForVramWrite:: db
 wLegsPaperDollTilesReadyForVramWrite:: db
 
-SECTION "Pause Screen Renderer", ROMX
+SECTION "Pause Screen Renderer", ROM0
 UpdatePauseScreen::
 	ld a, [wIsShadowTilemapDirty]
 	cp FALSE

@@ -5,23 +5,21 @@ SECTION "lcd handler stub", ROM0[$0048]
 
 SECTION "lcd handler", ROM0
 LcdHandler:
+.pushes
 	push af
 	push bc
 	push de
 	push hl
-	ld a, BANK(UpdateAudio)
-	ld [rROMB0], a
+.updateAudio
 	;call UpdateAudio zzz
-	call AdvanceEncounterAnimation
+.advanceEncounterAnimation
+	ld a, [wAnimationFramesRemaining]
+	dec a
+	ret z
+	ld [wAnimationFramesRemaining], a
+.pops
 	pop hl
 	pop de
 	pop bc
 	pop af
 	reti
-
-AdvanceEncounterAnimation:
-	ld a, [wAnimationFramesRemaining]
-	dec a
-	ret z
-	ld [wAnimationFramesRemaining], a
-	ret

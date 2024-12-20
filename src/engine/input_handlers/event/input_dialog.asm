@@ -4,7 +4,7 @@ INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/structs/event.inc"
 INCLUDE "src/utils/macros.inc"
 
-SECTION "Dialog Event Input Handling", ROMX
+SECTION "Dialog Event Input Handling", ROM0
 
 ;;; DIALOG_STATE_ROOT handlers
 HandleInputFromDialogRoot::

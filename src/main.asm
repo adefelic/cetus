@@ -24,6 +24,7 @@ wCurrentMapWalls:: dw
 wCurrentMapEvents:: dw
 wCurrentEncounterTable:: dw
 wCurrentWallTilesAddr:: dw
+wCurrentWallTilesBank:: db
 wCurrentLocale:: db
 wCurrentMusicTrack:: dw
 

@@ -100,6 +100,12 @@ CopyBgWallTilesIntoVram:
 	and a
 	ret nz
 
+	; make sure we're reading tiles from the correct rom bank
+	ld a, [hCurrentRomBank]
+	push af
+	ld a, [wCurrentWallTilesBank]
+	rst SwapBank
+
 	ld hl, wCurrentWallTilesAddr
 	; hmm there are some warnings here ...
 	DEF DEST = WALL_TILES_VRAM_ADDR
@@ -108,7 +114,7 @@ CopyBgWallTilesIntoVram:
 
 	ld a, FALSE
 	ld [wBgWallTilesReadyForVramWrite], a
-	ret
+	jp BankReturn
 
 CopyWeaponIconTilesIntoVram:
 	ld a, [wWeaponIconTilesReadyForVramWrite]

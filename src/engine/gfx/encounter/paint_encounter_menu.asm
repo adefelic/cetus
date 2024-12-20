@@ -4,7 +4,7 @@ INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
 
-SECTION "Encounter Menu Painting", ROMX
+SECTION "Encounter Menu Painting", ROM0
 
 PaintBlankTopMenuRow::
 .tl_corner

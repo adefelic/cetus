@@ -4,7 +4,7 @@ INCLUDE "src/engine/gfx/gfx_macros.inc"
 INCLUDE "src/structs/equipment.inc"
 INCLUDE "src/utils/macros.inc"
 
-SECTION "Paper Doll Screen Renderer", ROMX
+SECTION "Paper Doll Screen Renderer", ROM0
 
 RenderPaperDollScreen::
 	call PaintEquipmentIcons

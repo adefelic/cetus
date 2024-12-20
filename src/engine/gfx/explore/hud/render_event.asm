@@ -30,13 +30,13 @@ wTextRowsRendered:: db ; formerly wDialogRootTextAreaRowsRendered
 wDialogBranchesIteratedOver:: db
 wCurrentMenuItem:: dw ; points to the menu item (wMenuItemRendered) being presently filled by some filtering function
 
-SECTION "Explore Screen Event Renderer", ROMX
+SECTION "Explore Screen Event Renderer", ROM0
 
 ; todo the label should be rendered as a result of there being an interactable available, not as a first step of dialog. pls decouple
 
 ; overlay event bg tiles, reading from the active event pointers
 RenderDialogOrLabel::
-	ld a, [wBottomMenuDirty] ; whoa this is wrong. this would only be a good check if the LABEL state also used the bottom menu.
+	ld a, [wBottomMenuDirty] ; whoa this is wrong. this would only be a good check if the LABEL state also used the bottom menu. this makes the label and bottom menu mutually exclusive
 	; fixme, make this not re-render the menus if they're up there already. or decouple LABEL from events
 	cp TRUE
 	ret nz
@@ -52,23 +52,22 @@ RenderDialogOrLabel::
 
 ; load wRoomEventAddr, add EventLabelText offset, store in wCurrentLabelAddr
 RenderDialogLabel:
-;zzz2
 	ld a, [hCurrentRomBank]
 	push af
 	ld a, bank(Map1) ; hardcoded
 	rst SwapBank
 
-	ld a, [wRoomEventAddr] ; points into the event map, which is in the same bank as Map1
-	add RoomEvent_EventLabelText
-	ld [wCurrentLabelAddr], a  ; points into the event def list, which is in the same bank as Map1
-	ld a, [wRoomEventAddr + 1]
-	adc 0
-	ld [wCurrentLabelAddr + 1], a
-	call PaintLabelTopModal
+		ld a, [wRoomEventAddr] ; points into the event map, which is in the same bank as Map1
+		add RoomEvent_EventLabelText
+		ld [wCurrentLabelAddr], a  ; points into the event def list, which is in the same bank as Map1
+		ld a, [wRoomEventAddr + 1]
+		adc 0
+		ld [wCurrentLabelAddr + 1], a
+		call PaintLabelTopModal ; this needs to be called with Map1 Bank set
 
-	; fixme the label is not the bottom menu
-	ld a, FALSE
-	ld [wBottomMenuDirty], a
+		; fixme the label is not the bottom menu
+		ld a, FALSE
+		ld [wBottomMenuDirty], a
 	jp BankReturn
 
 ; display a list of 4 options

@@ -2,7 +2,7 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/structs/event.inc"
 INCLUDE "src/utils/macros.inc"
 
-SECTION "Warp Event Input Handling", ROMX
+SECTION "Warp Event Input Handling", ROM0
 
 ; this is inefficient and can be improved once the WarpDestination and Locale struct designs have settled
 DoWarp::

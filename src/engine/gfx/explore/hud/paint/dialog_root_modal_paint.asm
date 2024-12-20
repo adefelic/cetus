@@ -5,7 +5,7 @@ INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/lib/hardware.inc"
 INCLUDE "src/assets/tiles/indices/scrib.inc"
 
-SECTION "Dialog Root Modal Paint Routines", ROMX
+SECTION "Dialog Root Modal Paint Routines", ROM0
 PaintModalTopRowDialogRoot::
 .tl_corner
 	ld d, TILE_UI_BORDER_TL_CORNER

@@ -9,7 +9,7 @@ DEF LABEL_MODAL_TOP_LEFT EQU rows 2 + cols 4
 DEF LABEL_MODAL_WIDTH EQU 12
 DEF LABEL_MODAL_HEIGHT EQU 3
 
-SECTION "Label Modal Paint Routines", ROMX
+SECTION "Label Modal Paint Routines", ROM0
 
 ; this is for painting 1 line, 10 character LABELS at the top of the screen
 ; todo make macro for painting both tilemap + attrs

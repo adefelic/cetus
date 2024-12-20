@@ -80,18 +80,3 @@ ConvertBinaryNumberToThreeDigitDecimalNumber::
 .finishFromOnes
 	inc e
 	ret
-
-; @param d, modulo value
-; @return a, remainder
-SingleByteModulo::
-.subtractionLoop
-	sub d
-	jp z, .returnZero
-	jp c, .returnNonZero
-	jp .subtractionLoop
-.returnZero
-	xor a
-	ret
-.returnNonZero
-	add d
-	ret

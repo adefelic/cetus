@@ -39,6 +39,7 @@ InitTileLoadingFlags::
 
 ; @param de: source palette set addr
 EnqueueBgPaletteSetUpdate::
+	; zzz set palette bank? wBgPaletteSetUpdateBank
 	ld a, d
 	ld [wBgPaletteSetUpdateAddr], a
 	ld a, e

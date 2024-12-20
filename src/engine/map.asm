@@ -66,9 +66,8 @@ LoadLocale::
 	ld e, l
 	call EnqueueBgPaletteSetUpdate
 	pop hl
-	push hl
-
 .loadEncountersTable
+	push hl
 	ld a, Locale_EncountersTableAddr
 	AddAToHl
 	ld a, [hli]
@@ -76,18 +75,15 @@ LoadLocale::
 	ld a, [hl]
 	ld [wCurrentEncounterTable+1], a
 	pop hl
-	push hl
-
 .loadMusic
+	push hl
 	ld a, Locale_MusicAddr
 	AddAToHl
 	ld a, [hli]
 	ld [wCurrentMusicTrack], a
 	ld a, [hl]
 	ld [wCurrentMusicTrack+1], a
-
 	call LoadCurrentMusic
-
 	pop hl
 
 .loadSpecialWallTiles
@@ -97,11 +93,11 @@ LoadLocale::
 	ld [wCurrentWallTilesAddr], a
 	ld a, [hl]
 	ld [wCurrentWallTilesAddr+1], a
-
+	ld a, [hCurrentRomBank]
+	ld [wCurrentWallTilesBank], a
 	ld a, TRUE
 	ld [wBgWallTilesReadyForVramWrite], a
 	ret
-
 
 ; @param hl, Room addr
 ; @return a, wall type
@@ -117,7 +113,6 @@ GetTopWallWrtPlayer::
 
 ; @param hl, room addr
 ; @return a, wall type
-GetTopWallTypeFromRoomAddr::
 GetNorthWallTypeFromRoomAddr::
 	ld a, [hl]
 	and a, ROOM_MASK_NORTH_WALL
@@ -128,7 +123,6 @@ endr
 
 ; @param hl, room addr
 ; @return a, wall type
-GetRightWallTypeFromRoomAddr::
 GetEastWallTypeFromRoomAddr::
 	ld a, [hl]
 	and a, ROOM_MASK_EAST_WALL
@@ -139,7 +133,6 @@ endr
 
 ; @param hl, room addr
 ; @return a, wall type
-GetBottomWallTypeFromRoomAddr::
 GetSouthWallTypeFromRoomAddr::
 	ld a, [hl]
 	and a, ROOM_MASK_SOUTH_WALL
@@ -150,7 +143,6 @@ endr
 
 ; @param hl, room addr
 ; @return a, wall type
-GetLeftWallTypeFromRoomAddr::
 GetWestWallTypeFromRoomAddr::
 	ld a, [hl]
 	and a, ROOM_MASK_WEST_WALL

@@ -2,7 +2,7 @@ INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 
-SECTION "Enemy Rendering", ROMX
+SECTION "Enemy Rendering", ROM0
 
 DEF NPC_TL EQU rows 4 + cols 9
 

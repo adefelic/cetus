@@ -8,7 +8,7 @@ INCLUDE "src/structs/attack.inc"
 INCLUDE "src/structs/palette_animation.inc"
 INCLUDE "src/utils/macros.inc"
 
-SECTION "Encounter Screen Renderer", ROMX
+SECTION "Encounter Screen Renderer", ROM0
 
 ; todo get rid of end states, just do things at the end of animation
 UpdateEncounterScreen::

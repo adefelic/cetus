@@ -32,6 +32,12 @@ RenderExploreEnvironmentWalls::
 	;    so moves or rotations. and on init. maybe fake a rotation on init
 	call UpdateRoomWallCache
 
+	; bank swap to the bank that the maze paint funcitons are in
+	ld a, [hCurrentRomBank]
+	push af
+	ld a, bank(WallAndSegmentPaintRoutines) ; hardcoded
+	rst SwapBank
+
 ; process rooms closest to farthest w/ dirtying to only draw topmost z segments
 ProcessRoomCenterNear:
 .checkLeftWall:
@@ -214,7 +220,8 @@ ProcessRoomRightFar:
 	call PaintSegmentN
 	call PaintSegmentNDiag
 .finishProcessingRooms
-	ret
+	;ret
+	jp BankReturn
 
 ; todo rotate room walls here so we dont have to do it later
 UpdateRoomWallCache:
