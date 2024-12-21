@@ -3,7 +3,6 @@ INCLUDE "src/constants/constants.inc"
 INCLUDE "src/constants/gfx_constants.inc"
 INCLUDE "src/constants/palette_constants.inc"
 INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
-INCLUDE "src/engine/gfx/gfx_macros.inc"
 INCLUDE "src/utils/macros.inc"
 INCLUDE "src/constants/room_constants.inc"
 
@@ -43,9 +42,204 @@ MACRO paint_row_random_fog_tiles
 	call Paint_CopyByteInEToRange
 ENDM
 
+MACRO paint_row_single_tile_romx
+	ld hl, wShadowBackgroundTilemap + rows ROW + cols LEFTMOST_COLUMN
+	ld b, ROW_WIDTH
+	call Paint_CopyByteInDToRange
+	ld hl, wShadowBackgroundTilemapAttrs + rows ROW + cols LEFTMOST_COLUMN
+	ld b, ROW_WIDTH
+	call Paint_CopyByteInEToRange
+ENDM
+
 ; wall and segment routines are together so that the bank doesn't need to be switched to go between them
 SECTION "Wall and Segment Paint Routines", ROMX
 WallAndSegmentPaintRoutines::
+
+PaintMaze::
+; process rooms closest to farthest w/ dirtying to only draw topmost z segments
+ProcessRoomCenterNear:
+.checkLeftWall:
+	ld hl, wRoomNearCenter
+	call GetLeftWallTypeFromRoomAddr
+	cp a, WALL_TYPE_NONE
+	jp z, .checkTopWall
+	cp a, WALL_TYPE_A
+	call z, PaintWallLeftSideNearTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallLeftSideNearTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallLeftSideNearTypeC
+.checkTopWall
+	ld hl, wRoomNearCenter
+	call GetTopWallTypeFromRoomAddr
+	cp a, WALL_TYPE_NONE
+	jp z, .checkRightWall
+	cp a, WALL_TYPE_A
+	call z, PaintWallCenterFrontNearTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallCenterFrontNearTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallCenterFrontNearTypeC
+.checkRightWall
+	ld hl, wRoomNearCenter
+	call GetRightWallTypeFromRoomAddr
+	cp a, WALL_TYPE_NONE
+	jp z, .paintGroundCenterNear
+	cp a, WALL_TYPE_A
+	call z, PaintWallRightSideNearTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallRightSideNearTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallRightSideNearTypeC
+.paintGroundCenterNear
+	ld e, BG_PALETTE_GROUND_NEAR
+	ld d, TILE_EXPLORE_GROUND
+	call PaintSegmentQGround
+
+ProcessRoomLeftNear:
+.checkTopWall
+	ld hl, wRoomNearLeft
+	call GetTopWallTypeFromRoomAddr
+	cp a, WALL_TYPE_NONE
+	jp z, .paintGroundLeftNear
+	cp a, WALL_TYPE_A
+	call z, PaintWallLeftFrontNearTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallLeftFrontNearTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallLeftFrontNearTypeC
+.paintGroundLeftNear
+	ld e, BG_PALETTE_GROUND_NEAR
+	ld d, TILE_EXPLORE_GROUND
+	call PaintSegmentP
+	call PaintSegmentPDiag
+
+ProcessRoomRightNear:
+.checkTopWall
+	ld hl, wRoomNearRight
+	call GetTopWallTypeFromRoomAddr
+	cp a, WALL_TYPE_NONE
+	jp z, .paintGroundRightNear
+	cp a, WALL_TYPE_A
+	call z, PaintWallRightFrontNearTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallRightFrontNearTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallRightFrontNearTypeC
+.paintGroundRightNear
+	ld e, BG_PALETTE_GROUND_NEAR
+	ld d, TILE_EXPLORE_GROUND
+	call PaintSegmentR
+	call PaintSegmentRDiag
+
+ProcessRoomCenterFar:
+.checkLeftWall
+	ld hl, wRoomFarCenter
+	call GetLeftWallTypeFromRoomAddr
+	cp a, WALL_TYPE_NONE
+	jp z, .paintGroundLeftFar
+	cp a, WALL_TYPE_A
+	call z, PaintWallLeftSideFarTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallLeftSideFarTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallLeftSideFarTypeC
+	jp .checkTopWall
+.paintGroundLeftFar
+	ld e, BG_PALETTE_GROUND_FAR
+	ld d, TILE_EXPLORE_GROUND
+	call PaintSegmentL
+	call PaintSegmentLDiag
+
+.checkTopWall
+	ld hl, wRoomFarCenter
+	call GetTopWallTypeFromRoomAddr
+	cp a, WALL_TYPE_NONE
+	jp z, .paintDistanceFog
+	cp a, WALL_TYPE_A
+	call z, PaintWallCenterFrontFarTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallCenterFrontFarTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallCenterFrontFarTypeC
+	jp .checkRightWall
+.paintDistanceFog
+	ld e, BG_PALETTE_FOG
+	call PaintSegmentCDistanceFog
+
+.checkRightWall
+	ld hl, wRoomFarCenter
+	call GetRightWallTypeFromRoomAddr
+	cp a, WALL_TYPE_NONE
+	jp z, .paintGroundRightFar
+	cp a, WALL_TYPE_A
+	call z, PaintWallRightSideFarTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallRightSideFarTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallRightSideFarTypeC
+	jp .paintGroundCenterFar
+.paintGroundRightFar
+	ld e, BG_PALETTE_GROUND_FAR
+	ld d, TILE_EXPLORE_GROUND
+	call PaintSegmentN
+	call PaintSegmentNDiag
+
+.paintGroundCenterFar
+	ld e, BG_PALETTE_GROUND_FAR
+	ld d, TILE_EXPLORE_GROUND
+	call PaintSegmentMGround
+
+ProcessRoomLeftFar:
+.checkTopWall
+	ld hl, wRoomFarLeft
+	call GetTopWallTypeFromRoomAddr
+	cp a, WALL_TYPE_NONE
+	jp z, .paintDistanceFog
+	cp a, WALL_TYPE_A
+	call z, PaintWallLeftFrontFarTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallLeftFrontFarTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallLeftFrontFarTypeC
+	jp .paintGroundLeftFar
+.paintDistanceFog
+	ld e, BG_PALETTE_FOG
+	call PaintSegmentADistanceFog
+	call PaintSegmentBDistanceFog
+.paintGroundLeftFar
+	ld e, BG_PALETTE_GROUND_FAR
+	ld d, TILE_EXPLORE_GROUND
+	call PaintSegmentK
+	call PaintSegmentL
+	call PaintSegmentLDiag
+
+ProcessRoomRightFar:
+.checkTopWall
+	ld hl, wRoomFarRight
+	call GetTopWallTypeFromRoomAddr
+	cp a, WALL_TYPE_NONE
+	jp z, .paintDistanceFog
+	cp a, WALL_TYPE_A
+	call z, PaintWallRightFrontFarTypeA
+	cp a, WALL_TYPE_B
+	call z, PaintWallRightFrontFarTypeB
+	cp a, WALL_TYPE_C
+	call z, PaintWallRightFrontFarTypeC
+	jp .paintGroundRightFar
+.paintDistanceFog
+	ld e, BG_PALETTE_FOG
+	call PaintSegmentDDistanceFog
+	call PaintSegmentEDistanceFog
+.paintGroundRightFar
+	ld e, BG_PALETTE_GROUND_FAR
+	ld d, TILE_EXPLORE_GROUND
+	call PaintSegmentO
+	call PaintSegmentN
+	call PaintSegmentNDiag
+.finishProcessingRooms
+	;ret
+	jp BankReturn
 
 ; these wall cache accessor functions are copies of Get___WallTypeFromRoomAddr in map.asm.
 ; only these are in this bank to make my life easier
@@ -207,7 +401,7 @@ PaintWallLeftSideNearTypeB::
 	DEF ROW_WIDTH = SEGMENT_A_WIDTH
 	DEF LEFTMOST_COLUMN = SEGMENT_A_LEFT
 	FOR ROW, 6
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 
 	; door
@@ -215,7 +409,7 @@ PaintWallLeftSideNearTypeB::
 	DEF ROW_WIDTH = 1
 	DEF LEFTMOST_COLUMN = SEGMENT_A_LEFT
 	FOR ROW, 6, SCREEN_BOTTOM
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 
 	; wall right of door
@@ -223,12 +417,12 @@ PaintWallLeftSideNearTypeB::
 	DEF ROW_WIDTH = 2
 	DEF LEFTMOST_COLUMN = SEGMENT_A_LEFT + 1
 	FOR ROW, 6, SCREEN_BOTTOM - 2
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 	DEF ROW_WIDTH = 1
 	DEF LEFTMOST_COLUMN = SEGMENT_A_LEFT + 1
 	DEF ROW = SCREEN_BOTTOM - 2
-	paint_row_single_tile
+	paint_row_single_tile_romx
 
 	; diagonal. overwrites some of "wall right of door"
 	ld d, TILE_EXPLORE_DIAG_L
@@ -258,35 +452,35 @@ PaintWallCenterFrontNearTypeB::
 	DEF ROW_WIDTH = SEGMENT_C_WIDTH
 	DEF LEFTMOST_COLUMN = SEGMENT_C_LEFT
 	FOR ROW, TOP_SEGMENTS_TOP, TOP_SEGMENTS_TOP + 6
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 
 	ld d, TILE_FIELD_WALL_B_DOOR
 	DEF ROW_WIDTH = 8
 	DEF LEFTMOST_COLUMN = SEGMENT_C_LEFT
 	FOR ROW, TOP_SEGMENTS_TOP + 6, MIDDLE_SEGMENTS_TOP
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .segmentL_LDiag_MLeft
 	ld d, TILE_FIELD_WALL_B_WALL
 	DEF ROW_WIDTH = SEGMENT_B_WIDTH
 	DEF LEFTMOST_COLUMN = SEGMENT_B_LEFT
 	FOR ROW, MIDDLE_SEGMENTS_TOP, BOTTOM_SEGMENTS_TOP
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .segmentMMiddle
 	ld d, TILE_FIELD_WALL_B_DOOR
 	DEF ROW_WIDTH = SEGMENT_C_WIDTH
 	DEF LEFTMOST_COLUMN = SEGMENT_C_LEFT
 	FOR ROW, MIDDLE_SEGMENTS_TOP, BOTTOM_SEGMENTS_TOP
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .segmentMMiddle_NDiag_N
 	ld d, TILE_FIELD_WALL_B_WALL
 	DEF ROW_WIDTH = SEGMENT_D_WIDTH
 	DEF LEFTMOST_COLUMN = SEGMENT_D_LEFT
 	FOR ROW, MIDDLE_SEGMENTS_TOP, BOTTOM_SEGMENTS_TOP
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .cleanFlags
 	ld a, FALSE
@@ -306,7 +500,7 @@ PaintWallRightSideNearTypeB::
 	DEF ROW_WIDTH = SEGMENT_E_WIDTH
 	DEF LEFTMOST_COLUMN = SEGMENT_E_LEFT
 	FOR ROW, 6
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 
 	; door
@@ -314,7 +508,7 @@ PaintWallRightSideNearTypeB::
 	DEF ROW_WIDTH = 1
 	DEF LEFTMOST_COLUMN = SEGMENT_E_LEFT + SEGMENT_E_WIDTH - 1
 	FOR ROW, 6, SCREEN_BOTTOM
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 
 	; wall right of door
@@ -322,12 +516,12 @@ PaintWallRightSideNearTypeB::
 	DEF ROW_WIDTH = 2
 	DEF LEFTMOST_COLUMN = SEGMENT_E_LEFT
 	FOR ROW, 6, SCREEN_BOTTOM - 2
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 	DEF ROW_WIDTH = 1
 	DEF LEFTMOST_COLUMN = SEGMENT_E_LEFT + 1
 	DEF ROW = SCREEN_BOTTOM - 2
-	paint_row_single_tile
+	paint_row_single_tile_romx
 
 	; diagonal. overwrites some of "wall right of door"
 	ld d, TILE_EXPLORE_DIAG_R
@@ -360,7 +554,7 @@ PaintWallCenterFrontFarTypeB::
 	DEF ROW_WIDTH = 4
 	DEF LEFTMOST_COLUMN = SEGMENT_C_LEFT + 2
 	FOR ROW, TOP_SEGMENTS_TOP + 8, MIDDLE_SEGMENTS_TOP
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 
 	; this is done in PaintSegmentC
@@ -379,7 +573,7 @@ PaintSegmentA::
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 0
 	FOR ROW, TOP_SEGMENTS_TOP, MIDDLE_SEGMENTS_TOP
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .clean
 	ld a, FALSE
@@ -399,7 +593,7 @@ PaintSegmentADistanceFog::
 .row12
 	DEF ROW = MIDDLE_SEGMENTS_TOP - 1
 	ld d, TILE_DISTANCE_FOG_GROUND
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wADirty], a
@@ -413,7 +607,7 @@ PaintSegmentB::
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 3
 	FOR ROW, TOP_SEGMENTS_TOP, MIDDLE_SEGMENTS_TOP
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .clean
 	ld a, FALSE
@@ -433,7 +627,7 @@ PaintSegmentBDistanceFog::
 .row12
 	DEF ROW = MIDDLE_SEGMENTS_TOP - 1
 	ld d, TILE_DISTANCE_FOG_GROUND
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .maybeDrawRightFogBorder
 	; B will draw right border if far-center has top wall
 	ld hl, wRoomFarCenter
@@ -452,20 +646,20 @@ PaintSegmentBFogBorderRight:
 	DEF LEFTMOST_COLUMN = 5
 	FOR ROW, 8
 		call GetRandomYFlipFogAttrsXFlip
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .getAnotherRandomByte
 	call Paint_Rand ; we'll use the byte in c
 .paintMoreRepeatingRows
 	FOR ROW, 8, MIDDLE_SEGMENTS_TOP - 1
 		call GetRandomYFlipFogAttrsXFlip
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .row12
 	DEF ROW = MIDDLE_SEGMENTS_TOP - 1
 	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
 	ld e, BG_PALETTE_FOG + OAMF_XFLIP
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wBDirty], a
@@ -479,7 +673,7 @@ PaintSegmentC::
 	DEF ROW_WIDTH = 8
 	DEF LEFTMOST_COLUMN = 6
 	FOR ROW, TOP_SEGMENTS_TOP, MIDDLE_SEGMENTS_TOP
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .clean
 	ld a, FALSE
@@ -499,7 +693,7 @@ PaintSegmentCDistanceFog::
 .row12
 	DEF ROW = MIDDLE_SEGMENTS_TOP - 1
 	ld d, TILE_DISTANCE_FOG_GROUND
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .maybeDrawLeftFogBorder
 	; C will draw left border if far-center has a left wall or far-left has a top wall
 	ld hl, wRoomFarCenter
@@ -531,20 +725,20 @@ PaintSegmentCFogBorderLeft:
 	DEF LEFTMOST_COLUMN = 6
 	FOR ROW, 8
 		call GetRandomYFlipFogAttrs
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .getAnotherRandomByte
 	call Paint_Rand ; we'll use the byte in c
 .paintMoreRepeatingRows
 	FOR ROW, 8, MIDDLE_SEGMENTS_TOP - 1
 		call GetRandomYFlipFogAttrs
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .row12
 	DEF ROW = MIDDLE_SEGMENTS_TOP - 1
 	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
 	ld e, BG_PALETTE_FOG
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wCDirty], a
@@ -558,20 +752,20 @@ PaintSegmentCFogBorderRight:
 	DEF LEFTMOST_COLUMN = 13
 	FOR ROW, 8
 		call GetRandomYFlipFogAttrsXFlip
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .getAnotherRandomByte
 	call Paint_Rand ; we'll use the byte in c
 .paintMoreRepeatingRows
 	FOR ROW, 8, MIDDLE_SEGMENTS_TOP - 1
 		call GetRandomYFlipFogAttrsXFlip
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .row12
 	DEF ROW = MIDDLE_SEGMENTS_TOP - 1
 	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
 	ld e, BG_PALETTE_FOG + OAMF_XFLIP
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wCDirty], a
@@ -585,7 +779,7 @@ PaintSegmentD::
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 14
 	FOR ROW, TOP_SEGMENTS_TOP, MIDDLE_SEGMENTS_TOP
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .clean
 	ld a, FALSE
@@ -605,7 +799,7 @@ PaintSegmentDDistanceFog::
 .row12
 	DEF ROW = MIDDLE_SEGMENTS_TOP - 1
 	ld d, TILE_DISTANCE_FOG_GROUND
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .maybeDrawLeftFogBorder
 	; D will draw left border if far-center has top wall
 	ld hl, wRoomFarCenter
@@ -624,20 +818,20 @@ PaintSegmentDFogBorderLeft:
 	DEF LEFTMOST_COLUMN = 14
 	FOR ROW, 8
 		call GetRandomYFlipFogAttrs
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .getAnotherRandomByte
 	call Paint_Rand ; we'll use the byte in c
 .paintMoreRepeatingRows
 	FOR ROW, 8, MIDDLE_SEGMENTS_TOP - 1
 		call GetRandomYFlipFogAttrs
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .row12
 	DEF ROW = MIDDLE_SEGMENTS_TOP - 1
 	ld d, TILE_DISTANCE_FOG_LEFT_CORNER
 	ld e, BG_PALETTE_FOG
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wDDirty], a
@@ -651,7 +845,7 @@ PaintSegmentE::
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 17
 	FOR ROW, TOP_SEGMENTS_TOP, MIDDLE_SEGMENTS_TOP
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .clean
 	ld a, FALSE
@@ -671,7 +865,7 @@ PaintSegmentEDistanceFog::
 .row12
 	DEF ROW = MIDDLE_SEGMENTS_TOP - 1
 	ld d, TILE_DISTANCE_FOG_GROUND
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wEDirty], a
@@ -685,7 +879,7 @@ PaintSegmentK::
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 0
 	FOR ROW, MIDDLE_SEGMENTS_TOP, BOTTOM_SEGMENTS_TOP
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .clean
 	ld a, FALSE
@@ -700,11 +894,11 @@ PaintSegmentL::
 .row13
 	DEF ROW = MIDDLE_SEGMENTS_TOP
 	DEF ROW_WIDTH = 2
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row14
 	DEF ROW = MIDDLE_SEGMENTS_TOP + 1
 	DEF ROW_WIDTH = 1
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wLDirty], a
@@ -718,15 +912,15 @@ PaintSegmentLDiag::
 .row13
 	DEF ROW = MIDDLE_SEGMENTS_TOP
 	DEF LEFTMOST_COLUMN = 5
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row14
 	DEF ROW = MIDDLE_SEGMENTS_TOP + 1
 	DEF LEFTMOST_COLUMN = 4
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row15
 	DEF ROW = MIDDLE_SEGMENTS_TOP + 2
 	DEF LEFTMOST_COLUMN = 3
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wLDiagDirty], a
@@ -740,17 +934,17 @@ PaintSegmentM::
 	DEF ROW = MIDDLE_SEGMENTS_TOP
 	DEF LEFTMOST_COLUMN = 6
 	DEF ROW_WIDTH = 8
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row14
 	DEF ROW = MIDDLE_SEGMENTS_TOP + 1
 	DEF LEFTMOST_COLUMN = 5
 	DEF ROW_WIDTH = 10
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row15
 	DEF ROW = MIDDLE_SEGMENTS_TOP + 2
 	DEF LEFTMOST_COLUMN = 4
 	DEF ROW_WIDTH = 12
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wMDirty], a
@@ -764,17 +958,17 @@ PaintSegmentMGround::
 	DEF ROW = MIDDLE_SEGMENTS_TOP
 	DEF LEFTMOST_COLUMN = 6
 	DEF ROW_WIDTH = 8
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row14
 	DEF ROW = MIDDLE_SEGMENTS_TOP + 1
 	DEF LEFTMOST_COLUMN = 5
 	DEF ROW_WIDTH = 10
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row15
 	DEF ROW = MIDDLE_SEGMENTS_TOP + 2
 	DEF LEFTMOST_COLUMN = 4
 	DEF ROW_WIDTH = 12
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .randomGrassRow13
 	; randomly generate a tile locations that will be grass
 	ld d, 8
@@ -863,12 +1057,12 @@ PaintSegmentN::
 	DEF ROW = MIDDLE_SEGMENTS_TOP
 	DEF LEFTMOST_COLUMN = 15
 	DEF ROW_WIDTH = 2
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row14
 	DEF ROW = MIDDLE_SEGMENTS_TOP + 1
 	DEF LEFTMOST_COLUMN = 16
 	DEF ROW_WIDTH = 1
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wNDirty], a
@@ -883,15 +1077,15 @@ PaintSegmentNDiag::
 .row13
 	DEF ROW = MIDDLE_SEGMENTS_TOP
 	DEF LEFTMOST_COLUMN = 14
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row14
 	DEF ROW = MIDDLE_SEGMENTS_TOP + 1
 	DEF LEFTMOST_COLUMN = 15
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row15
 	DEF ROW = MIDDLE_SEGMENTS_TOP + 2
 	DEF LEFTMOST_COLUMN = 16
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wNDiagDirty], a
@@ -905,7 +1099,7 @@ PaintSegmentO::
 	DEF ROW_WIDTH = 3
 	DEF LEFTMOST_COLUMN = 17
 	FOR ROW, MIDDLE_SEGMENTS_TOP, BOTTOM_SEGMENTS_TOP
-		paint_row_single_tile
+		paint_row_single_tile_romx
 	ENDR
 .clean
 	ld a, FALSE
@@ -921,11 +1115,11 @@ PaintSegmentP::
 .row16
 	DEF ROW = BOTTOM_SEGMENTS_TOP
 	DEF ROW_WIDTH = 2
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row17
 	DEF ROW = BOTTOM_SEGMENTS_TOP + 1
 	DEF ROW_WIDTH = 1
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wPDirty], a
@@ -939,11 +1133,11 @@ PaintSegmentPDiag::
 .row16
 	DEF ROW = BOTTOM_SEGMENTS_TOP
 	DEF LEFTMOST_COLUMN = 2
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row17
 	DEF ROW = BOTTOM_SEGMENTS_TOP + 1
 	DEF LEFTMOST_COLUMN = 1
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wPDiagDirty], a
@@ -957,12 +1151,12 @@ PaintSegmentQGround::
 	DEF ROW = BOTTOM_SEGMENTS_TOP
 	DEF LEFTMOST_COLUMN = 3
 	DEF ROW_WIDTH = 14
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row17
 	DEF ROW = BOTTOM_SEGMENTS_TOP + 1
 	DEF LEFTMOST_COLUMN = 2
 	DEF ROW_WIDTH = 16
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .randomGrassRow16
 	; randomly generate a tile locations that will be grass
 	ld d, 14
@@ -1027,12 +1221,12 @@ PaintSegmentR::
 	DEF ROW = BOTTOM_SEGMENTS_TOP
 	DEF LEFTMOST_COLUMN = 18
 	DEF ROW_WIDTH = 2
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .column19
 	DEF ROW = BOTTOM_SEGMENTS_TOP + 1
 	DEF LEFTMOST_COLUMN = 19
 	DEF ROW_WIDTH = 1
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wRDirty], a
@@ -1046,11 +1240,11 @@ PaintSegmentRDiag::
 .row16
 	DEF ROW = BOTTOM_SEGMENTS_TOP
 	DEF LEFTMOST_COLUMN = 17
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .row17
 	DEF ROW = BOTTOM_SEGMENTS_TOP + 1
 	DEF LEFTMOST_COLUMN = 18
-	paint_row_single_tile
+	paint_row_single_tile_romx
 .clean
 	ld a, FALSE
 	ld [wRDiagDirty], a
@@ -1105,7 +1299,7 @@ GetRandomYFlipFogAttrsXFlip:
 ; @param d: source tile id
 ; @param hl: destination
 ; @param b: length
-Paint_CopyByteInDToRange::
+Paint_CopyByteInDToRange:
 	ld a, d
 .loop
 	ld [hli], a ; write tile id
@@ -1116,7 +1310,7 @@ Paint_CopyByteInDToRange::
 ; @param e: BG Map Attribute byte
 ; @param hl: destination
 ; @param b: length
-Paint_CopyByteInEToRange::
+Paint_CopyByteInEToRange:
 	ld a, e
 .loop
 	ld [hli], a ; write palette id
@@ -1128,7 +1322,7 @@ Paint_CopyByteInEToRange::
 ; @param d: source value
 ; @param hl: destination
 ; @param b: length
-Paint_CopyIncrementing::
+Paint_CopyIncrementing:
 	ld a, d
 	ld [hli], a
 	inc d
@@ -1143,7 +1337,7 @@ Paint_CopyIncrementing::
 ; x[i + 1] = x[i] * 0x01010101 + 0xB3B3B3B3
 ; @return A=B=state bits 31-24 (which have the best entropy),
 ; C=state bits 23-16, HL trashed
-Paint_Rand::
+Paint_Rand:
   ; Add 0xB3 then multiply by 0x01010101
   ld hl, randstate+0
   ld a, [hl]
@@ -1161,7 +1355,7 @@ Paint_Rand::
 
 ; @param d, modulo value
 ; @return a, remainder
-Paint_SingleByteModulo::
+Paint_SingleByteModulo:
 .subtractionLoop
 	sub d
 	jp z, .returnZero
