@@ -15,7 +15,7 @@ LcdHandler:
 .advanceEncounterAnimation
 	ld a, [wAnimationFramesRemaining]
 	dec a
-	ret z
+	jp z, .pops
 	ld [wAnimationFramesRemaining], a
 .pops
 	pop hl
