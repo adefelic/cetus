@@ -91,9 +91,9 @@ LoadLocale::
 	AddAToHl
 	ld a, [hli]
 	ld [wCurrentWallTilesAddr], a
-	ld a, [hl]
+	ld a, [hli]
 	ld [wCurrentWallTilesAddr+1], a
-	ld a, [hCurrentRomBank]
+	ld a, [hl] ; this is pointing to Locale_WallTilesBank now. this'll break if the locale struct changes womp
 	ld [wCurrentWallTilesBank], a
 	ld a, TRUE
 	ld [wBgWallTilesReadyForVramWrite], a

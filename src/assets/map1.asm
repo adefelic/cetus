@@ -143,14 +143,14 @@ TownHall_AskAboutSkull_DialogBranchFrames:
 	dstruct WarpDestination, SwampRuinWarpWest_WarpDestination, 11, 24, ORIENTATION_WEST, SwampLocale
 
 ;SECTION "Locale definitions", ROMX
+; this is here to force Locales to be defined in the same bank as Map1 :(
 Locales:
-	dstruct Locale, FieldLocale,  FieldWallBTiles, xMusicTown, FieldBgPaletteSet,  FieldNpcs
-	dstruct Locale, SwampLocale,  FieldWallBTiles, xMusicRuin, SwampBgPaletteSet,  SwampNpcs
-	dstruct Locale, TownLocale,   FieldWallBTiles, xMusicTown, TownBgPaletteSet,   SwampNpcs
-	dstruct Locale, CoastLocale,  FieldWallBTiles, xMusicRuin, CoastBgPaletteSet,  SwampNpcs
-	dstruct Locale, ForestLocale, FieldWallBTiles, xMusicRuin, ForestBgPaletteSet, SwampNpcs
-	dstruct Locale, RuinLocale,   FieldWallBTiles, xMusicRuin, RuinBgPaletteSet,   SwampNpcs
-
+	dstruct Locale, FieldLocale,  FieldWallBTiles, bank(FieldWallBTiles), xMusicTown, FieldBgPaletteSet,  FieldNpcs
+	dstruct Locale, SwampLocale,  FieldWallBTiles, bank(FieldWallBTiles), xMusicRuin, SwampBgPaletteSet,  SwampNpcs
+	dstruct Locale, TownLocale,   FieldWallBTiles, bank(FieldWallBTiles), xMusicTown, TownBgPaletteSet,   SwampNpcs
+	dstruct Locale, CoastLocale,  FieldWallBTiles, bank(FieldWallBTiles), xMusicRuin, CoastBgPaletteSet,  SwampNpcs
+	dstruct Locale, ForestLocale, FieldWallBTiles, bank(FieldWallBTiles), xMusicRuin, ForestBgPaletteSet, SwampNpcs
+	dstruct Locale, RuinLocale,   FieldWallBTiles, bank(FieldWallBTiles), xMusicRuin, RuinBgPaletteSet,   SwampNpcs
 
 ; tile ids for a hard-coded encounter screen
 ; todo move this somewhere else. todo just get rid of this if the encounter background is tile 0

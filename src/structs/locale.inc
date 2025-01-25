@@ -2,6 +2,7 @@ INCLUDE "src/lib/structs.inc"
 
 	struct Locale
 		words 1, WallTilesAddr
+		bytes 1, WallTilesBank
 		words 1, MusicAddr
 		words 1, BgPaletteSetAddr
 		words 1, EncountersTableAddr

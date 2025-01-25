@@ -46,7 +46,9 @@ VBlankHandler:
 	call SetEnqueuedEnemyBgPalette ; todo would it make more sense to consolidate all palette updates? this overwrites palette 6
 .updateTiles
 	; explore
-	call CopyBgWallTilesIntoVram
+	ld a, [wBgWallTilesReadyForVramWrite] ; this is set when loading new locales
+	and a
+	call z, CopyBgWallTilesIntoVram
 	; encounter
 	call CopyNpcSpriteTilesIntoVram
 	; pause
@@ -96,24 +98,20 @@ CopyNpcSpriteTilesIntoVram:
 	ret
 
 CopyBgWallTilesIntoVram:
-	ld a, [wBgWallTilesReadyForVramWrite]
-	and a
-	ret nz
-
-	; make sure we're reading tiles from the correct rom bank
+	; change bank to the location of the bgwalltile _data_
 	ld a, [hCurrentRomBank]
 	push af
 	ld a, [wCurrentWallTilesBank]
 	rst SwapBank
 
-	ld hl, wCurrentWallTilesAddr
-	; hmm there are some warnings here ...
-	DEF DEST = WALL_TILES_VRAM_ADDR
-	DEF SIZE_TILES = strfmt("${WALL_TILES_SIZE}")
-	gdmaSmall
+		ld hl, wCurrentWallTilesAddr
+		; hmm there are some warnings here ...
+		DEF DEST = WALL_TILES_VRAM_ADDR ; this address should be current-bank agnostic
+		DEF SIZE_TILES = strfmt("${WALL_TILES_SIZE}")
+		gdmaSmall
 
-	ld a, FALSE
-	ld [wBgWallTilesReadyForVramWrite], a
+		ld a, FALSE
+		ld [wBgWallTilesReadyForVramWrite], a
 	jp BankReturn
 
 CopyWeaponIconTilesIntoVram:
