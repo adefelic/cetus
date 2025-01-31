@@ -1,8 +1,11 @@
+## the game
 a first person dungeon crawler for the gameboy color
+written with rgbds.
 
-written with rgbds
+## instructions
+to try it out, use the file `dist/cetus.gb` with the gameboy color or gameboy advance emulator of your choice.
 
-
+## progress
 some in-progress screenshots:
 
 explore screen
