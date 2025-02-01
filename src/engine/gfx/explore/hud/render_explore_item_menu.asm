@@ -7,7 +7,7 @@ INCLUDE "src/utils/macros.inc"
 
 SECTION "Item Rendering Scratch", WRAM0
 wItemQuantityNameStringBuffer:: ds BYTES_IN_DIALOG_STRING
-wCurrentMenuItemObjectAddr:: dw ; in this case, the Item that is being referred to
+wCurrentMenuItemObjectAddr:: dw ; in this case, the Item that is being referred to. points into xItems
 
 SECTION "Explore Item Menu Renderer", ROM0
 
@@ -42,7 +42,7 @@ RenderExploreItemMenu::
 	ld a, [hli]
 	ld b, a
 	ld a, [hl]
-	ld c, a ; bc now contains addr of Item
+	ld c, a ; bc now contains addr of Item def in xItems
 
 	ld a, b
 	ld l, a
@@ -52,17 +52,27 @@ RenderExploreItemMenu::
 	ld h, a
 	ld [wCurrentMenuItemObjectAddr + 1], a
 
-	;;; get item quantity and convert to decimal
-	ld a, Item_InventoryOffset
-	AddAToHl
-	ld a, [hl] ; a now contains wInventory offset
-	ld hl, wInventory
-	AddAToHl
-	ld a, [hl] ; a now contains wInventory quantity
-	call ConvertBinaryNumberToTwoDigitDecimalNumber ; 10s in d, 1s in e
+.getItemQuantity ; this dereference is failing somehow
+	; push bank
+	ld a, [hCurrentRomBank]
+	push af
+	ld a, bank(xItems)
+	rst SwapBank
+		ld a, Item_InventoryOffset
+		AddAToHl
+		ld a, [hl] ; a now contains wInventory offset
+		ld hl, wInventory
+		AddAToHl
+		ld a, [hl] ; a now contains wInventory quantity
+		call ConvertBinaryNumberToTwoDigitDecimalNumber ; 10s in d, 1s in e
+	; pop bank
+	pop af
+	ldh [hCurrentRomBank], a
+	ld [rROMB0], a
+
 	pop hl ; restore wMenuItems position ptr
 	push hl ; stash wMenuItems position ptr
-
+.copyItemQuantityIntoMenuItemStringBuffer
 	; copy decimal characters + item name into wItemQuantityNameStringBuffer
 	ld hl, wItemQuantityNameStringBuffer
 	; 10s place
@@ -74,16 +84,28 @@ RenderExploreItemMenu::
 	add NUMBER_CHARACTER_OFFSET
 	ld [hli], a
 
-	; skip "99x" characters
-	ld a, [wCurrentMenuItemObjectAddr]
-	ld e, a
-	ld a, [wCurrentMenuItemObjectAddr + 1]
-	ld d, a
-	inc de
-	inc de
-	ld a, BYTES_IN_DIALOG_STRING - 3
-	ld b, a
-	MemcopySmall
+	; copy from item.name into string buffer
+	; push bank
+	ld a, [hCurrentRomBank]
+	push af
+	ld a, bank(xItems)
+	rst SwapBank
+		ld a, [wCurrentMenuItemObjectAddr]
+		ld e, a
+		ld a, [wCurrentMenuItemObjectAddr + 1]
+		ld d, a
+
+		; skip "99x" characters
+		; todo this is dumb just remove
+		inc de
+		inc de
+		ld a, BYTES_IN_DIALOG_STRING - 3
+		ld b, a
+		MemcopySmall
+	; pop bank
+	pop af
+	ldh [hCurrentRomBank], a
+	ld [rROMB0], a
 
 	ld hl, wItemQuantityNameStringBuffer
 
@@ -136,7 +158,7 @@ PopulateMenuItemsFromInventory:
 	ld [wMenuItemsCount], a
 	; b is the loop counter / current item's offset in Items / current item's offset in wInventory ( -1 )
 	ld b, a
-	ld de, Items ; source, item definitions
+	ld de, xItems ; source, item definitions. in a mysterious bank but not dereferenced here
 	ld hl, wMenuItems ; destination, area for Item definition addrs
 .filterInventoryItemsWithNonZeroQuantityLoop
 .checkQuantityOfItemInInventory

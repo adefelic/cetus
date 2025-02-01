@@ -8,11 +8,11 @@ SECTION "Dialog Modal State", WRAM0
 wBottomMenuDirty:: db
 wDialogTextRowHighlighted:: db ; index from 0 to 3. reads from the bottom 3 bits
 
-; filtered list of addresses of menu item structs
+; filtered list of addresses of Item structs in ROMX
 ; todo should probably make them generic / unions. they should all start with a 1)label field
 ; these need to be contiguous in memory
 wMenuItems::
-; the names below are never used
+; the names below are for documentation and never used
 wMenuItemRendered0: dw
 wMenuItemRendered1: dw
 wMenuItemRendered2: dw
@@ -73,7 +73,7 @@ RenderDialogLabel:
 ; display a list of 4 options
 RenderDialogRoot:
 ; okay so highlighting an entry just changes its palette
-; when A is pressed, text is replaced with the text of the first frame ofthe highlighted entry.
+; when A is pressed, text is replaced with the text of the first frame of the highlighted entry.
 ; when an entry is highlighted, the _wHighlightedDialogBranch_ flag is updated, which points to the option
 ; when A is pressed, we switch to option rendering mode and render the first frame
 .setup
