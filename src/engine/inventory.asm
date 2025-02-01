@@ -7,6 +7,7 @@ DEF INITIAL_TENTS_COUNT EQU 1
 DEF MAX_ITEM_STACK EQU 99
 
 SECTION "Inventory State", WRAM0
+; important: if i ever get rid of item id, the items in wInventory have to be in the same order as xItems
 wInventory::
 wInventoryNothing: db ; placeholder dumb hack
 wInventoryRock: db

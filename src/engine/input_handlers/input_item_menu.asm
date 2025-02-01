@@ -8,7 +8,6 @@ INCLUDE "src/utils/macros.inc"
 SECTION "Item Placement Scratch", WRAM0
 wWallTypeInFrontOfPlayer:: db
 wItemTypeInFrontOfPlayer:: db
-wItemTypeBeingPlaced:: db
 
 SECTION "Explore Screen Item Menu Input Handling", ROM0
 
@@ -58,22 +57,17 @@ HandlePressedDown:
 
 ; place the highlighted item if there's space
 HandlePressedA:
-	; get room in front of player, see if there's a wall in the way
-.checkForWall
-	; check closest player facing wall
-	; fixme use wallcache for this
-	call GetRoomCoordsCenterNearWRTPlayer
-	call GetCurrentMapWallsRoomAddrFromRoomCoords
-	call GetTopWallWrtPlayer
+.checkForWallInFrontOfPlayer
+	ld hl, wRoomNearCenter ; use room cache hell yeah wrote somethin good
+	call GetNorthWallTypeFromRoomAddr ; meanwhile augh it's top not north, but the relatively-named functions are in ROMX with the first person paint routines ;_;
 	cp WALL_TYPE_NONE
-	jp z, .checkForItem
+	jp z, .checkForItemInRoomInFrontOfPlayer
 	; todo play negative sound
 	ret
-.checkForItem
+.checkForItemInRoomInFrontOfPlayer
 	call GetRoomCoordsCenterFarWRTPlayer
 	call GetActiveItemMapRoomAddrFromCoords
 	ld a, [hl]
-	ld [wItemTypeInFrontOfPlayer], a ; debug
 	cp ITEM_NONE
 	jp z, .placeItem
 	; todo play negative sound
@@ -83,11 +77,22 @@ HandlePressedA:
 	ld e, l
 	; get the item id of highlighted item in menu
 	call GetHighlightedMenuItemAddr ; in hl
-	ld a, Item_InventoryOffset
+	ld a, Item_InventoryOffset ; what if this wasn't necessary
 	AddAToHl
-	ld a, [hl] ; item index is in a
-	ld [wItemTypeBeingPlaced], a ; debug
-	ld [de], a ; store item id in item map room
+	; push bank
+	ld a, [hCurrentRomBank]
+	push af
+	ld a, bank(xItems)
+	rst SwapBank
+		ld a, [hl] ; retrieve item index from definition into a
+		ld [de], a ; store item id in item map room in ram
+		ld b, a ; stash item id for decrementing inv
+	; pop bank
+	pop af
+	ldh [hCurrentRomBank], a
+	ld [rROMB0], a
+
+	ld a, b
 	call DecrementInventoryItemQuantity
 	; todo play item placement sound
 	jp CloseExploreMenu

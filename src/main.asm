@@ -18,10 +18,10 @@ wHasInputBeenProcessedThisFrame:: db
 wPlayerExploreX:: db
 wPlayerExploreY:: db
 wPlayerOrientation:: db
-wCurrentMap:: dw
-wCurrentMapBank:: db
-wCurrentMapWalls:: dw
-wCurrentMapEvents:: dw
+wxCurrentMap:: dw
+wxCurrentMapBank:: db
+wxCurrentMapWalls:: dw
+wxCurrentMapEvents:: dw
 wCurrentEncounterTable:: dw
 wCurrentWallTilesAddr:: dw
 wCurrentWallTilesBank:: db
@@ -199,7 +199,7 @@ LoadMap1:
 	ld a, bank(Map1)
 	rst SwapBank
 		ld hl, Map1
-		ld [wCurrentMapBank], a
+		ld [wxCurrentMapBank], a
 		call LoadMapInHl
 	jp BankReturn
 

@@ -6,6 +6,7 @@ INCLUDE "src/assets/tiles/indices/bg_tiles.inc"
 
 SECTION "First Person View Room Cache", WRAM0
 ; this is a cache of 1 byte RoomWallAttributes objects representing the rooms currently within the player's view
+; the rooms walls are rotated so that they match the player's view
 ; this is useful when rendering
 wRoomFarLeft:: db
 wRoomFarCenter:: db

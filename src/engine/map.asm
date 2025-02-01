@@ -13,9 +13,9 @@ SECTION "Map / Room Parsing", ROM0
 ; please switch bank right in advance of this
 LoadMapInHl::
 	ld a, l
-	ld [wCurrentMap], a
+	ld [wxCurrentMap], a
 	ld a, h
-	ld [wCurrentMap+1], a
+	ld [wxCurrentMap+1], a
 
 	; long term todo, optimize map struct to let this use hli instead of stack verbs
 	push hl ; stash map struct location
@@ -23,18 +23,18 @@ LoadMapInHl::
 		AddAToHl
 		DereferenceHlIntoHl
 		ld a, l
-		ld [wCurrentMapWalls], a
+		ld [wxCurrentMapWalls], a
 		ld a, h
-		ld [wCurrentMapWalls+1], a
+		ld [wxCurrentMapWalls+1], a
 	pop hl
 	push hl
 		ld a, Map_EventMapAddr
 		AddAToHl
 		DereferenceHlIntoHl
 		ld a, l
-		ld [wCurrentMapEvents], a
+		ld [wxCurrentMapEvents], a
 		ld a, h
-		ld [wCurrentMapEvents+1], a
+		ld [wxCurrentMapEvents+1], a
 	pop hl
 	push hl
 		ld a, Map_StartingLocale
@@ -366,9 +366,9 @@ CalcEventRoomAddrFromPlayerMapCoords::
 	ld d, a
 	ld a, [wPlayerExploreY]
 	ld e, a
-	ld a, [wCurrentMapEvents]
+	ld a, [wxCurrentMapEvents]
 	ld l, a
-	ld a, [wCurrentMapEvents+1]
+	ld a, [wxCurrentMapEvents+1]
 	ld h, a
 	jr CalcEventRoomAddrFromMapCoords
 
@@ -423,8 +423,8 @@ CalcRoomAddrFromMapCoords::
 ; @param e: room Y coord
 ; @return hl: address of room tile's RoomWallAttributes
 GetCurrentMapWallsRoomAddrFromRoomCoords::
-	ld a, [wCurrentMapWalls]
+	ld a, [wxCurrentMapWalls]
 	ld l, a
-	ld a, [wCurrentMapWalls+1]
+	ld a, [wxCurrentMapWalls+1]
 	ld h, a
 	jr CalcRoomAddrFromMapCoords
