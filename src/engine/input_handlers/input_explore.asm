@@ -90,7 +90,7 @@ HandlePressedA:
 ; todo move item pickup to long press of B
 HandlePressedB:
 	; check closest player facing wall. if it exists, the player isn't picking up an item, they are opening the item menu
-.checkForWall ; zzz
+.checkForWall
 	ld hl, wRoomNearCenter
 	call GetNorthWallTypeFromRoomAddr ; it's looking at top wall not north, namespace problems ;_;
 	cp WALL_TYPE_NONE
@@ -110,6 +110,9 @@ HandlePressedB:
 
 	xor a
 	ld [de], a ; remove item from item map
+	; fixme? only dirty the one sprite
+	ld a, TRUE
+	ld [wIsShadowTilemapDirty], a
 	ret
 
 .openExploreMenu

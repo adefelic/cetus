@@ -14,6 +14,7 @@ InitExploreEventState::
 UpdateExploreScreen::
 .updateShadowBgTilemap
 	; only update if tilemap is dirty
+	; fixme? should there be a shadow spritemap? or is this the "redraw everything please" flag
 	ld a, [wIsShadowTilemapDirty]
 	cp FALSE
 	ret z

@@ -99,6 +99,7 @@ EquipSlot:
 	ret
 
 ; @param a, item offset
+; mangles hl, a
 IncrementInventoryItemQuantity::
 	ld hl, wInventory
 	AddAToHl

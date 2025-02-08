@@ -16,9 +16,8 @@ SECTION "Ground Item Paint Routines", ROM0
 ; fixme make this use the room cache instead of checking the map
 RenderGroundItemCenterFar::
 .checkForWall
-	call GetRoomCoordsCenterNearWRTPlayer
-	call GetCurrentMapWallsRoomAddrFromRoomCoords
-	call GetTopWallWrtPlayer
+	ld hl, wRoomNearCenter
+	call GetNorthWallTypeFromRoomAddr ; top wall ...
 	cp WALL_TYPE_NONE
 	jp nz, PaintNone
 .drawOrClearItem
@@ -28,15 +27,15 @@ RenderGroundItemCenterFar::
 	cp ITEM_NONE
 	jp z, PaintNone
 	cp ITEM_ROCK
-	jp z, PaintROCK
+	jp z, PaintRock
 	cp ITEM_LAMP
 	jp z, PaintLamp
 	cp ITEM_TENT
 	jp z, PaintTent
 	ret
 
-PaintROCK:
-.paintROCKA
+PaintRock:
+.paintRockA
 	; y
 	ld a, ROCK_TOP_LEFT_Y
 	ld [wShadowOam + OAM_ROCK_A + OAMA_Y], a
@@ -49,7 +48,7 @@ PaintROCK:
 	; attrs/flags
 	ld a, (OAMF_PRI * 0) + (OAMF_YFLIP * 0) + (OAMF_XFLIP * 0) + (OAMF_BANK1 * 0) + OBJ_PALETTE_ROCK
 	ld [wShadowOam + OAM_ROCK_A + OAMA_FLAGS], a
-.paintROCKB
+.paintRockB
 	; y
 	ld a, ROCK_TOP_LEFT_Y
 	ld [wShadowOam + OAM_ROCK_B + OAMA_Y], a
