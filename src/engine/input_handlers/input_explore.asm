@@ -90,12 +90,11 @@ HandlePressedA:
 ; todo move item pickup to long press of B
 HandlePressedB:
 	; check closest player facing wall. if it exists, the player isn't picking up an item, they are opening the item menu
-.checkForWall
-	call GetRoomCoordsCenterNearWRTPlayer
-	call GetCurrentMapWallsRoomAddrFromRoomCoords
-	call GetTopWallWrtPlayer
+.checkForWall ; zzz
+	ld hl, wRoomNearCenter
+	call GetNorthWallTypeFromRoomAddr ; it's looking at top wall not north, namespace problems ;_;
 	cp WALL_TYPE_NONE
-	jp nz, .openExploreMenu ; double negative >_< if there is a wall, then there isn't an item, so open explore menu
+	jp nz, .openExploreMenu ; if there is a wall, then there isn't an item, so open explore menu
 .checkForItem
 	call GetRoomCoordsCenterFarWRTPlayer
 	call GetActiveItemMapRoomAddrFromCoords
