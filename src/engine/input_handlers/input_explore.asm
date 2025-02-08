@@ -134,17 +134,14 @@ HandlePressedUp:
 	ld c, a
 	call Srand
 .attemptMoveUp:
-	ld a, [wPlayerExploreX]
-	ld d, a
-	ld a, [wPlayerExploreY]
-	ld e, a
-	; fixme wrap whereever the outpu of this is used in bank handling
-	ld a, [hCurrentRomBank]
-	push af
-	ld a, bank(Map1) ; hardcoded, fixme
-	rst SwapBank
-	call GetCurrentMapWallsRoomAddrFromRoomCoords ; put room addr in hl
-AdvanceIfNoCollisions:
+	ld hl, wRoomNearCenter ; use room cache hell yeah wrote somethin good
+	call GetNorthWallTypeFromRoomAddr ; top not north
+	cp a, WALL_TYPE_NONE
+	jp z, .advance
+.doNotAdvance
+	; todo play bonk sound
+	ret
+.advance:
 	ld a, [wPlayerOrientation]
 	cp a, ORIENTATION_NORTH
 	jp z, .facingNorth
@@ -153,48 +150,31 @@ AdvanceIfNoCollisions:
 	cp a, ORIENTATION_SOUTH
 	jp z, .facingSouth
 .facingWest
-	call GetWestWallTypeFromRoomAddr
-	cp a, WALL_TYPE_NONE
-	jp nz, .doNotAdvance
 	ld a, [wPlayerExploreX]
 	dec a
 	ld [wPlayerExploreX], a
 	jp .finishAdvance
 .facingNorth
-	call GetNorthWallTypeFromRoomAddr
-	cp a, WALL_TYPE_NONE
-	jp nz, .doNotAdvance
 	ld a, [wPlayerExploreY]
 	dec a
 	ld [wPlayerExploreY], a
 	jp .finishAdvance
 .facingEast
-	call GetEastWallTypeFromRoomAddr
-	cp a, WALL_TYPE_NONE
-	jp nz, .doNotAdvance
 	ld a, [wPlayerExploreX]
 	inc a
 	ld [wPlayerExploreX], a
 	jp .finishAdvance
 .facingSouth
-	call GetSouthWallTypeFromRoomAddr
-	cp a, WALL_TYPE_NONE
-	jp nz, .doNotAdvance
 	ld a, [wPlayerExploreY]
 	inc a
 	ld [wPlayerExploreY], a
-	jp .finishAdvance
-.doNotAdvance
-	; todo play bonk sound
-	;ret
-	jp BankReturn
 .finishAdvance
 	call UpdateDangerLevel ; todo only do this if you're not on a safe space
 	; todo reset danger if you're on a safe space
 	call PlayFootstepSfx
 	call HandleVisibleEvents
 	call DirtyFpSegmentsAndTilemap
-	jp BankReturn
+	ret
 
 HandlePressedDown:
 .turnAround
