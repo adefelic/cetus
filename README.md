@@ -1,6 +1,27 @@
+## the game
 a first person dungeon crawler for the gameboy color
+written with rgbds.
 
-written with rgbds
+## instructions
+to try it out, use the file `dist/cetus.gb` with the gameboy color or gameboy advance emulator of your choice.
 
-most code is in ROM0
-Paint___ routines are in ROMX because they're "leaf nodes" in the call tree and the easiest to switch to without having to bank switch to the banks of routines that they call
+## progress
+some in-progress screenshots:
+
+explore screen
+![explore screen](docs/screenshots/cetus_10_3_24_town2.png)
+
+place an item
+![explore screen: item menu](docs/screenshots/cetus_item_menu.png)
+
+dialogue event
+![explore screen: dialogue event](docs/screenshots/cetus_dialogue.png)
+
+an encounter
+![encounter screen: something appears](docs/screenshots/cetus_10_3_24_scarecrow.png)
+
+choose an ability
+![encounter screen: choose ability](docs/screenshots/cetus_10_3_24_skeleton.png)
+
+paper doll screen
+![paper doll screen](docs/screenshots/cetus_10_3_24_paper-doll.png)
