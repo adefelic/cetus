@@ -108,11 +108,6 @@ HandleVisibleEvents::
 	jp z, .unsetIsPlayerFacingWallInteractable
 .checkIfPlayerFacingWallInteractable
 	; hl now contains that room's RoomEvent address
-	; zzz are hl in the wrong order? try swapping. just gonna keep this here for now and come back to later
-	;.swap
-	;	ld a, l
-	;	ld l, h
-	;	ld h, a
 	ld a, [hl] ; get event walls, which are the 0th byte of the RoomEvent
 	ld b, a
 	ld a, [wPlayerOrientation]
@@ -123,7 +118,6 @@ HandleVisibleEvents::
 	ld [wIsPlayerFacingWallInteractable], a
 	call SetEventStateDialogLabel
 .loadRoomEventIntoRam:
-	; ... could it be these dereferences? it shouldn't be. we're in the bank of the map (map1)
 	; store RoomEvent addr
 	ld a, l
 	ld [wRoomEventAddr], a
@@ -139,11 +133,9 @@ HandleVisibleEvents::
 		jp z, CacheNewDialogRoomEvent
 		cp ROOMEVENT_WARP
 		jp z, CacheNewDialogWarpEvent
-		; does control ever get here?
+		; control should not get here
 		ld a, ERR_UNKNOWN_EVENT_TYPE
 		rst Crash
-		;pop hl
-		;jp BankReturn
 .unsetIsPlayerFacingWallInteractable:
 	; only accessible by jumps
 	ld a, FALSE
