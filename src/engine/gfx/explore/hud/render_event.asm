@@ -95,7 +95,6 @@ RenderDialogRoot:
 	ld l, a
 	ld a, [wDialogBranchesAddr + 1]
 	ld h, a
-	; zzz is this the correct bank
 	; switch to the bank of Map1
 	ld a, [hCurrentRomBank]
 	push af
@@ -230,47 +229,57 @@ RenderDialogBranch:
 	call PaintModalTopRow
 .updateAddressOfCurrentFrame
 	; load current frame into hl
-	ld a, [wCurrentDialogBranchFrameAddr]
-	ld l, a
-	ld a, [wCurrentDialogBranchFrameAddr + 1]
-	ld h, a
+	; switch to the bank of Map1
+	ld a, [hCurrentRomBank]
+	push af
+	ld a, bank(Map1)
+	rst SwapBank
+		ld a, [wCurrentDialogBranchFrameAddr]
+		ld l, a
+		ld a, [wCurrentDialogBranchFrameAddr + 1]
+		ld h, a
 
-	ld a, [wDialogBranchFramesIndex]
-	cp 0
-	; go straight to rendering text if the index is 0, as there is no array offset to add
-	jp z, .addTextLine0Offset
+		ld a, [wDialogBranchFramesIndex]
+		cp 0
+		; go straight to rendering text if the index is 0, as there is no array offset to add
+		jp z, .addTextLine0Offset
 
-	; update wCurrentDialogBranchFrameAddr to point to new frame
-	ld a, sizeof_DialogBranchFrame
-	AddAToHl
-	ld a, l
-	ld [wCurrentDialogBranchFrameAddr], a
-	ld a, h
-	ld [wCurrentDialogBranchFrameAddr + 1], a
+		; update wCurrentDialogBranchFrameAddr to point to new frame
+		ld a, sizeof_DialogBranchFrame
+		AddAToHl
+		ld a, l
+		ld [wCurrentDialogBranchFrameAddr], a
+		ld a, h
+		ld [wCurrentDialogBranchFrameAddr + 1], a
 
-	; if wCurrentDialogBranchFrameAddr had to be updated, then wTextRowsRendered should be reset too
-	xor a
-	ld [wTextRowsRendered], a
+		; if wCurrentDialogBranchFrameAddr had to be updated, then wTextRowsRendered should be reset too
+		xor a
+		ld [wTextRowsRendered], a
 .addTextLine0Offset
-	ld a, DialogBranchFrame_TextLine0
-	AddAToHl
+		ld a, DialogBranchFrame_TextLine0
+		AddAToHl
 .renderTextLine
-	push hl ; stash addr of text line to draw
-	ld a, [wTextRowsRendered]
-	ld c, a
-	call PaintModalTextRow
-	; inc # of text rows drawn. this row offset is used for rendering. it will be used to draw empty lines
-	ld a, [wTextRowsRendered]
-	inc a
-	ld [wTextRowsRendered], a
-	pop hl ; restore addr of text line (the one just drawn)
+		push hl ; stash addr of text line to draw
+		ld a, [wTextRowsRendered]
+		ld c, a
+		call PaintModalTextRow
+		; inc # of text rows drawn. this row offset is used for rendering. it will be used to draw empty lines
+		ld a, [wTextRowsRendered]
+		inc a
+		ld [wTextRowsRendered], a
+		pop hl ; restore addr of text line (the one just drawn)
 .checkNextLine
-	cp MODAL_TEXT_AREA_HEIGHT
-	jp z, .renderBottomRow
-	ld a, BYTES_IN_DIALOG_STRING
-	AddAToHl ; add offset to get next text line addr
-	jp .renderTextLine
+		cp MODAL_TEXT_AREA_HEIGHT
+		jp z, .renderBottomRow
+		ld a, BYTES_IN_DIALOG_STRING
+		AddAToHl ; add offset to get next text line addr
+		jp .renderTextLine
 .renderBottomRow
+	; reset bank
+	pop af
+	ldh [hCurrentRomBank], a
+	ld [rROMB0], a
+
 	call PaintModalBottomRowDialogBranch
 	ld a, FALSE
 	ld [wBottomMenuDirty], a

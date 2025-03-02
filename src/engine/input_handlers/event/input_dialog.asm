@@ -45,9 +45,21 @@ PressedAFromDialogRoot:
 	ld [wDialogBranchAddr + 1], a
 	ld a, DialogBranch_FramesCount ; FramesCount offset
 	AddAToHl
+
+	; swap bank before dereferncing into objects in an unknown bank
+	ld a, [hCurrentRomBank]
+	push af
+	ld a, bank(Map1)
+	rst SwapBank
+
 	ld a, [hli] ; hl now pointing to frames array
 	ld [wDialogBranchFramesCount], a
-	DereferenceHlIntoHl
+		DereferenceHlIntoHl
+	; reset bank
+	pop af
+	ldh [hCurrentRomBank], a
+	ld [rROMB0], a
+
 	ld a, l
 	ld [wDialogBranchFramesAddr], a
 	ld [wCurrentDialogBranchFrameAddr], a
