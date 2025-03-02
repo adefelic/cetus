@@ -95,79 +95,89 @@ RenderDialogRoot:
 	ld l, a
 	ld a, [wDialogBranchesAddr + 1]
 	ld h, a
-.renderTextLoop
-	; the word at offset 0 of a DialogBranch is the address of the flag that determines whether it should be displayed
-	push hl ; stash DialogBranch[wTextRowsRendered] addr
-	DereferenceHlIntoHl ; load addr of flag
-	ld a, [hl]
-	cp FALSE ; check if flag is false.
-	jp z, .checkNext
-.renderDialogBranchLabel
-	pop hl ; restore addr of DialogBranch[wTextRowsRendered]
-	push hl ; save addr of DialogBranch[wTextRowsRendered]
-	; add 2 to get the addr of the label text (DialogBranchLabel)
-	inc hl
-	inc hl
-	ld a, [wTextRowsRendered]
-	ld c, a
-	call PaintModalTextRow
+	; zzz is this the correct bank
+	; switch to the bank of Map1
+	ld a, [hCurrentRomBank]
+	push af
+	ld a, bank(Map1)
+	rst SwapBank
+	.renderTextLoop
+		; the word at offset 0 of a DialogBranch is the address of the flag that determines whether it should be displayed
+		push hl ; stash DialogBranch[wTextRowsRendered] addr
+		DereferenceHlIntoHl ; load addr of flag
+		ld a, [hl]
+		cp FALSE ; check if flag is false.
+		jp z, .checkNext
+	.renderDialogBranchLabel
+		pop hl ; restore addr of DialogBranch[wTextRowsRendered]
+		push hl ; save addr of DialogBranch[wTextRowsRendered]
+		; add 2 to get the addr of the label text (DialogBranchLabel)
+		inc hl
+		inc hl
+		ld a, [wTextRowsRendered]
+		ld c, a
+		call PaintModalTextRow
 
-	; correlate addr of branch in ram to placement in menu so its frames can be pulled up if selected
-	pop hl ; restore addr of DialogBranch[wTextRowsRendered]
-	ld d, h ; stash hl in de
-	ld e, l
+		; correlate addr of branch in ram to placement in menu so its frames can be pulled up if selected
+		pop hl ; restore addr of DialogBranch[wTextRowsRendered]
+		ld d, h ; stash hl in de
+		ld e, l
 
-	; put the current menu item pointer in hl to store the addr of the branch of the label we just drew
-	ld a, [wCurrentMenuItem]
-	ld l, a
-	ld a, [wCurrentMenuItem + 1]
-	ld h, a
+		; put the current menu item pointer in hl to store the addr of the branch of the label we just drew
+		ld a, [wCurrentMenuItem]
+		ld l, a
+		ld a, [wCurrentMenuItem + 1]
+		ld h, a
 
-	; move DialogBranch[wTextRowsRendered] (in de) into wDialogBranchRendered[wTextRowsRendered]
-	ld [hl], e
-	inc hl
-	ld [hl], d
+		; move DialogBranch[wTextRowsRendered] (in de) into wDialogBranchRendered[wTextRowsRendered]
+		ld [hl], e
+		inc hl
+		ld [hl], d
 
-	inc hl ; inc once more to point to next word and store
-	ld a, l
-	ld [wCurrentMenuItem], a
-	ld a, h
-	ld [wCurrentMenuItem + 1], a
+		inc hl ; inc once more to point to next word and store
+		ld a, l
+		ld [wCurrentMenuItem], a
+		ld a, h
+		ld [wCurrentMenuItem + 1], a
 
-	ld h, d  ; put the old hl back on the stack
-	ld l, e
-	push hl
+		ld h, d  ; put the old hl back on the stack
+		ld l, e
+		push hl
 
-	; inc # of text rows drawn. this row offset is used for rendering. it will be used to draw empty lines
-	ld a, [wTextRowsRendered]
-	inc a
-	ld [wTextRowsRendered], a
+		; inc # of text rows drawn. this row offset is used for rendering. it will be used to draw empty lines
+		ld a, [wTextRowsRendered]
+		inc a
+		ld [wTextRowsRendered], a
 
-	; inc # of text rows visible. this is used to store the current size of the menu
-	ld a, [wMenuItemsCount]
-	inc a
-	ld [wMenuItemsCount], a
+		; inc # of text rows visible. this is used to store the current size of the menu
+		ld a, [wMenuItemsCount]
+		inc a
+		ld [wMenuItemsCount], a
 
-.checkNext ; check if all options have been iterated over. get next if not
-	ld a, [wDialogBranchesIteratedOver]
-	inc a
-	ld [wDialogBranchesIteratedOver], a
+	.checkNext ; check if all options have been iterated over. get next if not
+		ld a, [wDialogBranchesIteratedOver]
+		inc a
+		ld [wDialogBranchesIteratedOver], a
 
-	pop hl ; restore addr of DialogBranch[wTextRowsRendered]
-	ld a, [wDialogBranchesCount]
-	ld b, a
-	ld a, [wDialogBranchesIteratedOver]
-	cp b
-	jp z, .renderBlankLines
-	; increment hl (addr in DialogBranches array) by sizeof_DialogBranch to get next DialogBranch
-	ld a, sizeof_DialogBranch
-	add a, l
-	ld l, a
-	ld a, h
-	adc 0
-	ld h, a
-	jp .renderTextLoop
+		pop hl ; restore addr of DialogBranch[wTextRowsRendered]
+		ld a, [wDialogBranchesCount]
+		ld b, a
+		ld a, [wDialogBranchesIteratedOver]
+		cp b
+		jp z, .renderBlankLines
+		; increment hl (addr in DialogBranches array) by sizeof_DialogBranch to get next DialogBranch
+		ld a, sizeof_DialogBranch
+		add a, l
+		ld l, a
+		ld a, h
+		adc 0
+		ld h, a
+		jp .renderTextLoop
 .renderBlankLines
+	; reset bank
+	pop af
+	ldh [hCurrentRomBank], a
+	ld [rROMB0], a
 	ld a, [wTextRowsRendered]
 .renderBlankLinesLoop
 	cp MODAL_TEXT_AREA_HEIGHT
