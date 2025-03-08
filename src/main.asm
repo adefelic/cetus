@@ -22,7 +22,7 @@ wxCurrentMap:: dw
 wxCurrentMapBank:: db
 wxCurrentMapWalls:: dw
 wxCurrentMapEvents:: dw
-wCurrentEncounterTable:: dw
+wxCurrentEncounterTable:: dw
 wCurrentWallTilesAddr:: dw
 wCurrentWallTilesBank:: db
 wCurrentLocale:: db

@@ -18,7 +18,6 @@ InitColorPalettes::
 	; obj:
 	; hardcode loading OwObjPaletteSet
 
-	; this might be preemptive?
 	; swap bank for copy
 	ld a, [hCurrentRomBank]
 	push af
@@ -39,7 +38,7 @@ InitTileLoadingFlags::
 
 ; @param de: source palette set addr
 EnqueueBgPaletteSetUpdate::
-	; zzz set palette bank? wBgPaletteSetUpdateBank
+	; set palette bank? wBgPaletteSetUpdateBank
 	ld a, d
 	ld [wBgPaletteSetUpdateAddr], a
 	ld a, e
@@ -64,12 +63,17 @@ SetEnqueuedEnemyBgPalette::
 	xor a, d
 	ret z ; return if wBgPaletteUpdateAddr is 0x0000
 
+	ld a, [hCurrentRomBank]
+	push af
+	ld a, bank(Palettes)
+	rst SwapBank
+
 	call SetEnemyBgPalette
 
 	xor a
 	ld [wBgPaletteUpdateAddr], a
 	ld [wBgPaletteUpdateAddr + 1], a
-	ret
+	jp BankReturn
 
 ; updates all 8 BG palettes
 ; this should only be called on VBlank
@@ -96,18 +100,16 @@ SetEnqueuedBgPaletteSet::
 	jp BankReturn
 
 SetEnemyBgPalette:
-	; hack
-	;ld a, [hCurrentRomBank]
-	;push af
-	;ld a, bank(Palettes)
-	;rst SwapBank
-
 	ld a, BCPSF_AUTOINC | PALETTE_SIZE * BG_PALETTE_ENEMY; load bg color palette specification auto increment on write + addr of BG_PALETTE_ENEMY
 	ld [rBCPS], a
 	ld hl, rBCPD
 	ld b, PALETTE_SIZE
-	MemcopySmall
-	;jp BankReturn
+.loop_do_not_increment_hl
+	ld a, [de]
+	ld [hl], a
+	inc de
+	dec b
+	jp nz, .loop_do_not_increment_hl
 	ret
 
 ; this should only be called on VBlank

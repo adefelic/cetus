@@ -59,7 +59,7 @@ ScarecrowResistanceTable:
 	db RV_NEUTRAL
 	db RV_NEUTRAL
 
-NPCs:
+NPCs::
   dstruct NPC, NpcGreenBriars, "green briars", NpcBrambleTiles, NPCGreenBriarsPalette, BrambleResistanceTable, GreenBriarsAttackList, 40, 20
   dstruct NPC, NpcOldBones, "old bones", NpcOldBonesTiles, NPCOldBonesPalette, OldBonesResistanceTable, OldBonesAttackList, 20, 30
   dstruct NPC, NpcSunflower, "sunflower", NpcSunflowerTiles, NPCSunflowerPalette, SunflowerResistanceTable, SunflowerAttackList, 40, 20

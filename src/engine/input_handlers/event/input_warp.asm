@@ -12,7 +12,6 @@ DoWarp::
 	push af
 		ld a, bank(Map1) ; hardcoded
 		rst SwapBank
-		; something truly bananas is going on here
 		ld hl, wWarpDestinationAddr
 		DereferenceHlIntoHl
 		push hl ; stash hl

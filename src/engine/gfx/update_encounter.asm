@@ -50,52 +50,60 @@ RollEnemyNpc:
 	; mask out bits that arent used by FIELD_NPCS_COUNT. currently encounter tables have 8 encounters
 	AND %00000111
 	sla a ; * 2 so that it's the random number * sizeof address
-	ld d, a
-	ld hl, wCurrentEncounterTable
-	DereferenceHlIntoHl
-	ld a, d
-	AddAToHl
-	DereferenceHlIntoHl
-	jr CacheEnemyState
+	ld d, a ; stash random #
+	ld hl, wxCurrentEncounterTable
+	; zzz
+	ld a, [hCurrentRomBank]
+	push af
+		ld a, bank(Map1)
+		rst SwapBank
+		DereferenceHlIntoHl ; get table
+		ld a, d
+		AddAToHl ; add random # to encounter table
+		ld a, [hCurrentRomBank]
+		push af
+			ld a, bank(NPCs)
+			rst SwapBank
+			DereferenceHlIntoHl ; get npc from table
+		.cacheEnemyState:
+			; store enemy definition table addr
+			ld a, l
+			ld [wNpcAddr], a
+			ld a, h
+			ld [wNpcAddr+1], a
 
-CacheEnemyState:
-	; store enemy definition table addr
-	ld a, l
-	ld [wNpcAddr], a
-	ld a, h
-	ld [wNpcAddr+1], a
+			push hl
+				; set wNpcCurrentHp to their max hp. cache values
+				ld a, NPC_MaxHp
+				AddAToHl
+				ld a, [hl]
+				ld hl, wNpcCurrentHp
+				ld [hl], a
+				ld hl, wNpcMaxHp
+				ld [hl], a
+			pop hl
+			push hl
+				; cache ROM sprite addr
+				ld a, NPC_SpriteAddr
+				AddAToHl
+				ld a, [hli]
+				ld [wNpcSpriteTilesRomAddr], a
+				ld a, [hl]
+				ld [wNpcSpriteTilesRomAddr + 1], a
+			pop hl
 
-	push hl
-
-	; set wNpcCurrentHp to their max hp. cache values
-	ld a, NPC_MaxHp
-	AddAToHl
-	ld a, [hl]
-	ld hl, wNpcCurrentHp
-	ld [hl], a
-	ld hl, wNpcMaxHp
-	ld [hl], a
-
-	pop hl
-	push hl
-
-	; cache ROM sprite addr
-	ld a, NPC_SpriteAddr
-	AddAToHl
-	ld a, [hli]
-	ld [wNpcSpriteTilesRomAddr], a
-	ld a, [hl]
-	ld [wNpcSpriteTilesRomAddr + 1], a
-
-	pop hl
-
-	ld a, NPC_PaletteAddr
-	AddAToHl
-	DereferenceHlIntoHl
-	call EnqueueEnemyBgPaletteUpdate
-
-	ld a, TRUE
-	ld [wNpcSpriteTilesReadyForVramWrite], a
+			ld a, NPC_PaletteAddr
+			AddAToHl
+			DereferenceHlIntoHl
+			call EnqueueEnemyBgPaletteUpdate
+			ld a, TRUE
+			ld [wNpcSpriteTilesReadyForVramWrite], a
+		pop af
+		ldh [hCurrentRomBank], a
+		ld [rROMB0], a
+	pop af
+	ldh [hCurrentRomBank], a
+	ld [rROMB0], a
 	ret
 
 HandleInitialState:
@@ -105,10 +113,20 @@ HandleInitialState:
 	ld a, BG_PALETTE_ENEMY
 	ld [wCurrentNpcPalette], a
 .loadEncounterBackground
-	ld de, BlackBackground
-	ld hl, wShadowBackgroundTilemap
-	ld bc, BlackBackgroundEnd - BlackBackground
-	Memcopy
+	; tilemap
+	ld a, [hCurrentRomBank]
+	push af
+		ld a, bank(Palettes)
+		rst SwapBank
+
+		ld de, BlackBackground
+		ld hl, wShadowBackgroundTilemap
+		ld bc, BlackBackgroundEnd - BlackBackground
+		Memcopy
+	pop af
+	ldh [hCurrentRomBank], a
+	ld [rROMB0], a
+	; timemap attrs
 	ld e, BG_PALETTE_Z0
 	ld hl, wShadowBackgroundTilemapAttrs
 	ld bc, VISIBLE_TILEMAP_SIZE

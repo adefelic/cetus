@@ -71,9 +71,9 @@ LoadLocale::
 	ld a, Locale_EncountersTableAddr
 	AddAToHl
 	ld a, [hli]
-	ld [wCurrentEncounterTable], a
+	ld [wxCurrentEncounterTable], a
 	ld a, [hl]
-	ld [wCurrentEncounterTable+1], a
+	ld [wxCurrentEncounterTable+1], a
 	pop hl
 .loadMusic
 	push hl
