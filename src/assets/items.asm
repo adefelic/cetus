@@ -20,7 +20,7 @@ xItems::
 ; @param a, # to convert. must be >= 0 and <= 99
 ; @return d, # in 10s place
 ; @return e, # in 1s place
-ConvertBinaryNumberToTwoDigitDecimalNumber::
+ConvertBinaryNumberToTwoDigitDecimalNumber_xItems::
 	ld b, a
 	xor a
 	ld d, a

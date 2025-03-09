@@ -36,97 +36,104 @@ RenderEncounterMenuPlayerAttacks::
 	ld a, [wMenuItemTopVisible]
 	ld b, a ; b is the menu item offset that being rendered.
 	ld c, 0 ; row offset, 0-3.
-.renderMenuItemRowsLoop
-	push hl ; stash current wMenuItems position ptr
-	push bc ; stash b and c iterators
+	ld a, [hCurrentRomBank]
+	push af
+		ld a, bank(Attacks)
+		rst SwapBank
+	.renderMenuItemRowsLoop
+		push hl ; stash current wMenuItems position ptr
+		push bc ; stash b and c iterators
 
-	; dereference wMenuItems position ptr to get Attack addr in hl and wCurrentMenuItemObjectAddr
-	ld a, [hli]
-	ld b, a
-	ld a, [hl]
-	ld c, a ; bc now contains addr of Attack
+		; dereference wMenuItems position ptr to get Attack addr in hl and wCurrentMenuItemObjectAddr
+		ld a, [hli]
+		ld b, a
+		ld a, [hl]
+		ld c, a ; bc now contains addr of Attack
 
-	ld a, b
-	ld l, a
-	ld [wCurrentMenuItemObjectAddr], a
+		ld a, b
+		ld l, a
+		ld [wCurrentMenuItemObjectAddr], a
 
-	ld a, c
-	ld h, a
-	ld [wCurrentMenuItemObjectAddr + 1], a
+		ld a, c
+		ld h, a
+		ld [wCurrentMenuItemObjectAddr + 1], a
 
-	;;; get mp cost and convert to decimal
-	ld a, Attack_MpCost
-	AddAToHl
-	ld a, [hl] ; a now contains mp cost
-	call ConvertBinaryNumberToTwoDigitDecimalNumber ; 10s in d, 1s in e
-	pop hl ; restore wMenuItems position ptr
-	push hl ; stash wMenuItems position ptr
+		;;; get mp cost and convert to decimal
+		ld a, Attack_MpCost
+		AddAToHl
+		ld a, [hl] ; a now contains mp cost
+		; this function is in items land. idk what land it should be in. attacks land of course
 
-	; copy decimal characters + item name into wAttackNameStringBuffer
-	call ClearTextRowBuffer
-	ld hl, wAttackNameStringBuffer
-	; 10s place
-	ld a, d
-	add NUMBER_CHARACTER_OFFSET
-	ld [hli], a
-	; 1s place
-	ld a, e
-	add NUMBER_CHARACTER_OFFSET
-	ld [hli], a
-	ld a, "m"
-	ld [hli], a
-	ld a, "p"
-	ld [hli], a
-	ld a, " "
-	ld [hli], a
+		call ConvertBinaryNumberToTwoDigitDecimalNumber_Attacks ; 10s in d, 1s in e
 
-	ld a, [wCurrentMenuItemObjectAddr]
-	ld e, a
-	ld a, [wCurrentMenuItemObjectAddr + 1]
-	ld d, a
-	; it's cool to pass wCurrentMenuItemObjectAddr in de because its zeroth element is the name string that needs to be passed
-	ld a, BYTES_IN_ATTACK_STRING - 3
-	ld b, a
-	MemcopySmall
+		pop hl ; restore wMenuItems position ptr
+		push hl ; stash wMenuItems position ptr
 
-	ld hl, wAttackNameStringBuffer
-	pop bc ; restore iterators for PaintModalTextRow
-	push bc ; save iterators
-	call PaintModalTextRow
-.updateIterators
-	pop bc ; restore iterators
+		; copy decimal characters + item name into wAttackNameStringBuffer
+		call ClearTextRowBuffer
+		ld hl, wAttackNameStringBuffer
+		; 10s place
+		ld a, d
+		add NUMBER_CHARACTER_OFFSET
+		ld [hli], a
+		; 1s place
+		ld a, e
+		add NUMBER_CHARACTER_OFFSET
+		ld [hli], a
+		ld a, "m"
+		ld [hli], a
+		ld a, "p"
+		ld [hli], a
+		ld a, " "
+		ld [hli], a
 
-	pop hl ; restore item def ptr
-	inc hl
-	inc hl ; add 2 to point to next wMenuItems entry
+		ld a, [wCurrentMenuItemObjectAddr]
+		ld e, a
+		ld a, [wCurrentMenuItemObjectAddr + 1]
+		ld d, a
+		; it's cool to pass wCurrentMenuItemObjectAddr in de because its zeroth element is the name string that needs to be passed
+		ld a, BYTES_IN_ATTACK_STRING - 3
+		ld b, a
+		MemcopySmall
 
-	inc c ; inc current row offset
-	ld a, c
-	ld [wTextRowsRendered], a ; painting uses this variable
-	cp MODAL_TEXT_AREA_HEIGHT ; check to see if there is still space for more menu items
-	jp z, .renderBottomRow ; quit out if not
+		ld hl, wAttackNameStringBuffer
+		pop bc ; restore iterators for PaintModalTextRow
+		push bc ; save iterators
+		call PaintModalTextRow
+	.updateIterators
+		pop bc ; restore iterators
 
-	ld a, [wMenuItemsCount]
-	inc b ; inc menu item offset
-	cp b ; check to see if we've rendered all possible menu items in wMenuItems
-	jp nz, .renderMenuItemRowsLoop
-.renderBlankRows
-	ld a, [wTextRowsRendered]
-.renderBlankRowsLoop
-	cp MODAL_TEXT_AREA_HEIGHT
-	jp z, .renderBottomRow
-	ld c, a
-	call PaintModalEmptyRow ; c is an arg to this
-	ld a, [wTextRowsRendered]
-	inc a
-	ld [wTextRowsRendered], a
-	jp .renderBlankRowsLoop
+		pop hl ; restore item def ptr
+		inc hl
+		inc hl ; add 2 to point to next wMenuItems entry
 
-.renderBottomRow
-	call PaintModalBottomRowCheckX
-	ld a, FALSE
-	ld [wBottomMenuDirty], a
-	ret
+		inc c ; inc current row offset
+		ld a, c
+		ld [wTextRowsRendered], a ; painting uses this variable
+		cp MODAL_TEXT_AREA_HEIGHT ; check to see if there is still space for more menu items
+		jp z, .renderBottomRow ; quit out if not
+
+		ld a, [wMenuItemsCount]
+		inc b ; inc menu item offset
+		cp b ; check to see if we've rendered all possible menu items in wMenuItems
+		jp nz, .renderMenuItemRowsLoop
+	.renderBlankRows
+		ld a, [wTextRowsRendered]
+	.renderBlankRowsLoop
+		cp MODAL_TEXT_AREA_HEIGHT
+		jp z, .renderBottomRow
+		ld c, a
+		call PaintModalEmptyRow ; c is an arg to this
+		ld a, [wTextRowsRendered]
+		inc a
+		ld [wTextRowsRendered], a
+		jp .renderBlankRowsLoop
+
+	.renderBottomRow
+		call PaintModalBottomRowCheckX
+		ld a, FALSE
+		ld [wBottomMenuDirty], a
+	jp BankReturn
 
 ; populates wMenuItems with pointers to Attacks
 ; populates wMenuItemsCount
@@ -269,7 +276,8 @@ LoadBufferWithUsedStringAndAttackName:
 	ld e, l
 	ld hl, wAttackNameStringBuffer + USED_STRING_LENGTH
 	ld b, BYTES_IN_ATTACK_STRING
-	jp MemcopySmall
+	MemcopySmall
+	ret
 
 ; there is no way to know the length of the string
 ; @param b, length to copy
@@ -303,7 +311,7 @@ LoadNpcNameString:
 		ld a, NPC_Name
 		AddAToHl
 		ld b, CHARACTER_NAME_LENGTH
-	jr CopyStringIntoBufferWithWhitespace
+		jr CopyStringIntoBufferWithWhitespace
 
 DisableHighlight::
 	ld a, $FF ; goofy hack

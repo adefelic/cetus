@@ -56,15 +56,15 @@ RenderExploreItemMenu::
 	; push bank
 	ld a, [hCurrentRomBank]
 	push af
-	ld a, bank(xItems)
-	rst SwapBank
+		ld a, bank(xItems)
+		rst SwapBank
 		ld a, Item_InventoryOffset
 		AddAToHl
 		ld a, [hl] ; a now contains wInventory offset
 		ld hl, wInventory
 		AddAToHl
 		ld a, [hl] ; a now contains wInventory quantity
-		call ConvertBinaryNumberToTwoDigitDecimalNumber ; 10s in d, 1s in e
+		call ConvertBinaryNumberToTwoDigitDecimalNumber_xItems ; 10s in d, 1s in e
 	; pop bank
 	pop af
 	ldh [hCurrentRomBank], a

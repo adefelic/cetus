@@ -26,3 +26,35 @@ Attacks::
 	dstruct Attack, AttackMenace, "menace", 20, 1, "reposition"
 	dstruct Attack, AttackWatch, "watch", 20, 1, "observe the field"
 
+
+; moved from utils.asm, in ROM0
+; @param a, # to convert. must be >= 0 and <= 99
+; @return d, # in 10s place
+; @return e, # in 1s place
+ConvertBinaryNumberToTwoDigitDecimalNumber_Attacks::
+	ld b, a
+	xor a
+	ld d, a
+	ld e, a
+	ld a, b
+.subTens
+	sub 10
+	jp c, .carryFromTens
+	jp z, .finishFromTens
+	inc d
+	jp .subTens
+.carryFromTens
+	add 10
+	jp .subOnes
+.finishFromTens
+	inc d
+	ret
+.subOnes
+	sub 1
+	ret c
+	jp z, .finishFromOnes
+	inc e
+	jp .subOnes
+.finishFromOnes
+	inc e
+	ret
