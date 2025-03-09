@@ -106,7 +106,7 @@ RollEnemyNpc:
 	ret
 
 HandleInitialState:
-	call RollEnemyNpc
+	call RollEnemyNpc ; this also caches a bunch of npc stuff
 	ld a, 1
 	ld [wAnimationFramesRemaining], a
 	ld a, BG_PALETTE_ENEMY

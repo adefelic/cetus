@@ -278,7 +278,8 @@ CopyStringIntoBufferWithWhitespace:
 	ld e, l
 	call ClearTextRowBuffer
 	ld hl, wAttackNameStringBuffer
-	jp MemcopySmall
+	MemcopySmall
+	jp BankReturn
 
 ClearTextRowBuffer:
 	ld c, BYTES_IN_ATTACK_STRING
@@ -293,10 +294,15 @@ ClearTextRowBuffer:
 ; loads name into wAttackNameStringBuffer
 LoadNpcNameString:
 	ld hl, wNpcAddr
-	DereferenceHlIntoHl
-	ld a, NPC_Name
-	AddAToHl
-	ld b, CHARACTER_NAME_LENGTH
+	ld a, [hCurrentRomBank]
+	push af
+		ld a, bank(NPCs)
+		rst SwapBank
+		; swap bank? idk
+		DereferenceHlIntoHl ; what does this pt into
+		ld a, NPC_Name
+		AddAToHl
+		ld b, CHARACTER_NAME_LENGTH
 	jr CopyStringIntoBufferWithWhitespace
 
 DisableHighlight::
