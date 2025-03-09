@@ -94,8 +94,12 @@ HandlePressedA:
 DoAttack:
 ; todo, reorder the attack struct elements to match the order that they're used here so we can hli
 ; there's going to be changes to the struct w things like resistances and hp costs so this is for down the line
-	call GetHighlightedMenuItemAddr
-	push hl ; stash Attack addr
+	ld a, [hCurrentRomBank]
+	push af
+		ld a, bank(Attacks)
+		rst SwapBank
+		call GetHighlightedMenuItemAddr
+		push hl ; stash Attack addr
 
 .checkMpCost
 	ld a, Attack_MpCost
@@ -165,5 +169,5 @@ DoAttack:
 	ld a, TRUE
 	ld [wBottomMenuDirty], a
 	call RenderEncounterMenuSkillUsed
-	ret
+	jp BankReturn
 	;jp UpdateStateIndependentEncounterGraphics
