@@ -20,6 +20,7 @@ ScribTilesEnd::
 ;;; bg/obj bank 0
 
 ; npc tiles
+NpcTiles::
 NpcBrambleTiles::
 INCBIN "build/gfx/npc/bramble.2bpp"
 NpcOldBonesTiles::

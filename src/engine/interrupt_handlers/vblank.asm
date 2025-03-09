@@ -70,32 +70,37 @@ CopyNpcSpriteTilesIntoVram:
 	ld a, [wNpcSpriteTilesReadyForVramWrite]
 	and a
 	ret nz
-.gdmaTileData:
-	; source
-	ld a, [wNpcSpriteTilesRomAddr + 1]
-	ldh [rHDMA1], a
-	ld a, [wNpcSpriteTilesRomAddr]
-	ldh [rHDMA2], a
+	ld a, [hCurrentRomBank]
+	push af
+		ld a, bank(NpcTiles)
+		rst SwapBank
 
-	; dest
-	ld a, HIGH(NPC_SPRITE_TILE_VRAM_ADDR)
-	ldh [rHDMA3], a
-	ld a, LOW(NPC_SPRITE_TILE_VRAM_ADDR)
-	ldh [rHDMA4], a
+	.gdmaTileData:
+		; source
+		ld a, [wNpcSpriteTilesRomAddr + 1]
+		ldh [rHDMA1], a
+		ld a, [wNpcSpriteTilesRomAddr]
+		ldh [rHDMA2], a
 
-	; size + enable
-	ld a, HDMA5F_MODE_GP + (NPC_SPRITE_TILES_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1) (240 bytes total ... / 16 = 15, minus 1 = 14 blocks)
-	ld [rHDMA5], a ; begin dma transfer
+		; dest
+		ld a, HIGH(NPC_SPRITE_TILE_VRAM_ADDR)
+		ldh [rHDMA3], a
+		ld a, LOW(NPC_SPRITE_TILE_VRAM_ADDR)
+		ldh [rHDMA4], a
 
-	ld a, FALSE
-	ld [wNpcSpriteTilesReadyForVramWrite], a
+		; size + enable
+		ld a, HDMA5F_MODE_GP + (NPC_SPRITE_TILES_SIZE / 16) - 1 ; length (number of 16-byte blocks - 1) (240 bytes total ... / 16 = 15, minus 1 = 14 blocks)
+		ld [rHDMA5], a ; begin dma transfer
 
-	ld bc, NPC_SPRITE_TILES_SIZE * 2 + 4
-.waitforDmaToFinish: ; necessary?
-	dec bc
-	jr nz, .waitforDmaToFinish
+		ld a, FALSE
+		ld [wNpcSpriteTilesReadyForVramWrite], a
 
-	ret
+		ld bc, NPC_SPRITE_TILES_SIZE * 2 + 4
+	.waitforDmaToFinish: ; necessary?
+		dec bc
+		jr nz, .waitforDmaToFinish
+
+	jp BankReturn
 
 CopyBgWallTilesIntoVram:
 	; change bank to the location of the bgwalltile _data_

@@ -52,7 +52,6 @@ RollEnemyNpc:
 	sla a ; * 2 so that it's the random number * sizeof address
 	ld d, a ; stash random #
 	ld hl, wxCurrentEncounterTable
-	; zzz
 	ld a, [hCurrentRomBank]
 	push af
 		ld a, bank(Map1)
@@ -126,7 +125,7 @@ HandleInitialState:
 	pop af
 	ldh [hCurrentRomBank], a
 	ld [rROMB0], a
-	; timemap attrs
+	; tilemap attrs
 	ld e, BG_PALETTE_Z0
 	ld hl, wShadowBackgroundTilemapAttrs
 	ld bc, VISIBLE_TILEMAP_SIZE
