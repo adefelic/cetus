@@ -100,10 +100,7 @@ RollEnemyNpc:
 		pop af
 		ldh [hCurrentRomBank], a
 		ld [rROMB0], a
-	pop af
-	ldh [hCurrentRomBank], a
-	ld [rROMB0], a
-	ret
+	jp BankReturn
 
 HandleInitialState:
 	call RollEnemyNpc ; this also caches a bunch of npc stuff
@@ -282,40 +279,54 @@ LoadRewardScreen:
 	jp PaintRewardScreen
 
 DoEnemySkill:
-	ld hl, wNpcAddr
-	DereferenceHlIntoHl
-	; hl now holds addr of npc
-	ld a, NPC_AttacksAddr
-	AddAToHl
-	DereferenceHlIntoHl
-	push hl
-	; hl now holds addr of attack list
-	call Rand
-	AND %00000011 ; random # 0-3 for a random attack
-	sla a ; go from bytes to words. each attack in the list is an address
-	pop hl
-	AddAToHl
-	DereferenceHlIntoHl
-	; hl now holds addr of attack definition
+	; dereference npc
+	ld a, [hCurrentRomBank]
+	push af
+		ld a, bank(NPCs)
+		rst SwapBank
 
-	; cache def reference
-	ld a, l
-	ld [wCurrentAttack], a
-	ld a, h
-	ld [wCurrentAttack+1], a
+		ld hl, wNpcAddr
+		DereferenceHlIntoHl
+		; hl now holds addr of npc
+		ld a, NPC_AttacksAddr
+		AddAToHl
+		DereferenceHlIntoHl
+		push hl
+		; hl now holds addr of attack list
+		call Rand
 
-.subDamageFromHp
-	ld a, Attack_DamageValue
-	AddAToHl
-	ld a, [hl]
-	ld b, a
+		AND %00000011 ; random # 0-3 for a random attack
+		sla a ; go from bytes to words. each attack in the list is an address
+		pop hl
+		AddAToHl
+		DereferenceHlIntoHl
+		; hl now holds addr of attack definition
 
-	; subtract from player hp
-	ld a, [wHpCurrent]
-	sub b
-	jp nc, .updateHp
-.setZeroHp
-	xor a
-.updateHp
-	ld [wHpCurrent], a
-	ret
+		; cache def reference
+		ld a, l
+		ld [wCurrentAttack], a
+		ld a, h
+		ld [wCurrentAttack+1], a
+
+		.subDamageFromHp
+		ld a, [hCurrentRomBank]
+			push af
+			ld a, bank(Attacks)
+			rst SwapBank
+			ld a, Attack_DamageValue
+			AddAToHl
+			ld a, [hl]
+			ld b, a
+
+			; subtract from player hp
+			ld a, [wHpCurrent]
+			sub b
+			jp nc, .updateHp
+		.setZeroHp
+			xor a
+		.updateHp
+			ld [wHpCurrent], a
+		pop af
+		ldh [hCurrentRomBank], a
+		ld [rROMB0], a
+	jp BankReturn

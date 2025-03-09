@@ -267,17 +267,22 @@ LoadBufferWithUsedStringAndAttackName:
 	ld b, USED_STRING_LENGTH
 	call CopyStringIntoBufferWithWhitespace
 .getAttackName
-	ld hl, wCurrentAttack
-	DereferenceHlIntoHl
-	ld a, Attack_Name
-	AddAToHl
-.copy
-	ld d, h
-	ld e, l
-	ld hl, wAttackNameStringBuffer + USED_STRING_LENGTH
-	ld b, BYTES_IN_ATTACK_STRING
-	MemcopySmall
-	ret
+	ld a, [hCurrentRomBank]
+	push af
+		ld a, bank(Attacks)
+		rst SwapBank
+
+		ld hl, wCurrentAttack
+		DereferenceHlIntoHl
+		ld a, Attack_Name
+		AddAToHl
+	.copy
+		ld d, h
+		ld e, l
+		ld hl, wAttackNameStringBuffer + USED_STRING_LENGTH
+		ld b, BYTES_IN_ATTACK_STRING
+		MemcopySmall
+	jp BankReturn
 
 ; there is no way to know the length of the string
 ; @param b, length to copy
@@ -287,7 +292,7 @@ CopyStringIntoBufferWithWhitespace:
 	call ClearTextRowBuffer
 	ld hl, wAttackNameStringBuffer
 	MemcopySmall
-	jp BankReturn
+	ret
 
 ClearTextRowBuffer:
 	ld c, BYTES_IN_ATTACK_STRING
@@ -311,7 +316,8 @@ LoadNpcNameString:
 		ld a, NPC_Name
 		AddAToHl
 		ld b, CHARACTER_NAME_LENGTH
-		jr CopyStringIntoBufferWithWhitespace
+		call CopyStringIntoBufferWithWhitespace
+	jp BankReturn
 
 DisableHighlight::
 	ld a, $FF ; goofy hack

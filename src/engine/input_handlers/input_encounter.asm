@@ -101,73 +101,73 @@ DoAttack:
 		call GetHighlightedMenuItemAddr
 		push hl ; stash Attack addr
 
-.checkMpCost
-	ld a, Attack_MpCost
-	AddAToHl
-	ld a, [hl]
-	ld b, a ; put mp cost in b
+	.checkMpCost
+		ld a, Attack_MpCost
+		AddAToHl
+		ld a, [hl]
+		ld b, a ; put mp cost in b
 
-	ld a, [wMpCurrent]
-	cp b
-	ret c ; quit out if Attack_MpCost > wMpCurrent
+		ld a, [wMpCurrent]
+		cp b
+		ret c ; quit out if Attack_MpCost > wMpCurrent
 
-.subFromMp
-	sub b
-	ld [wMpCurrent], a
+	.subFromMp
+		sub b
+		ld [wMpCurrent], a
 
 .subDamageFromHp
-	pop hl ; restore Attack addr
+		pop hl ; restore Attack addr
 
-	; cache def reference (this can go anywhere)
-	ld a, l
-	ld [wCurrentAttack], a
-	ld a, h
-	ld [wCurrentAttack+1], a
+		; cache def reference (this can go anywhere)
+		ld a, l
+		ld [wCurrentAttack], a
+		ld a, h
+		ld [wCurrentAttack+1], a
 
-	ld a, Attack_DamageValue
-	AddAToHl
-	ld a, [hl]
-	ld b, a
+		ld a, Attack_DamageValue
+		AddAToHl
+		ld a, [hl]
+		ld b, a
 
-	; subtract from enemy hp
-	ld a, [wNpcCurrentHp]
-	sub b
-	jp nc, .updateHp
-.setZeroHp
-	xor a
-.updateHp
-	ld [wNpcCurrentHp], a
-.parseNpcSpriteAnimation
-.parseAnimationStruct
-	; load enemy damage animation
-	; todo load a different one at critical health, or different ones on different moves
-	ld hl, EncounterDamagePaletteAnimation
-	; cache animation frame count
-	; this only works if the frame count is the 0th byte of the struct
-	ld a, [hli] ; hl will point to KeyFramesCount
-	ld [wAnimationFramesRemaining], a
+		; subtract from enemy hp
+		ld a, [wNpcCurrentHp]
+		sub b
+		jp nc, .updateHp
+	.setZeroHp
+		xor a
+	.updateHp
+		ld [wNpcCurrentHp], a
+	.parseNpcSpriteAnimation
+	.parseAnimationStruct
+		; load enemy damage animation
+		; todo load a different one at critical health, or different ones on different moves
+		ld hl, EncounterDamagePaletteAnimation
+		; cache animation frame count
+		; this only works if the frame count is the 0th byte of the struct
+		ld a, [hli] ; hl will point to KeyFramesCount
+		ld [wAnimationFramesRemaining], a
 
-	ld a, [hli] ; hl point to KeyFramesAddr
-	ld [wAnimationKeyFramesRemaining], a
+		ld a, [hli] ; hl point to KeyFramesAddr
+		ld [wAnimationKeyFramesRemaining], a
 
-	DereferenceHlIntoHl ; hl now contains addr of initial keyframe struct
-	ld a, l
-	ld [wNextAnimationKeyFrame], a
-	ld a, h
-	ld [wNextAnimationKeyFrame+1], a
-	; cache contents of keyframe object
-	ld a, [hli]
-	ld [wNextAnimationKeyFrameFrameNumber], a
-	ld a, [hl]
-	ld [wNextAnimationKeyFramePalette], a
+		DereferenceHlIntoHl ; hl now contains addr of initial keyframe struct
+		ld a, l
+		ld [wNextAnimationKeyFrame], a
+		ld a, h
+		ld [wNextAnimationKeyFrame+1], a
+		; cache contents of keyframe object
+		ld a, [hli]
+		ld [wNextAnimationKeyFrameFrameNumber], a
+		ld a, [hl]
+		ld [wNextAnimationKeyFramePalette], a
 
-.setPlayerAnimateState
-	ld a, PLAYER_ANIMATION_FRAMES
-	ld [wAnimationFramesRemaining], a
-	ld a, ENCOUNTER_STATE_PLAYER_ANIM
-	ld [wEncounterState], a
-	ld a, TRUE
-	ld [wBottomMenuDirty], a
-	call RenderEncounterMenuSkillUsed
+	.setPlayerAnimateState
+		ld a, PLAYER_ANIMATION_FRAMES
+		ld [wAnimationFramesRemaining], a
+		ld a, ENCOUNTER_STATE_PLAYER_ANIM
+		ld [wEncounterState], a
+		ld a, TRUE
+		ld [wBottomMenuDirty], a
+		call RenderEncounterMenuSkillUsed
 	jp BankReturn
 	;jp UpdateStateIndependentEncounterGraphics

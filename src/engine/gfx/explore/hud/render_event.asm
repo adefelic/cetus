@@ -232,8 +232,8 @@ RenderDialogBranch:
 	; switch to the bank of Map1
 	ld a, [hCurrentRomBank]
 	push af
-	ld a, bank(Map1)
-	rst SwapBank
+		ld a, bank(Map1)
+		rst SwapBank
 		ld a, [wCurrentDialogBranchFrameAddr]
 		ld l, a
 		ld a, [wCurrentDialogBranchFrameAddr + 1]
