@@ -2,6 +2,7 @@ INCLUDE "src/structs/equipment.inc"
 
 SECTION "Equipment Table", ROMX
 
+Equipment::
 	; weapon
 	dstruct Equipment, EquipmentFlail, "flail", EquipmentFlailTiles, IconFlailTiles
 

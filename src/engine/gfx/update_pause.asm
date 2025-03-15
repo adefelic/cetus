@@ -28,10 +28,18 @@ UpdatePauseScreen::
 	ld a, TRUE
 	ld [wWeaponPaperDollTilesReadyForVramWrite], a
 .loadBackgroundIntoTilemap
-	ld de, BlackBackground
-	ld hl, wShadowBackgroundTilemap
-	ld bc, BlackBackgroundEnd - BlackBackground
-	Memcopy
+	ld a, [hCurrentRomBank]
+	push af
+		ld a, bank(Map1) ; BlackBackground lives here for now
+		rst SwapBank
+		ld de, BlackBackground
+		ld hl, wShadowBackgroundTilemap
+		ld bc, BlackBackgroundEnd - BlackBackground
+		Memcopy
+	pop af
+	ldh [hCurrentRomBank], a
+	ld [rROMB0], a
+
 	ld e, BG_PALETTE_UI
 	ld hl, wShadowBackgroundTilemapAttrs
 	ld bc, VISIBLE_TILEMAP_SIZE

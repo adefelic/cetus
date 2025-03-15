@@ -52,11 +52,18 @@ VBlankHandler:
 	; encounter
 	call CopyNpcSpriteTilesIntoVram
 	; pause
-	call CopyWeaponIconTilesIntoVram
-	call CopyHeadPaperDollTilesIntoVram
-	call CopyBodyPaperDollTilesIntoVram
-	call CopyLegsPaperDollTilesIntoVram
-	call CopyWeaponPaperDollTilesIntoVram
+	ld a, [hCurrentRomBank]
+	push af
+		ld a, bank(EquipmentTiles)
+		rst SwapBank
+		call CopyWeaponIconTilesIntoVram
+		call CopyHeadPaperDollTilesIntoVram
+		call CopyBodyPaperDollTilesIntoVram
+		call CopyLegsPaperDollTilesIntoVram
+		call CopyWeaponPaperDollTilesIntoVram
+	pop af
+	ldh [hCurrentRomBank], a
+	ld [rROMB0], a
 .updateTilemap
 	call CopyShadowsToTilemapVram
 	call GetKeys
@@ -181,6 +188,7 @@ CopyHeadPaperDollTilesIntoVram:
 	ld [rVBK], a
 
 	ld hl, wEquippedHeadPaperDollTiles
+	; set bank to tiles place
 	DEF DEST = PAPER_DOLL_HEAD_VRAM_ADDR
 	DEF SIZE_TILES = PAPER_DOLL_HEAD_TILES
 	gdmaSmall

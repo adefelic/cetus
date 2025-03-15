@@ -34,7 +34,8 @@ INCBIN "build/gfx/npc/scarecrow.2bpp"
 
 ;; equipment tiles
 
-; paper doll tiles
+EquipmentTiles::
+;EquipmentPaperDollTiles::
 ; weapon
 EquipmentDefaultWeaponTiles::
 EquipmentFlailTiles::
@@ -52,7 +53,7 @@ EquipmentDefaultLegTiles::
 EquipmentLegWrappingsTiles::
 INCBIN "build/gfx/equipment/leg-wrappings.2bpp"
 
-; icon tiles
+;EquipmentIconTiles::
 ; weapon
 IconFlailTiles::
 INCBIN "build/gfx/icons/icon-flail.2bpp"
