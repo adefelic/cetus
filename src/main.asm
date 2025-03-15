@@ -109,18 +109,18 @@ ClearOam:
 	dec b
 	jp nz, .loop
 
-; necessary? should be moved into sprite loading regardless
-;ClearShadowOam:
-;	xor a
-;	ld bc, wShadowOamEnd - wShadowOam
-;	ld hl, wShadowOam
-;.loop:
-;	xor a
-;	ld [hli], a
-;	dec bc
-;	ld a, b
-;	or c
-;	jp nz, .loop
+; TODO should be moved into sprite loading
+ClearShadowOam:
+	xor a
+	ld bc, wShadowOamEnd - wShadowOam
+	ld hl, wShadowOam
+.loop:
+	xor a
+	ld [hli], a
+	dec bc
+	ld a, b
+	or c
+	jp nz, .loop
 
 InitGame:
 	; clear item map
