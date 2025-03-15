@@ -191,11 +191,19 @@ HandlePlayerAnimState:
 	ld [wNextAnimationKeyFrame], a
 	ld a, h
 	ld [wNextAnimationKeyFrame+1], a
+
 	; cache contents of next keyframe object
-	ld a, [hli]
-	ld [wNextAnimationKeyFrameFrameNumber], a
-	ld a, [hl]
-	ld [wNextAnimationKeyFramePalette], a
+	ld a, [hCurrentRomBank]
+	push af
+		ld a, bank(EncounterDamagePaletteAnimation)
+		rst SwapBank
+		ld a, [hli]
+		ld [wNextAnimationKeyFrameFrameNumber], a
+		ld a, [hl]
+		ld [wNextAnimationKeyFramePalette], a
+	pop af
+	ldh [hCurrentRomBank], a
+	ld [rROMB0], a
 
 	ld a, [wAnimationKeyFramesRemaining]
 	dec a

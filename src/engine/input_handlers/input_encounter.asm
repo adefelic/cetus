@@ -142,24 +142,31 @@ DoAttack:
 		; load enemy damage animation
 		; todo load a different one at critical health, or different ones on different moves
 		ld hl, EncounterDamagePaletteAnimation
-		; cache animation frame count
-		; this only works if the frame count is the 0th byte of the struct
-		ld a, [hli] ; hl will point to KeyFramesCount
-		ld [wAnimationFramesRemaining], a
+		ld a, [hCurrentRomBank]
+		push af
+			ld a, bank(EncounterDamagePaletteAnimation)
+			rst SwapBank
+			; cache animation frame count
+			; this only works if the frame count is the 0th byte of the struct
+			ld a, [hli] ; hl will point to KeyFramesCount
+			ld [wAnimationFramesRemaining], a
 
-		ld a, [hli] ; hl point to KeyFramesAddr
-		ld [wAnimationKeyFramesRemaining], a
+			ld a, [hli] ; hl point to KeyFramesAddr
+			ld [wAnimationKeyFramesRemaining], a
 
-		DereferenceHlIntoHl ; hl now contains addr of initial keyframe struct
-		ld a, l
-		ld [wNextAnimationKeyFrame], a
-		ld a, h
-		ld [wNextAnimationKeyFrame+1], a
-		; cache contents of keyframe object
-		ld a, [hli]
-		ld [wNextAnimationKeyFrameFrameNumber], a
-		ld a, [hl]
-		ld [wNextAnimationKeyFramePalette], a
+			DereferenceHlIntoHl ; hl now contains addr of initial keyframe struct
+			ld a, l
+			ld [wNextAnimationKeyFrame], a
+			ld a, h
+			ld [wNextAnimationKeyFrame+1], a
+			; cache contents of keyframe object
+			ld a, [hli]
+			ld [wNextAnimationKeyFrameFrameNumber], a
+			ld a, [hl]
+			ld [wNextAnimationKeyFramePalette], a
+		pop af
+		ldh [hCurrentRomBank], a
+		ld [rROMB0], a
 
 	.setPlayerAnimateState
 		ld a, PLAYER_ANIMATION_FRAMES
