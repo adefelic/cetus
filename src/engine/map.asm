@@ -81,8 +81,10 @@ LoadLocale::
 	AddAToHl
 	ld a, [hli]
 	ld [wCurrentMusicTrack], a
-	ld a, [hl]
+	ld a, [hli]
 	ld [wCurrentMusicTrack+1], a
+	ld a, [hl]
+	ld [wCurrentMusicBank], a
 	call LoadCurrentMusic
 	pop hl
 

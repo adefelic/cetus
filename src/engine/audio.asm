@@ -9,7 +9,6 @@ wNR51: db ; not used yet
 wNR52: db ; not used yet
 
 SECTION "Audio WRAM Values", WRAM0
-
 wCh4CurrentSound: dw ; address
 wCh4CurrentAudCmd: dw ; address
 wCh4NoteDurationRemaining: db ; counter
@@ -63,7 +62,7 @@ LoadCurrentMusic::
 	; i'm not actually sure if this is necessary. i assume hUGE_init accesses music ROM
 	ld a, [hCurrentRomBank]
 	push af
-	ld a, bank(MusicSwamp)
+	ld a, [wCurrentMusicBank]
 	rst SwapBank
 		ld hl, wCurrentMusicTrack
 		DereferenceHlIntoHl
@@ -112,7 +111,14 @@ ProcessAudCmd:
 
 UpdateAudio::
 	; comment out to disable hUGE
-	jp hUGE_dosound
+	ld a, [hCurrentRomBank]
+	push af
+		ld a, bank(EquipmentTiles)
+		rst SwapBank
+		call hUGE_dosound
+	pop af
+	ldh [hCurrentRomBank], a
+	ld [rROMB0], a
 
 PlayChannel1:
 PlayChannel2:

@@ -27,6 +27,7 @@ wCurrentWallTilesAddr:: dw
 wCurrentWallTilesBank:: db
 wCurrentLocale:: db
 wCurrentMusicTrack:: dw
+wCurrentMusicBank:: db
 
 SECTION "Explore State", WRAM0
 wStepsToNextDangerLevel:: db

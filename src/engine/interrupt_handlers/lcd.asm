@@ -11,7 +11,7 @@ LcdHandler:
 	push de
 	push hl
 .updateAudio
-	;call UpdateAudio zzz
+	call UpdateAudio
 .advanceEncounterAnimation
 	ld a, [wAnimationFramesRemaining]
 	dec a

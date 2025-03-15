@@ -174,7 +174,7 @@ HandlePressedUp:
 .finishAdvance
 	call UpdateDangerLevel ; todo only do this if you're not on a safe space
 	; todo reset danger if you're on a safe space
-	call PlayFootstepSfx
+	;fixme: call PlayFootstepSfx
 	call HandleVisibleEvents
 	call DirtyFpSegmentsAndTilemap
 	ret
