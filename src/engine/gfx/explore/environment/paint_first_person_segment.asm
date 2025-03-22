@@ -538,9 +538,125 @@ PaintWallRightSideNearTypeB::
 	ret
 
 PaintWallLeftSideFarTypeB::
+	ld e, BG_PALETTE_SIDE_FAR
+.paintB
+	ld d, TILE_FIELD_WALL_B_WALL
+	call PaintSegmentB
+
+	; paint over some of it with the door
+	ld d, TILE_FIELD_WALL_B_DOOR
+	DEF ROW_WIDTH = 1
+	DEF LEFTMOST_COLUMN = SEGMENT_B_LEFT + 1
+	FOR ROW, 7, MIDDLE_SEGMENTS_TOP ; 12 ; 12 is a guess
+		paint_row_single_tile_romx
+	ENDR
+
+.paintL
+	; row 13 wall
+	ld d, TILE_FIELD_WALL_B_WALL
+	DEF LEFTMOST_COLUMN = 3
+	DEF ROW = MIDDLE_SEGMENTS_TOP
+	DEF ROW_WIDTH = 1
+	paint_row_single_tile_romx
+
+	; row 13 door
+	ld d, TILE_FIELD_WALL_B_DOOR
+	DEF LEFTMOST_COLUMN = 4
+	DEF ROW = MIDDLE_SEGMENTS_TOP
+	DEF ROW_WIDTH = 1
+	paint_row_single_tile_romx
+
+	; row 14
+	ld d, TILE_FIELD_WALL_B_WALL
+	DEF ROW = MIDDLE_SEGMENTS_TOP + 1
+	DEF ROW_WIDTH = 1
+	paint_row_single_tile_romx
+.paintLDiag
+	DEF ROW_WIDTH = 1
+	;row13
+	ld d, TILE_EXPLORE_DIAG_L
+	DEF ROW = MIDDLE_SEGMENTS_TOP
+	DEF LEFTMOST_COLUMN = 5
+	paint_row_single_tile_romx
+	;row14
+	ld d, TILE_FIELD_WALL_B_SIDE_FAR_DIAG
+	DEF ROW = MIDDLE_SEGMENTS_TOP + 1
+	DEF LEFTMOST_COLUMN = 4
+	paint_row_single_tile_romx
+	;row15
+	ld d, TILE_EXPLORE_DIAG_L
+	DEF ROW = MIDDLE_SEGMENTS_TOP + 2
+	DEF LEFTMOST_COLUMN = 3
+	paint_row_single_tile_romx
+.cleanFlags
+	;ld a, FALSE
+	;ld [wBDirty], a
+	ld a, FALSE
+	ld [wLDirty], a
+	ld a, FALSE
+	ld [wLDiagDirty], a
 	ret
 
 PaintWallRightSideFarTypeB::
+	ld e, BG_PALETTE_SIDE_FAR
+.paintD
+	ld d, TILE_FIELD_WALL_B_WALL
+	call PaintSegmentD
+
+	; paint over some of it with the door
+	ld d, TILE_FIELD_WALL_B_DOOR
+	DEF ROW_WIDTH = 1
+	DEF LEFTMOST_COLUMN = SEGMENT_D_LEFT + 1
+	FOR ROW, 7, MIDDLE_SEGMENTS_TOP ; 12 ; 12 is a guess
+		paint_row_single_tile_romx
+	ENDR
+
+.paintN
+	; row 13 wall
+	ld d, TILE_FIELD_WALL_B_DOOR
+	DEF LEFTMOST_COLUMN = SEGMENT_N_LEFT
+	DEF ROW = MIDDLE_SEGMENTS_TOP
+	DEF ROW_WIDTH = 1
+	paint_row_single_tile_romx
+
+	; row 13 door
+	ld d, TILE_FIELD_WALL_B_WALL
+	DEF LEFTMOST_COLUMN = SEGMENT_N_LEFT + 1
+	DEF ROW = MIDDLE_SEGMENTS_TOP
+	DEF ROW_WIDTH = 1
+	paint_row_single_tile_romx
+
+	; row 14
+	ld d, TILE_FIELD_WALL_B_WALL
+	DEF ROW = MIDDLE_SEGMENTS_TOP + 1
+	DEF ROW_WIDTH = 1
+	paint_row_single_tile_romx
+.paintNDiag
+	DEF ROW_WIDTH = 1
+	;row13
+	ld d, TILE_EXPLORE_DIAG_R
+	DEF ROW = MIDDLE_SEGMENTS_TOP
+	DEF LEFTMOST_COLUMN = SEGMENT_N_LEFT - 1
+	paint_row_single_tile_romx
+	;row14
+	ld e, BG_PALETTE_SIDE_FAR + OAMF_XFLIP
+	ld d, TILE_FIELD_WALL_B_SIDE_FAR_DIAG
+	DEF ROW = MIDDLE_SEGMENTS_TOP + 1
+	DEF LEFTMOST_COLUMN = SEGMENT_N_LEFT
+	paint_row_single_tile_romx
+	;row15
+	ld e, BG_PALETTE_SIDE_FAR
+	ld d, TILE_EXPLORE_DIAG_R
+	DEF ROW = MIDDLE_SEGMENTS_TOP + 2
+	DEF LEFTMOST_COLUMN = SEGMENT_N_LEFT + 1
+	paint_row_single_tile_romx
+.cleanFlags
+	;ld a, FALSE
+	;ld [wBDirty], a
+	ld a, FALSE
+	ld [wNDirty], a
+	ld a, FALSE
+	ld [wNDiagDirty], a
 	ret
 
 PaintWallCenterFrontFarTypeB::
